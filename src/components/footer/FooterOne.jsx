@@ -14,47 +14,47 @@ const FooterOne = () => {
                 <ul className="footer-nav">
                   <li>
                   <Link href="/">
-                    <a>U.N.</a>
+                    U.N.
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Conflicts</a>
+                    Conflicts
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Terrorism</a>
+                    Terrorism
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Disasters</a>
+                    Disasters
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>Global Economy</a>
+                        Global Economy
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>Global Economy</a>
+                        Global Economy
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Environment</a>
+                    Environment
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Religion</a>
+                    Religion
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>Scandals</a>
+                        Scandals
                     </Link>
                   </li>
                 </ul>
@@ -69,37 +69,37 @@ const FooterOne = () => {
                 <ul className="footer-nav">
                   <li>
                     <Link href="/">
-                        <a>Executive</a>
+                        Executive
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>Senate</a>
+                        Senate
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>House</a>
+                        House
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Judiciary</a>
+                    Judiciary
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Foreign policy</a>
+                    Foreign policy
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>Polls</a>
+                        Polls
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        <a>Elections</a>
+                        Elections
                     </Link>
                   </li>
                 </ul>
@@ -114,32 +114,32 @@ const FooterOne = () => {
                 <ul className="footer-nav">
                   <li>
                   <Link href="/">
-                    <a>Celebrity News</a>
+                    Celebrity News
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Movies</a>
+                    Movies
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>TV News</a>
+                    TV News
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Music News</a>
+                    Music News
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Style News</a>
+                    Style News
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Entertainment Video</a>
+                    Entertainment Video
                     </Link>
                   </li>
                 </ul>
@@ -154,27 +154,27 @@ const FooterOne = () => {
                 <ul className="footer-nav">
                   <li>
                   <Link href="/">
-                    <a>Markets</a>
+                    Markets
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Politics</a>
+                    Politics
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Technology</a>
+                    Technology
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Features</a>
+                    Features
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Business Leaders</a>
+                    Business Leaders
                     </Link>
                   </li>
                 </ul>
@@ -189,32 +189,32 @@ const FooterOne = () => {
                 <ul className="footer-nav">
                   <li>
                   <Link href="/">
-                    <a>Healthy Living</a>
+                    Healthy Living
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Medical Research</a>
+                    Medical Research
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Mental Health</a>
+                    Mental Health
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Cancer</a>
+                    Cancer
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Heart Health</a>
+                    Heart Health
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Children&apos;s Health</a>
+                    Children&apos;s Health
                     </Link>
                   </li>
                 </ul>
@@ -229,37 +229,37 @@ const FooterOne = () => {
                 <ul className="footer-nav">
                   <li>
                   <Link href="/">
-                    <a>Contact Us</a>
+                    Contact Us
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Careers</a>
+                    Careers
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Fox Around the World</a>
+                    Fox Around the World
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Advertise With Us</a>
+                    Advertise With Us
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Ad Choices</a>
+                    Ad Choices
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Media Relations</a>
+                    Media Relations
                     </Link>
                   </li>
                   <li>
                   <Link href="/">
-                    <a>Compliance</a>
+                    Compliance
                     </Link>
                   </li>
                 </ul>
@@ -277,15 +277,15 @@ const FooterOne = () => {
             <div className="col-md">
               <div className="footer-logo-container">
                 <Link href="/">
-                    <a> 
-                        <Image 
-                         src="/images/logo-symbol.svg"
-                         alt="footer logo"
-                         className="footer-logo"
-                         width={86}
-                         height={28}
-                        />
-                    </a>
+
+                  <Image 
+                   src="/images/logo-symbol.svg"
+                   alt="footer logo"
+                   className="footer-logo"
+                   width={86}
+                   height={28}
+                  />
+
                 </Link>
               </div>
               {/* End of .brand-logo-container */}
@@ -335,52 +335,52 @@ const FooterOne = () => {
           <ul className="footer-bottom-links">
             <li>
                 <Link href="/">
-                    <a>Terms of Use</a>
+                    Terms of Use
                 </Link>
             </li>
             <li>
             <Link href="/">
-              <a>Accessibility &amp; CC</a>
+              Accessibility &amp; CC
               </Link>
             </li>
             <li>
             <Link href="/">
-              <a>AdChoices</a>
+              AdChoices
               </Link>
             </li>
             <li>
             <Link href="/">
-              <a>Modern Slavery Act Statement</a>
+              Modern Slavery Act Statement
               </Link>
             </li>
             <li>
             <Link href="/">
-              <a>Advertise with us</a>
+              Advertise with us
               </Link>
             </li>
             <li>
                 <Link href="/">
-                    <a>Papr Store</a>
+                    Papr Store
                 </Link>
             </li>
             <li>
                 <Link href="/">
-                    <a>Newsletters</a>
+                    Newsletters
                 </Link>
             </li>
             <li>
                 <Link href="/">
-                    <a>Transcripts</a>
+                    Transcripts
                 </Link>
             </li>
             <li>
                 <Link href="/">
-                    <a>License Footage</a>
+                    License Footage
                 </Link>
             </li>
             <li>
                 <Link href="/">
-                    <a>Sitemap</a>
+                    Sitemap
                 </Link>
             </li>
           </ul>

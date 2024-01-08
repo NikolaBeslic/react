@@ -3,7 +3,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import SocialLink from "../../data/social/SocialLink.json";
 
 const OffcanvasMenu = ({ofcshow, ofcHandleClose}) => {
-    return ( 
+    return (
         <Offcanvas show={ofcshow} onHide={ofcHandleClose} placement="end" className="offcanvas-menu">
             <Offcanvas.Header closeButton className="close-offcanvasmeu"></Offcanvas.Header>
             <div className="side-nav">
@@ -22,22 +22,22 @@ const OffcanvasMenu = ({ofcshow, ofcHandleClose}) => {
                         <ul className="main-navigation side-navigation list-inline flex-column">
                             <li>
                                 <Link href="/category/fashion">
-                                    <a>Fashion</a>
+                                    Fashion
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/category/lifestyle">
-                                    <a>Lifestyle</a>
+                                    Lifestyle
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/category/technology">
-                                    <a>Technology</a>
+                                    Technology
                                 </Link>
                             </li>
                             <li>
                                 <Link href="/category/sports">
-                                    <a>Sports</a>
+                                    Sports
                                 </Link>
                             </li>
                         </ul>
@@ -102,7 +102,7 @@ const OffcanvasMenu = ({ofcshow, ofcHandleClose}) => {
                 {/* End of .side-nav-inner */}
             </div>
       </Offcanvas>
-     );
+    );
 }
  
 export default OffcanvasMenu;

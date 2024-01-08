@@ -9,13 +9,13 @@ const Breadcrumb = ({bCat, aPage}) => {
           <ol className="breadcrumb">
             <li className="breadcrumb-item">
                 <Link href="/">
-                    <a>Home</a>
+                    Home
                 </Link>
             </li>
             {bCat ? 
             <li className="breadcrumb-item">
                 <Link href={`/category/${slugify(bCat)}`} >
-                    <a>{bCat}</a>
+                    {bCat}
                 </Link>
             </li>: ""
             }

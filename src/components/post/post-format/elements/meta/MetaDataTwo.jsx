@@ -12,22 +12,18 @@ const MetaDataTwo = ({ metaData }) => {
       <div className="post-navigation-wrapper post-navigation__banner">
         <div className="post-navigation">
           <div className="post-nav-content">
-			<Link href="#">
-				<a className="prev-post">
-					<i className="feather icon-chevron-left" />
-					Prev Post
-				</a>
-			</Link>
+			<Link href="#" className="prev-post">
+
+              <i className="feather icon-chevron-left" />Prev Post
+            </Link>
           </div>
         </div>
         <div className="post-navigation">
           <div className="post-nav-content">
-		  	<Link href="#">
-				<a className="next-post">
-				Next Post
-				<i className="feather icon-chevron-right" />
-				</a>
-			</Link>
+		  	<Link href="#" className="next-post">
+              Next Post<i className="feather icon-chevron-right" />
+
+            </Link>
           </div>
         </div>
       </div>
@@ -43,8 +39,10 @@ const MetaDataTwo = ({ metaData }) => {
           <div className="col-lg-8">
             <div className="post-title-wrapper">
               <div className="btn-group">
-			  		<Link href={`/category/${slugify(metaData.cate)}`}>
-                        <a className={`cat-btn ${metaData.cate_bg ?? "bg-color-blue-one"}`}>{metaData.cate}</a>
+			  		<Link
+                      href={`/category/${slugify(metaData.cate)}`}
+                      className={`cat-btn ${metaData.cate_bg ?? "bg-color-blue-one"}`}>
+                        {metaData.cate}
                     </Link>
               </div>
               <h2 className="m-b-xs-0 axil-title hover-line color-white m-t-xs-10">
@@ -53,17 +51,19 @@ const MetaDataTwo = ({ metaData }) => {
               <div className="post-metas banner-post-metas m-t-xs-20">
                 <ul className="list-inline">
                   <li>
-				  	<Link href={`/author/${slugify(metaData.author_name)}`}>
-						<a className="post-author post-author-with-img">
-							<Image 
-								src={metaData.author_img}
-								alt={metaData.author_name}
-								width={30}
-								height={30}
-							/>
-							<span className="author-name">{metaData.author_name}</span>
-						</a>
-					</Link>
+				  	<Link
+                      href={`/author/${slugify(metaData.author_name)}`}
+                      className="post-author post-author-with-img">
+
+                      <Image 
+                          src={metaData.author_img}
+                          alt={metaData.author_name}
+                          width={30}
+                          height={30}
+                      />
+                      <span className="author-name">{metaData.author_name}</span>
+
+                    </Link>
                   </li>
 				  <li>
                         <i className="feather icon-activity" />

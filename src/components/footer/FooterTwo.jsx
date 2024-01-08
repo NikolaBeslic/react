@@ -11,15 +11,15 @@ const FooterTwo = () => {
             <div className="col-md">
               <div className="footer-logo-container">
 			  	<Link href="/">
-                    <a> 
-                        <Image 
-                         src="/images/logo-symbol.svg"
-                         alt="footer logo"
-                         className="footer-logo"
-                         width={86}
-                         height={28}
-                        />
-                    </a>
+
+                  <Image 
+                   src="/images/logo-symbol.svg"
+                   alt="footer logo"
+                   className="footer-logo"
+                   width={86}
+                   height={28}
+                  />
+
                 </Link>
               </div>
               {/* End of .brand-logo-container */}
@@ -70,52 +70,52 @@ const FooterTwo = () => {
           <ul className="footer-bottom-links">
             <li>
               <Link href="/">
-                <a>Terms of Use</a>
+                Terms of Use
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Accessibility &amp; CC</a>
+                Accessibility &amp; CC
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>AdChoices</a>
+                AdChoices
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Modern Slavery Act Statement</a>
+                Modern Slavery Act Statement
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Advertise with us</a>
+                Advertise with us
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Papr Store</a>
+                Papr Store
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Newsletters</a>
+                Newsletters
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Transcripts</a>
+                Transcripts
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>License Footage</a>
+                License Footage
               </Link>
             </li>
             <li>
               <Link href="/">
-                <a>Sitemap</a>
+                Sitemap
               </Link>
             </li>
           </ul>

@@ -3,22 +3,24 @@ import Link from "next/link";
 import { slugify } from "../../utils";
 
 const TeamOne = ({data}) => {
-    return ( 
+    return (
         <div className="axil-team-block m-b-xs-30">
-        <Link href={`/author/${slugify(data.author_name)}`}>
-            <a className="d-block img-container">
-                <Image
-                    src={data.author_img}
-                    alt={data.author_name}
-                    width={350}
-                    height={350}
-                />
-            </a>
+        <Link
+            href={`/author/${slugify(data.author_name)}`}
+            className="d-block img-container">
+
+            <Image
+                src={data.author_img}
+                alt={data.author_name}
+                width={350}
+                height={350}
+            />
+
         </Link>
         <div className="axil-team-inner-content text-center">
             <h3 className="axil-member-title hover-line">
                 <Link href={`/author/${slugify(data.author_name)}`}>
-                    <a>{data.author_name}</a>
+                    {data.author_name}
                 </Link>
             </h3>
             <div className="axil-designation">
@@ -35,7 +37,7 @@ const TeamOne = ({data}) => {
             </ul>
         </div>
     </div>
-     );
+    );
 }
  
 export default TeamOne;

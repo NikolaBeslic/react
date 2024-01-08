@@ -60,22 +60,22 @@ return (
 				<ul className="category-list-wrapper">
 					{cateList.slice(0, 4).map((data) => (
 					<li className="category-list perfect-square" key={data.slug}>
-						<Link href={`/category/${data.slug}`}>
-						<a className="list-inner">
-							<Image
+						<Link href={`/category/${data.slug}`} className="list-inner">
+
+                            <Image
 							src={data.cateImg}
 							alt={data.name}
 							width={155}
 							height={190}
-							/> 
-							<div className="post-info-wrapper overlay">
+							/>
+                            <div className="post-info-wrapper overlay">
 							<div className="counter-inner">
 								<span className="counter">{data.count}</span>+
 							</div>
 							<h4 className="cat-title">{data.name}</h4>
 							</div>
-						</a>
-						</Link>
+
+                        </Link>
 					</li>
 					))}
 				</ul>
@@ -84,22 +84,22 @@ return (
 				<ul className="category-list-wrapper">
 					{cateList.slice(5, 9).map((data) => (
 					<li className="category-list perfect-square" key={data.slug}>
-						<Link href={`/category/${data.slug}`}>
-						<a className="list-inner">
-							<Image
+						<Link href={`/category/${data.slug}`} className="list-inner">
+
+                            <Image
 							src={data.cateImg}
 							alt={data.name}
 							width={155}
 							height={190}
-							/> 
-							<div className="post-info-wrapper overlay">
+							/>
+                            <div className="post-info-wrapper overlay">
 							<div className="counter-inner">
 								<span className="counter">{data.count}</span>+
 							</div>
 							<h4 className="cat-title">{data.name}</h4>
 							</div>
-						</a>
-						</Link>
+
+                        </Link>
 					</li>
 					))}
 				</ul>
@@ -108,22 +108,22 @@ return (
 				<ul className="category-list-wrapper">
 					{cateList.slice(10, 14).map((data) => (
 					<li className="category-list perfect-square" key={data.slug}>
-						<Link href={`/category/${data.slug}`}>
-						<a className="list-inner">
-							<Image
+						<Link href={`/category/${data.slug}`} className="list-inner">
+
+                            <Image
 							src={data.cateImg}
 							alt={data.name}
 							width={155}
 							height={190}
-							/> 
-							<div className="post-info-wrapper overlay">
+							/>
+                            <div className="post-info-wrapper overlay">
 							<div className="counter-inner">
 								<span className="counter">{data.count}</span>+
 							</div>
 							<h4 className="cat-title">{data.name}</h4>
 							</div>
-						</a>
-						</Link>
+
+                        </Link>
 					</li>
 					))}
 				</ul>
@@ -131,7 +131,7 @@ return (
         </Slider>
       </div>
     </div>
-  );
+);
 };
 
 export default WidgetCategory;

@@ -93,108 +93,106 @@ const HeaderThree = () => {
 	}
 
 
-  return (
-    <>
-		<OffcanvasMenu ofcshow={show} ofcHandleClose={handleClose}/>
-		<header className="page-header">
-			<nav className="navbar bg-grey-light-three navbar__style-three">
-				<div className="container">
-					<div className="navbar-inner justify-content-between">
-						<div className="brand-logo-container">
-							<Link href="/">
-								<a> 
-									<Image 
-									src="/images/logo-black.svg"
-									alt="brand-logo"
-									width={102}
-									height={34}
-									/>
-								</a>
-							</Link>
-						</div>
-						<div className="main-nav-wrapper">
-							<ul className="main-navigation list-inline" ref={menuRef}>
-								{
-									MenuData.map((data, index) => (
-										data.submenu ? 
-										<li className="has-dropdown" key={index}>
-											<Link href={data.path}>
-												<a>{data.label}</a>
-											</Link>
-											<ul className="submenu">
-												{data.submenu.map((data, index) => (
-													data.thirdmenu ? 
-													<li className="has-dropdown" key={index}>
-														<Link href={data.subpath}>
-															<a>{data.sublabel}</a>
-														</Link>
-														<ul className="submenu">
-															{data.thirdmenu.map((data, index) => (
-																<li key={index}>
-																	<Link href={data.tpath}>
-																		<a>{data.tlabel}</a>
-																	</Link>
-																</li>
-															))}
-														</ul>
-													</li> :
-													<li key={index}>
-														<Link href={data.subpath}>
-															<a>{data.sublabel}</a>
-														</Link>
-													</li>
-												))}
-											</ul>
-										</li>:
-										<li key={index}>
-											<Link href={data.path}>
-												<a>{data.label}</a>
-											</Link>
-										</li>
-									))
-								}
-							</ul>
-						</div>
-						<div className="navbar-extra-features">
-							<form action="#" className={`navbar-search ${searchshow ? "show-nav-search" : ""}`}>
-								<div className="search-field">
-									<input
-									type="text"
-									className="navbar-search-field"
-									placeholder="Search Here..."
-									/>
-									<button className="navbar-search-btn" type="button">
-									<i className="fal fa-search" />
-									</button>
-								</div>
-								<span className="navbar-search-close" onClick={headerSearchClose}>
-									<i className="fal fa-times" />
-								</span>
-							</form>
+  return <>
+      <OffcanvasMenu ofcshow={show} ofcHandleClose={handleClose}/>
+      <header className="page-header">
+          <nav className="navbar bg-grey-light-three navbar__style-three">
+              <div className="container">
+                  <div className="navbar-inner justify-content-between">
+                      <div className="brand-logo-container">
+                          <Link href="/">
 
-							<button className="nav-search-field-toggler" onClick={headerSearchShow}>
-								<i className="far fa-search" />
-							</button>
-							<button className="side-nav-toggler" onClick={handleShow}>
-								<span />
-								<span />
-								<span />
-							</button>
-						</div>
-						<div
-							className={`main-nav-toggler d-block d-lg-none ${mobileToggle ? "expanded" : ""}`}>
-							<div className="toggler-inner" onClick={MobileMenuToggler}>
-							<span />
-							<span />
-							<span />
-							</div>
-						</div>
-					</div>
-				</div>
-			</nav>
-		</header>
-    </>
-  );
+                              <Image 
+                              src="/images/logo-black.svg"
+                              alt="brand-logo"
+                              width={102}
+                              height={34}
+                              />
+
+                          </Link>
+                      </div>
+                      <div className="main-nav-wrapper">
+                          <ul className="main-navigation list-inline" ref={menuRef}>
+                              {
+                                  MenuData.map((data, index) => (
+                                      data.submenu ? 
+                                      <li className="has-dropdown" key={index}>
+                                          <Link href={data.path}>
+                                              {data.label}
+                                          </Link>
+                                          <ul className="submenu">
+                                              {data.submenu.map((data, index) => (
+                                                  data.thirdmenu ? 
+                                                  <li className="has-dropdown" key={index}>
+                                                      <Link href={data.subpath}>
+                                                          {data.sublabel}
+                                                      </Link>
+                                                      <ul className="submenu">
+                                                          {data.thirdmenu.map((data, index) => (
+                                                              <li key={index}>
+                                                                  <Link href={data.tpath}>
+                                                                      {data.tlabel}
+                                                                  </Link>
+                                                              </li>
+                                                          ))}
+                                                      </ul>
+                                                  </li> :
+                                                  <li key={index}>
+                                                      <Link href={data.subpath}>
+                                                          {data.sublabel}
+                                                      </Link>
+                                                  </li>
+                                              ))}
+                                          </ul>
+                                      </li>:
+                                      <li key={index}>
+                                          <Link href={data.path}>
+                                              {data.label}
+                                          </Link>
+                                      </li>
+                                  ))
+                              }
+                          </ul>
+                      </div>
+                      <div className="navbar-extra-features">
+                          <form action="#" className={`navbar-search ${searchshow ? "show-nav-search" : ""}`}>
+                              <div className="search-field">
+                                  <input
+                                  type="text"
+                                  className="navbar-search-field"
+                                  placeholder="Search Here..."
+                                  />
+                                  <button className="navbar-search-btn" type="button">
+                                  <i className="fal fa-search" />
+                                  </button>
+                              </div>
+                              <span className="navbar-search-close" onClick={headerSearchClose}>
+                                  <i className="fal fa-times" />
+                              </span>
+                          </form>
+
+                          <button className="nav-search-field-toggler" onClick={headerSearchShow}>
+                              <i className="far fa-search" />
+                          </button>
+                          <button className="side-nav-toggler" onClick={handleShow}>
+                              <span />
+                              <span />
+                              <span />
+                          </button>
+                      </div>
+                      <div
+                          className={`main-nav-toggler d-block d-lg-none ${mobileToggle ? "expanded" : ""}`}>
+                          <div className="toggler-inner" onClick={MobileMenuToggler}>
+                          <span />
+                          <span />
+                          <span />
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </nav>
+      </header>
+  </>;
 };
 
 export default HeaderThree;

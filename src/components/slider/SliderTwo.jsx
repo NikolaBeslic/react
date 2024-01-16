@@ -85,18 +85,16 @@ useEffect(() => {
                         <div className="post-metas home-banner-post-metas m-b-xs-20">
                             <ul className="list-inline">
                                 <li className="m-r-xs-20">
-                                    <Link
-                                      href={`/author/${slugify(data.author_name)}`}
-                                      className="d-flex align-items-center">
-
-                                      <Image
-                                      src={data.author_img}
-                                      alt={data.author_name}
-                                      width={50}
-                                      height={50}
-                                      />
-                                      <span className="m-l-xs-20">{data.author_name}</span>
-
+                                    <Link href={`/author/${slugify(data.author_name)}`}>
+                                        <a  className="d-flex align-items-center">
+                                            <Image
+                                            src={data.author_img}
+                                            alt={data.author_name}
+                                            width={50}
+                                            height={50}
+                                            />
+                                            <span className="m-l-xs-20">{data.author_name}</span>
+                                        </a>
                                     </Link>
                                 </li>
                             </ul>
@@ -104,15 +102,15 @@ useEffect(() => {
                         {/* End of .post-metas */}
                         <h1 className="page-title m-b-xs-40 hover-line">
                             <Link href={`/post/${data.slug}`}>
-                                {data.title}
+                                <a>{data.title}</a>
                             </Link>
                         </h1>
                         <div className="btn-group">
-                            <Link href={`/post/${data.slug}`} className="btn btn-primary m-r-xs-30">
-                                READ MORE
+                            <Link href={`/post/${data.slug}`}>
+                                <a className="btn btn-primary m-r-xs-30">READ MORE</a>
                             </Link>
-                            <Link href={`/category/${slugify(data.cate)}`} className="btn-link">
-                                ALL CURRENT NEWS
+                            <Link href={`/category/${slugify(data.cate)}`}>
+                                <a className="btn-link">ALL CURRENT NEWS</a>
                             </Link>
                         </div>
                     </div>

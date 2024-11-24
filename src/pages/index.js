@@ -1,54 +1,36 @@
-import { getAllPosts } from "../../lib/api";
+import { useEffect, useState } from "react";
+import HeaderOne from "../components/header/HeaderOne"
+import HupHome from "../components/home/HupHome";
+import axiosClient from "../utils/axios";
 import HeadMeta from "../components/elements/HeadMeta";
-import FooterOne from "../components/footer/FooterOne";
-import HeaderOne from "../components/header/HeaderOne";
-import PostSectionFive from "../components/post/PostSectionFive";
-import PostSectionFour from "../components/post/PostSectionFour";
-import PostSectionOne from "../components/post/PostSectionOne";
-import PostSectionSix from "../components/post/PostSectionSix";
-import PostSectionThree from "../components/post/PostSectionThree";
-import PostSectionTwo from "../components/post/PostSectionTwo";
+import { Spinner } from 'react-bootstrap';
+import { useStateContext } from "../contexts/StateContext";
 
-const HomeOne = ({allPosts}) => {
- 
-  return ( 
+export default function HomeSix() {
+
+  const [posts, setPosts] = useState([]);
+  const [predstave, setPredstave] = useState([]);
+  const { isLoading, showLoading, hideLoading } = useStateContext();
+
+  useEffect(() => {
+    showLoading();
+    axiosClient.get('/get-posts').then((res) => {
+      setPosts(res.data);
+      hideLoading();
+    });
+    axiosClient.get('/get-predstave-naslovna')
+      .then((res) => {
+        console.log(res.data);
+        setPredstave(res.data);
+      }).catch(error => console.error(error));;
+  }, []);
+
+  return (
     <>
-    <HeadMeta metaTitle="Home One"/>
-    <HeaderOne />
-    <PostSectionOne postData={allPosts} />
-    <PostSectionTwo postData={allPosts} />
-    <PostSectionThree postData={allPosts} />
-    <PostSectionFour postData={allPosts} />
-    <PostSectionFive postData={allPosts} adBanner={true} />
-    <PostSectionSix postData={allPosts}/>
-    <FooterOne />
+      <HeadMeta metaTitle="Dobrodošli" />
+      <HeaderOne />
+      {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
+      <HupHome posts={posts} predstave={predstave} />
     </>
-   );
+  );
 }
- 
-export default HomeOne;
-
-
-export async function getStaticProps() {
-  const allPosts = getAllPosts([
-    'postFormat',
-    'trending',
-    'story',
-    'slug',
-    'title',
-    'excerpt',
-    'featureImg',
-    'cate',
-    'cate_bg',
-    'cate_img',
-    'author_name',
-    'date',
-    'post_views',
-    'post_share',
-  ])
-  
-  return {
-    props: { allPosts }
-  }
-}
-

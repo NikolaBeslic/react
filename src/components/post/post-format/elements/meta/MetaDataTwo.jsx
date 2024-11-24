@@ -12,7 +12,7 @@ const MetaDataTwo = ({ metaData }) => {
       <div className="post-navigation-wrapper post-navigation__banner">
         <div className="post-navigation">
           <div className="post-nav-content">
-			<Link href="#" className="prev-post">
+			<Link href="#" className="prev-post" legacyBehavior>
 
               <i className="feather icon-chevron-left" />Prev Post
             </Link>
@@ -20,7 +20,7 @@ const MetaDataTwo = ({ metaData }) => {
         </div>
         <div className="post-navigation">
           <div className="post-nav-content">
-		  	<Link href="#" className="next-post">
+		  	<Link href="#" className="next-post" legacyBehavior>
               Next Post<i className="feather icon-chevron-right" />
 
             </Link>
@@ -41,7 +41,8 @@ const MetaDataTwo = ({ metaData }) => {
               <div className="btn-group">
 			  		<Link
                       href={`/category/${slugify(metaData.cate)}`}
-                      className={`cat-btn ${metaData.cate_bg ?? "bg-color-blue-one"}`}>
+                      className={`cat-btn ${metaData.cate_bg ?? "bg-color-blue-one"}`}
+                      legacyBehavior>
                         {metaData.cate}
                     </Link>
               </div>
@@ -53,7 +54,8 @@ const MetaDataTwo = ({ metaData }) => {
                   <li>
 				  	<Link
                       href={`/author/${slugify(metaData.author_name)}`}
-                      className="post-author post-author-with-img">
+                      className="post-author post-author-with-img"
+                      legacyBehavior>
 
                       <Image 
                           src={metaData.author_img}

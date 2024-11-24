@@ -22,7 +22,10 @@ const MetaDataFour = ({ metaData }) => {
         <ul className="list-inline">
           <li>
               <span>By</span>
-              <Link href={`/author/${slugify(metaData.author_name)}`} className="post-author">
+              <Link
+                href={`/author/${slugify(metaData.author_name)}`}
+                className="post-author"
+                legacyBehavior>
                   {metaData.author_name}
               </Link>
           </li>

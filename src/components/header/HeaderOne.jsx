@@ -5,10 +5,15 @@ import { dateFormate } from "../../utils";
 import SocialLink from "../../data/social/SocialLink.json";
 import MenuData from "../../data/menu/HeaderMenu.json";
 import OffcanvasMenu from "./OffcanvasMenu";
+import AuthModal from "../auth/AuthModal";
+import { useStateContext } from "../../contexts/StateContext";
+import axiosClient from "../../utils/axios";
+
 
 const HeaderOne = () => {
   // Main Menu Toggle
   var menuRef = useRef();
+  const [searchResults, setSearchResults] = useState([]);
 
   const toggleDropdownMenu = () => {
     const dropdownSelect = menuRef.current.childNodes;
@@ -86,7 +91,35 @@ const HeaderOne = () => {
     });
   };
 
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const { currentUser, setCurrentUser } =
+    useStateContext();
+
+  const performSearch = (e) => {
+    const searchInput = e.target.value + '*';
+    console.log(searchInput);
+    if (searchInput.length > 3) {
+      axiosClient.get('/search', { params: { "inputSearch": searchInput } })
+        .then((res) => {
+          console.log(res.data);
+          setSearchResults(res.data)
+        })
+        .catch((err) => { console.error(err) });
+    }
+  }
+
   return <>
+    <AuthModal isOpen={isModalOpen} closeModal={closeModal} />
     <OffcanvasMenu ofcshow={show} ofcHandleClose={handleClose} />
     <header className="page-header">
       <div className="header-top bg-grey-dark-one">
@@ -94,20 +127,19 @@ const HeaderOne = () => {
           <div className="row align-items-center">
             <div className="col-md">
               <ul className="header-top-nav list-inline justify-content-center justify-content-md-start">
-                <li className="current-date">{dateFormate()}</li>
                 <li>
-                  <Link href="/">
-                    Advertisement
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/about-us">
-                    About
+                  <Link href="/o-nama">
+                    O nama
                   </Link>
                 </li>
                 <li>
                   <Link href="/contact">
-                    Contact
+                    Kontakt
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/redakcija">
+                    Redakcija
                   </Link>
                 </li>
               </ul>
@@ -144,56 +176,72 @@ const HeaderOne = () => {
           <div className="navbar-inner">
             <div className="brand-logo-container">
               <Link href="/">
-
                 <Image
-                  src="/images/logo-black.svg"
+                  src="/images/hup-logo.png"
                   alt="brand-logo"
-                  width={102}
+                  width={123}
                   height={34}
+                  onChange={performSearch}
                 />
 
               </Link>
             </div>
             <div className="main-nav-wrapper">
               <ul className="main-navigation list-inline" ref={menuRef}>
-                {MenuData.map((data, index) =>
-                  data.submenu ? (
-                    <li className="has-dropdown" key={index}>
-                      <Link href={data.path}>
-                        {data.label}
-                      </Link>
-                      <ul className="submenu">
-                        {data.submenu.map((data, index) => (
-                          <li key={index}>
-                            <Link href={data.subpath}>
-                              {data.sublabel}
-                            </Link>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
-                  ) : (
-                    <li key={index}>
-                      <Link href={data.path}>
-                        {data.label}
-                      </Link>
-                    </li>
-                  )
-                )}
+                <li key="100">
+                  <Link href="/vesti" legacyBehavior>
+                    Vesti
+                  </Link>
+                </li>
+                <li key="101">
+                  <Link href="/intervjui" legacyBehavior>
+                    Intervjui
+                  </Link>
+                </li>
+                <li key="102">
+                  <Link href="/recenzije" legacyBehavior>
+                    Recenzije
+                  </Link>
+                </li>
+                <li key="103">
+                  <Link href="/festivali" legacyBehavior>
+                    Festivali
+                  </Link>
+                </li>
+                <li key="109">
+                  <Link href="/repertoari-v2" legacyBehavior>
+                    Repertoari v2
+                  </Link>
+                </li>
+                <li key="106">
+                  <Link href="/hupkast" legacyBehavior>
+                    HuPkast
+                  </Link>
+                </li>
+                <li key="104">
+                  <Link href="/predstave" legacyBehavior>
+                    Predstave
+                  </Link>
+                </li>
+                {/* <li key="105">
+                  <Link href="/pozorista" legacyBehavior>
+                    Pozorista
+                  </Link>
+                </li> */}
               </ul>
             </div>
             <div className="navbar-extra-features ml-auto">
               <form
                 action="#"
-                className={`navbar-search ${
-                  searchshow ? "show-nav-search" : ""
-                }`}
+                className={`navbar-search ${searchshow ? "show-nav-search" : ""
+                  }`}
               >
                 <div className="search-field">
                   <input
                     type="text"
                     className="navbar-search-field"
                     placeholder="Search Here..."
+                    onChange={performSearch}
                   />
                   <button className="navbar-search-btn" type="button">
                     <i className="fal fa-search" />
@@ -206,6 +254,11 @@ const HeaderOne = () => {
                   <i className="fal fa-times" />
                 </span>
               </form>
+              <div className="search-navbar-result">
+                {searchResults && <ul className="ul">
+                  {searchResults.slice(0, 5).map(item => <li key={item.tekstid}>{item.naslov}</li>)}
+                </ul>}
+              </div>
 
               <button
                 className="nav-search-field-toggler"
@@ -213,23 +266,26 @@ const HeaderOne = () => {
               >
                 <i className="far fa-search" />
               </button>
-              <button className="side-nav-toggler" onClick={handleShow}>
+              <button className="side-nav-toggler m-r-xs-10" onClick={handleShow}>
                 <span />
                 <span />
                 <span />
               </button>
+              {currentUser ? currentUser.korisnicko_ime : ''}
+              <button className="m-l-xs-10" onClick={openModal}>
+                <i className="fa-regular fa-user"></i>
+              </button>
             </div>
-            <div
-              className={`main-nav-toggler d-block d-lg-none ${
-                mobileToggle ? "expanded" : ""
-              }`}
+            {/* <div
+              className={`main-nav-toggler d-block d-lg-none ${mobileToggle ? "expanded" : ""
+                }`}
             >
               <div className="toggler-inner" onClick={MobileMenuToggler}>
                 <span />
                 <span />
                 <span />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </nav>

@@ -42,24 +42,27 @@ const SliderThree = ({ postData }) => {
                   <ul className="list-inline">
                     <li>
                       <span>By</span>
-                      <Link href={`/author/${slugify(firstPost.author_name)}`}>
-                        <a className="post-author">{firstPost.author_name}</a>
+                      <Link
+                        href={`/author/${slugify(firstPost.author_name)}`}
+                        className="post-author"
+                        legacyBehavior>
+                        {firstPost.author_name}
                       </Link>
                     </li>
                   </ul>
                 </div>
                 {/* End of .post-metas */}
                 <h2 className="m-t-xs-20 m-b-xs-10 axil-post-title hover-line color-white txt-shadow  load-anim">
-                  <Link href={`/post/${firstPost.slug}`}>
-                    <a>{firstPost.title}</a>
+                  <Link href={`/post/${firstPost.slug}`} legacyBehavior>
+                    {firstPost.title}
                   </Link>
                 </h2>
                 <p className="big color-white m-b-xs-20 m-b-sm-40 load-anim">
                   {firstPost.excerpt}
                 </p>
                 <div className="load-anim">
-                  <Link href={`/post/${firstPost.slug}`}>
-                    <a className="btn btn-primary">READ MORE</a>
+                  <Link href={`/post/${firstPost.slug}`} className="btn btn-primary">
+                    READ MORE
                   </Link>
                 </div>
               </div>
@@ -80,8 +83,8 @@ const SliderThree = ({ postData }) => {
                   >
                     <div className="media-body">
                       <h3 className="axil-post-title hover-line">
-                        <Link href={`/post/${data.slug}`}>
-                          <a>{data.title}</a>
+                        <Link href={`/post/${data.slug}`} legacyBehavior>
+                          {data.title}
                         </Link>
                       </h3>
                       <p className="mid">{data.excerpt}</p>

@@ -1,0 +1,23 @@
+.scrollToTop__button {
+    color: #fff;
+    position: fixed;
+    bottom: 2%;
+    right: 2%;
+    z-index: 50;
+    cursor: pointer;
+    padding: 2rem;
+    line-height: 50px;
+    height: 50px;
+    width: 50px;
+    background: var(--primary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.scrollToTop__button:after {
+    content: "\f106";
+    font-family: fontawesome;
+    vertical-align: top;
+    color: var(--bg);
+}

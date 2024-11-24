@@ -13,7 +13,7 @@ const PostSectionThree = ({ postData }) => {
       <div className="container">
         <SectionTitle title="Najnoviji tekstovi" btnText="Svi tekstovi" />
         <div className="row">
-          {trendingPost.map((item) => (
+          {trendingPost.slice(0, 8).map((item) => (
             <div className="col-lg-6" key={item.slug}>
               <PostLayoutTwo data={item} />
             </div>

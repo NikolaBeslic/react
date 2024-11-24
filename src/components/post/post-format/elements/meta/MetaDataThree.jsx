@@ -21,7 +21,8 @@ const MetaDataThree = ({ metaData }) => {
               <div className="btn-group">
 			  		<Link
                       href={`/category/${slugify(metaData.cate)}`}
-                      className={`cat-btn ${metaData.cate_bg ?? "bg-color-blue-one"}`}>
+                      className={`cat-btn ${metaData.cate_bg ?? "bg-color-blue-one"}`}
+                      legacyBehavior>
                         {metaData.cate}
                     </Link>
               </div>
@@ -33,7 +34,8 @@ const MetaDataThree = ({ metaData }) => {
                   <li>
 				  	<Link
                       href={`/author/${slugify(metaData.author_name)}`}
-                      className="post-author post-author-with-img">
+                      className="post-author post-author-with-img"
+                      legacyBehavior>
 
                       <Image 
                           src={metaData.author_img}

@@ -116,7 +116,7 @@ useEffect(() => {
               </ul>
             </div>
             <div className="brand-logo-container col-md-4 text-center">
-                  <Link href="/">
+                  <Link href="/" legacyBehavior>
 
                     <Image
                     src="/images/white-logo.svg"
@@ -171,20 +171,20 @@ useEffect(() => {
                 {MenuData.map((data, index) =>
                   data.submenu ? (
                     <li className="has-dropdown" key={index}>
-                      <Link href={data.path}>
+                      <Link href={data.path} legacyBehavior>
                         {data.label}
                       </Link>
                       <ul className="submenu">
                         {data.submenu.map((data, index) =>
                           data.thirdmenu ? (
                             <li className="has-dropdown" key={index}>
-                              <Link href={data.subpath}>
+                              <Link href={data.subpath} legacyBehavior>
                                 {data.sublabel}
                               </Link>
                               <ul className="submenu">
                                 {data.thirdmenu.map((data, index) => (
                                   <li key={index}>
-                                    <Link href={data.tpath}>
+                                    <Link href={data.tpath} legacyBehavior>
                                       {data.tlabel}
                                     </Link>
                                   </li>
@@ -193,7 +193,7 @@ useEffect(() => {
                             </li>
                           ) : (
                             <li key={index}>
-                              <Link href={data.subpath}>
+                              <Link href={data.subpath} legacyBehavior>
                                 {data.sublabel}
                               </Link>
                             </li>
@@ -203,7 +203,7 @@ useEffect(() => {
                     </li>
                   ) : (
                     <li key={index}>
-                      <Link href={data.path}>
+                      <Link href={data.path} legacyBehavior>
                         {data.label}
                       </Link>
                     </li>

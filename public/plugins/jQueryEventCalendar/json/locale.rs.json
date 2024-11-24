@@ -1,0 +1,33 @@
+{
+    "locale": "rs",
+    "txt_noEvents": "Nema predstava u izabranom periodu",
+    "txt_SpecificEvents_prev": "",
+    "txt_SpecificEvents_after": " - predstave:",
+    "txt_next": "sledeći",
+    "txt_prev": "prethodni",
+    "txt_NextEvents": "Naredne predstave:",
+    "txt_GoToEventUrl": "Pročitajte više",
+    "txt_NumAbbrevTh": "",
+    "txt_NumAbbrevSt": "",
+    "txt_NumAbbrevNd": "",
+    "txt_NumAbbrevRd": "",
+    "txt_loading": "učitava se...",
+    "moment": {
+        "months" : [ "Januar", "Februar", "Mart", "April", "Maj", "Jun",
+                "Jul", "Avgust", "Septembar", "Oktobar", "Novembar", "Decembar" ],
+        "weekdaysShort" : ["Ned", "Pon","Uto","Sre","Čet",
+                "Pet","Sub" ],
+        "longDateFormat" : {
+            "LT" : "H:mm",
+            "LTS" : "LT:ss",
+            "L" : "DD.MM.YYYY",
+            "LL" : "D.  MMMM  YYYY",
+            "LLL" : "D.  MMMM  YYYY LT",
+            "LLLL" : "dddd, D  MMMM  YYYY LT"
+        },
+        "week" : {
+            "dow" : 1,
+            "doy" : 4
+        }
+    }
+}

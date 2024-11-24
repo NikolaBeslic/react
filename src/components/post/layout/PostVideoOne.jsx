@@ -5,7 +5,7 @@ import { slugify } from "../../../utils";
 const PostVideoOne = ({data}) => {
   return (
     <div className="axil-img-container flex-height-container">
-        <Link href={`/post/${data.slug}`} className="d-block h-100">
+        <Link href={`/post/${data.slug}`} className="d-block h-100" legacyBehavior>
 
           <Image
               src={data.featureImg}
@@ -22,7 +22,7 @@ const PostVideoOne = ({data}) => {
         <div className="media-body media-body__big">
           <div className="axil-media-bottom mt-auto">
             <h3 className="axil-post-title hover-line hover-line">
-                <Link href={`/post/${data.slug}`}>
+                <Link href={`/post/${data.slug}`} legacyBehavior>
                     {data.title}
                 </Link>
             </h3>
@@ -30,7 +30,10 @@ const PostVideoOne = ({data}) => {
               <ul className="list-inline">
                 <li>
                     <span>By</span>
-					<Link href={`/author/${slugify(data.author_name)}`} className="post-author">
+					<Link
+                      href={`/author/${slugify(data.author_name)}`}
+                      className="post-author"
+                      legacyBehavior>
 					{data.author_name}
 					</Link>
                 </li>

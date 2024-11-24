@@ -100,7 +100,7 @@ const HeaderThree = () => {
               <div className="container">
                   <div className="navbar-inner justify-content-between">
                       <div className="brand-logo-container">
-                          <Link href="/">
+                          <Link href="/" legacyBehavior>
 
                               <Image 
                               src="/images/logo-black.svg"
@@ -117,20 +117,20 @@ const HeaderThree = () => {
                                   MenuData.map((data, index) => (
                                       data.submenu ? 
                                       <li className="has-dropdown" key={index}>
-                                          <Link href={data.path}>
+                                          <Link href={data.path} legacyBehavior>
                                               {data.label}
                                           </Link>
                                           <ul className="submenu">
                                               {data.submenu.map((data, index) => (
                                                   data.thirdmenu ? 
                                                   <li className="has-dropdown" key={index}>
-                                                      <Link href={data.subpath}>
+                                                      <Link href={data.subpath} legacyBehavior>
                                                           {data.sublabel}
                                                       </Link>
                                                       <ul className="submenu">
                                                           {data.thirdmenu.map((data, index) => (
                                                               <li key={index}>
-                                                                  <Link href={data.tpath}>
+                                                                  <Link href={data.tpath} legacyBehavior>
                                                                       {data.tlabel}
                                                                   </Link>
                                                               </li>
@@ -138,7 +138,7 @@ const HeaderThree = () => {
                                                       </ul>
                                                   </li> :
                                                   <li key={index}>
-                                                      <Link href={data.subpath}>
+                                                      <Link href={data.subpath} legacyBehavior>
                                                           {data.sublabel}
                                                       </Link>
                                                   </li>
@@ -146,7 +146,7 @@ const HeaderThree = () => {
                                           </ul>
                                       </li>:
                                       <li key={index}>
-                                          <Link href={data.path}>
+                                          <Link href={data.path} legacyBehavior>
                                               {data.label}
                                           </Link>
                                       </li>

@@ -1,42 +1,40 @@
-import Image from "next/image";
-import Link from "next/link";
-import { slugify } from "../../../utils";
+import Image from "next/legacy/image";
+import moment from 'moment';
 
 const PostVideoTwo = ({ data, pClass, videoIcon }) => {
   return (
     <div className={`media post-block post-block__small ${pClass ?? "post-block__on-dark-bg m-b-xs-30"}`}>
-      <Link href={`/post/${data.slug}`} className="align-self-center">
+      <a href={`/${data.kategorija.kategorija_slug}/${data.slug}`} className="align-self-center">
 
         <Image
-        src={data.featureImg}
-        alt={data.title}
-        width={100}
-        height={100}
+          src={data.tekst_photo}
+          alt={data.slug}
+          width={100}
+          height={100}
+          objectFit="cover"
         />
-        {videoIcon === true ? <span className="video-play-btn video-play-btn__small" /> : "" }
+        {videoIcon === true ? <span className="video-play-btn video-play-btn__small" /> : ""}
 
-      </Link>
-      
+      </a>
+
       <div className="media-body">
         <div className="post-cat-group">
-			<Link
-              href={`/category/${slugify(data.cate)}`}
-              className={`post-cat ${data.cate_bg ?? "bg-color-blue-one"}`}>
-                {data.cate}
-            </Link>
+          <a
+            href={`/category/${data.kategorija?.kategorija_slug}`}
+            className={`post-cat ${data.cate_bg ?? "bg-color-blue-one"}`}
+            legacyBehavior>
+            {data.kategorija.naziv_kategorije}
+          </a>
         </div>
         <h3 className="axil-post-title hover-line hover-line">
-           <Link href={`/post/${data.slug}`}>
-				{data.title}
-			</Link>
+          <a href={`/${data.kategorija?.kategorija_slug}/${data.slug}`} title={data.naslov} legacyBehavior>
+            {data.naslov}
+          </a>
         </h3>
         <div className="post-metas">
           <ul className="list-inline">
             <li>
-				<span>By</span>
-				<Link href={`/author/${slugify(data.author_name)}`} className="post-author">
-					{data.author_name}
-				</Link>
+              {moment(data.created_at).fromNow()}
             </li>
           </ul>
         </div>

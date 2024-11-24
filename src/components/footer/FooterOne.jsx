@@ -10,51 +10,67 @@ const FooterOne = () => {
           <div className="row">
             <div className="col-lg-2 col-md-4 col-6">
               <div className="footer-widget">
-                <h2 className="footer-widget-title">World</h2>
+                <h2 className="footer-widget-title">Predstave</h2>
                 <ul className="footer-nav">
                   <li>
-                  <Link href="/">
-                    U.N.
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Conflicts
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Terrorism
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Disasters
+                    <Link href="/">
+                      Komedije
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        Global Economy
+                      Drame
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        Global Economy
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Environment
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Religion
+                      Predstave za decu
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        Scandals
+                      Opere
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      Baleti
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      Mjuzikli
+                    </Link>
+                  </li>
+
+                </ul>
+                {/* End of .footer-nav */}
+              </div>
+              {/* End of .footer-widget */}
+            </div>
+            {/* End of .col-lg-2 */}
+            <div className="col-lg-2 col-md-4 col-6">
+              <div className="footer-widget">
+                <h2 className="footer-widget-title">Repertoari</h2>
+                <ul className="footer-nav">
+                  <li>
+                    <Link href="/">
+                      Nove predstave Beograd
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      Najbolje ocenjene predstave
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      Najviše komentara
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      Najpopularnije predstave
                     </Link>
                   </li>
                 </ul>
@@ -65,41 +81,36 @@ const FooterOne = () => {
             {/* End of .col-lg-2 */}
             <div className="col-lg-2 col-md-4 col-6">
               <div className="footer-widget">
-                <h2 className="footer-widget-title">Politics</h2>
+                <h2 className="footer-widget-title">Pozorišta</h2>
                 <ul className="footer-nav">
                   <li>
                     <Link href="/">
-                        Executive
+                      Dečija pozorišta Niš
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        Senate
+                      Studentska pozorišta
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        House
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Judiciary
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Foreign policy
+                      Pozorišta u Subotici
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        Polls
+                      Nezavisna pozorišta Beograd
                     </Link>
                   </li>
                   <li>
                     <Link href="/">
-                        Elections
+                      Opera Novi Sad
+                    </Link>
+                  </li>
+                  <li>
+                    <Link href="/">
+                      Pozorišta Zrenjanin
                     </Link>
                   </li>
                 </ul>
@@ -110,36 +121,31 @@ const FooterOne = () => {
             {/* End of .col-lg-2 */}
             <div className="col-lg-2 col-md-4 col-6">
               <div className="footer-widget">
-                <h2 className="footer-widget-title">Entertainment</h2>
+                <h2 className="footer-widget-title">Festivali</h2>
                 <ul className="footer-nav">
                   <li>
-                  <Link href="/">
-                    Celebrity News
+                    <Link href="/">
+                      Sterijino pozorje
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Movies
+                    <Link href="/">
+                      Bitef
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    TV News
+                    <Link href="/">
+                      Pozorišni maraton Sombor
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Music News
+                    <Link href="/">
+                      Borini pozorišni dani
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Style News
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Entertainment Video
+                    <Link href="/">
+                      Joakim Interfest
                     </Link>
                   </li>
                 </ul>
@@ -150,71 +156,36 @@ const FooterOne = () => {
             {/* End of .col-lg-2 */}
             <div className="col-lg-2 col-md-4 col-6">
               <div className="footer-widget">
-                <h2 className="footer-widget-title">Business</h2>
+                <h2 className="footer-widget-title">Hoću u pozorište</h2>
                 <ul className="footer-nav">
                   <li>
-                  <Link href="/">
-                    Markets
+                    <Link href="/">
+                      HuPkast
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Politics
+                    <Link href="/">
+                      HuPikon
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Technology
+                    <Link href="/">
+                      Blog
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Features
+                    <Link href="/">
+                      O nama
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Business Leaders
-                    </Link>
-                  </li>
-                </ul>
-                {/* End of .footer-nav */}
-              </div>
-              {/* End of .footer-widget */}
-            </div>
-            {/* End of .col-lg-2 */}
-            <div className="col-lg-2 col-md-4 col-6">
-              <div className="footer-widget">
-                <h2 className="footer-widget-title">Health</h2>
-                <ul className="footer-nav">
-                  <li>
-                  <Link href="/">
-                    Healthy Living
+                    <Link href="/">
+                      Kontakt
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Medical Research
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Mental Health
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Cancer
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Heart Health
-                    </Link>
-                  </li>
-                  <li>
-                  <Link href="/">
-                    Children&apos;s Health
+                    <Link href="/">
+                      Redakcija
                     </Link>
                   </li>
                 </ul>
@@ -228,38 +199,38 @@ const FooterOne = () => {
                 <h2 className="footer-widget-title">About</h2>
                 <ul className="footer-nav">
                   <li>
-                  <Link href="/">
-                    Contact Us
+                    <Link href="/">
+                      Contact Us
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Careers
+                    <Link href="/">
+                      Careers
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Fox Around the World
+                    <Link href="/">
+                      Fox Around the World
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Advertise With Us
+                    <Link href="/">
+                      Advertise With Us
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Ad Choices
+                    <Link href="/">
+                      Ad Choices
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Media Relations
+                    <Link href="/">
+                      Media Relations
                     </Link>
                   </li>
                   <li>
-                  <Link href="/">
-                    Compliance
+                    <Link href="/">
+                      Compliance
                     </Link>
                   </li>
                 </ul>
@@ -276,14 +247,14 @@ const FooterOne = () => {
           <div className="row align-items-center">
             <div className="col-md">
               <div className="footer-logo-container">
-                <Link href="/">
+                <Link href="/" legacyBehavior>
 
-                  <Image 
-                   src="/images/logo-symbol.svg"
-                   alt="footer logo"
-                   className="footer-logo"
-                   width={86}
-                   height={28}
+                  <Image
+                    src="/images/logo-symbol.svg"
+                    alt="footer logo"
+                    className="footer-logo"
+                    width={86}
+                    height={28}
                   />
 
                 </Link>
@@ -296,31 +267,31 @@ const FooterOne = () => {
                 <div className="footer-social-share">
                   <div className="axil-social-title">Find us here</div>
                   <ul className="social-share social-share__with-bg">
-                  <li>
-                    <a href={SocialLink.fb.url}>
-                      <i className={SocialLink.fb.icon} />
-                    </a>
-                  </li>
-                  <li>
-                    <a href={SocialLink.twitter.url}>
-                      <i className={SocialLink.twitter.icon} />
-                    </a>
-                  </li>
-                  <li>
-                    <a href={SocialLink.yt.url}>
-                      <i className={SocialLink.yt.icon} />
-                    </a>
-                  </li>
-                  <li>
-                    <a href={SocialLink.linked.url}>
-                      <i className={SocialLink.linked.icon} />
-                    </a>
-                  </li>
-                  <li>
-                    <a href={SocialLink.pinterest.url}>
-                      <i className={SocialLink.pinterest.icon} />
-                    </a>
-                  </li>
+                    <li>
+                      <a href={SocialLink.fb.url}>
+                        <i className={SocialLink.fb.icon} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href={SocialLink.twitter.url}>
+                        <i className={SocialLink.twitter.icon} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href={SocialLink.yt.url}>
+                        <i className={SocialLink.yt.icon} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href={SocialLink.linked.url}>
+                        <i className={SocialLink.linked.icon} />
+                      </a>
+                    </li>
+                    <li>
+                      <a href={SocialLink.pinterest.url}>
+                        <i className={SocialLink.pinterest.icon} />
+                      </a>
+                    </li>
                   </ul>
                 </div>
               </div>
@@ -334,54 +305,54 @@ const FooterOne = () => {
         <div className="footer-bottom">
           <ul className="footer-bottom-links">
             <li>
-                <Link href="/">
-                    Terms of Use
-                </Link>
-            </li>
-            <li>
-            <Link href="/">
-              Accessibility &amp; CC
+              <Link href="/">
+                Terms of Use
               </Link>
             </li>
             <li>
-            <Link href="/">
-              AdChoices
+              <Link href="/">
+                Accessibility &amp; CC
               </Link>
             </li>
             <li>
-            <Link href="/">
-              Modern Slavery Act Statement
+              <Link href="/">
+                AdChoices
               </Link>
             </li>
             <li>
-            <Link href="/">
-              Advertise with us
+              <Link href="/">
+                Modern Slavery Act Statement
               </Link>
             </li>
             <li>
-                <Link href="/">
-                    Papr Store
-                </Link>
+              <Link href="/">
+                Advertise with us
+              </Link>
             </li>
             <li>
-                <Link href="/">
-                    Newsletters
-                </Link>
+              <Link href="/">
+                Papr Store
+              </Link>
             </li>
             <li>
-                <Link href="/">
-                    Transcripts
-                </Link>
+              <Link href="/">
+                Newsletters
+              </Link>
             </li>
             <li>
-                <Link href="/">
-                    License Footage
-                </Link>
+              <Link href="/">
+                Transcripts
+              </Link>
             </li>
             <li>
-                <Link href="/">
-                    Sitemap
-                </Link>
+              <Link href="/">
+                License Footage
+              </Link>
+            </li>
+            <li>
+              <Link href="/">
+                Sitemap
+              </Link>
             </li>
           </ul>
           {/* End of .footer-bottom-links */}

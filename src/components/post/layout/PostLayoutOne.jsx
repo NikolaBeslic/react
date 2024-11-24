@@ -7,7 +7,7 @@ const PostLayoutOne = ({data}) => {
       <div className="axil-latest-post">
           <div className="media post-block m-b-xs-20">
               <figure className="fig-container">
-                  <Link href={`/post/${data.slug}`}>
+                  <Link href={`/post/${data.slug}`} legacyBehavior>
 
                       <Image
                       src={data.featureImg}
@@ -22,14 +22,15 @@ const PostLayoutOne = ({data}) => {
               <div className="post-cat-group m-b-xs-10">
                   <Link
                       href={`/category/${slugify(data.cate)}`}
-                      className={`post-cat cat-btn ${data.cate_bg ?? "bg-color-blue-one"}`}>
+                      className={`post-cat cat-btn ${data.cate_bg ?? "bg-color-blue-one"}`}
+                      legacyBehavior>
                       {data.cate}
                   </Link>
               </div>
               </figure>
               <div className="media-body">
               <h3 className="axil-post-title hover-line hover-line">
-                  <Link href={`/post/${data.slug}`}>
+                  <Link href={`/post/${data.slug}`} legacyBehavior>
                       {data.title}
                   </Link>
               </h3>
@@ -37,7 +38,10 @@ const PostLayoutOne = ({data}) => {
                   <ul className="list-inline">
                   <li>
                       <span>By</span>
-                      <Link href={`/author/${slugify(data.author_name)}`} className="post-author">
+                      <Link
+                          href={`/author/${slugify(data.author_name)}`}
+                          className="post-author"
+                          legacyBehavior>
                       {data.author_name}
                       </Link>
                   </li>

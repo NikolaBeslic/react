@@ -3762,6 +3762,8 @@ p {
 
 img {
     max-width: 100%;
+    height: auto !important;
+    /* Nikola Edit */
 }
 
 ul,
@@ -6458,7 +6460,7 @@ input[type="radio"]+label::after {
     font-size: 1.4rem;
     line-height: 2.2rem;
     color: var(--grey-dark-four);
-    text-transform: capitalize;
+    /* text-transform: capitalize; */
 }
 
 .breadcrumb li.active,
@@ -8239,6 +8241,7 @@ article li {
 .single-blog-wrapper {
     margin: 0;
     padding: 0;
+    text-align: justify;
 }
 
 .post-details h3 {
@@ -8416,7 +8419,7 @@ blockquote p::before,
 
 @media (max-width: 767px) {
     .about-author .media {
-        flex-direction: column;
+        /* flex-direction: column; */
     }
 }
 
@@ -10633,4 +10636,291 @@ address .tel i {
 
 .recenzija-tag-bg-color {
     background-color: yellow;
+}
+
+.section-title .axil-title {
+    border-bottom: solid 3px red;
+}
+
+.predstava-single-section-wrapper {
+    margin-bottom: 20px;
+}
+
+.predstava-single-plakat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    font-size: 3rem;
+    line-height: 4.2rem;
+    color: #fff;
+    font-weight: var(--p-bold);
+    /* max-width: 18rem; */
+}
+
+.predstava-komentar-info {
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+}
+
+.predstava-komentar-info span {
+    font-size: 1.5rem;
+
+}
+
+.predstava-single-zanr {
+    background-color: transparent;
+    border: 1px solid var(--primary-color);
+    border-radius: 25px;
+    color: var(--primary-color);
+    padding: 5px 10px;
+    font-size: 0.8em;
+
+}
+
+.zanr-button {
+    border: 1px solid;
+    background-color: transparent;
+    border-radius: 25px;
+    padding: 5px 10px;
+    text-transform: lowercase;
+}
+
+.current-rating {
+    font-size: 18px;
+}
+
+.list-inline {
+    font-family: var(--primary-font);
+}
+
+.search-navbar-result {
+    height: 30px;
+    position: relative;
+    /* top: 87px; */
+    width: 100%;
+    left: 0;
+    background: aqua;
+    margin: 0 auto;
+    z-index: 111111111;
+}
+
+.hup-spinner {
+    top: 40%;
+    position: sticky;
+    left: 49%;
+    z-index: 999;
+    height: 4rem;
+    width: 4rem;
+}
+
+.swiper-slide {
+    width: 200px !important;
+}
+
+.swiper-button-prev,
+.swiper-button-next {
+    color: #fff !important;
+    background-color: var(--primary-color);
+}
+
+.swiper-button-prev:after,
+.swiper-button-next:after {
+    font-size: 24px !important;
+}
+
+.predstave-naslovna-card {
+    width: 200px;
+    height: 435px;
+    --scale: calc(100vw / 1920);
+    transform: scale(var(--scale));
+    transform-origin: top;
+}
+
+.predstave-naslovna-card-img {
+    height: 277px !important;
+    width: 100%;
+    object-fit: cover;
+}
+
+.predstave-naslovna-card-title {
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 54px;
+}
+
+.predstave-naslovna-card-title h5 {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.predstave-naslovna-card-text {
+    font-size: 1.3rem;
+    line-height: 2.2rem;
+}
+
+.hupkast-naslovna-wrapper {
+    align-items: flex-start;
+    display: flex;
+    text-align: start;
+    margin-bottom: 20px;
+}
+
+.hupkast-naslovna-photo {
+    align-self: flex-start;
+    position: relative;
+    display: inline-block;
+    width: 180px;
+    text-align: start;
+    margin-right: 30px;
+}
+
+
+.hupkast-naslovna-info {
+    position: relative;
+    flex-basis: 0%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: start;
+    text-size-adjust: 100%;
+}
+
+.hupkast-naslovna-info p {
+    font-size: 1.5rem;
+    line-height: 1.9rem;
+}
+
+@media only screen and (max-width: 767px) {
+    .hupkast-naslovna-wrapper {
+        display: block;
+    }
+
+    .hupkast-naslovna-photo {
+        width: 100%;
+    }
+
+    .hupkast-naslovna-photo .video-play-big {
+        width: 100px;
+        height: 100px;
+        opacity: 0.9;
+    }
+
+    .hupkast-naslovna-photo .video-play-btn ::after {
+        width: 30px;
+        height: 30px;
+    }
+
+    .hupkast-naslovna-title h3 {
+        font-size: 24px;
+    }
+}
+
+.autor-pozicija {
+    color: var(--grey-dark-four);
+}
+
+.izvodjenje-wrapper {
+    height: auto;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    background-color: var(--grey-light-three);
+    border-radius: 5%;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.izvodjenje-datum {
+    font-size: 2.8rem;
+}
+
+@media (max-width: 767px) {
+    .izvodjenje-datum {
+        font-size: 2.6rem;
+        line-height: 1.3;
+    }
+
+    .izvodjenje-predstava {
+        font-size: 1.1em;
+        text-align: left;
+    }
+}
+
+.izvodjenje-predstava {
+    font-size: 1.1em;
+}
+
+.izvodjenje-vreme {
+    font-size: 0.9em;
+}
+
+.izvodjenje-plakat {
+    display: grid;
+    justify-content: right;
+}
+
+.izvodjenje-pozoriste {
+    font-size: 0.9em;
+}
+
+.izvodjenje-scena {
+    color: var()
+}
+
+.predstava-index-wrapper {
+    align-items: center;
+}
+
+.predstava-index-title a {
+    font-size: 2rem;
+}
+
+.pozorista-layout-wrapper {
+    max-width: 150px;
+    margin: 10px;
+}
+
+.pozorista-layout-logo {
+    margin: auto;
+}
+
+.pozorista-layout-info {
+    text-align: center;
+}
+
+.festival-index-wrapper {
+    align-items: center;
+}
+
+.predstava-recenzija-wrapper {
+    padding: 30px;
+}
+
+.repertoari-wrapper {
+    padding-left: 10px;
+    padding-right: 10px;
+    height: 1500px;
+    overflow-y: scroll;
+}
+
+.premijere-naziv-pozorista {
+    font-size: 1.3rem;
+    margin-bottom: 5px;
+}
+
+/* .hupikon-index-title {
+    height: 80px;
+    margin-bottom: 25px;
+}
+*/
+.hupikon-index-title h3 {
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical;
 }

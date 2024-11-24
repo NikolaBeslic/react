@@ -1,46 +1,44 @@
-import Image from "next/image";
+import Image from "next/legacy/image";
 import Link from "next/link";
-import { slugify } from "../../../../utils";
 
 
-const PostAuthor = ({authorData}) => {
-
+const PostAuthor = ({ authorData }) => {
   return (
-    <div className="about-author m-b-xs-60">
-      <div className="media">
-        <Link href={`/author/${slugify(authorData.author_name)}`}>
-
-          <Image
-          src={authorData.author_img}
-          alt={authorData.author_name}
-          height={105}
-          width={105}
-          className="author-img"
-          />
-
-        </Link>
-        <div className="media-body">
-          <div className="media-body-title">
-            <h3>
-                <Link href={`/author/${slugify(authorData.author_name)}`}>
-                    {authorData.author_name}
+    authorData.autori?.map((data) =>
+      <div className="about-author m-b-xs-60" key={data.autor_slug}>
+        <div className="media">
+          <a href={`/autori/${data?.autor_slug}`}>
+            <Image
+              src={data.url_slike}
+              alt={data.autor_slug}
+              height={105}
+              width={105}
+              className="author-img"
+            />
+          </a>
+          <div className="media-body">
+            <div className="media-body-title">
+              <h3>
+                <Link href={`/autori/${data?.autor_slug}`}>
+                  {data.ime_autora}
                 </Link>
-            </h3>
-          </div>
-          {/* End of .media-body-title */}
-          <div className="media-body-content">
-            <p>{authorData.author_bio}</p>
-            <ul className="social-share social-share__with-bg">
-                {authorData.author_social.map((data, index)=> (
+              </h3>
+            </div>
+            {/* End of .media-body-title */}
+            <div className="media-body-content">
+              <div dangerouslySetInnerHTML={{ __html: data.biografija }}></div>
+              <ul className="social-share social-share__with-bg">
+                {/* {authorData.author_social.map((data, index) => (
                     <li key={index}><a href={data.url}><i className={data.icon} /></a></li>
-                ))}
-            </ul>
-            {/* End of .social-share__no-bg */}
+                  ))} */}
+              </ul>
+              {/* End of .social-share__no-bg */}
+            </div>
+            {/* End of .media-body-content */}
           </div>
-          {/* End of .media-body-content */}
         </div>
       </div>
-    </div>
+    )
   );
 };
 

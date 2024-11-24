@@ -2,18 +2,18 @@ import { slugify } from "../../utils";
 import SectionTitle from "../elements/SectionTitle";
 import PostLayoutFour from "./layout/PostLayoutFour";
 
-const PostSectionSix = ({postData}) => {
+const PostSectionSix = ({ postData }) => {
 
-    const foodPost = postData.filter(post => slugify(post.cate) === 'food' || slugify(post.cate) === 'drink');
+    const recenzijeNaslovna = postData.filter(post => post.kategorija.naziv_kategorije == "intervju");
 
-    return ( 
-        <div className="related-post p-b-xs-30">
+    return (
+        <div className="section-gap section-gap-top__with-text top-stories bg-grey-light-three">
             <div className="container">
-                <SectionTitle title="Food &amp; Drink" btnText="All FOOD &amp; DRINK"/>
+                <SectionTitle title="Intervjui" btnText="Svi intervjui" btnUrl="/intervjui" />
                 <div className="grid-wrapper">
                     <div className="row">
-                        {foodPost.slice(0, 4).map((data) => (
-                            <div className="col-lg-3 col-md-4" key={data.slug}>
+                        {recenzijeNaslovna.slice(0, 3).map((data) => (
+                            <div className="col-lg-4 col-md-4" key={data.slug}>
                                 <PostLayoutFour data={data} />
                             </div>
                         ))}
@@ -22,7 +22,7 @@ const PostSectionSix = ({postData}) => {
             </div>
         </div>
 
-     );
+    );
 }
- 
+
 export default PostSectionSix;

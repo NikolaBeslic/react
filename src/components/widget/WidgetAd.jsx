@@ -1,19 +1,20 @@
 import Image from "next/image";
 
-const WidgetAd = ({img, height, width}) => {
-    return (
-      <div className="add-block-widget m-b-xs-40">
-        <a href="https://themeforest.net/item/blogar-blog-magazine-wordpress-theme/30583777">
-            <Image
-                src={img ?? "/images/clientbanner/clientbanner2.jpg"}
-                alt="sidebar Ad"
-                width={width ?? 320}
-                height={height ?? 287}
-                className="img-fluid"
-            />
-        </a>
-      </div>
-    );
+const WidgetAd = ({ img, height, width }) => {
+  return (
+    <div className="add-block-widget m-b-xs-40">
+      <a href="https://www.patreon.com/hocupozoriste" target="_blank" rel="noreferrer">
+        <Image
+          src={img ?? "/slike/patreon-gif-2.gif"}
+          alt="sidebar Ad"
+          width={width ?? 320}
+          height={height ?? 287}
+          className="img-fluid"
+          unoptimized
+        />
+      </a>
+    </div>
+  );
 }
- 
+
 export default WidgetAd;

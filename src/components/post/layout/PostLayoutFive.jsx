@@ -5,7 +5,10 @@ import { slugify } from "../../../utils";
 const PostLayoutFive = ({ data, index }) => {
   return (
       <div className="media post-block post-block__fluid post-block__mid flex-column m-b-xs-30 m-b-md-40 m-b-lg-40">
-          <Link href={`/post/${data.slug}`} className="align-self-center w-100">
+          <Link
+              href={`/post/${data.slug}`}
+              className="align-self-center w-100"
+              legacyBehavior>
 
               <Image  
               className="w-100 m-b-xs-30"
@@ -20,12 +23,13 @@ const PostLayoutFive = ({ data, index }) => {
           <div className="post-cat-group m-b-xs-15">
               <Link
                   href={`/category/${slugify(data.cate)}`}
-                  className={`post-cat cat-btn btn-big ${data.cate_bg ?? "bg-color-blue-one"}`}>
+                  className={`post-cat cat-btn btn-big ${data.cate_bg ?? "bg-color-blue-one"}`}
+                  legacyBehavior>
                   {data.cate}
               </Link>
           </div>
           <h3 className="axil-post-title hover-line">
-              <Link href={`/post/${data.slug}`}>
+              <Link href={`/post/${data.slug}`} legacyBehavior>
                   {data.title}
               </Link>
           </h3>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AdminNav from "../../../components/admin/header/adminnav";
+import AdminNav from "../../../components/admin/header/AdminNav";
 import AdminLayout from "../../../layouts/AdminLayout";
 import axiosClient from "../../../utils/axios";
 

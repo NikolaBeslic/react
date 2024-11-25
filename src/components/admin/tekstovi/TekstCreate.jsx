@@ -5,7 +5,6 @@ import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import Select from 'react-select';
 import { Editor } from '@tinymce/tinymce-react';
-import { ceil } from "lodash";
 
 const TekstCreate = ({ tekstid }) => {
 

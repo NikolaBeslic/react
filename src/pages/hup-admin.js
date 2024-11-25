@@ -1,5 +1,4 @@
 import AdminLogin from "../components/admin/AdminLogin";
-import AdminNav from "../components/admin/header/adminnav";
 import AdminLayout from "../layouts/AdminLayout";
 
 const HuPAdminPage = () => {

@@ -20,7 +20,7 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
       <div className="media-body">
         <div className="post-cat-group m-b-xs-10">
           <a
-            href={`${data.kategorija?.kategorija_slug}`}
+            href={`/${data.kategorija?.kategorija_slug}`}
             className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
             style={{ backgroundColor: data.kategorija.kategorija_boja }}
           >

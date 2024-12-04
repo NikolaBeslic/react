@@ -13,7 +13,7 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                 {hupkastiNaslovna.map((hupkastData) => (
                     <div className="hupkast-naslovna-wrapper" key={hupkastData.tekstid}>
                         <div className="hupkast-naslovna-photo">
-                            <a href={`hupkast/${hupkastData.slug}`}>
+                            <a href={`/hupkast/${hupkastData.slug}`}>
                                 <Image
                                     src={hupkastData.tekst_photo}
                                     alt="hupkast"
@@ -30,7 +30,9 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                         </div>
                         <div className="hupkast-naslovna-info">
                             <div className="hupkast-naslovna-title">
-                                <h3><a href={`hupkast/${hupkastData.slug}`}>{hupkastData.naslov}</a></h3>
+                                <h3>
+                                    <a href={`/hupkast/${hupkastData.slug}`}>{hupkastData.naslov}</a>
+                                </h3>
                             </div>
                             <div className="hupkast-naslovna-desc">
                                 {hupkastData.uvod}

@@ -7,6 +7,7 @@ import 'swiper/css/navigation';
 import { Navigation, Pagination } from 'swiper/modules';
 import { Card } from "react-bootstrap";
 import moment from "moment";
+import Link from "next/link";
 
 function PredstaveTwoSlider({ predstaveData }) {
 
@@ -41,7 +42,7 @@ function PredstaveTwoSlider({ predstaveData }) {
                                 <Card.Body className="predstave-naslovna-card-body">
                                     <Card.Title className="predstave-naslovna-card-title">
                                         <h5>
-                                            <a href={`/predstave/${data.predstava_slug}`} title={data.naziv_predstave}>{data.naziv_predstave}</a>
+                                            <Link href={`/predstave/${data.predstava_slug}`} title={data.naziv_predstave}>{data.naziv_predstave}</Link>
                                         </h5>
                                     </Card.Title>
                                     <Card.Text className="predstave-naslovna-card-text">

@@ -12,7 +12,7 @@ import { Spinner } from 'react-bootstrap';
 export default function PredstavaPage() {
 
     const router = useRouter();
-    const { predstavaSlug } = router.query;
+    const { slug } = router.query;
     const [predstava, setPredstava] = useState([]);
     const [premijere, setPremijere] = useState([]);
     const [sidePosts, setSidePosts] = useState([]);
@@ -22,7 +22,7 @@ export default function PredstavaPage() {
     useEffect(() => {
         const fetchSinglePredstava = async () => {
             showLoading();
-            axiosClient.get(`/predstava-single/${predstavaSlug}`)
+            axiosClient.get(`/predstava-single/${slug}`)
                 .then((res) => {
                     console.log(res.data);
                     setPredstava(res.data.data);
@@ -39,10 +39,10 @@ export default function PredstavaPage() {
 
         }
 
-        if (predstavaSlug) {
+        if (slug) {
             fetchSinglePredstava();
         }
-    }, [predstavaSlug]);
+    }, [slug]);
 
     return (
         <>

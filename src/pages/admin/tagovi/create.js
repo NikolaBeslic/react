@@ -5,7 +5,6 @@ export default function Page() {
     const { tekstid } = router.query;
     return (
         <>
-            <AdminNav />
             <h1>Dodaj tagove</h1>
         </>
     );

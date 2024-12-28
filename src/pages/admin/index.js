@@ -84,7 +84,7 @@ export default function AdminHomePage() {
                     </TableHead>
                     <TableBody>
                         {tekstovi.map((tekst) => (
-                            <TableRow>
+                            <TableRow key={tekst.tekstid}>
                                 <TableCell>{tekst.naslov}</TableCell>
                                 <TableCell>
                                     <Checkbox
@@ -127,7 +127,7 @@ export default function AdminHomePage() {
                     </TableHead>
                     <TableBody>
                         {predstave.map((pred) => (
-                            <TableRow>
+                            <TableRow key={pred.predstavaid}>
                                 <TableCell>{pred.naziv_predstave}</TableCell>
                                 <TableCell>
                                     {pred.pozorista

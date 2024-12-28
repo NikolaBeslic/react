@@ -44,7 +44,7 @@ export default function AutoriPage() {
                     <Table>
                         <TableBody>
                             {autori.map((autor) => (
-                                <TableRow>
+                                <TableRow key={autor.autorid}>
                                     <TableCell>{autor.ime_autora}</TableCell>
                                     <TableCell>
                                         <Button

@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
 import HeadMeta from "../../components/elements/HeadMeta";
-import FooterOne from "../../components/footer/FooterOne";
-import HeaderOne from "../../components/header/HeaderOne";
 import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";

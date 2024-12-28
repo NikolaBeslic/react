@@ -1,0 +1,28 @@
+.admin-toolbar {
+    justify-content: space-between;
+}
+
+#admin-root-div {
+    /* font-size: 12px; */
+}
+
+.admin-root-div span {
+    font-size: 14px;
+}
+
+.admin-root-div .MuiButtonBase-root {
+    font-size: 1.1rem;
+}
+
+.admin-root-div .MuiButtonBase-root a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.admin-root-div .MuiTableCell-root {
+    font-size: 14px;
+}
+
+.admin-root-div .MuiButtonBase-root:hover {
+    color: #fff;
+}

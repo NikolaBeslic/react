@@ -1,33 +1,46 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import { AppBar, Button, Container, Toolbar } from "@mui/material";
+import Link from "next/link";
 
 function AdminNav() {
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
-            <Container>
-                <Navbar.Brand href="#home">HuP Admin</Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#link">Vesti</Nav.Link>
-                        <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-                            <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.2">
-                                Another action
-                            </NavDropdown.Item>
-                            <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-                            <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">
-                                Separated link
-                            </NavDropdown.Item>
-                        </NavDropdown>
-                    </Nav>
-                </Navbar.Collapse>
-            </Container>
-        </Navbar>
+        <div className="admin-root-div">
+            <AppBar>
+                <Container maxWidth="lg">
+                    <Toolbar disableGutters className="admin-toolbar">
+                        <Button color="inherit">
+                            <Link href="/admin">Pocetna</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/tekstovi">Tekstovi</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/repertoari">Repertoari</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/predstave">Predstave</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/zanrovi">Zanrovi</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/tagovi">Tagovi</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/autori">Autori</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/festivali">Festivali</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/pozorista">Pozorista</Link>
+                        </Button>
+                        <Button color="inherit">
+                            <Link href="/admin/kategorije">Kategorije</Link>
+                        </Button>
+                    </Toolbar>
+                </Container>
+            </AppBar>
+        </div>
     );
 }
 

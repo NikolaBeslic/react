@@ -5,10 +5,7 @@ const StateContext = createContext({
     currentUser: {},
     userToken: null,
     isAdmin: false,
-    toast: {
-        message: null,
-        show: false,
-    },
+
     isLoading: false,
     setCurrentUser: () => { },
     setUserToken: () => { },
@@ -17,35 +14,33 @@ const StateContext = createContext({
 export const ContextProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState({});
     // const [userToken, _setUserToken] = useState(localStorage.getItem('TOKEN') || '');
-    const [toast, setToast] = useState({ message: '', show: false });
     const [isAdmin, setIsAdmin] = useState([false]);
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
+        console.log("Token");
+        console.log(token);
         setIsAdmin(false);
-        axiosClient.get('/user',
-            {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            }).then((res) => {
-                if (res.status == 200) {
-                    setCurrentUser(res.data);
-                }
-                console.log(res);
-            }).catch((error) => {
-                console.log(error);
-            })
+        if (token) {
+            axiosClient.get('/user',
+                {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then((res) => {
+                    if (res.status == 200) {
+                        setCurrentUser(res.data);
+                    }
+                    console.log(res);
+                }).catch((error) => {
+                    console.log(error);
+                })
+        }
 
     }, []);
 
-    const showToast = (message) => {
-        setToast({ message, show: true })
-        setTimeout(() => {
-            setToast({ message: '', show: false })
-        }, 5000)
-    }
+
     const showLoading = () => { setIsLoading(true) }
     const hideLoading = () => { setIsLoading(false) }
     return (
@@ -53,8 +48,6 @@ export const ContextProvider = ({ children }) => {
             value={{
                 currentUser,
                 setCurrentUser,
-                toast,
-                showToast,
                 isAdmin,
                 isLoading,
                 showLoading,

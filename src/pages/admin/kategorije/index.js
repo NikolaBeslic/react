@@ -1,10 +1,14 @@
 import { useEffect, useState } from "react";
-import AdminNav from "../../../components/admin/header/AdminNav";
-import AdminLayout from "../../../layouts/AdminLayout";
 import axiosClient from "../../../utils/axios";
+import { Button, IconButton } from "@mui/material";
+import EditNoteIcon from '@mui/icons-material/EditNote';
+import AddIcon from '@mui/icons-material/Add';
+import { useRouter } from "next/router";
 
-export default function TekstoviPage() {
+
+export default function KategorijePage() {
     const [kategorije, setKategorije] = useState([]);
+    const router = useRouter();
 
     useEffect(() => {
         axiosClient.get('/admin/kategorije').then((res) => {
@@ -14,13 +18,49 @@ export default function TekstoviPage() {
 
     }, []);
 
+    const handleEditClick = (kategorijaid) => {
+        console.log(kategorijaid);
+        router.push(`/admin/kategorije/create?kategorijaid=${kategorijaid}`);
+    }
 
     return <>
-        <AdminLayout>
-            <AdminNav></AdminNav>
-            {kategorije.map((kat) => <p key={kat.kategorijaid}>{kat.naziv_kategorije}
-                {kat.subkategorije.length > 0 ? kat.subkategorije.map((sk) => <><br />&emsp;<span> {sk.naziv_kategorije} </span></>) : ''}
-            </p>)}
-        </AdminLayout>
+
+        <h1>Kategorije</h1>
+        <Button href="/admin/kategorije/create" variant="contained" sx={{ mb: 5 }} startIcon={<AddIcon />}>Dodaj kategoriju</Button>
+
+        {kategorije.map((kategorija) =>
+            <div key={kategorija.kategorijaid} className="kategorije-list" >
+                {kategorija.naziv_kategorije}
+                <IconButton
+                    variant="outline"
+                    color="secondary"
+                    onClick={() => handleEditClick(kategorija.kategorijaid)}
+                    title="Izmeni"
+                >
+                    <EditNoteIcon />
+                </IconButton>
+
+
+                {kategorija.subkategorije.length > 0 ?
+                    kategorija.subkategorije.map((sk) =>
+                        <>
+                            <br />|--<span key={sk.kategorijaid}>  {sk.naziv_kategorije}
+                                <IconButton variant="outline"
+                                    color="secondary"
+                                    title="Izmeni"
+                                    onClick={() => handleEditClick(sk.kategorijaid)}
+                                >
+                                    <EditNoteIcon />
+                                </IconButton>
+                            </span>
+                        </>
+                    )
+                    : ''
+                }
+
+            </div >
+        )}
+
+
     </>
 }

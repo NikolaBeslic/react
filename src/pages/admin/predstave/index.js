@@ -1,14 +1,14 @@
-import { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import { Button, Paper } from "@mui/material";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
 import { useRouter } from "next/router";
-import { Button, ButtonGroup, Paper } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import moment from "moment";
 
-export default function TekstoviPage() {
-    const [posts, setPosts] = useState([]);
+export default function PredstavePage() {
+    const [predstave, setPredstave] = useState([]);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const dayInMonthComparator = (d1, d2) => {
@@ -21,13 +21,12 @@ export default function TekstoviPage() {
     useEffect(() => {
         setLoading(true);
         axiosClient
-            .get("/admin/tekstovi")
+            .get("/admin/get-all-predstave")
             .then((res) => {
-                console.log(res.data);
-                setPosts(res.data.data);
+                setPredstave(res.data);
                 setLoading(false);
             })
-            .catch((error) => console.error(error));
+            .catch((err) => console.error(err));
     }, []);
 
     function EditButton(params) {
@@ -44,85 +43,55 @@ export default function TekstoviPage() {
     }
 
     const columns = [
-        { field: "naslov", headerName: "Naslov", flex: 3 },
-        { field: "kategorija", headerName: "Kategorija", flex: 1 },
+        { field: "naziv_predstave", headerName: "Naziv predstave", flex: 1 },
+        { field: "pozorista", headerName: "Pozorista", flex: 1 },
         {
-            field: "published_at",
-            headerName: "Datum objave",
+            field: "premijera",
+            headerName: "Premijera",
             flex: 1,
             sortComparator: dayInMonthComparator,
         },
         {
             field: "edit",
             headerName: "",
-            width: 100,
+            width: 200,
             flex: 1,
             align: "center",
             renderCell: (params) => <EditButton params={params} />,
         },
     ];
-
     const rows = new Array();
-    posts.map((post) => {
+
+    predstave.map((pred) =>
         rows.push({
-            id: post.tekstid,
-            naslov: post.naslov,
-            kategorija: post.kategorija.naziv_kategorije,
-            published_at: moment(post.published_at).format("DD.MM.YYYY"),
-        });
-    });
+            id: pred.predstavaid,
+            naziv_predstave: pred.naziv_predstave,
+            pozorista: pred.pozorista
+                .map((poz) => poz.naziv_pozorista)
+                .join(", "),
+            premijera: pred.premijera
+                ? moment(pred.premijera).format("DD.MM.YYYY")
+                : "",
+        })
+    );
 
-    const onEditButtonClick = (e, params) => {
-        console.log(params);
-        router.push(`/admin/tekstovi/create?tekstid=${params.id}`);
-    };
-
-    const handleCreateClick = (kategorijaid) => {
-        router.push(`/admin/tekstovi/create?kategorijaid=${kategorijaid}`);
-    };
-
-    const handleIstakniClick = (row) => {
-        let updatedData = null;
-
-        axiosClient
-            .put(`/admin/tekstovi/istakni?tekstid=${row.tekstid}`)
-            .then((res) => {
-                updatedData = res.data;
-                const updatedRows = posts.map((post) =>
-                    post.tekstid == row.tekstid
-                        ? { ...post, ...updatedData }
-                        : post
-                );
-
-                setPosts(updatedRows);
-            })
-            .catch((error) => console.error(error));
+    const onEditButtonClick = (event, params) => {
+        event.preventDefault();
+        router.push(`/admin/predstave/create?predstavaid=${params.id}`);
     };
 
     return (
         <>
             <div className="container">
-                <ButtonGroup
+                <h1>Predstave</h1>
+                <Button
+                    href="/admin/predstave/create"
                     variant="contained"
-                    aria-label="Basic button group"
                     sx={{ mb: 5 }}
+                    startIcon={<AddIcon />}
                 >
-                    <Button
-                        onClick={() => handleCreateClick(1)}
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                    >
-                        Dodaj vest
-                    </Button>
-                    <Button
-                        onClick={() => handleCreateClick(2)}
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                    >
-                        Dodaj Intervju
-                    </Button>
-                </ButtonGroup>
-
+                    Dodaj predstavu
+                </Button>
                 <Paper sx={{ height: 800, width: "100%" }}>
                     <DataGrid
                         rows={rows}
@@ -146,7 +115,7 @@ export default function TekstoviPage() {
                         initialState={{
                             sorting: {
                                 sortModel: [
-                                    { field: "datum_objave", sort: "desc" },
+                                    { field: "premijera", sort: "desc" },
                                 ],
                             },
                             filter: {

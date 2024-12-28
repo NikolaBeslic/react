@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
-import HeaderOne from "../components/header/HeaderOne"
 import HupHome from "../components/home/HupHome";
 import axiosClient from "../utils/axios";
-import HeadMeta from "../components/elements/HeadMeta";
 import { Spinner } from 'react-bootstrap';
 import { useStateContext } from "../contexts/StateContext";
+import HuPLayout from "../layouts/HuPLayout";
 
 export default function HomeSix() {
 
@@ -25,12 +24,13 @@ export default function HomeSix() {
       }).catch(error => console.error(error));;
   }, []);
 
+
   return (
     <>
-      <HeadMeta metaTitle="Dobrodošli" />
-      <HeaderOne />
+
       {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
       <HupHome posts={posts} predstave={predstave} />
+
     </>
   );
 }

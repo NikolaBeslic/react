@@ -22,7 +22,6 @@ const HupHome = ({ posts, predstave }) => {
             <PostSectionTwo postData={posts} />
             <NajnovijePredstaveSection sectionTitle="Najnovije predstave" predstaveData={najnovijePredstave} />
             <PostSectionSix postData={posts} />
-            <FooterOne />
         </>
     )
 }

@@ -1,13 +1,15 @@
-import React from 'react';
+import React from "react";
+import AdminNav from "../components/admin/header/AdminNav";
+import { Toaster } from "react-hot-toast";
+import { Container } from "@mui/material";
 
 const AdminLayout = ({ children }) => {
     return (
-        <div>
+        <div className="admin-root-div">
             {/* Admin specific header */}
-            <header>
-                <h1>Admin Dashboard</h1>
-            </header>
-            <main>{children}</main>
+            <AdminNav />
+            <Container sx={{ pt: 10 }}>{children}</Container>
+            <Toaster position="bottom-center" reverseOrder={false} />
             <footer>Admin Footer</footer>
         </div>
     );

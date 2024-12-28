@@ -33,22 +33,24 @@ const Login = () => {
     //     }
     // };
 
-    const handleSubmit = (event) => {
+    const csrf = () => axiosClient.get('/csrf-cookie')
+
+
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        await csrf()
 
-        axiosClient.get('/csrf-cookie')
-            .then(() => {
-                axiosClient.post(`/login`, formData)
-                    .then((res) => {
-                        localStorage.setItem('token', res.data.token);
-                        axiosClient.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
-                        console.log(res.data.token);
-                        setCurrentUser(res.data.user);
-                        redirect('/admin/tekstovi');
-                    })
-                    .catch(error => console.error(error));
-            });
+        axiosClient.post(`/login`, formData)
+            .then((res) => {
+                localStorage.setItem('token', res.data.token);
+                axiosClient.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+                console.log(res.data.token);
+                setCurrentUser(res.data.user);
+                redirect('/admin/tekstovi');
+            })
+            .catch(error => console.error(error));
+
 
         // to do: send it to API
     };

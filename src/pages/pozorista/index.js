@@ -12,7 +12,6 @@ import WidgetPost from "../../components/widget/WidgetPost";
 import WidgetPremijere from "../../components/widget/WidgetPremijere";
 
 export default function PozoristaPage() {
-
     const [pozorista, setPozorista] = useState([]);
     const [sidePosts, setSidePosts] = useState([]);
     const [premijere, setPremijere] = useState([]);
@@ -20,33 +19,39 @@ export default function PozoristaPage() {
 
     useEffect(() => {
         showLoading();
-        axiosClient.get('/get-all-pozorista').then((res) => {
-            console.log(res.data);
-            setPozorista(res.data);
-            fetchSidePosts();
-            fetchPremijere();
-            hideLoading();
-        }).catch(error => console.error(error));
+        axiosClient
+            .get("/get-all-pozorista")
+            .then((res) => {
+                console.log(res.data);
+                setPozorista(res.data);
+                fetchSidePosts();
+                fetchPremijere();
+                hideLoading();
+            })
+            .catch((error) => console.error(error));
     }, []);
 
     const fetchSidePosts = () => {
-        axiosClient.get(`/get-trending-posts`)
+        axiosClient
+            .get(`/get-trending-posts`)
             .then((res) => {
-                setSidePosts(res.data)
-            }).catch(error => console.error(error));
-    }
+                setSidePosts(res.data);
+            })
+            .catch((error) => console.error(error));
+    };
 
     const fetchPremijere = () => {
-        axiosClient.get(`/get-premijere`)
+        axiosClient
+            .get(`/get-premijere`)
             .then((res) => {
-                setPremijere(res.data)
-            }).catch(error => console.error(error));
-    }
+                setPremijere(res.data);
+            })
+            .catch((error) => console.error(error));
+    };
 
     return (
         <>
             <HeadMeta metaTitle="Pozorišta" />
-            <HeaderOne />
             <Breadcrumb aPage="Predstave" />
             {/* Banner Start here  */}
             <div className="banner banner__default bg-grey-light-three">
@@ -54,7 +59,9 @@ export default function PozoristaPage() {
                     <div className="row align-items-center">
                         <div className="col-lg-12">
                             <div className="post-title-wrapper">
-                                <h2 className="m-b-xs-0 axil-post-title hover-line">Pozorišta</h2>
+                                <h2 className="m-b-xs-0 axil-post-title hover-line">
+                                    Pozorišta
+                                </h2>
                             </div>
                         </div>
                     </div>
@@ -66,10 +73,19 @@ export default function PozoristaPage() {
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="axil-content row">
-                                {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
-                                {pozorista.map((pozoriste) =>
-                                    <PozoristaLayout pozoriste={pozoriste} key={pozoriste.pozoristeid} />
+                                {isLoading && (
+                                    <Spinner
+                                        animation="border"
+                                        role="status"
+                                        className="hup-spinner"
+                                    />
                                 )}
+                                {pozorista.map((pozoriste) => (
+                                    <PozoristaLayout
+                                        pozoriste={pozoriste}
+                                        key={pozoriste.pozoristeid}
+                                    />
+                                ))}
                             </div>
                         </div>
 
@@ -81,14 +97,16 @@ export default function PozoristaPage() {
                                 <WidgetPremijere premijere={premijere} />
                                 {/* <WidgetCategory cateData={allPosts} />
                                     <WidgetPost dataPost={allPosts} /> */}
-                                <WidgetAd img="/images/clientbanner/clientbanner3.jpg" height={492} width={320} />
+                                <WidgetAd
+                                    img="/images/clientbanner/clientbanner3.jpg"
+                                    height={492}
+                                    width={320}
+                                />
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </div >
-            <FooterOne />
+            </div>
         </>
     );
 }

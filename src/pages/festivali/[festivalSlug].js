@@ -16,12 +16,14 @@ export default function FestivaliPage() {
     const [festival, setFestival] = useState([]);
     useEffect(() => {
         const fetchSingleFestival = async () => {
-            axiosClient.get(`/festival-single/${router.query.festivalSlug}`)
+            axiosClient
+                .get(`/festival-single/${router.query.festivalSlug}`)
                 .then((res) => {
                     console.log(res.data);
                     setFestival(res.data);
-                }).catch(error => console.error(error));
-        }
+                })
+                .catch((error) => console.error(error));
+        };
         if (festivalSlug) {
             fetchSingleFestival();
         }
@@ -30,13 +32,8 @@ export default function FestivaliPage() {
     return (
         <>
             <HeadMeta metaTitle={festival.naziv_festivala} />
-            <HeaderOne />
             <Breadcrumb bCat="Festivali" aPage={festival.naziv_festivala} />
-            <PostFormatFestival postData={festival} />
-            {/* Banner Start here  */}
-
-            <FooterOne />
+            <PostFormatFestival postData={festival} />{" "}
         </>
     );
-
 }

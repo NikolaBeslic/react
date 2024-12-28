@@ -1,16 +1,15 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
-import Breadcrumb from "../../components/common/Breadcrumb"
-import HeadMeta from '../../components/elements/HeadMeta';
-import HeaderOne from '../../components/header/HeaderOne';
-import FooterOne from '../../components/footer/FooterOne';
-import axiosClient from '../../utils/axios';
-import Predstava from '../../components/predstave/Predstava';
-import { useStateContext } from '../../contexts/StateContext';
-import { Spinner } from 'react-bootstrap';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Breadcrumb from "../../components/common/Breadcrumb";
+import HeadMeta from "../../components/elements/HeadMeta";
+import HeaderOne from "../../components/header/HeaderOne";
+import FooterOne from "../../components/footer/FooterOne";
+import axiosClient from "../../utils/axios";
+import Predstava from "../../components/predstave/Predstava";
+import { useStateContext } from "../../contexts/StateContext";
+import { Spinner } from "react-bootstrap";
 
 export default function PredstavaPage() {
-
     const router = useRouter();
     const { slug } = router.query;
     const [predstava, setPredstava] = useState([]);
@@ -18,26 +17,30 @@ export default function PredstavaPage() {
     const [sidePosts, setSidePosts] = useState([]);
     const { isLoading, showLoading, hideLoading } = useStateContext();
 
-
     useEffect(() => {
         const fetchSinglePredstava = async () => {
             showLoading();
-            axiosClient.get(`/predstava-single/${slug}`)
+            axiosClient
+                .get(`/predstava-single/${slug}`)
                 .then((res) => {
                     console.log(res.data);
                     setPredstava(res.data.data);
                     hideLoading();
-                }).catch(error => console.error(error));
-            axiosClient.get(`/get-trending-posts`)
+                })
+                .catch((error) => console.error(error));
+            axiosClient
+                .get(`/get-trending-posts`)
                 .then((res) => {
-                    setSidePosts(res.data)
-                }).catch(error => console.error(error));
-            axiosClient.get(`/get-premijere`)
+                    setSidePosts(res.data);
+                })
+                .catch((error) => console.error(error));
+            axiosClient
+                .get(`/get-premijere`)
                 .then((res) => {
-                    setPremijere(res.data)
-                }).catch(error => console.error(error));
-
-        }
+                    setPremijere(res.data);
+                })
+                .catch((error) => console.error(error));
+        };
 
         if (slug) {
             fetchSinglePredstava();
@@ -47,7 +50,6 @@ export default function PredstavaPage() {
     return (
         <>
             <HeadMeta metaTitle={predstava.naziv_predstave} />
-            <HeaderOne />
             <Breadcrumb bCat="Predstave" aPage={predstava.naziv_predstave} />
             {/* Banner Start here  */}
             {/* <div className="banner banner__default bg-grey-light-three">
@@ -62,10 +64,18 @@ export default function PredstavaPage() {
                 </div>
             </div> */}
             {/* Banner End here  */}
-            {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
-            <Predstava data={predstava} premijere={premijere} sidePosts={sidePosts} />
-            <FooterOne />
+            {isLoading && (
+                <Spinner
+                    animation="border"
+                    role="status"
+                    className="hup-spinner"
+                />
+            )}
+            <Predstava
+                data={predstava}
+                premijere={premijere}
+                sidePosts={sidePosts}
+            />
         </>
     );
-
 }

@@ -8,26 +8,29 @@ import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 
 export default function FestivaliPage() {
-
     const { isLoading, showLoading, hideLoading } = useStateContext();
     const [festivali, setFestivali] = useState([]);
     useEffect(() => {
-        axiosClient.get('/get-festivali').then((res) => {
-            console.log(res.data);
-            setFestivali(res.data);
-        }).catch(error => console.error(error));
+        axiosClient
+            .get("/get-festivali")
+            .then((res) => {
+                console.log(res.data);
+                setFestivali(res.data);
+            })
+            .catch((error) => console.error(error));
     }, []);
 
     return (
         <>
             <HeadMeta metaTitle="Festivali" />
-            <HeaderOne />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">
                         <div className="col-lg-12">
                             <div className="post-title-wrapper">
-                                <h2 className="m-b-xs-0 axil-post-title hover-line">Festivali</h2>
+                                <h2 className="m-b-xs-0 axil-post-title hover-line">
+                                    Festivali
+                                </h2>
                             </div>
                         </div>
                     </div>
@@ -35,19 +38,29 @@ export default function FestivaliPage() {
             </div>
             <div className="random-posts section-gap">
                 <div className="container">
-                    {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
+                    {isLoading && (
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            className="hup-spinner"
+                        />
+                    )}
                     <div className="row">
                         <div className="col-lg-8">
                             <div className="axil-content row">
-                                {festivali.map((festival) =>
-                                    <FestivaliLayout data={festival} pClass="" videoIcon={false} key={festival.festivalid} />
-                                )}
+                                {festivali.map((festival) => (
+                                    <FestivaliLayout
+                                        data={festival}
+                                        pClass=""
+                                        videoIcon={false}
+                                        key={festival.festivalid}
+                                    />
+                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <FooterOne />
         </>
     );
 }

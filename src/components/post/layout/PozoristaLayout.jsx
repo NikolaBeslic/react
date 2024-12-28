@@ -5,7 +5,15 @@ const PozoristaLayout = ({ pozoriste }) => {
         <div className="pozorista-layout-wrapper col-lg-3 col-md-4 col-xs-6">
             <div className="pozorista-layout-logo">
                 <a href={`/pozorista/${pozoriste.pozoriste_slug}`}>
-                    <Image src={pozoriste.logo} alt={pozoriste.naziv_pozorista} height={100} width={120} objectFit="contain" />
+                    {pozoriste.logo && (
+                        <Image
+                            src={pozoriste.logo}
+                            alt={pozoriste.naziv_pozorista}
+                            height={100}
+                            width={120}
+                            objectFit="contain"
+                        />
+                    )}
                 </a>
             </div>
             <div className="pozorista-layout-info">
@@ -14,7 +22,7 @@ const PozoristaLayout = ({ pozoriste }) => {
                 </a>
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default PozoristaLayout;

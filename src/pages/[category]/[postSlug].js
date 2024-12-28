@@ -1,15 +1,15 @@
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react';
-import Breadcrumb from "../../components/common/Breadcrumb"
-import PostFormatStandard from '../../components/post/post-format/PostFormatStandard';
-import HeadMeta from '../../components/elements/HeadMeta';
-import HeaderOne from '../../components/header/HeaderOne';
-import FooterOne from '../../components/footer/FooterOne';
-import axiosClient from '../../utils/axios';
-import HuPTekstNoSideBar from '../../components/post/post-format/HuPTekstNoSideBar';
-import { useStateContext } from '../../contexts/StateContext';
-import Spinner from 'react-bootstrap/Spinner';
-import PostFormatHupikon from '../../components/post/post-format/PostFormatHupikon';
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import Breadcrumb from "../../components/common/Breadcrumb";
+import PostFormatStandard from "../../components/post/post-format/PostFormatStandard";
+import HeadMeta from "../../components/elements/HeadMeta";
+import HeaderOne from "../../components/header/HeaderOne";
+import FooterOne from "../../components/footer/FooterOne";
+import axiosClient from "../../utils/axios";
+import HuPTekstNoSideBar from "../../components/post/post-format/HuPTekstNoSideBar";
+import { useStateContext } from "../../contexts/StateContext";
+import Spinner from "react-bootstrap/Spinner";
+import PostFormatHupikon from "../../components/post/post-format/PostFormatHupikon";
 
 export default function Page() {
     const router = useRouter();
@@ -28,45 +28,53 @@ export default function Page() {
         fetchPremijere();
         const fetchSingleText = async () => {
             showLoading();
-            axiosClient.get(`/get-single-text/${router.query.postSlug}`)
+            axiosClient
+                .get(`/get-single-text/${router.query.postSlug}`)
                 .then((res) => {
                     console.log(res.data);
                     setPost(res.data);
                     hideLoading();
-                    axiosClient.get(`/get-related-posts/${res.data?.tekstid}`)
+                    axiosClient
+                        .get(`/get-related-posts/${res.data?.tekstid}`)
                         .then((res2) => {
-                            console.log("RPPP")
+                            console.log("RPPP");
                             console.log(res2.data);
                             setRelatedPosts(res2.data);
-                        }).catch(error2 => console.error(error2));
+                        })
+                        .catch((error2) => console.error(error2));
                 })
-                .catch(error => console.error(error));
-        }
+                .catch((error) => console.error(error));
+        };
         if (postSlug) {
             fetchSingleText();
         }
     }, [postSlug]);
 
     const fetchSidePosts = () => {
-        axiosClient.get(`/get-trending-posts`)
+        axiosClient
+            .get(`/get-trending-posts`)
             .then((res) => {
-                setSidePosts(res.data)
-            }).catch(error => console.error(error));
-    }
+                setSidePosts(res.data);
+            })
+            .catch((error) => console.error(error));
+    };
 
     const fetchPremijere = () => {
-        axiosClient.get(`/get-premijere`)
+        axiosClient
+            .get(`/get-premijere`)
             .then((res) => {
-                setPremijere(res.data)
-            }).catch(error => console.error(error));
-    }
-
+                setPremijere(res.data);
+            })
+            .catch((error) => console.error(error));
+    };
 
     return (
         <>
             <HeadMeta metaTitle={post.naslov} />
-            <HeaderOne />
-            <Breadcrumb bCat={post.kategorija?.kategorija_slug} aPage={post.naslov} />
+            <Breadcrumb
+                bCat={post.kategorija?.kategorija_slug}
+                aPage={post.naslov}
+            />
             {/* Banner Start here  */}
             {/* <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
@@ -80,14 +88,28 @@ export default function Page() {
                 </div>
             </div> */}
             {/* Banner End here  */}
-            {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
-            {(post.kategorijaid == 5) ?
-                <PostFormatHupikon postData={post} relatedPosts={relatedPosts} sidePosts={sidePosts} premijere={premijere} />
-                :
-                <PostFormatStandard postData={post} relatedPosts={relatedPosts} sidePosts={sidePosts} premijere={premijere} />
-            }
-            <FooterOne />
+            {isLoading && (
+                <Spinner
+                    animation="border"
+                    role="status"
+                    className="hup-spinner"
+                />
+            )}
+            {post.kategorijaid == 5 ? (
+                <PostFormatHupikon
+                    postData={post}
+                    relatedPosts={relatedPosts}
+                    sidePosts={sidePosts}
+                    premijere={premijere}
+                />
+            ) : (
+                <PostFormatStandard
+                    postData={post}
+                    relatedPosts={relatedPosts}
+                    sidePosts={sidePosts}
+                    premijere={premijere}
+                />
+            )}
         </>
     );
-
 }

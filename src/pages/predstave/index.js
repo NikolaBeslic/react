@@ -9,12 +9,11 @@ import { Spinner } from "react-bootstrap";
 import WidgetAd from "../../components/widget/WidgetAd";
 import WidgetSocialShare from "../../components/widget/WidgetSocialShare";
 import PredstaveLayout from "../../components/post/layout/PredstaveLayout";
-import Select from 'react-select';
+import Select from "react-select";
 import WidgetPost from "../../components/widget/WidgetPost";
 import WidgetPremijere from "../../components/widget/WidgetPremijere";
 
 export default function PredstavePage() {
-
     const [predstave, setPredstave] = useState([]);
     const [dbGradovi, setDbGradovi] = useState([]);
     const [dbZanrovi, setDbZanrovi] = useState([]);
@@ -23,7 +22,7 @@ export default function PredstavePage() {
     const [filteredPredstave, setFilteredPredstave] = useState(predstave);
     const [selectedZanrovi, setSelectedZanrovi] = useState([]);
     const [selectedGradovi, setSelectedGradovi] = useState([]);
-    const [sortBy, setSortBy] = useState('');
+    const [sortBy, setSortBy] = useState("");
 
     const [visibleCount, setVisibleCount] = useState(12);
     const visiblePredstave = filteredPredstave.slice(0, visibleCount);
@@ -33,13 +32,17 @@ export default function PredstavePage() {
 
     const handleLoadMorePredstave = () => {
         setVisibleCount(visibleCount + 6);
-    }
+    };
 
-    const sortOptions = [{ value: "naziv", label: "Nazivu" }, { value: "premijera", label: "Datumu premijere" }];
+    const sortOptions = [
+        { value: "naziv", label: "Nazivu" },
+        { value: "premijera", label: "Datumu premijere" },
+    ];
 
     useEffect(() => {
         showLoading();
-        axiosClient.get('/get-predstave')
+        axiosClient
+            .get("/get-predstave")
             .then((res) => {
                 console.log(res.data);
                 setPredstave(res.data);
@@ -47,19 +50,32 @@ export default function PredstavePage() {
                 fetchSidePosts();
                 fetchPremijere();
                 hideLoading();
-            }).catch(error => console.error(error));
-        axiosClient.get('/get-gradovi')
+            })
+            .catch((error) => console.error(error));
+        axiosClient
+            .get("/get-gradovi")
             .then((res) => {
                 console.log(res.data);
-                setDbGradovi(res.data.map(grad => ({ value: grad.gradid, label: grad.naziv_grada })));
-            }).catch(error => console.error(error));
-        axiosClient.get('/get-zanrovi')
-            .then((res) => {
-                console.log(res.data);
-                setDbZanrovi((res.data.map(zanr => ({ value: zanr.zanrid, label: zanr.naziv_zanra })))
+                setDbGradovi(
+                    res.data.map((grad) => ({
+                        value: grad.gradid,
+                        label: grad.naziv_grada,
+                    }))
                 );
-            }).catch(error => console.error(error));
-
+            })
+            .catch((error) => console.error(error));
+        axiosClient
+            .get("/get-zanrovi")
+            .then((res) => {
+                console.log(res.data);
+                setDbZanrovi(
+                    res.data.map((zanr) => ({
+                        value: zanr.zanrid,
+                        label: zanr.naziv_zanra,
+                    }))
+                );
+            })
+            .catch((error) => console.error(error));
     }, []);
 
     useEffect(() => {
@@ -69,23 +85,29 @@ export default function PredstavePage() {
         console.log(selectedZanrovi);
         if (selectedZanrovi.length > 0) {
             console.log("FIlter by zanr..");
-            filteredPredstave = filteredPredstave.filter(predstava =>
-                predstava.zanrovi.some(zanr => selectedZanrovi.includes(zanr.zanrid))
+            filteredPredstave = filteredPredstave.filter((predstava) =>
+                predstava.zanrovi.some((zanr) =>
+                    selectedZanrovi.includes(zanr.zanrid)
+                )
             );
         }
 
         if (selectedGradovi.length > 0) {
             console.log("Filter by grad");
             console.log(selectedGradovi);
-            filteredPredstave = filteredPredstave.filter(predstava =>
-                predstava.pozorista.some(poz => selectedGradovi.includes(poz.grad.gradid))
-            )
+            filteredPredstave = filteredPredstave.filter((predstava) =>
+                predstava.pozorista.some((poz) =>
+                    selectedGradovi.includes(poz.grad.gradid)
+                )
+            );
         }
 
-        if (sortBy === 'premijera') {
-            filteredPredstave = [...filteredPredstave].sort((a, b) => a.premijera - b.premijera);
-        } else if (sortBy === 'naziv') {
-            console.log("sorting by naziv")
+        if (sortBy === "premijera") {
+            filteredPredstave = [...filteredPredstave].sort(
+                (a, b) => a.premijera - b.premijera
+            );
+        } else if (sortBy === "naziv") {
+            console.log("sorting by naziv");
             filteredPredstave = [...filteredPredstave].sort((a, b) => {
                 const nameA = a.naziv_predstave.toUpperCase();
                 const nameB = b.naziv_predstave.toUpperCase();
@@ -93,15 +115,13 @@ export default function PredstavePage() {
                 if (nameA < nameB) return -1;
                 if (nameB > nameA) return 1;
                 return 0;
-
             });
         }
 
-        console.log("FP")
+        console.log("FP");
         console.log(filteredPredstave);
         setFilteredPredstave(filteredPredstave);
         hideLoading();
-
     }, [selectedZanrovi, selectedGradovi, sortBy]);
 
     const handleZanroviChange = useCallback((e) => {
@@ -119,23 +139,26 @@ export default function PredstavePage() {
     });
 
     const fetchSidePosts = () => {
-        axiosClient.get(`/get-trending-posts`)
+        axiosClient
+            .get(`/get-trending-posts`)
             .then((res) => {
-                setSidePosts(res.data)
-            }).catch(error => console.error(error));
-    }
+                setSidePosts(res.data);
+            })
+            .catch((error) => console.error(error));
+    };
 
     const fetchPremijere = () => {
-        axiosClient.get(`/get-premijere`)
+        axiosClient
+            .get(`/get-premijere`)
             .then((res) => {
-                setPremijere(res.data)
-            }).catch(error => console.error(error));
-    }
+                setPremijere(res.data);
+            })
+            .catch((error) => console.error(error));
+    };
 
     return (
         <>
             <HeadMeta metaTitle="Predstave" />
-            <HeaderOne />
             {/* <PredstaveSlider slidePost={predstave} /> */}
             <Breadcrumb aPage="Predstave" />
             {/* Banner Start here  */}
@@ -144,7 +167,9 @@ export default function PredstavePage() {
                     <div className="row align-items-center">
                         <div className="col-lg-12">
                             <div className="post-title-wrapper">
-                                <h2 className="m-b-xs-0 axil-post-title hover-line">Predstave</h2>
+                                <h2 className="m-b-xs-0 axil-post-title hover-line">
+                                    Predstave
+                                </h2>
                             </div>
                         </div>
                     </div>
@@ -153,31 +178,65 @@ export default function PredstavePage() {
             {/* Banner End here  */}
             <div className="random-posts section-gap">
                 <div className="container">
-
                     <div className="row">
                         <div className="col-lg-8">
-                            {isLoading && <Spinner animation="border" role="status" className='hup-spinner' />}
+                            {isLoading && (
+                                <Spinner
+                                    animation="border"
+                                    role="status"
+                                    className="hup-spinner"
+                                />
+                            )}
                             <div className="m-b-xs-20">
-                                <Select instanceId="znr" name='zanrovi' placeholder='Izaberi zanrove' options={dbZanrovi} isMulti={true} onChange={(e) => handleZanroviChange(e)} />
+                                <Select
+                                    instanceId="znr"
+                                    name="zanrovi"
+                                    placeholder="Izaberi zanrove"
+                                    options={dbZanrovi}
+                                    isMulti={true}
+                                    onChange={(e) => handleZanroviChange(e)}
+                                />
                             </div>
 
                             <div className="m-b-xs-20">
-                                <Select instanceId="grd" name='gradovi' placeholder='Izaberi gradove' options={dbGradovi} isMulti={true} onChange={(e) => handleGradoviChange(e)} />
+                                <Select
+                                    instanceId="grd"
+                                    name="gradovi"
+                                    placeholder="Izaberi gradove"
+                                    options={dbGradovi}
+                                    isMulti={true}
+                                    onChange={(e) => handleGradoviChange(e)}
+                                />
                             </div>
 
                             <div className="m-b-xs-20">
-                                <Select instanceId='srt' name='sortBy' placeholder='Sortiraj po' options={sortOptions} onChange={(e) => handleSort(e)} />
+                                <Select
+                                    instanceId="srt"
+                                    name="sortBy"
+                                    placeholder="Sortiraj po"
+                                    options={sortOptions}
+                                    onChange={(e) => handleSort(e)}
+                                />
                             </div>
 
                             <div className="axil-content row">
-
-                                {visiblePredstave.map(pred =>
-                                    <div className="col-lg-6" key={pred.predstavaid}>
-                                        <PredstaveLayout data={pred} pClass="" key={`pred${pred.predstavaid}`} showPozoriste={true} />
+                                {visiblePredstave.map((pred) => (
+                                    <div
+                                        className="col-lg-6"
+                                        key={pred.predstavaid}
+                                    >
+                                        <PredstaveLayout
+                                            data={pred}
+                                            pClass=""
+                                            key={`pred${pred.predstavaid}`}
+                                            showPozoriste={true}
+                                        />
                                     </div>
-                                )}
+                                ))}
                                 {visibleCount < filteredPredstave?.length && (
-                                    <button onClick={handleLoadMorePredstave}>Load More</button>
+                                    <button onClick={handleLoadMorePredstave}>
+                                        Load More
+                                    </button>
                                 )}
                             </div>
                         </div>
@@ -189,14 +248,16 @@ export default function PredstavePage() {
                                 <WidgetPremijere premijere={premijere} />
                                 {/* <WidgetCategory cateData={allPosts} />
                                 <WidgetPost dataPost={allPosts} /> */}
-                                <WidgetAd img="/images/clientbanner/clientbanner3.jpg" height={492} width={320} />
+                                <WidgetAd
+                                    img="/images/clientbanner/clientbanner3.jpg"
+                                    height={492}
+                                    width={320}
+                                />
                             </div>
                         </div>
                     </div>
-
                 </div>
-            </div >
-            <FooterOne />
+            </div>
         </>
     );
 }

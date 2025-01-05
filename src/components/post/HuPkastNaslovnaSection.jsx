@@ -2,16 +2,22 @@ import SectionTitle from "../elements/SectionTitle";
 import Image from "next/legacy/image";
 
 const HuPkastNaslovnaSection = ({ postData }) => {
-
-    const hupkastiNaslovna = postData.filter(post => post.kategorijaid == 11);
+    const hupkastiNaslovna = postData.filter((post) => post.kategorijaid == 11);
     console.log(hupkastiNaslovna);
     return (
         <div className="section-gap section-gap-top__with-text top-stories bg-grey-light-three">
             <div className="container">
-                <SectionTitle title="HuPkast" btnText="Sve epizode" btnUrl="/hupkast" />
+                <SectionTitle
+                    title="HuPkast"
+                    btnText="Sve epizode"
+                    btnUrl="/hupkast"
+                />
 
                 {hupkastiNaslovna.map((hupkastData) => (
-                    <div className="hupkast-naslovna-wrapper" key={hupkastData.tekstid}>
+                    <div
+                        className="hupkast-naslovna-wrapper"
+                        key={hupkastData.tekstid}
+                    >
                         <div className="hupkast-naslovna-photo">
                             <a href={`/hupkast/${hupkastData.slug}`}>
                                 <Image
@@ -31,7 +37,9 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                         <div className="hupkast-naslovna-info">
                             <div className="hupkast-naslovna-title">
                                 <h3>
-                                    <a href={`/hupkast/${hupkastData.slug}`}>{hupkastData.naslov}</a>
+                                    <a href={`/hupkast/${hupkastData.slug}`}>
+                                        {hupkastData.naslov}
+                                    </a>
                                 </h3>
                             </div>
                             <div className="hupkast-naslovna-desc">
@@ -42,8 +50,7 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                 ))}
             </div>
         </div>
-    )
-
-}
+    );
+};
 
 export default HuPkastNaslovnaSection;

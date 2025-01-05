@@ -10984,5 +10984,30 @@ address .tel i {
 }
 
 .search-result-title {
-    font-size: 1.2em;
+    font-size: 1.3em;
+}
+
+.sidemenu-horizontal-list {
+    display: flex;
+    font-family: var(--secondary-font);
+}
+
+.sidemenu-horizontal-list li {
+    flex: auto;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    color: var(--grey-dark-eight)
+}
+
+.side-nav-content hr {
+    color: #000;
+}
+
+.side-navigation {
+    padding-top: 20px !important;
+    border-top: 1px solid var(--color-blue-grey-one);
+}
+
+.side-navigation li a {
+    font-size: 1.7em;
 }

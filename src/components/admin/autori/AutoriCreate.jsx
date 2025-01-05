@@ -1,6 +1,8 @@
 import {
     Button,
     FormControl,
+    FormLabel,
+    Input,
     InputLabel,
     MenuItem,
     Select,
@@ -14,6 +16,7 @@ import { toast } from "react-hot-toast";
 
 const AutoriCreate = ({ autorid }) => {
     const [gradovi, setGradovi] = useState([]);
+    const [autorImage, setAutorImage] = useState(null);
     const [formData, setFormData] = useState({
         ime_autora: "",
         autor_slug: "",
@@ -21,6 +24,7 @@ const AutoriCreate = ({ autorid }) => {
         url_slike: "t",
         biografija: "",
         gradid: 1,
+        slika: null,
     });
 
     useEffect(() => {
@@ -59,8 +63,14 @@ const AutoriCreate = ({ autorid }) => {
         setFormData({ ...formData, gradid: event.target.value });
     };
 
+    const handleFile = (event) => {
+        console.log(event.target.files[0]);
+        setFormData({ ...formData, slika: event.target.files[0] });
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
+        console.log(formData);
         if (formData.autorid) {
             axiosClient
                 .put("/admin/update-autor", formData)
@@ -74,7 +84,11 @@ const AutoriCreate = ({ autorid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-autor", formData)
+                .post("/admin/create-autor", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     toast.success("Uspesno dodat novi autor");
@@ -103,7 +117,7 @@ const AutoriCreate = ({ autorid }) => {
                 component="form"
                 direction="column"
                 spacing={2}
-                alignItems="center"
+                alignItems="left"
                 sx={{ width: 500 }}
                 marginX={"auto"}
             >
@@ -165,10 +179,20 @@ const AutoriCreate = ({ autorid }) => {
                 </FormControl>
 
                 <FormControl>
+                    <FormLabel>Foto</FormLabel>
+                    <Input
+                        type="file"
+                        onChange={handleFile}
+                        accept="image/png, image/gif, image/jpeg"
+                    />
+                </FormControl>
+
+                <FormControl>
                     <Button
-                        size="large"
+                        size="small"
                         type="submit"
                         variant="contained"
+                        sx={{ width: 100, alignSelf: "center" }}
                         onClick={handleSubmit}
                     >
                         Submit

@@ -18,6 +18,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         pozorista: [],
         tagovi: [],
         festivalid: null,
+        tekst_photo: "/slike/autori/hocupozoriste_qr.png",
         // Add more fields as needed
     });
 
@@ -219,6 +220,29 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         setDbTagovi(selectedTagovi);
     };
 
+    const handleImageUpload = async (blobInfo) => {
+        let formData = new FormData();
+        formData.append("kategorijaid", kategorijaid);
+        formData.append("slika", blobInfo.blob(), blobInfo.filename());
+        try {
+            console.log(formData);
+            const res = await axiosClient.post("/admin/uploadImage", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            console.log(res);
+
+            if (res.data && res.data.location) {
+                return res.data.location;
+            } else {
+                throw new Error("Unable to upload image");
+            }
+        } catch (err) {
+            throw new Error("Unable to upload image 2");
+        }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formData);
@@ -232,10 +256,10 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin-create-tekst", formData)
+                .post("/admin/create-tekst", formData)
                 .then((res) => {
                     console.log(res);
-                    toast.succes("Uspesno dodat tekst");
+                    toast.success("Uspesno dodat tekst");
                 })
                 .catch((error) => {
                     console.error(error);
@@ -327,23 +351,16 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                                     height: 700,
                                     menubar: false,
                                     automatic_uploads: true,
-                                    external_plugins: {
-                                        filemanager:
-                                            "https://hocupozoriste.rs/filemanager/plugin.min.js",
-                                    },
-                                    plugins:
-                                        "code image link lists file-manager",
+                                    plugins: "code image link lists",
                                     toolbar1:
                                         "code | undo redo | styles fontsize | numlist bullist | blockquote  | paste pastetext | selectall",
                                     toolbar2:
-                                        "formatSelect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | indent outdent | link unlink | forecolor backcolor hilitecolor | image  | removeformat Flmngr,Upload,ImgPen",
-                                    Flmngr: {
-                                        apiKey: "8vVOggwO",
-                                        urlFileManager:
-                                            "http://localhost:8000/api/flmngr",
-                                        urlFiles:
-                                            "http://localhost:8000/api/flmngr", // demo server
-                                    },
+                                        "formatSelect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | indent outdent | link unlink | forecolor backcolor hilitecolor | image  | removeformat ",
+                                    images_upload_url:
+                                        "http://127.0.0.1:8000/admin/uploadImage",
+                                    automatic_uploads: true,
+                                    images_reuse_filename: true,
+                                    images_upload_handler: handleImageUpload,
                                 }}
                             />
                         </Form.Group>

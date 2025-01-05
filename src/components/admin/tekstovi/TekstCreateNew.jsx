@@ -4,11 +4,17 @@ import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
-import { Autocomplete, Button, FormControl, TextField } from "@mui/material";
+import {
+    Autocomplete,
+    Button,
+    FormControl,
+    FormLabel,
+    TextField,
+} from "@mui/material";
 
 const TekstCreateNew = ({ tekstid, kategorijaid }) => {
     const [formData, setFormData] = useState({
-        kategorijaid: kategorijaid,
+        kategorijaid: 0,
         naslov: "",
         slug: "",
         uvod: "",
@@ -18,7 +24,8 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         pozorista: [],
         tagovi: [],
         festivalid: null,
-        tekst_photo: "/slike/autori/hocupozoriste_qr.png",
+        tekst_photo: "",
+        slika: null,
         // Add more fields as needed
     });
 
@@ -96,6 +103,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
     }, [tekstid]);
 
     useEffect(() => {
+        setFormData({ ...formData, kategorijaid: kategorijaid });
         axiosClient
             .get("/get-autori")
             .then((res) => {
@@ -166,6 +174,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         setFormData({ ...formData, [name]: value });
     };
 
+    const handleTekstPhoto = (event) => {
+        console.log(event.target.files[0]);
+        setFormData({ ...formData, slika: event.target.files[0] });
+    };
+
     const editorUvod = useRef(null);
     const handleEditorUvodChange = (content, editorId) => {
         setFormData({ ...formData, uvod: content });
@@ -220,17 +233,22 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         setDbTagovi(selectedTagovi);
     };
 
+    /* This one is for tiny mce */
     const handleImageUpload = async (blobInfo) => {
-        let formData = new FormData();
-        formData.append("kategorijaid", kategorijaid);
-        formData.append("slika", blobInfo.blob(), blobInfo.filename());
+        let formDataTinyMce = new FormData();
+        formDataTinyMce.append("kategorijaid", kategorijaid);
+        formDataTinyMce.append("slika", blobInfo.blob(), blobInfo.filename());
         try {
-            console.log(formData);
-            const res = await axiosClient.post("/admin/uploadImage", formData, {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            });
+            console.log(formDataTinyMce);
+            const res = await axiosClient.post(
+                "/admin/uploadImage",
+                formDataTinyMce,
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                }
+            );
             console.log(res);
 
             if (res.data && res.data.location) {
@@ -256,7 +274,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-tekst", formData)
+                .post("/admin/create-tekst", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     toast.success("Uspesno dodat tekst");
@@ -309,6 +331,14 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                                 value={formData.slug}
                                 onChange={handleChange}
                                 fullWidth
+                            />
+                        </FormControl>
+                        <FormControl fullWidth sx={{ mb: 3 }}>
+                            <FormLabel>Tekst foto</FormLabel>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={handleTekstPhoto}
                             />
                         </FormControl>
 

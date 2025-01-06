@@ -47,6 +47,10 @@ export default function PredstavaPage() {
         }
     }, [slug]);
 
+    const handleDataUpdate = (updatedData) => {
+        setPredstava(updatedData);
+    };
+
     return (
         <>
             <HeadMeta metaTitle={predstava.naziv_predstave} />
@@ -75,6 +79,7 @@ export default function PredstavaPage() {
                 data={predstava}
                 premijere={premijere}
                 sidePosts={sidePosts}
+                updateData={handleDataUpdate}
             />
         </>
     );

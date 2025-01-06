@@ -1,3 +1,4 @@
+import Image from "next/legacy/image";
 import WidgetAd from "../../widget/WidgetAd";
 import WidgetInstagram from "../../widget/WidgetInstagram";
 import WidgetNewsletter from "../../widget/WidgetNewsletter";
@@ -127,9 +128,26 @@ const PostFormatStandard = ({
                                             <h3>Povezana pozorista</h3>
                                         </div>
                                         {postData.pozorista.map((poz) => (
-                                            <span key={poz.pozoristeid}>
-                                                {poz.naziv_pozorista}
-                                            </span>
+                                            <div className="povezano-pozoriste">
+                                                <a
+                                                    href={`/pozorista/${poz.pozoriste_slug}`}
+                                                >
+                                                    <Image
+                                                        src={poz.url_logo}
+                                                        alt={poz.pozoriste_slug}
+                                                        height={80}
+                                                        width={100}
+                                                        objectFit="cover"
+                                                    />
+                                                </a>
+                                                <span key={poz.pozoristeid}>
+                                                    <a
+                                                        href={`/pozorista/${poz.pozoriste_slug}`}
+                                                    >
+                                                        {poz.naziv_pozorista}
+                                                    </a>
+                                                </span>
+                                            </div>
                                         ))}
                                     </>
                                 )}

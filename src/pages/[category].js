@@ -28,11 +28,13 @@ export default function Page() {
     useEffect(() => {
         fetchSidePosts();
         fetchPremijere();
-        if (kategorija_slug != category.kategorija_slug) {
-            setCategoryPosts([]);
-            fetchCategoryPosts(kategorija_slug, 1);
-        } else {
-            fetchCategoryPosts(kategorija_slug, currentPage);
+        if (router.isReady) {
+            if (kategorija_slug != category.kategorija_slug) {
+                setCategoryPosts([]);
+                fetchCategoryPosts(kategorija_slug, 1);
+            } else {
+                fetchCategoryPosts(kategorija_slug, currentPage);
+            }
         }
     }, [kategorija_slug, currentPage]);
 
@@ -41,12 +43,14 @@ export default function Page() {
         axiosClient
             .get(`/get-category-posts/${kategorija_slug}?page=${page}`)
             .then((res) => {
-                setCategory(res.data.data);
+                console.log(res.data);
+                setCategory(res.data);
+
                 setCategoryPosts((prevCategoryPosts) => [
                     ...prevCategoryPosts,
-                    ...res.data.data.tekstovi.data,
+                    ...res.data.tekstovi.data,
                 ]);
-                setTotalPages(res.data.data.tekstovi?.last_page);
+                setTotalPages(res.data.tekstovi?.last_page);
                 hideLoading();
             })
             .catch((error) => console.error(error));

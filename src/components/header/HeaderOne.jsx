@@ -246,7 +246,7 @@ const HeaderOne = () => {
                                             href="/repertoari-v2"
                                             legacyBehavior
                                         >
-                                            Repertoari v2
+                                            Repertoari
                                         </Link>
                                     </li>
                                     <li key="106">
@@ -257,6 +257,11 @@ const HeaderOne = () => {
                                     <li key="104">
                                         <Link href="/predstave" legacyBehavior>
                                             Predstave
+                                        </Link>
+                                    </li>
+                                    <li key="111">
+                                        <Link href="/blog" legacyBehavior>
+                                            Blog
                                         </Link>
                                     </li>
                                     {/* <li key="105">

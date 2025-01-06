@@ -2,12 +2,7 @@ import "bootstrap/dist/css/bootstrap.css";
 import "../styles/admin.css";
 import "../styles/style.css";
 import Script from "next/script";
-import {
-    ContextProvider,
-    useStateContext,
-    showLoading,
-    hideLoading,
-} from "../contexts/StateContext";
+import { ContextProvider, useStateContext } from "../contexts/StateContext";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import "moment/locale/sr";

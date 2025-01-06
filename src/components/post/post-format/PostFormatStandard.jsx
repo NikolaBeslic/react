@@ -128,7 +128,10 @@ const PostFormatStandard = ({
                                             <h3>Povezana pozorista</h3>
                                         </div>
                                         {postData.pozorista.map((poz) => (
-                                            <div className="povezano-pozoriste">
+                                            <div
+                                                className="povezano-pozoriste"
+                                                key={poz.pozoristeid}
+                                            >
                                                 <a
                                                     href={`/pozorista/${poz.pozoriste_slug}`}
                                                 >

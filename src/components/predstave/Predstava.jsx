@@ -12,7 +12,13 @@ import PredstavaRecenzija from "./PredstavaRecenzija";
 import WidgetPremijere from "../widget/WidgetPremijere";
 import WidgetPost from "../widget/WidgetPost";
 
-const Predstava = ({ data, premijere, sidePosts, updateData }) => {
+const Predstava = ({
+    data,
+    premijere,
+    sidePosts,
+    updateData,
+    handleUpdateDodajNaListuZelja,
+}) => {
     const recenzije = data.tekstovi?.filter(
         (tekst) => tekst.kategorija.kategorijaid == 4
     );
@@ -50,6 +56,7 @@ const Predstava = ({ data, premijere, sidePosts, updateData }) => {
             <PredstavaTitle
                 metaData={data}
                 handleUpdatePostRating={updatePostRating}
+                handleUpdateDodajNaListuZelja={handleUpdateDodajNaListuZelja}
             />
             <div className="post-single-wrapper p-t-xs-30">
                 <div className="container">

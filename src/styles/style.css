@@ -10701,6 +10701,20 @@ address .tel i {
     font-size: 18px;
 }
 
+.rating-wrapper {
+    width: 50%;
+    display: inline-flex;
+    margin-top: 20px;
+}
+
+.average-rating {
+    flex: 1;
+}
+
+.user-rating {
+    flex: 1;
+}
+
 .list-inline {
     font-family: var(--primary-font);
 }

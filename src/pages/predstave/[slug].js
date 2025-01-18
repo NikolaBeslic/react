@@ -2,8 +2,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/common/Breadcrumb";
 import HeadMeta from "../../components/elements/HeadMeta";
-import HeaderOne from "../../components/header/HeaderOne";
-import FooterOne from "../../components/footer/FooterOne";
 import axiosClient from "../../utils/axios";
 import Predstava from "../../components/predstave/Predstava";
 import { useStateContext } from "../../contexts/StateContext";
@@ -15,13 +13,20 @@ export default function PredstavaPage() {
     const [predstava, setPredstava] = useState([]);
     const [premijere, setPremijere] = useState([]);
     const [sidePosts, setSidePosts] = useState([]);
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const { currentUser, isLoading, showLoading, hideLoading } =
+        useStateContext();
 
     useEffect(() => {
         const fetchSinglePredstava = async () => {
             showLoading();
             axiosClient
-                .get(`/predstava-single/${slug}`)
+                .get(`/predstava-single/${slug}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                })
                 .then((res) => {
                     console.log(res.data);
                     setPredstava(res.data.data);
@@ -49,6 +54,10 @@ export default function PredstavaPage() {
 
     const handleDataUpdate = (updatedData) => {
         setPredstava(updatedData);
+    };
+
+    const updateListaZelja = () => {
+        setPredstava({ ...predstava, naListiZeljaKorisnika: 1 });
     };
 
     return (
@@ -80,6 +89,7 @@ export default function PredstavaPage() {
                 premijere={premijere}
                 sidePosts={sidePosts}
                 updateData={handleDataUpdate}
+                handleUpdateDodajNaListuZelja={updateListaZelja}
             />
         </>
     );

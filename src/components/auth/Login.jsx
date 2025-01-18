@@ -1,13 +1,8 @@
-import React, { useEffect, useState } from "react";
-import Modal from "react-bootstrap/Modal";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import Link from "next/link";
 import axiosClient from "../../utils/axios";
-import { signIn } from "next-auth/react";
-import { serialize, setCookie } from "cookie";
 import { useStateContext } from "../../contexts/StateContext";
-import { redirect } from "next/navigation";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -18,17 +13,8 @@ const Login = () => {
     });
 
     const { currentUser, setCurrentUser } = useStateContext();
-
-    // const handleSubmit = async (event) => {
-    //     event.preventDefault();
-    //     console.log(formData);
-    //     try {
-    //         await signIn('credentials', formData); // Use the appropriate provider
-    //     } catch (error) {
-    //         console.error('Login error:', error);
-    //         // Handle login error
-    //     }
-    // };
+    debugger;
+    const googleAuthUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
 
     const csrf = () => axiosClient.get("/csrf-cookie");
 
@@ -46,11 +32,21 @@ const Login = () => {
                 ] = `Bearer ${res.data.token}`;
                 console.log(res.data.token);
                 setCurrentUser(res.data.user);
-                redirect("/admin/tekstovi");
             })
             .catch((error) => console.error(error));
 
         // to do: send it to API
+    };
+
+    const handleGoogleLogin = (e) => {
+        e.preventDefault();
+        console.log("google");
+        const redirectUrl = window.location.href; // Capture the current page URL
+        window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
+            redirectUrl
+        )}`;
+
+        //window.location.href = GOOGLE_AUTH_URL;
     };
 
     const handleChange = (e) => {
@@ -91,6 +87,14 @@ const Login = () => {
                     Submit
                 </Button>
             </Form>
+
+            <Button
+                variant="secondary"
+                type="button"
+                onClick={handleGoogleLogin}
+            >
+                Prijavite se putem Google naloga
+            </Button>
         </>
     );
 };

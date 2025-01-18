@@ -4,8 +4,14 @@ import { useMediaQuery } from "react-responsive";
 import Rating from "react-rating";
 import { useStateContext } from "../../../../../contexts/StateContext";
 import axiosClient from "../../../../../utils/axios";
+import { Button } from "react-bootstrap";
+import { useState } from "react";
 
-const PredstavaTitle = ({ metaData, handleUpdatePostRating }) => {
+const PredstavaTitle = ({
+    metaData,
+    handleUpdatePostRating,
+    handleUpdateDodajNaListuZelja,
+}) => {
     const isDesktopOrLaptop = useMediaQuery({
         query: "(min-width: 1224px)",
     });
@@ -13,8 +19,11 @@ const PredstavaTitle = ({ metaData, handleUpdatePostRating }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
     const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
-
     const { currentUser } = useStateContext();
+    const [naListiZelja, setNaListiZelja] = useState(
+        metaData.naListiZeljaKorisnika
+    );
+
     const handleRating = async (value) => {
         if (!currentUser) {
             alert("You must be logged in to rate a post.");
@@ -29,7 +38,6 @@ const PredstavaTitle = ({ metaData, handleUpdatePostRating }) => {
                     user: currentUser,
                     predstavaid: metaData.predstavaid,
                 },
-
                 {
                     headers: {
                         "Content-Type": "application/json",
@@ -44,6 +52,50 @@ const PredstavaTitle = ({ metaData, handleUpdatePostRating }) => {
                 handleUpdatePostRating(res.data.data);
             });
     };
+
+    const handleDodajNaListuZelja = () => {
+        if (!currentUser) {
+            alert("You must be logged in to rate a post.");
+            return;
+        }
+
+        axiosClient
+            .post(
+                "/predstava/dodajNaListuZelja",
+                {
+                    user: currentUser,
+                    predstavaid: metaData.predstavaid,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                }
+            )
+            .then((res) => {
+                console.log(res);
+                setNaListiZelja(true);
+                handleUpdateDodajNaListuZelja();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    };
+
+    const ratingProps = {
+        stop: 10,
+        emptySymbol: "fa-regular fa-star",
+        fullSymbol: "fa fa-star",
+        onChange: { handleRating },
+    };
+
+    if (metaData.ocenaKorisnika) {
+        ratingProps.readonly = true;
+        ratingProps.initialRating = metaData.ocenaKorisnika;
+    }
 
     return (
         <div className="banner banner__default bg-grey-light-three">
@@ -84,11 +136,10 @@ const PredstavaTitle = ({ metaData, handleUpdatePostRating }) => {
                                                         <a
                                                             href={`/pozorista/${pozoriste.pozoriste_slug}`}
                                                         >
-                                                            {" "}
                                                             {
                                                                 pozoriste.naziv_pozorista
                                                             }
-                                                        </a>{" "}
+                                                        </a>
                                                     </span>
                                                 )
                                             )}
@@ -223,20 +274,56 @@ const PredstavaTitle = ({ metaData, handleUpdatePostRating }) => {
                                     </div>
                                 </div>
                                 {/* TO DO Font awesome as React comp, and rating as component */}
-                                <div className="rating-wrapper">
-                                    <i className="fa-xl fa-solid fa-star"></i>
-                                    <span className="current-rating">
-                                        {metaData.prosecnaOcena}
-                                    </span>
+                                <div className="row">
+                                    <div className="rating-wrapper">
+                                        <div className="average-rating">
+                                            <span>Prosecna ocena:</span> <br />
+                                            <i className="fa-xl fa-solid fa-star"></i>
+                                            <span className="current-rating">
+                                                {metaData.prosecnaOcena} / 10
+                                            </span>{" "}
+                                            <br />
+                                            <span className="number-of-ratings">
+                                                Ocena: {metaData.brojOcena}
+                                            </span>
+                                        </div>
+                                        <div className="user-rating">
+                                            <span>Ocena korisnika:</span> <br />
+                                            <Rating {...ratingProps} />
+                                        </div>
+                                    </div>
                                 </div>
-                                <p>
-                                    <Rating
-                                        stop={10}
-                                        emptySymbol="fa-regular fa-star"
-                                        fullSymbol="fa fa-star"
-                                        onChange={handleRating}
-                                    />
-                                </p>
+                            </div>
+                            <div className="col-lg-2">
+                                {metaData.naListiZeljaKorisnika ? (
+                                    <Button
+                                        variant="outline-primary"
+                                        className="btn btn-secondary btn-small"
+                                        onClick={handleDodajNaListuZelja}
+                                        disabled
+                                    >
+                                        <i className="fa-solid fa-check"></i>
+                                        Na listi zelja
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="outline-primary"
+                                        className="btn btn-secondary btn-small"
+                                        onClick={handleDodajNaListuZelja}
+                                    >
+                                        <i className="fa-solid fa-plus"></i>
+                                        Dodaj na listu zelja
+                                    </Button>
+                                )}
+
+                                <br />
+                                <Button
+                                    variant="outline"
+                                    className="btn btn-primary btn-small"
+                                >
+                                    <i className="fa-solid fa-circle-plus"></i>
+                                    Dodaj u odgledane
+                                </Button>
                             </div>
                         </>
                     )}

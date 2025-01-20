@@ -7,8 +7,8 @@ const StateContext = createContext({
     isAdmin: false,
 
     isLoading: false,
-    setCurrentUser: () => { },
-    setUserToken: () => { },
+    setCurrentUser: () => {},
+    setUserToken: () => {},
 });
 
 export const ContextProvider = ({ children }) => {
@@ -18,31 +18,37 @@ export const ContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem("token");
         console.log("Token");
         console.log(token);
         setIsAdmin(false);
         if (token) {
-            axiosClient.get('/user',
-                {
+            axiosClient
+                .get("/user", {
                     headers: {
-                        'Authorization': `Bearer ${token}`
-                    }
-                }).then((res) => {
+                        Authorization: `Bearer ${token}`,
+                    },
+                })
+                .then((res) => {
                     if (res.status == 200) {
                         setCurrentUser(res.data);
                     }
                     console.log(res);
-                }).catch((error) => {
-                    console.log(error);
                 })
+                .catch((error) => {
+                    console.log(error);
+                });
+        } else {
+            setCurrentUser(null);
         }
-
     }, []);
 
-
-    const showLoading = () => { setIsLoading(true) }
-    const hideLoading = () => { setIsLoading(false) }
+    const showLoading = () => {
+        setIsLoading(true);
+    };
+    const hideLoading = () => {
+        setIsLoading(false);
+    };
     return (
         <StateContext.Provider
             value={{
@@ -51,7 +57,7 @@ export const ContextProvider = ({ children }) => {
                 isAdmin,
                 isLoading,
                 showLoading,
-                hideLoading
+                hideLoading,
             }}
         >
             {children}

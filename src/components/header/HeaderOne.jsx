@@ -6,7 +6,7 @@ import OffcanvasMenu from "./OffcanvasMenu";
 import AuthModal from "../auth/AuthModal";
 import { useStateContext } from "../../contexts/StateContext";
 import axiosClient from "../../utils/axios";
-import { Spinner } from "react-bootstrap";
+import { Spinner, NavDropdown } from "react-bootstrap";
 import SearchResult from "../elements/SearchResult";
 
 const HeaderOne = () => {
@@ -111,6 +111,17 @@ const HeaderOne = () => {
     };
 
     const { currentUser, setCurrentUser } = useStateContext();
+
+    const handleLogout = () => {
+        axiosClient
+            .post("/logout", currentUser)
+            .then((res) => {
+                console.log(res.data);
+                localStorage.removeItem("token");
+                setCurrentUser(null);
+            })
+            .catch((err) => console.error(err));
+    };
 
     /* search functions */
     function handleKeyUp(e) {
@@ -264,11 +275,25 @@ const HeaderOne = () => {
                                             Blog
                                         </Link>
                                     </li>
-                                    {/* <li key="105">
-                  <Link href="/pozorista" legacyBehavior>
-                    Pozorista
-                  </Link>
-                </li> */}
+                                    {currentUser ? (
+                                        <NavDropdown
+                                            title={currentUser.korisnicko_ime?.substring(
+                                                0,
+                                                2
+                                            )}
+                                        >
+                                            <NavDropdown.Item href="#">
+                                                Korisnicki profil
+                                            </NavDropdown.Item>
+                                            <NavDropdown.Item
+                                                onClick={handleLogout}
+                                            >
+                                                Logout
+                                            </NavDropdown.Item>
+                                        </NavDropdown>
+                                    ) : (
+                                        ""
+                                    )}
                                 </ul>
                             </div>
                             <div className="navbar-extra-features ml-auto">
@@ -316,7 +341,7 @@ const HeaderOne = () => {
                                     <span />
                                     <span />
                                 </button>
-                                {currentUser ? currentUser.korisnicko_ime : ""}
+
                                 <button
                                     className="m-l-xs-10"
                                     onClick={openModal}

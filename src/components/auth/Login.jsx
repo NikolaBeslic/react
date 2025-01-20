@@ -13,7 +13,6 @@ const Login = () => {
     });
 
     const { currentUser, setCurrentUser } = useStateContext();
-    debugger;
     const googleAuthUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
 
     const csrf = () => axiosClient.get("/csrf-cookie");

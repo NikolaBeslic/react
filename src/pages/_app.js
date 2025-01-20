@@ -20,9 +20,7 @@ function MyApp({ Component, pageProps }) {
         ? (page) => <AdminLayout>{page}</AdminLayout>
         : (page) => <HuPLayout>{page}</HuPLayout>; // Use default layout for other pages
 
-    useEffect(() => {
-        console.log(isAdmin);
-    }, []);
+    useEffect(() => {}, []);
     return (
         <>
             {/*  Global site tag (gtag.js) - Google Analytics */}
@@ -39,11 +37,7 @@ function MyApp({ Component, pageProps }) {
         gtag('config', 'G-E448GXQHG8');
       `}
             </Script>
-            <Script
-                src="https://code.jquery.com/jquery-3.7.1.min.js"
-                integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
-                crossorigin="anonymous"
-            ></Script>
+
             <ContextProvider>
                 {getLayout(<Component {...pageProps} />)}
             </ContextProvider>

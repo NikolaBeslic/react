@@ -282,7 +282,7 @@ const HeaderOne = () => {
                                                 2
                                             )}
                                         >
-                                            <NavDropdown.Item href="#">
+                                            <NavDropdown.Item href="/korisnicki-profil">
                                                 Korisnicki profil
                                             </NavDropdown.Item>
                                             <NavDropdown.Item

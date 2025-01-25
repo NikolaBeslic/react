@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 import Breadcrumb from "../../components/common/Breadcrumb";
 import PostFormatStandard from "../../components/post/post-format/PostFormatStandard";
 import HeadMeta from "../../components/elements/HeadMeta";
-import HeaderOne from "../../components/header/HeaderOne";
-import FooterOne from "../../components/footer/FooterOne";
 import axiosClient from "../../utils/axios";
-import HuPTekstNoSideBar from "../../components/post/post-format/HuPTekstNoSideBar";
 import { useStateContext } from "../../contexts/StateContext";
 import Spinner from "react-bootstrap/Spinner";
 import PostFormatHupikon from "../../components/post/post-format/PostFormatHupikon";
@@ -29,7 +26,9 @@ export default function Page() {
         const fetchSingleText = async () => {
             showLoading();
             axiosClient
-                .get(`/get-single-text/${router.query.postSlug}`)
+                .get(
+                    `/get-single-text/${categorySlug}/${router.query.postSlug}`
+                )
                 .then((res) => {
                     console.log(res.data);
                     setPost(res.data);

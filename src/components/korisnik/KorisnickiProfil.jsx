@@ -75,7 +75,11 @@ const KorisnickiProfil = ({ korisnik }) => {
                                                 <Tab.Pane eventKey="zelje">
                                                     {korisnik.lista_zelja?.map(
                                                         (lz) => (
-                                                            <p>
+                                                            <p
+                                                                key={
+                                                                    lz.predstavaid
+                                                                }
+                                                            >
                                                                 {
                                                                     lz.naziv_predstave
                                                                 }
@@ -86,7 +90,11 @@ const KorisnickiProfil = ({ korisnik }) => {
                                                 <Tab.Pane eventKey="odgledane">
                                                     {korisnik.lista_odgledanih?.map(
                                                         (odg) => (
-                                                            <p>
+                                                            <p
+                                                                key={
+                                                                    odg.predstavaid
+                                                                }
+                                                            >
                                                                 {
                                                                     odg.naziv_predstave
                                                                 }
@@ -97,7 +105,11 @@ const KorisnickiProfil = ({ korisnik }) => {
                                                 <Tab.Pane eventKey="komentari">
                                                     {korisnik.komentari?.map(
                                                         (kom) => (
-                                                            <p>
+                                                            <p
+                                                                key={
+                                                                    kom.komentarid
+                                                                }
+                                                            >
                                                                 {
                                                                     kom.tekst_komentara
                                                                 }

@@ -18,6 +18,7 @@ const Predstava = ({
     sidePosts,
     updateData,
     handleUpdateDodajNaListuZelja,
+    handleUpdateListaOdgledanih,
 }) => {
     const recenzije = data.tekstovi?.filter(
         (tekst) => tekst.kategorija.kategorijaid == 4
@@ -57,6 +58,7 @@ const Predstava = ({
                 metaData={data}
                 handleUpdatePostRating={updatePostRating}
                 handleUpdateDodajNaListuZelja={handleUpdateDodajNaListuZelja}
+                handleUpdateListaOdgledanih={handleUpdateListaOdgledanih}
             />
             <div className="post-single-wrapper p-t-xs-30">
                 <div className="container">

@@ -8,7 +8,6 @@ const Page = () => {
     const { currentUser, setCurrentUser } = useStateContext();
 
     useEffect(() => {
-        debugger;
         const { token, user, redirect_url, error } = router.query;
 
         if (error) {

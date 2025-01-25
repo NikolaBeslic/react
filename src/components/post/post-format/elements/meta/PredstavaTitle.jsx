@@ -4,13 +4,14 @@ import { useMediaQuery } from "react-responsive";
 import Rating from "react-rating";
 import { useStateContext } from "../../../../../contexts/StateContext";
 import axiosClient from "../../../../../utils/axios";
-import { Button } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { useState } from "react";
 
 const PredstavaTitle = ({
     metaData,
     handleUpdatePostRating,
     handleUpdateDodajNaListuZelja,
+    handleUpdateListaOdgledanih,
 }) => {
     const isDesktopOrLaptop = useMediaQuery({
         query: "(min-width: 1224px)",
@@ -22,6 +23,9 @@ const PredstavaTitle = ({
     const { currentUser } = useStateContext();
     const [naListiZelja, setNaListiZelja] = useState(
         metaData.naListiZeljaKorisnika
+    );
+    const [naListiOdgledanih, setNaListiOdgledanih] = useState(
+        metaData.naListiOdgledanihKorisnika
     );
 
     const handleRating = async (value) => {
@@ -53,12 +57,24 @@ const PredstavaTitle = ({
             });
     };
 
+    const ratingProps = {
+        stop: 10,
+        emptySymbol: "fa-regular fa-star",
+        fullSymbol: "fa fa-star",
+        onChange: { handleRating },
+    };
+
+    if (metaData.ocenaKorisnika) {
+        ratingProps.readonly = true;
+        ratingProps.initialRating = metaData.ocenaKorisnika;
+    }
+    const [naListiZeljaLoading, setNaListiZeljaLoading] = useState(false);
     const handleDodajNaListuZelja = () => {
         if (!currentUser) {
             alert("You must be logged in to rate a post.");
             return;
         }
-
+        setNaListiZeljaLoading(true);
         axiosClient
             .post(
                 "/predstava/dodajNaListuZelja",
@@ -78,6 +94,7 @@ const PredstavaTitle = ({
             .then((res) => {
                 console.log(res);
                 setNaListiZelja(true);
+                setNaListiZeljaLoading(false);
                 handleUpdateDodajNaListuZelja();
             })
             .catch((err) => {
@@ -85,17 +102,39 @@ const PredstavaTitle = ({
             });
     };
 
-    const ratingProps = {
-        stop: 10,
-        emptySymbol: "fa-regular fa-star",
-        fullSymbol: "fa fa-star",
-        onChange: { handleRating },
+    const [odgledaneLoading, setOdgledaneLoading] = useState(false);
+    const handleDodajUOdgledane = () => {
+        if (!currentUser) {
+            alert("You must be logged in to do this");
+            return;
+        }
+        setOdgledaneLoading(true);
+        axiosClient
+            .post(
+                "/predstava/dodajUOdgledane",
+                {
+                    user: currentUser,
+                    predstavaid: metaData.predstavaid,
+                },
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                }
+            )
+            .then((res) => {
+                console.log(res);
+                setNaListiOdgledanih(true);
+                setOdgledaneLoading(false);
+                handleUpdateListaOdgledanih();
+            })
+            .catch((err) => {
+                console.error(err);
+            });
     };
-
-    if (metaData.ocenaKorisnika) {
-        ratingProps.readonly = true;
-        ratingProps.initialRating = metaData.ocenaKorisnika;
-    }
 
     return (
         <div className="banner banner__default bg-grey-light-three">
@@ -299,7 +338,6 @@ const PredstavaTitle = ({
                                     <Button
                                         variant="outline-primary"
                                         className="btn btn-secondary btn-small"
-                                        onClick={handleDodajNaListuZelja}
                                         disabled
                                     >
                                         <i className="fa-solid fa-check"></i>
@@ -311,19 +349,50 @@ const PredstavaTitle = ({
                                         className="btn btn-secondary btn-small"
                                         onClick={handleDodajNaListuZelja}
                                     >
-                                        <i className="fa-solid fa-plus"></i>
+                                        {naListiZeljaLoading ? (
+                                            <Spinner
+                                                as="span"
+                                                animation="border"
+                                                role="status"
+                                                size="sm"
+                                            />
+                                        ) : (
+                                            <i className="fa-solid fa-circle-plus"></i>
+                                        )}
                                         Dodaj na listu zelja
                                     </Button>
                                 )}
 
                                 <br />
-                                <Button
-                                    variant="outline"
-                                    className="btn btn-primary btn-small"
-                                >
-                                    <i className="fa-solid fa-circle-plus"></i>
-                                    Dodaj u odgledane
-                                </Button>
+                                {metaData.naListiOdgledanihKorisnika ? (
+                                    <Button
+                                        variant="outline-primary"
+                                        className="btn btn-secondary btn-small"
+                                        disabled
+                                    >
+                                        <i className="fa-solid fa-check"></i>
+                                        Na listi odgledanih
+                                    </Button>
+                                ) : (
+                                    <>
+                                        <Button
+                                            variant="outline"
+                                            className="btn btn-primary btn-small"
+                                            onClick={handleDodajUOdgledane}
+                                        >
+                                            {odgledaneLoading ? (
+                                                <Spinner
+                                                    as="span"
+                                                    animation="border"
+                                                    role="status"
+                                                />
+                                            ) : (
+                                                <i className="fa-solid fa-circle-plus"></i>
+                                            )}
+                                            Dodaj u odgledane
+                                        </Button>
+                                    </>
+                                )}
                             </div>
                         </>
                     )}

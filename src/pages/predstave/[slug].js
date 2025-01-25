@@ -60,6 +60,10 @@ export default function PredstavaPage() {
         setPredstava({ ...predstava, naListiZeljaKorisnika: 1 });
     };
 
+    const updateListaOdgledanih = () => {
+        setPredstava({ ...predstava, naListiOdgledanihKorisnika: 1 });
+    };
+
     return (
         <>
             <HeadMeta metaTitle={predstava.naziv_predstave} />
@@ -90,6 +94,7 @@ export default function PredstavaPage() {
                 sidePosts={sidePosts}
                 updateData={handleDataUpdate}
                 handleUpdateDodajNaListuZelja={updateListaZelja}
+                handleUpdateListaOdgledanih={updateListaOdgledanih}
             />
         </>
     );

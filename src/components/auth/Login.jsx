@@ -3,6 +3,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
+import React from "react";
+import { Spinner } from "react-bootstrap";
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -12,12 +14,21 @@ const Login = () => {
         // Add more fields as needed
     });
 
-    const { currentUser, setCurrentUser } = useStateContext();
+    const {
+        currentUser,
+        setCurrentUser,
+        isModalOpen,
+        setModalOpen,
+        isLoading,
+        showLoading,
+        hideLoading,
+    } = useStateContext();
     const googleAuthUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
 
     const csrf = () => axiosClient.get("/csrf-cookie");
 
     const handleSubmit = async (event) => {
+        showLoading();
         event.preventDefault();
         console.log(formData);
         await csrf();
@@ -31,6 +42,8 @@ const Login = () => {
                 ] = `Bearer ${res.data.token}`;
                 console.log(res.data.token);
                 setCurrentUser(res.data.user);
+                hideLoading();
+                setModalOpen(false);
             })
             .catch((error) => console.error(error));
 
@@ -54,6 +67,13 @@ const Login = () => {
     };
     return (
         <>
+            {isLoading && (
+                <Spinner
+                    animation="border"
+                    role="status"
+                    className="hup-spinner"
+                />
+            )}
             <Form>
                 <Form.Group className="form-group mb-3">
                     <Form.Control

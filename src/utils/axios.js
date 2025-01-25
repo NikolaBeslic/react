@@ -12,6 +12,9 @@ axiosClient.interceptors.response.use(
             if (error.response.status === 404) {
                 Router.push("/404");
             }
+            if (error.response.status === 401) {
+                Router.push("/401");
+            }
         }
         return Promise.reject(error); // Ensure other errors are still propagated
     }

@@ -16,6 +16,7 @@ export const ContextProvider = ({ children }) => {
     // const [userToken, _setUserToken] = useState(localStorage.getItem('TOKEN') || '');
     const [isAdmin, setIsAdmin] = useState([false]);
     const [isLoading, setIsLoading] = useState(false);
+    const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -49,6 +50,7 @@ export const ContextProvider = ({ children }) => {
     const hideLoading = () => {
         setIsLoading(false);
     };
+
     return (
         <StateContext.Provider
             value={{
@@ -58,6 +60,8 @@ export const ContextProvider = ({ children }) => {
                 isLoading,
                 showLoading,
                 hideLoading,
+                isModalOpen,
+                setModalOpen,
             }}
         >
             {children}

@@ -8,6 +8,7 @@ import { useStateContext } from "../../contexts/StateContext";
 import axiosClient from "../../utils/axios";
 import { Spinner, NavDropdown } from "react-bootstrap";
 import SearchResult from "../elements/SearchResult";
+import { toast } from "react-hot-toast";
 
 const HeaderOne = () => {
     // Main Menu Toggle
@@ -100,25 +101,30 @@ const HeaderOne = () => {
     };
 
     // Modal
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    //const [isModalOpen, setIsModalOpen] = useState(false);
+    const { isModalOpen, setModalOpen } = useStateContext();
 
     const openModal = () => {
-        setIsModalOpen(true);
+        setModalOpen(true);
     };
 
     const closeModal = () => {
-        setIsModalOpen(false);
+        setModalOpen(false);
     };
 
     const { currentUser, setCurrentUser } = useStateContext();
+    const [logoutLoading, setLogoutLoading] = useState(false);
 
     const handleLogout = () => {
+        setLogoutLoading(true);
         axiosClient
             .post("/logout", currentUser)
             .then((res) => {
                 console.log(res.data);
                 localStorage.removeItem("token");
                 setCurrentUser(null);
+                setLogoutLoading(false);
+                toast.success("Uspešno ste se izlogovali");
             })
             .catch((err) => console.error(err));
     };
@@ -276,21 +282,32 @@ const HeaderOne = () => {
                                         </Link>
                                     </li>
                                     {currentUser ? (
-                                        <NavDropdown
-                                            title={currentUser.korisnicko_ime?.substring(
-                                                0,
-                                                2
+                                        <>
+                                            {logoutLoading ? (
+                                                <Spinner
+                                                    animation="border"
+                                                    role="status"
+                                                    size="sm"
+                                                />
+                                            ) : (
+                                                ""
                                             )}
-                                        >
-                                            <NavDropdown.Item href="/korisnicki-profil">
-                                                Korisnicki profil
-                                            </NavDropdown.Item>
-                                            <NavDropdown.Item
-                                                onClick={handleLogout}
+                                            <NavDropdown
+                                                title={currentUser.korisnicko_ime?.substring(
+                                                    0,
+                                                    2
+                                                )}
                                             >
-                                                Logout
-                                            </NavDropdown.Item>
-                                        </NavDropdown>
+                                                <NavDropdown.Item href="/korisnicki-profil">
+                                                    Korisnicki profil
+                                                </NavDropdown.Item>
+                                                <NavDropdown.Item
+                                                    onClick={handleLogout}
+                                                >
+                                                    Logout
+                                                </NavDropdown.Item>
+                                            </NavDropdown>
+                                        </>
                                     ) : (
                                         ""
                                     )}

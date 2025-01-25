@@ -6,7 +6,7 @@ import { useStateContext } from "../../contexts/StateContext";
 import React from "react";
 import { Spinner } from "react-bootstrap";
 
-const Login = () => {
+const Login = ({ handleGoogleLogin }) => {
     const [formData, setFormData] = useState({
         korisnickoIme: "",
         email: "",
@@ -23,7 +23,6 @@ const Login = () => {
         showLoading,
         hideLoading,
     } = useStateContext();
-    const googleAuthUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
 
     const csrf = () => axiosClient.get("/csrf-cookie");
 
@@ -50,16 +49,14 @@ const Login = () => {
         // to do: send it to API
     };
 
-    const handleGoogleLogin = (e) => {
-        e.preventDefault();
-        console.log("google");
-        const redirectUrl = window.location.href; // Capture the current page URL
-        window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
-            redirectUrl
-        )}`;
-
-        //window.location.href = GOOGLE_AUTH_URL;
-    };
+    // const handleGoogleLogin = (e) => {
+    //     e.preventDefault();
+    //     console.log("google");
+    //     const redirectUrl = window.location.href; // Capture the current page URL
+    //     window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
+    //         redirectUrl
+    //     )}`;
+    // };
 
     const handleChange = (e) => {
         const { name, value } = e.target;

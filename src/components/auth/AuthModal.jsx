@@ -31,20 +31,54 @@ const AuthModal = ({ closeModal }) => {
         setShowLogin((prev) => !prev);
     };
 
+    const googleAuthUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
+    const handleGoogleLogin = (e) => {
+        e.preventDefault();
+        console.log("google");
+        const redirectUrl = window.location.href; // Capture the current page URL
+        window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
+            redirectUrl
+        )}`;
+    };
+
     return (
         <>
             <Modal show={isModalOpen} onHide={closeModal}>
                 <Modal.Header closeButton>
-                    <Modal.Title>Registrujte se</Modal.Title>
+                    <Modal.Title>
+                        {showLogin ? "Ulogujte se" : "Registrujte se"}
+                    </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {showLogin ? <Login /> : <RegistrationForm />}
-                    <p onClick={toggleForm}>
-                        {showLogin
-                            ? "Don't have an account? Register here."
-                            : "Already have an account? Login here."}
-                    </p>
+                    {showLogin ? (
+                        <Login handleGoogleLogin={handleGoogleLogin} />
+                    ) : (
+                        <RegistrationForm
+                            handleGoogleLogin={handleGoogleLogin}
+                        />
+                    )}
                 </Modal.Body>
+                <Modal.Footer>
+                    <p>
+                        {showLogin ? (
+                            <>
+                                Nemate nalog na našem sajtu? Kliknite{" "}
+                                <a href="#" onClick={toggleForm}>
+                                    ovde
+                                </a>
+                                .
+                            </>
+                        ) : (
+                            <>
+                                Već imate nalog? Ulogujte se{" "}
+                                <a href="#" onClick={toggleForm}>
+                                    ovde
+                                </a>
+                                .
+                            </>
+                        )}
+                    </p>
+                </Modal.Footer>
             </Modal>
         </>
     );

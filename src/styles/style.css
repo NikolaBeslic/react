@@ -6728,7 +6728,12 @@ input[type="radio"]+label::after {
 }
 
 .post-block__mid p {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    line-clamp: 4;
+    -webkit-line-clamp: 4 !important;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 @media (max-width: 991px) {

@@ -76,8 +76,8 @@ export default function Page() {
 
     return (
         <>
-            <HeadMeta metaTitle={category.naziv_kategorije} />
-            <Breadcrumb aPage={category.naziv_kategorije} />
+            <HeadMeta metaTitle={category.display_naziv_kategorije} />
+            <Breadcrumb aPage={category.display_naziv_kategorije} />
             {/* Banner Start here  */}
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
@@ -85,7 +85,7 @@ export default function Page() {
                         <div className="col-lg-12">
                             <div className="post-title-wrapper">
                                 <h2 className="m-b-xs-0 axil-post-title hover-line">
-                                    {category.naziv_kategorije}
+                                    {category.display_naziv_kategorije}
                                 </h2>
                             </div>
                         </div>

@@ -117,7 +117,21 @@ const KorisnickiProfil = ({ korisnik }) => {
                                                         )
                                                     )}
                                                 </Tab.Pane>
-                                                <Tab.Pane eventKey="pozorista"></Tab.Pane>
+                                                <Tab.Pane eventKey="pozorista">
+                                                    {korisnik.omiljena_pozorista?.map(
+                                                        (poz) => (
+                                                            <p
+                                                                key={
+                                                                    poz.pozoristeid
+                                                                }
+                                                            >
+                                                                {
+                                                                    poz.naziv_pozorista
+                                                                }
+                                                            </p>
+                                                        )
+                                                    )}
+                                                </Tab.Pane>
                                             </Tab.Content>
                                         </Tab.Container>
                                     </div>

@@ -21,7 +21,13 @@ export default function PozoristePage() {
         showLoading();
         const fetchSinglePozoriste = async () => {
             axiosClient
-                .get(`/pozoriste-single/${router.query.pozoristeSlug}`)
+                .get(`/pozoriste-single/${router.query.pozoristeSlug}`, {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                            "token"
+                        )}`,
+                    },
+                })
                 .then((res) => {
                     console.log(res.data);
                     setPozoriste(res.data);

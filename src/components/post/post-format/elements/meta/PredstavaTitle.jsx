@@ -28,12 +28,13 @@ const PredstavaTitle = ({
         metaData.naListiOdgledanihKorisnika
     );
 
+    const [ratingLoading, setRatingLoading] = useState(false);
     const handleRating = async (value) => {
         if (!currentUser) {
             alert("You must be logged in to rate a post.");
             return;
         }
-
+        setRatingLoading(true);
         axiosClient
             .post(
                 "/predstava/oceni",
@@ -53,15 +54,14 @@ const PredstavaTitle = ({
             )
             .then((res) => {
                 console.log(res);
+                setRatingLoading(false);
                 handleUpdatePostRating(res.data.data);
             });
     };
-
     const ratingProps = {
         stop: 10,
         emptySymbol: "fa-regular fa-star",
         fullSymbol: "fa fa-star",
-        onChange: { handleRating },
     };
 
     if (metaData.ocenaKorisnika) {
@@ -327,8 +327,27 @@ const PredstavaTitle = ({
                                             </span>
                                         </div>
                                         <div className="user-rating">
-                                            <span>Ocena korisnika:</span> <br />
-                                            <Rating {...ratingProps} />
+                                            {ratingLoading ? (
+                                                <Spinner
+                                                    animation="border"
+                                                    role="status"
+                                                    className="hup-spinner"
+                                                    size="sm"
+                                                />
+                                            ) : (
+                                                <>
+                                                    <span>
+                                                        Ocena korisnika:
+                                                    </span>
+                                                    <br />
+                                                    <Rating
+                                                        {...ratingProps}
+                                                        onChange={(value) =>
+                                                            handleRating(value)
+                                                        }
+                                                    />
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 </div>

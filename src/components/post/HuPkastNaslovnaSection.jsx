@@ -42,9 +42,15 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                                     </a>
                                 </h3>
                             </div>
-                            <div className="hupkast-naslovna-desc">
-                                {hupkastData.uvod}
-                            </div>
+                            <div
+                                className="hupkast-naslovna-desc"
+                                dangerouslySetInnerHTML={{
+                                    __html: hupkastData.uvod
+                                        ? hupkastData.uvod
+                                        : hupkastData.sadrzaj?.slice(0, 400) +
+                                          "...",
+                                }}
+                            ></div>
                         </div>
                     </div>
                 ))}

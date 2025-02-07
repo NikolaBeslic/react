@@ -8,8 +8,8 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
             <a
                 href={`/post/${data.slug}`}
                 className={`d-block ${videoPost === true ? "h-100" : ""}`}
-                legacyBehavior>
-
+                legacyBehavior
+            >
                 <Image
                     src={data.tekst_photo}
                     alt={data.title}
@@ -18,32 +18,51 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
                     className="w-100"
                     objectFit="cover"
                 />
-                <div className={`grad-overlay ${videoPost === true ? "grad-overlay__transparent" : ""}`} />
-
+                <div
+                    className={`grad-overlay ${
+                        videoPost === true ? "grad-overlay__transparent" : ""
+                    }`}
+                />
             </a>
             <div className="media post-block position-absolute">
-                <div className={`media-body ${postSizeLg === true ? "media-body__big" : ""}`}>
-                    <div className="post-cat-group m-b-xs-10">
-                    </div>
+                <div
+                    className={`media-body ${
+                        postSizeLg === true ? "media-body__big" : ""
+                    }`}
+                >
+                    <div className="post-cat-group m-b-xs-10"></div>
                     <div className="axil-media-bottom">
                         <h3 className="axil-post-title hover-line hover-line">
-                            <Link href={`${data.kategorija?.kategorija_slug}/${data.slug}`} title={data.naslov} legacyBehavior>
+                            <Link
+                                href={`${data.kategorija?.kategorija_slug}/${data.slug}`}
+                                title={data.naslov}
+                                legacyBehavior
+                            >
                                 {data.naslov}
                             </Link>
                         </h3>
                         <div className="post-metas">
                             <ul className="list-inline">
                                 <li>
-                                    <i className="fa-solid fa-masks-theater"></i> {data.predstave?.map((pred) => (<span key={pred.predstavaid}>{pred.naziv_predstave}</span>))}
-
+                                    <i className="fa-solid fa-masks-theater"></i>{" "}
+                                    {data.predstave?.map((pred) => (
+                                        <span key={pred.predstavaid}>
+                                            {pred.naziv_predstave}
+                                        </span>
+                                    ))}
                                 </li>
-                                {postSizeLg === true ?
+                                {postSizeLg === true ? (
                                     <>
                                         <li>
-                                            <i className="fa-regular fa-calendar"></i> {moment(data.created_at).format("DD. MM. YYYY")}
+                                            <i className="fa-regular fa-calendar"></i>{" "}
+                                            {moment(data.published_at).format(
+                                                "DD. MM. YYYY"
+                                            )}
                                         </li>
                                     </>
-                                    : ""}
+                                ) : (
+                                    ""
+                                )}
                             </ul>
                         </div>
                     </div>

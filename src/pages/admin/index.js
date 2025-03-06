@@ -79,7 +79,7 @@ export default function AdminHomePage() {
                             <TableCell>Naslov</TableCell>
                             <TableCell>Na slajderu</TableCell>
                             <TableCell>Datum objave</TableCell>
-                            <TableCell></TableCell>
+                            <TableCell>Akcije</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -123,7 +123,7 @@ export default function AdminHomePage() {
                         <TableCell>Naziv predstave</TableCell>
                         <TableCell>Pozorista</TableCell>
                         <TableCell>Datum premijere</TableCell>
-                        <TableCell></TableCell>
+                        <TableCell>Akcije</TableCell>
                     </TableHead>
                     <TableBody>
                         {predstave.map((pred) => (

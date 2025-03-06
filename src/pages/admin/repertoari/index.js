@@ -1,4 +1,4 @@
-import AdminNav from "../../../components/admin/header/AdminNav";
+import AdminNav from "../../../components/admin/layout/AdminNav";
 
 export default function RepertoariPage() {
     return (

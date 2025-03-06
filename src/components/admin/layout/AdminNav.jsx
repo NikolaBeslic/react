@@ -1,10 +1,21 @@
-import { AppBar, Button, Container, Toolbar } from "@mui/material";
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    CssBaseline,
+    Toolbar,
+} from "@mui/material";
 import Link from "next/link";
 
 function AdminNav() {
     return (
-        <div className="admin-root-div">
-            <AppBar>
+        <>
+            <CssBaseline />
+            <AppBar
+                position="fixed"
+                sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            >
                 <Container maxWidth="lg">
                     <Toolbar disableGutters className="admin-toolbar">
                         <Button color="inherit">
@@ -20,12 +31,6 @@ function AdminNav() {
                             <Link href="/admin/predstave">Predstave</Link>
                         </Button>
                         <Button color="inherit">
-                            <Link href="/admin/zanrovi">Zanrovi</Link>
-                        </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/tagovi">Tagovi</Link>
-                        </Button>
-                        <Button color="inherit">
                             <Link href="/admin/autori">Autori</Link>
                         </Button>
                         <Button color="inherit">
@@ -34,13 +39,10 @@ function AdminNav() {
                         <Button color="inherit">
                             <Link href="/admin/pozorista">Pozorista</Link>
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/kategorije">Kategorije</Link>
-                        </Button>
                     </Toolbar>
                 </Container>
             </AppBar>
-        </div>
+        </>
     );
 }
 

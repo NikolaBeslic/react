@@ -6,13 +6,17 @@ import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
 import {
     Autocomplete,
+    Box,
     Button,
+    CircularProgress,
     FormControl,
     FormLabel,
+    Grid2,
     TextField,
 } from "@mui/material";
 
-const TekstCreateNew = ({ tekstid, kategorijaid }) => {
+const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
+    const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         kategorijaid: 0,
         naslov: "",
@@ -26,6 +30,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         festivalid: null,
         tekst_photo: "",
         slika: null,
+
         // Add more fields as needed
     });
 
@@ -44,9 +49,13 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
     const [sviFestivali, setSviFestivali] = useState([]);
     const [dbFestival, setDbFestival] = useState(null);
 
+    const [hupkastPlatforme, setHupkastPlatforme] = useState([]);
+    const [linkovi, setLinkovi] = useState([]);
+
     useEffect(() => {
         console.log("tekstid" + tekstid);
         if (tekstid) {
+            setLoading(true);
             axiosClient
                 .get(`/get-tekst/${tekstid}`)
                 .then((res) => {
@@ -61,6 +70,9 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                         ),
                         tagovi: res.data.tagovi?.map((tag) => tag.tagid),
                         autori: res.data.autori?.map((a) => a.autorid),
+                        sezona: res.data.hupkast?.sezona,
+                        epizoda: res.data.hupkast?.epizoda,
+                        mp3_url: res.data.hupkast?.mp3_url,
                     });
                     editorSadrzaj.content = res.data.sadrzaj;
                     editorUvod.content = res.data.uvod;
@@ -97,13 +109,45 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                                 label: tag.tag_naziv,
                             }))
                         );
+                    // if (res.data.hupkast)
+                    //     setFormData({
+                    //         ...formData,
+                    //         sezona: res.data.hupkast.sezona,
+                    //         epizoda: res.data.hupkast.epizoda,
+                    //         mp3_url: res.data.hupkast.mp3_url,
+                    //     });
+                    setLoading(false);
                 })
-                .catch((error) => console.error(error));
+                .catch((error) => {
+                    console.error(error);
+                    setLoading(false);
+                });
         }
     }, [tekstid]);
 
     useEffect(() => {
         setFormData({ ...formData, kategorijaid: kategorijaid });
+
+        if (addHuPkast) {
+            setLoading(true);
+            axiosClient
+                .get("/admin/get-hupkast-platforme")
+                .then((res) => {
+                    setHupkastPlatforme(res.data);
+                    console.log("hupkast platforme");
+                    console.log(res.data);
+                })
+                .catch((error) => console.error(error));
+
+            setFormData({
+                ...formData,
+                kategorijaid: 11,
+                sezona: 1,
+                epizoda: 1,
+                mp3_url: "",
+                hupkast_linkovi: [],
+            });
+        }
         axiosClient
             .get("/get-autori")
             .then((res) => {
@@ -138,6 +182,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                 setSviFestivali(resFestivali.data);
             })
             .catch((error) => console.error(error));
+        setLoading(false);
     }, []);
 
     const optionsAutori = sviAutori?.map((autor) => ({
@@ -263,7 +308,14 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        linkovi.forEach((value, index) => {
+            formData.hupkast_linkovi[index] = value;
+            console.log(value);
+        });
         console.log(formData);
+        debugger;
+        let storeUrl = "/admin/create-tekst";
+        if (addHuPkast) storeUrl = "/admin/hupkast-store";
         if (formData.tekstid) {
             axiosClient
                 .put("/update-tekst", formData)
@@ -274,7 +326,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-tekst", formData, {
+                .post(storeUrl, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -307,199 +359,283 @@ const TekstCreateNew = ({ tekstid, kategorijaid }) => {
         });
     });
 
+    const handleLinkoviChange = (index, event) => {
+        const newLinkovi = [...linkovi];
+        console.log(event.target.getAttribute("data-platformaid"));
+        newLinkovi[index] = {
+            platformaid: event.target.getAttribute("data-platformaid"),
+            link: event.target.value,
+        };
+        setLinkovi(newLinkovi);
+    };
+
     return (
         <>
             <div className="row">
                 <div className="col-md-2"></div>
                 <div className="col-md-8">
-                    <Form>
-                        <FormControl fullWidth sx={{ mb: 3 }}>
-                            <TextField
-                                name="naslov"
-                                label="Naslov"
-                                variant="standard"
-                                value={formData.naslov}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </FormControl>
-                        <FormControl fullWidth sx={{ mb: 3 }}>
-                            <TextField
-                                name="slug"
-                                label="Slug"
-                                variant="standard"
-                                value={formData.slug}
-                                onChange={handleChange}
-                                fullWidth
-                            />
-                        </FormControl>
-                        <FormControl fullWidth sx={{ mb: 3 }}>
-                            <FormLabel>Tekst foto</FormLabel>
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleTekstPhoto}
-                            />
-                        </FormControl>
-
-                        <Form.Group className="form-group mb-3">
-                            <Form.Label>Uvod</Form.Label>
-                            <br />
-                            <Editor
-                                name="uvod"
-                                onInit={(_evt, editor) =>
-                                    (editorUvod.current = editor)
-                                }
-                                value={editorUvod.content}
-                                onEditorChange={(content) =>
-                                    handleEditorUvodChange(
-                                        content,
-                                        "editorUvod"
-                                    )
-                                }
-                                apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
-                                init={{
-                                    height: 200,
-                                    menubar: false,
-                                    toolbar:
-                                        "undo redo | bold italic underline strikethrough | removeformat",
-                                }}
-                            />
-                        </Form.Group>
-                        <Form.Group className="form-group mb-3">
-                            <Form.Label>Tekst</Form.Label>
-                            <br />
-                            <Editor
-                                name="sadrzaj"
-                                onEditorChange={handleEditorSadrzajChange}
-                                onInit={(_evt, editor2) =>
-                                    (editorSadrzaj.current = editor2)
-                                }
-                                value={editorSadrzaj.content}
-                                apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
-                                init={{
-                                    height: 700,
-                                    menubar: false,
-                                    automatic_uploads: true,
-                                    plugins: "code image link lists",
-                                    toolbar1:
-                                        "code | undo redo | styles fontsize | numlist bullist | blockquote  | paste pastetext | selectall",
-                                    toolbar2:
-                                        "formatSelect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | indent outdent | link unlink | forecolor backcolor hilitecolor | image  | removeformat ",
-                                    images_upload_url:
-                                        "http://127.0.0.1:8000/admin/uploadImage",
-                                    automatic_uploads: true,
-                                    images_reuse_filename: true,
-                                    images_upload_handler: handleImageUpload,
-                                }}
-                            />
-                        </Form.Group>
-
-                        <Autocomplete
-                            name="festival"
-                            options={optionsFestivali}
-                            value={dbFestival}
-                            onChange={handleFestivalChange}
-                            sx={{ mb: 2 }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Festivali"
-                                    fullWidth
-                                    style={{ fontSize: "1.2rem" }}
-                                />
+                    {loading && <CircularProgress />}
+                    {!loading && (
+                        <Form>
+                            {addHuPkast ? (
+                                <Box sx={{ flexGrow: 1, my: 3 }}>
+                                    <Grid2
+                                        container
+                                        spacing={2}
+                                        alignItems="center"
+                                        sx={{ width: 500, mb: 2 }}
+                                        marginX={"auto"}
+                                    >
+                                        <TextField
+                                            name="sezona"
+                                            label="Sezona"
+                                            variant="outlined"
+                                            type="number"
+                                            value={formData.sezona}
+                                            onChange={handleChange}
+                                            width={40}
+                                            slotProps={{
+                                                inputLabel: { shrink: true },
+                                            }}
+                                        />
+                                        <TextField
+                                            name="epizoda"
+                                            label="Epizoda"
+                                            variant="outlined"
+                                            type="number"
+                                            value={formData.epizoda}
+                                            onChange={handleChange}
+                                            width={40}
+                                            slotProps={{
+                                                inputLabel: { shrink: true },
+                                            }}
+                                        />
+                                    </Grid2>
+                                    <TextField
+                                        name="mp3_url"
+                                        label="Link za mp3"
+                                        variant="standard"
+                                        value={formData.mp3_url}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                        }}
+                                    />
+                                    <h4>Linkovi</h4>
+                                    {hupkastPlatforme?.map((hp, i) => (
+                                        <TextField
+                                            name="hupkast_linkovi"
+                                            label={hp.naziv_platforme}
+                                            variant="standard"
+                                            slotProps={{
+                                                htmlInput: {
+                                                    "data-platformaid":
+                                                        hp.platformaid,
+                                                },
+                                            }}
+                                            onChange={(event) =>
+                                                handleLinkoviChange(i, event)
+                                            }
+                                            fullWidth
+                                            sx={{ mt: 1 }}
+                                            key={i}
+                                        />
+                                    ))}
+                                    <hr />
+                                </Box>
+                            ) : (
+                                ""
                             )}
-                        />
-
-                        <Autocomplete
-                            name="autori"
-                            options={optionsAutori}
-                            multiple
-                            value={dbAutori}
-                            onChange={handleAutoriChange}
-                            sx={{ mb: 2 }}
-                            renderInput={(params) => (
+                            <FormControl fullWidth sx={{ mb: 3 }}>
                                 <TextField
-                                    {...params}
+                                    name="naslov"
+                                    label="Naslov"
                                     variant="standard"
-                                    label="Autori"
+                                    value={formData.naslov}
+                                    onChange={handleChange}
                                     fullWidth
-                                    style={{ fontSize: "1.2rem" }}
                                 />
-                            )}
-                        />
-
-                        <Autocomplete
-                            name="predstave"
-                            options={optionsPredstave}
-                            multiple
-                            value={dbPredstave}
-                            onChange={handlePredstaveChange}
-                            sx={{ mb: 2 }}
-                            renderInput={(params) => (
+                            </FormControl>
+                            <FormControl fullWidth sx={{ mb: 3 }}>
                                 <TextField
-                                    {...params}
+                                    name="slug"
+                                    label="Slug"
                                     variant="standard"
-                                    label="Predstave"
+                                    value={formData.slug}
+                                    onChange={handleChange}
                                     fullWidth
-                                    style={{ fontSize: "1.2rem" }}
                                 />
-                            )}
-                        />
+                            </FormControl>
+                            <FormControl fullWidth sx={{ mb: 3 }}>
+                                <FormLabel>Tekst foto</FormLabel>
+                                <input
+                                    type="file"
+                                    accept="image/*"
+                                    onChange={handleTekstPhoto}
+                                />
+                            </FormControl>
 
-                        <FormControl
-                            fullWidth
-                            variant="outlined"
-                            sx={{ mb: 2 }}
-                        >
+                            <Form.Group className="form-group mb-3">
+                                <Form.Label>Uvod</Form.Label>
+                                <br />
+                                <Editor
+                                    name="uvod"
+                                    onInit={(_evt, editor) =>
+                                        (editorUvod.current = editor)
+                                    }
+                                    value={editorUvod.content}
+                                    onEditorChange={(content) =>
+                                        handleEditorUvodChange(
+                                            content,
+                                            "editorUvod"
+                                        )
+                                    }
+                                    apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
+                                    init={{
+                                        height: 200,
+                                        menubar: false,
+                                        toolbar:
+                                            "undo redo | bold italic underline strikethrough | removeformat",
+                                    }}
+                                />
+                            </Form.Group>
+                            <Form.Group className="form-group mb-3">
+                                <Form.Label>Tekst</Form.Label>
+                                <br />
+                                <Editor
+                                    name="sadrzaj"
+                                    onEditorChange={handleEditorSadrzajChange}
+                                    onInit={(_evt, editor2) =>
+                                        (editorSadrzaj.current = editor2)
+                                    }
+                                    value={editorSadrzaj.content}
+                                    apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
+                                    init={{
+                                        height: 700,
+                                        menubar: false,
+                                        automatic_uploads: true,
+                                        plugins: "code image link lists",
+                                        toolbar1:
+                                            "code | undo redo | styles fontsize | numlist bullist | blockquote  | paste pastetext | selectall",
+                                        toolbar2:
+                                            "formatSelect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | indent outdent | link unlink | forecolor backcolor hilitecolor | image  | removeformat ",
+                                        images_upload_url:
+                                            "http://127.0.0.1:8000/admin/uploadImage",
+                                        automatic_uploads: true,
+                                        images_reuse_filename: true,
+                                        images_upload_handler:
+                                            handleImageUpload,
+                                    }}
+                                />
+                            </Form.Group>
+
                             <Autocomplete
-                                name="pozorista"
-                                options={optionsPozorista}
-                                multiple
-                                value={dbPozorista}
-                                onChange={handlePozoristaChange}
+                                name="festival"
+                                options={optionsFestivali}
+                                value={dbFestival}
+                                onChange={handleFestivalChange}
+                                sx={{ mb: 2 }}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
                                         variant="standard"
-                                        label="Pozorista"
+                                        label="Festivali"
                                         fullWidth
                                         style={{ fontSize: "1.2rem" }}
                                     />
                                 )}
                             />
-                        </FormControl>
 
-                        <Autocomplete
-                            name="tagovi"
-                            options={optionsTagovi}
-                            multiple
-                            value={dbTagovi}
-                            onChange={handleTagoviChange}
-                            sx={{ mb: 2 }}
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Tagovi"
-                                    fullWidth
-                                    style={{ fontSize: "1.2rem" }}
+                            <Autocomplete
+                                name="autori"
+                                options={optionsAutori}
+                                multiple
+                                value={dbAutori}
+                                onChange={handleAutoriChange}
+                                sx={{ mb: 2 }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Autori"
+                                        fullWidth
+                                        style={{ fontSize: "1.2rem" }}
+                                    />
+                                )}
+                            />
+
+                            <Autocomplete
+                                name="predstave"
+                                options={optionsPredstave}
+                                multiple
+                                value={dbPredstave}
+                                onChange={handlePredstaveChange}
+                                sx={{ mb: 2 }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Predstave"
+                                        fullWidth
+                                        style={{ fontSize: "1.2rem" }}
+                                    />
+                                )}
+                            />
+
+                            <FormControl
+                                fullWidth
+                                variant="outlined"
+                                sx={{ mb: 2 }}
+                            >
+                                <Autocomplete
+                                    name="pozorista"
+                                    options={optionsPozorista}
+                                    multiple
+                                    value={dbPozorista}
+                                    onChange={handlePozoristaChange}
+                                    renderInput={(params) => (
+                                        <TextField
+                                            {...params}
+                                            variant="standard"
+                                            label="Pozorista"
+                                            fullWidth
+                                            style={{ fontSize: "1.2rem" }}
+                                        />
+                                    )}
                                 />
-                            )}
-                        />
+                            </FormControl>
 
-                        {/* <Select name='tagovi' options={optionsTagovi} isMulti={true} onChange={handleTagoviChange} value={dbTagovi} isSearchable={true} /> */}
+                            <Autocomplete
+                                name="tagovi"
+                                options={optionsTagovi}
+                                multiple
+                                value={dbTagovi}
+                                onChange={handleTagoviChange}
+                                sx={{ mb: 2 }}
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Tagovi"
+                                        fullWidth
+                                        style={{ fontSize: "1.2rem" }}
+                                    />
+                                )}
+                            />
 
-                        <Button
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            onClick={handleSubmit}
-                        >
-                            Submit
-                        </Button>
-                    </Form>
+                            {/* <Select name='tagovi' options={optionsTagovi} isMulti={true} onChange={handleTagoviChange} value={dbTagovi} isSearchable={true} /> */}
+
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="contained"
+                                onClick={handleSubmit}
+                            >
+                                Submit
+                            </Button>
+                        </Form>
+                    )}
                 </div>
 
                 <div className="col-md-2"></div>

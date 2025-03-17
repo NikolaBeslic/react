@@ -1,5 +1,6 @@
 import { Button, Paper } from "@mui/material";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import AddIcon from "@mui/icons-material/Add";
 import axiosClient from "../../../utils/axios";
 import { useEffect, useState } from "react";
 import moment from "moment";
@@ -9,44 +10,25 @@ import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import toast from "react-hot-toast";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
-export default function HuPkastPage() {
-    const [allHupkast, setAllHupkast] = useState([]);
+export default function HuPikonPage() {
+    const [allHupikon, setAllHupikon] = useState([]);
     const router = useRouter();
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         axiosClient
-            .get("/admin/get-all-hupkast")
+            .get("/admin/get-all-hupikon")
             .then((res) => {
                 console.log(res.data);
-                setAllHupkast(res.data);
+                setLoading(false);
+                setAllHupikon(res.data);
             })
             .catch((err) => console.error(err));
     }, []);
 
-    const handleCheckRSSClick = () => {
-        setLoading(true);
-        axiosClient
-            .get("/admin/check-hupkast-rss")
-            .then((res) => {
-                console.log(res);
-                if (res.status == 200) {
-                    toast.success(res.data);
-                }
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                let errorMsg = err.response.data
-                    ? err.response.data
-                    : err.message;
-                toast.error(errorMsg);
-                setLoading(false);
-            });
-    };
-
-    const onEditButtonClick = (e, paramsd) => {
-        router.push(`/admin/hupkast/create?tekstid=${paramsd.id}`);
+    const onEditButtonClick = (e, params) => {
+        router.push(`/admin/hupikon/create?tekstid=${params.id}`);
     };
 
     /* data grid stuff */
@@ -89,30 +71,28 @@ export default function HuPkastPage() {
     ];
 
     const rows = new Array();
-    allHupkast.map((hupkastSingle) => {
+    allHupikon.map((hupikon) => {
         rows.push({
-            id: hupkastSingle.tekstid,
-            naslov: hupkastSingle.naslov,
-            published_at: moment(hupkastSingle.published_at).format(
-                "DD.MM.YYYY"
-            ),
+            id: hupikon.tekstid,
+            naslov: hupikon.naslov,
+            published_at: moment(hupikon.published_at).format("DD.MM.YYYY"),
         });
     });
 
     return (
         <>
-            <AdminHeader metaTitle="HuPkast" />
-            <h1>HuPkast</h1>
+            <AdminHeader metaTitle="HuPikon" />
+            <h1>HuPikon</h1>
             <div className="container">
-                <Button variant="contained" onClick={handleCheckRSSClick}>
-                    Check RSS
+                <Button
+                    variant="contained"
+                    color="primary"
+                    startIcon={<AddIcon />}
+                >
+                    <Link href="/admin/hupikon/create">Dodaj novi hupikon</Link>
                 </Button>
 
-                <Button variant="contained" type="secondary" color="inherit">
-                    <Link href="/admin/hupkast/create">Dodaj nove epizode</Link>
-                </Button>
-
-                <Paper sx={{ height: 800, width: "100%" }}>
+                <Paper sx={{ height: 800, width: "100%", mt: 2 }}>
                     <DataGrid
                         rows={rows}
                         columns={columns}

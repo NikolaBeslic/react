@@ -15,7 +15,7 @@ import {
     TextField,
 } from "@mui/material";
 
-const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
+const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
         kategorijaid: 0,
@@ -73,6 +73,15 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
                         sezona: res.data.hupkast?.sezona,
                         epizoda: res.data.hupkast?.epizoda,
                         mp3_url: res.data.hupkast?.mp3_url,
+                        hupkast_linkovi: res.data.hupkast?.linkovi.map((hl) => {
+                            hl.pivot.platformaid, hl.pivot.hupkast_url;
+                        }),
+
+                        naslov_hupikona: res.data.hupikon?.naslov_hupikona,
+                        sagovornik: res.data.hupikon?.sagovornik,
+                        zanimanje_sagovornika: res.data.hupikon?.sagovornik,
+                        mesto_stanovanja: res.data.hupikon?.mesto_stanovanja,
+                        biografija: res.data.hupikon?.biografija,
                     });
                     editorSadrzaj.content = res.data.sadrzaj;
                     editorUvod.content = res.data.uvod;
@@ -116,6 +125,14 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
                     //         epizoda: res.data.hupkast.epizoda,
                     //         mp3_url: res.data.hupkast.mp3_url,
                     //     });
+                    if (res.data.hupkast?.linkovi) {
+                        setLinkovi(
+                            res.data.hupkast.linkovi.map((hl) => ({
+                                platformaid: hl.pivot.platformaid,
+                                hupkast_url: hl.pivot.hupkast_url,
+                            }))
+                        );
+                    }
                     setLoading(false);
                 })
                 .catch((error) => {
@@ -148,6 +165,18 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
                 hupkast_linkovi: [],
             });
         }
+        if (addHuPikon) {
+            setFormData({
+                ...formData,
+                kategorijaid: 5,
+                naslov_hupikona: "",
+                sagovornik: "",
+                zanimanje_sagovornika: "",
+                mesto_stanovanja: "",
+                biografija: "",
+            });
+        }
+
         axiosClient
             .get("/get-autori")
             .then((res) => {
@@ -313,9 +342,9 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
             console.log(value);
         });
         console.log(formData);
-        debugger;
         let storeUrl = "/admin/create-tekst";
         if (addHuPkast) storeUrl = "/admin/hupkast-store";
+        if (addHuPikon) storeUrl = "/admin/hupikon-store";
         if (formData.tekstid) {
             axiosClient
                 .put("/update-tekst", formData)
@@ -361,12 +390,24 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
 
     const handleLinkoviChange = (index, event) => {
         const newLinkovi = [...linkovi];
-        console.log(event.target.getAttribute("data-platformaid"));
-        newLinkovi[index] = {
-            platformaid: event.target.getAttribute("data-platformaid"),
-            link: event.target.value,
-        };
+        debugger;
+        const platformaid = parseInt(
+            event.target.getAttribute("data-platformaid")
+        );
+        const matchedElement = newLinkovi.find(
+            (obj) => obj?.platformaid == platformaid
+        );
+        if (matchedElement) {
+            matchedElement.hupkast_url = event.target.value;
+            console.log(newLinkovi);
+        } else {
+            newLinkovi.push({
+                platformaid: platformaid,
+                hupkast_url: event.target.value,
+            });
+        }
         setLinkovi(newLinkovi);
+        setFormData({ ...formData, hupkast_linkovi: newLinkovi });
     };
 
     return (
@@ -433,9 +474,17 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
                                                     "data-platformaid":
                                                         hp.platformaid,
                                                 },
+                                                inputLabel: { shrink: true },
                                             }}
                                             onChange={(event) =>
                                                 handleLinkoviChange(i, event)
+                                            }
+                                            value={
+                                                linkovi.find(
+                                                    (obj) =>
+                                                        obj?.platformaid ==
+                                                        hp.platformaid
+                                                )?.hupkast_url
                                             }
                                             fullWidth
                                             sx={{ mt: 1 }}
@@ -447,6 +496,74 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast }) => {
                             ) : (
                                 ""
                             )}
+                            {addHuPikon ? (
+                                <Box sx={{ flexGrow: 1, my: 3 }}>
+                                    <TextField
+                                        name="naslov_hupikona"
+                                        label="Naslov HuPikona (izjava)"
+                                        variant="standard"
+                                        value={formData.naslov_hupikona}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                        }}
+                                    />
+                                    <TextField
+                                        name="sagovornik"
+                                        label="Sagovornik_ca"
+                                        variant="standard"
+                                        value={formData.sagovornik}
+                                        onChange={handleChange}
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                        }}
+                                        fullWidth
+                                    />
+
+                                    <TextField
+                                        name="zanimanje_sagovornika"
+                                        label="Zanimanje"
+                                        variant="standard"
+                                        value={formData.zanimanje_sagovornika}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                        }}
+                                    />
+                                    <TextField
+                                        name="mesto_stanovanja"
+                                        label="Mesto"
+                                        variant="standard"
+                                        value={formData.mesto_stanovanja}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                        }}
+                                    />
+
+                                    <TextField
+                                        name="biografija"
+                                        label="Biografija"
+                                        variant="standard"
+                                        value={formData.biografija}
+                                        onChange={handleChange}
+                                        fullWidth
+                                        rows={5}
+                                        multiline
+                                        slotProps={{
+                                            inputLabel: { shrink: true },
+                                        }}
+                                    />
+
+                                    <hr />
+                                </Box>
+                            ) : (
+                                ""
+                            )}
+
                             <FormControl fullWidth sx={{ mb: 3 }}>
                                 <TextField
                                     name="naslov"

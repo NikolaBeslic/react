@@ -7,11 +7,11 @@ export default function Page() {
     const { tekstid } = router.query;
     return (
         <>
-            <AdminHeader metaTitle="Dodaj HuPkast" />
+            <AdminHeader metaTitle="Dodaj HuPikon" />
             <TekstCreateNew
                 tekstid={tekstid}
-                addHuPkast={true}
-                addHuPikon={false}
+                addHuPkast={false}
+                addHuPikon={true}
             />
         </>
     );

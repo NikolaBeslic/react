@@ -34,3 +34,16 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+huplaravelreact-react.rar
+
+#images 
+/public/slike
+public/slike/hupkast/Hupkast 1x1 (1).png
+public/slike/hupkast/Hupkast 1x1 (2).png
+public/slike/hupkast/Hupkast 1x1 (3).png
+public/slike/hupkast/hupkast-s01-e01.png
+public/slike/hupkast/hupkast-s02-e01.jpg
+public/slike/hupkast/Hupkast9.png
+public/slike/hupkast/Hupkast10.png
+public/slike/hupkast/Hupkast11.jpg
+public/slike/hupkast/Hupkast12.png

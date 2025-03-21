@@ -21,6 +21,7 @@
     "@mui/icons-material": "^6.2.0",
     "@mui/material": "^6.2.0",
     "@mui/x-data-grid": "^7.23.3",
+    "@mui/x-date-pickers": "^7.28.0",
     "@tinymce/tinymce-react": "^5.0.1",
     "axios": "^1.6.5",
     "bootstrap": "^5.3.1",

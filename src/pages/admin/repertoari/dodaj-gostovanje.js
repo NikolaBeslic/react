@@ -1,6 +1,7 @@
-import { useRouter } from "next/router";
+import moment from "moment";
+import { toast } from "react-hot-toast";
 import { useEffect, useState } from "react";
-import axiosClient from "../../../../utils/axios";
+import axiosClient from "../../../utils/axios";
 import {
     Autocomplete,
     Box,
@@ -9,87 +10,101 @@ import {
     Paper,
     TextField,
 } from "@mui/material";
+import { Spinner } from "react-bootstrap";
+import { useStateContext } from "../../../contexts/StateContext";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import moment from "moment";
-import { toast } from "react-hot-toast";
-import { useStateContext } from "../../../../contexts/StateContext";
-import { Spinner } from "react-bootstrap";
 import { DataGrid } from "@mui/x-data-grid";
 
-export default function RepertoarPozoristaCreatePage() {
-    const router = useRouter();
+export default function DodajGostovanjePage() {
     const { isLoading, showLoading, hideLoading } = useStateContext();
-    const { pozoristeSlug } = router.query;
-    const [pozoriste, setPozoriste] = useState([]);
-    const [igranja, setIgranja] = useState([]);
-
-    const [dbPredstave, setDbPredstave] = useState([]);
-    const [dbScene, setDbScene] = useState([]);
-
-    const [datum, setDatum] = useState(null);
-    const [vreme, setVreme] = useState(null);
 
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
-        scenadid: null,
+        scenaid: null,
         datum: null,
         vreme: null,
+        gostovanje: true,
     });
+    const [dbPredstave, setDbPredstave] = useState([]);
+    const [dbPozorista, setDbPozorista] = useState([]);
+    const [dbScene, setDbScene] = useState([]);
+
+    const [sceneZaDropdown, setSceneZaDropdown] = useState(dbScene);
+
+    const [datum, setDatum] = useState(null);
+    const [vreme, setVreme] = useState(null);
+
+    const [igranja, setIgranja] = useState([]);
 
     useEffect(() => {
-        if (pozoristeSlug) {
-            axiosClient
-                .get(`/admin/pozoriste-with-predstave/${pozoristeSlug}`)
-                .then((res) => {
-                    console.log(res.data);
-
-                    setPozoriste(res.data);
-                    fetchIgranja(res.data.pozoristeid);
-                    setFormData({
-                        ...formData,
-                        pozoristeid: res.data.pozoristeid,
-                    });
-                    if (res.data.predstave)
-                        setDbPredstave(
-                            res.data.predstave.map((pred) => ({
-                                value: pred.predstavaid,
-                                label: pred.naziv_predstave,
-                            }))
-                        );
-                    if (res.data.scene)
-                        setDbScene(
-                            res.data.scene.map((scena) => ({
-                                value: scena.scenaid,
-                                label: scena.naziv_scene,
-                            }))
-                        );
-                })
-                .catch((err) => console.error(err));
-        }
-    }, [pozoristeSlug]);
+        showLoading();
+        axiosClient
+            .get("/admin/get-all-for-gostovanja")
+            .then((res) => {
+                console.log(res.data);
+                setDbPredstave(
+                    res.data.predstave.map((pred) => ({
+                        value: pred.predstavaid,
+                        label: pred.naziv_predstave,
+                    }))
+                );
+                setDbPozorista(
+                    res.data.pozorista.map((poz) => ({
+                        value: poz.pozoristeid,
+                        label: poz.naziv_pozorista,
+                    }))
+                );
+                setDbScene(
+                    res.data.scene.map((scena) => ({
+                        value: scena.scenaid,
+                        label: scena.naziv_scene,
+                        pozoristeid: scena.pozoristeid,
+                    }))
+                );
+                setIgranja(res.data.igranja);
+                hideLoading();
+            })
+            .catch((err) => console.error(err));
+    }, []);
 
     const handlePredstavaChange = (event, selectedPredstava) => {
-        setFormData({ ...formData, predstavaid: selectedPredstava.value });
+        setFormData({ ...formData, predstavaid: selectedPredstava?.value });
+    };
+
+    const handlePozoristeChange = (event, selectedPozoriste) => {
+        debugger;
+        setFormData({ ...formData, pozoristeid: selectedPozoriste?.value });
+        setSceneZaDropdown(
+            dbScene.filter(
+                (scen) => scen.pozoristeid == selectedPozoriste?.value
+            )
+        );
     };
 
     const handleScenaChange = (event, selectedScena) => {
+        debugger;
         setFormData({ ...formData, scenaid: selectedScena.value });
     };
 
     const handleSubmit = () => {
+        console.log(formData);
+
         showLoading();
         formData.datum = moment(datum).format("YYYY-MM-DD");
         formData.vreme = moment(vreme).format("HH:mm");
+
+        console.log(formData);
+
         axiosClient
             .post("/admin/igranje-store", formData)
             .then((res) => {
                 debugger;
                 console.log(res.data);
-                setIgranja(res.data);
+
                 setFormData({
                     pozoristeid: null,
                     predstavaid: null,
@@ -97,18 +112,10 @@ export default function RepertoarPozoristaCreatePage() {
                     datum: null,
                     vreme: null,
                 }); // TO DO reset form values
+                setIgranja(res.data);
                 hideLoading();
                 toast.success("Uspesno dodato izvodjenje");
             })
-            .catch((err) => console.error(err));
-
-        console.log(formData);
-    };
-
-    const fetchIgranja = (pozoristeid) => {
-        axiosClient
-            .get(`/admin/get-igranja-pozorista/${pozoristeid}`)
-            .then((res) => setIgranja(res.data))
             .catch((err) => console.error(err));
     };
 
@@ -140,7 +147,7 @@ export default function RepertoarPozoristaCreatePage() {
 
     return (
         <>
-            <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
+            <h1>Dodaj gostovanje</h1>
             <div className="container">
                 <Box sx={{ flexGrow: 1, my: 3 }}>
                     {isLoading && (
@@ -151,6 +158,24 @@ export default function RepertoarPozoristaCreatePage() {
                         />
                     )}
                     <Grid2 container spacing={2} sx={{ width: 500, mb: 2 }}>
+                        <Autocomplete
+                            name="pozorista"
+                            options={dbPozorista}
+                            onChange={handlePozoristeChange}
+                            sx={{ mb: 2 }}
+                            aria-required
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                    label="Izaberi pozoriste"
+                                    style={{
+                                        fontSize: "1.2rem",
+                                        width: "400px",
+                                    }}
+                                />
+                            )}
+                        />
                         <Autocomplete
                             name="predstave"
                             options={dbPredstave}
@@ -169,9 +194,10 @@ export default function RepertoarPozoristaCreatePage() {
                                 />
                             )}
                         />
+
                         <Autocomplete
-                            name="scena"
-                            options={dbScene}
+                            name="scene"
+                            options={sceneZaDropdown}
                             onChange={handleScenaChange}
                             sx={{ mb: 2 }}
                             aria-required

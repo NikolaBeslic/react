@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
 import { Button, Paper } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/router";
@@ -58,14 +58,6 @@ export default function RepertoariPage() {
             align: "center",
             renderCell: (params) => <AddButton params={params} />,
         },
-        {
-            field: "edit",
-            headerName: "",
-            width: 200,
-            flex: 1,
-            align: "center",
-            renderCell: (params) => <EditButton params={params} />,
-        },
     ];
     const rows = new Array();
 
@@ -92,6 +84,15 @@ export default function RepertoariPage() {
         <>
             <h1>Repertoari</h1>
             <div className="container">
+                <Button
+                    href="/admin/repertoari/dodaj-gostovanje"
+                    variant="contained"
+                    startIcon={<AddIcon />}
+                    className="mb-3"
+                    size="small"
+                >
+                    Dodaj gostovanje
+                </Button>
                 <Paper sx={{ height: 800, width: "100%" }}>
                     <DataGrid
                         rows={rows}
@@ -99,6 +100,32 @@ export default function RepertoariPage() {
                         sx={{ border: 0 }}
                         autoPageSize
                         loading={loading}
+                        slots={{ toolbar: GridToolbar }}
+                        disableColumnFilter
+                        disableColumnSelector
+                        disableDensitySelector
+                        slotProps={{
+                            pagination: {
+                                showFirstButton: true,
+                                showLastButton: true,
+                            },
+                            toolbar: {
+                                showQuickFilter: true,
+                            },
+                        }}
+                        initialState={{
+                            sorting: {
+                                sortModel: [
+                                    { field: "naziv_pozorista", sort: "asc" },
+                                ],
+                            },
+                            filter: {
+                                filterModel: {
+                                    items: [],
+                                    quickFilterValues: [],
+                                },
+                            },
+                        }}
                     />
                 </Paper>
             </div>

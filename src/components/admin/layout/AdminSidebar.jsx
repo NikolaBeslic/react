@@ -152,7 +152,12 @@ function AdminSidebar() {
                         <ListItemText primary="Kategorije" />
                     </ListItemButton>
                 </ListItem>
-                <ListItem key={999} disablePadding>
+                <ListItem
+                    key={999}
+                    disablePadding
+                    component={Link}
+                    href="/admin/gradovi"
+                >
                     <ListItemButton>
                         <ListItemIcon>
                             <LocationCityOutlinedIcon />

@@ -1,6 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "../styles/admin.css";
-import "../styles/style.css";
+// import "../styles/style.css";
 import Script from "next/script";
 import { ContextProvider, useStateContext } from "../contexts/StateContext";
 import { useEffect, useState } from "react";

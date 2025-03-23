@@ -23,7 +23,7 @@ const PredstaveCreate = ({ predstavaid }) => {
         uloge: "",
         pozorista: [],
     });
-
+    const [errors, setErrors] = useState({});
     const [svaPozorista, setSvaPozorista] = useState([]);
     const [dbPozorista, setDbPozorista] = useState([]);
 
@@ -40,21 +40,23 @@ const PredstaveCreate = ({ predstavaid }) => {
     }, []);
 
     useEffect(() => {
-        axiosClient
-            .get(`/admin/get-single-predstava/${predstavaid}`)
-            .then((res) => {
-                setFormData(res.data);
-                editorOpis.content = res.data.opis;
-                editorUloge.content = res.data.uloge;
-                if (res.data.pozorista)
-                    setDbPozorista(
-                        res.data.pozorista.map((poz) => ({
-                            value: poz.pozoristeid,
-                            label: poz.naziv_pozorista,
-                        }))
-                    );
-            })
-            .catch((err) => console.error(err));
+        if (predstavaid) {
+            axiosClient
+                .get(`/admin/get-single-predstava/${predstavaid}`)
+                .then((res) => {
+                    setFormData(res.data);
+                    editorOpis.content = res.data.opis;
+                    editorUloge.content = res.data.uloge;
+                    if (res.data.pozorista)
+                        setDbPozorista(
+                            res.data.pozorista.map((poz) => ({
+                                value: poz.pozoristeid,
+                                label: poz.naziv_pozorista,
+                            }))
+                        );
+                })
+                .catch((err) => console.error(err));
+        }
     }, [predstavaid]);
 
     const handleChange = (e) => {
@@ -105,11 +107,13 @@ const PredstaveCreate = ({ predstavaid }) => {
                 .post("/admin/create-predstava", formData)
                 .then((res) => {
                     console.log(res);
+                    setErrors({});
                     toast.success("Predstava uspesno dodata");
                 })
                 .catch((error) => {
                     console.error(error);
                     console.log(error.response.data.errors);
+                    setErrors(error.response.data.errors);
                 });
         }
     };
@@ -151,6 +155,11 @@ const PredstaveCreate = ({ predstavaid }) => {
                         value={formData.naziv_predstave}
                         onChange={handleChange}
                     />
+                    {errors?.naziv_predstave && (
+                        <span className="text-danger">
+                            {errors.naziv_predstave}
+                        </span>
+                    )}
                 </FormControl>
                 <FormControl fullWidth>
                     <TextField
@@ -160,6 +169,11 @@ const PredstaveCreate = ({ predstavaid }) => {
                         value={formData.predstava_slug}
                         onChange={handleChange}
                     />
+                    {errors?.predstava_slug && (
+                        <span className="text-danger">
+                            {errors.predstava_slug}
+                        </span>
+                    )}
                 </FormControl>
                 <FormControl fullWidth>
                     <TextField

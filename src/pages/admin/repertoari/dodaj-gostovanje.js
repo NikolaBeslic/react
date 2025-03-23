@@ -20,7 +20,7 @@ import { DataGrid } from "@mui/x-data-grid";
 
 export default function DodajGostovanjePage() {
     const { isLoading, showLoading, hideLoading } = useStateContext();
-
+    const [errors, setErrors] = useState({});
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
@@ -116,7 +116,12 @@ export default function DodajGostovanjePage() {
                 hideLoading();
                 toast.success("Uspesno dodato izvodjenje");
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                console.error(err);
+                toast.error(err.response.data);
+                setErrors(err.response.data.errors);
+                hideLoading();
+            });
     };
 
     const columns = [

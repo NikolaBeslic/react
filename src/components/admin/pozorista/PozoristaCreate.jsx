@@ -14,6 +14,7 @@ import { toast } from "react-hot-toast";
 
 const PozoristaCreate = ({ pozoristeid }) => {
     const [gradovi, setGradovi] = useState([]);
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         naziv_pozorista: "",
         pozoriste_slug: "",
@@ -81,6 +82,7 @@ const PozoristaCreate = ({ pozoristeid }) => {
                 .post("/admin/create-pozoriste", formData)
                 .then((res) => {
                     console.log(res);
+                    setErrors({});
                     res.status == "ok"
                         ? toast.success("Uspesno dodato novo pozoriste")
                         : "";
@@ -88,6 +90,7 @@ const PozoristaCreate = ({ pozoristeid }) => {
                 .catch((error) => {
                     console.error(error);
                     console.log(error.response.data.errors);
+                    setErrors(error.response.data.errors);
                 });
         }
     };
@@ -120,6 +123,11 @@ const PozoristaCreate = ({ pozoristeid }) => {
                     value={formData.naziv_pozorista}
                     onChange={handleChange}
                 />
+                {errors?.naziv_pozorista && (
+                    <span className="text-danger">
+                        {errors.naziv_pozorista}
+                    </span>
+                )}
             </FormControl>
 
             <FormControl fullWidth>
@@ -130,6 +138,9 @@ const PozoristaCreate = ({ pozoristeid }) => {
                     value={formData.pozoriste_slug}
                     onChange={handleChange}
                 />
+                {errors?.pozoriste_slug && (
+                    <span className="text-danger">{errors.pozoriste_slug}</span>
+                )}
             </FormControl>
             <FormControl fullWidth>
                 <TextField

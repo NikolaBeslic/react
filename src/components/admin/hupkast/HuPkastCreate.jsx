@@ -1,7 +1,8 @@
-import { Box, FormControl, Grid, Grid2, Stack, TextField } from "@mui/material";
+import { Box, FormControl, Grid2, TextField } from "@mui/material";
 import { useState } from "react";
 
 const HuPkastCreate = () => {
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         sezona: 1,
         epizoda: 1,

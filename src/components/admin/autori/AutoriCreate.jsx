@@ -17,6 +17,7 @@ import { toast } from "react-hot-toast";
 const AutoriCreate = ({ autorid }) => {
     const [gradovi, setGradovi] = useState([]);
     const [autorImage, setAutorImage] = useState(null);
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         ime_autora: "",
         autor_slug: "",
@@ -76,11 +77,13 @@ const AutoriCreate = ({ autorid }) => {
                 .put("/admin/update-autor", formData)
                 .then((res) => {
                     console.log(res);
+                    setErrors({});
                     toast.success("Uspešno sačuvane izmene");
                 })
                 .catch((error) => {
                     console.error(error);
                     console.log(error.response.data.errors);
+                    setErrors(error.response.data.errors);
                 });
         } else {
             axiosClient
@@ -91,11 +94,13 @@ const AutoriCreate = ({ autorid }) => {
                 })
                 .then((res) => {
                     console.log(res);
+                    setErrors({});
                     toast.success("Uspesno dodat novi autor");
                 })
                 .catch((error) => {
                     console.error(error);
                     console.log(error.response.data.errors);
+                    setErrors(error.response.data.errors);
                 });
         }
     };
@@ -129,6 +134,9 @@ const AutoriCreate = ({ autorid }) => {
                         value={formData.ime_autora}
                         onChange={handleChange}
                     />
+                    {errors?.ime_autora && (
+                        <span className="text-danger">{errors.ime_autora}</span>
+                    )}
                 </FormControl>
                 <FormControl fullWidth>
                     <TextField
@@ -138,6 +146,9 @@ const AutoriCreate = ({ autorid }) => {
                         value={formData.autor_slug}
                         onChange={handleChange}
                     />
+                    {errors?.autor_slug && (
+                        <span className="text-danger">{errors.autor_slug}</span>
+                    )}
                 </FormControl>
                 <FormControl fullWidth>
                     <TextField
@@ -147,6 +158,9 @@ const AutoriCreate = ({ autorid }) => {
                         value={formData.pozicija}
                         onChange={handleChange}
                     />
+                    {errors?.pozicija && (
+                        <span className="text-danger">{errors.pozicija}</span>
+                    )}
                 </FormControl>
                 <FormControl fullWidth>
                     <TextField

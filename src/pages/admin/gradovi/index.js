@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 
 export default function GradoviPage() {
     const [gradovi, setGradovi] = useState([]);
+    const [errors, setErrors] = useState({});
     const [nazivGrada, setNazivGrada] = useState("");
 
     useEffect(() => {
@@ -30,9 +31,13 @@ export default function GradoviPage() {
                 console.log(res.data);
                 setGradovi(res.data);
                 setNazivGrada("");
+                setErrors({});
                 toast.success("Uspesno dodat grad");
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                console.error(err);
+                setErrors(err.response.data.errors);
+            });
     };
 
     return (
@@ -47,6 +52,9 @@ export default function GradoviPage() {
                     value={nazivGrada}
                     sx={{ width: "300px", mr: 3 }}
                 />
+                {errors?.naziv_grada && (
+                    <span className="text-danger">{errors.naziv_grada}</span>
+                )}
                 <Button
                     onClick={handleGradSave}
                     variant="contained"

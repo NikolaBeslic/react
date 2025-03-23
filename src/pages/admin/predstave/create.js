@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import PredstaveCreate from "../../../components/admin/PredstaveCreate/PredstaveCreate";
+import PredstaveCreate from "../../../components/admin/predstave/PredstaveCreate";
 
 export default function Page() {
     const router = useRouter();

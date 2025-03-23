@@ -23,6 +23,7 @@ export default function RepertoarPozoristaCreatePage() {
     const router = useRouter();
     const { isLoading, showLoading, hideLoading } = useStateContext();
     const { pozoristeSlug } = router.query;
+    const [errors, setErrors] = useState({});
     const [pozoriste, setPozoriste] = useState([]);
     const [igranja, setIgranja] = useState([]);
 
@@ -87,7 +88,6 @@ export default function RepertoarPozoristaCreatePage() {
         axiosClient
             .post("/admin/igranje-store", formData)
             .then((res) => {
-                debugger;
                 console.log(res.data);
                 setIgranja(res.data);
                 setFormData({
@@ -100,7 +100,12 @@ export default function RepertoarPozoristaCreatePage() {
                 hideLoading();
                 toast.success("Uspesno dodato izvodjenje");
             })
-            .catch((err) => console.error(err));
+            .catch((err) => {
+                console.error(err);
+                toast.error(err.response.data);
+                setErrors(err.response.data.errors);
+                hideLoading();
+            });
 
         console.log(formData);
     };

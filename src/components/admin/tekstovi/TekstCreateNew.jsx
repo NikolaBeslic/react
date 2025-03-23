@@ -17,6 +17,7 @@ import {
 
 const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const [loading, setLoading] = useState(false);
+    const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         kategorijaid: 0,
         naslov: "",
@@ -351,7 +352,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                 .then((res) => console.log(res))
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data.errors);
+                    console.log(error.response.data);
                 });
         } else {
             axiosClient
@@ -361,12 +362,14 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                     },
                 })
                 .then((res) => {
+                    setErrors({});
                     console.log(res);
                     toast.success("Uspesno dodat tekst");
                 })
                 .catch((error) => {
+                    console.error(error.response.data.errors);
+                    setErrors(error.response.data.errors);
                     console.error(error);
-                    console.log(error.response.data.errors);
                 });
         }
     };
@@ -573,6 +576,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                     onChange={handleChange}
                                     fullWidth
                                 />
+                                {errors?.naslov && (
+                                    <span className="text-danger">
+                                        {errors.naslov}
+                                    </span>
+                                )}
                             </FormControl>
                             <FormControl fullWidth sx={{ mb: 3 }}>
                                 <TextField
@@ -583,6 +591,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                     onChange={handleChange}
                                     fullWidth
                                 />
+                                {errors?.slug && (
+                                    <span className="text-danger">
+                                        {errors.slug}
+                                    </span>
+                                )}
                             </FormControl>
                             <FormControl fullWidth sx={{ mb: 3 }}>
                                 <FormLabel>Tekst foto</FormLabel>
@@ -591,6 +604,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                     accept="image/*"
                                     onChange={handleTekstPhoto}
                                 />
+                                {errors?.slika && (
+                                    <span className="text-danger">
+                                        {errors.slika}
+                                    </span>
+                                )}
                             </FormControl>
 
                             <Form.Group className="form-group mb-3">
@@ -616,6 +634,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                             "undo redo | bold italic underline strikethrough | removeformat",
                                     }}
                                 />
+                                {errors?.uvod && (
+                                    <span className="text-danger">
+                                        {errors.uvod}
+                                    </span>
+                                )}
                             </Form.Group>
                             <Form.Group className="form-group mb-3">
                                 <Form.Label>Tekst</Form.Label>

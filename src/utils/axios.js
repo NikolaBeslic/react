@@ -14,7 +14,10 @@ axiosClient.interceptors.response.use(
                 error.response.status === 404
             )
                 Router.push("/admin/404");
-            if (error.response.status === 404) {
+            if (
+                error.response.status === 404 &&
+                !error.request.responseURL.includes("admin")
+            ) {
                 Router.push("/404");
             }
             if (error.response.status === 401) {

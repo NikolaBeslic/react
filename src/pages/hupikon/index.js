@@ -4,7 +4,7 @@ import FooterOne from "../../components/footer/FooterOne";
 import HeaderOne from "../../components/header/HeaderOne";
 import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
-import { Spinner } from "react-bootstrap";
+import { Breadcrumb, Spinner } from "react-bootstrap";
 import WidgetAd from "../../components/widget/WidgetAd";
 import WidgetNewsletter from "../../components/widget/WidgetNewsletter";
 import WidgetInstagram from "../../components/widget/WidgetInstagram";
@@ -14,21 +14,26 @@ import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 export default function Hupikon() {
     const { isLoading, showLoading, hideLoading } = useStateContext();
     const [hupikon, setHupikon] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(0);
     useEffect(() => {
         showLoading();
         axiosClient
-            .get("/get-hupikon")
+            .get(`/get-hupikon?page=${currentPage}`)
             .then((res) => {
                 console.log(res.data);
-                setHupikon(res.data);
+                setHupikon((prevHuPikon) => [...prevHuPikon, ...res.data.data]);
+
+                setTotalPages(res.data.last_page);
                 hideLoading();
             })
             .catch((error) => console.error(error));
-    }, []);
+    }, [currentPage]);
 
     return (
         <>
             <HeadMeta metaTitle="HuPikon" />
+            <Breadcrumb aPage="HuPikon" />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">
@@ -42,13 +47,13 @@ export default function Hupikon() {
                     </div>
                 </div>
             </div>
-            <div className="post-single-wrapper p-t-xs-60">
+            <div className="random-posts section-gap">
                 <div className="container">
                     <div className="row">
                         <div className="col-lg-8">
                             <main className="site-main">
                                 <article className="post-details">
-                                    <div className="row gutter-40">
+                                    <div className="row">
                                         {isLoading && (
                                             <Spinner
                                                 animation="border"
@@ -83,6 +88,16 @@ export default function Hupikon() {
                                                 </Masonry>
                                             </ResponsiveMasonry>
                                         </div>
+                                    </div>
+                                    <div className="load-more-posts-button-wraper">
+                                        <button
+                                            className="btn btn-primary btn-small"
+                                            onClick={() =>
+                                                setCurrentPage(currentPage + 1)
+                                            }
+                                        >
+                                            Ucitaj jos
+                                        </button>
                                     </div>
                                 </article>
                             </main>

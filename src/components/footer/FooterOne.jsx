@@ -190,22 +190,22 @@ const FooterOne = () => {
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link href="/">HuPkast</Link>
+                                        <Link href="/o-nama">O nama</Link>
                                     </li>
                                     <li>
-                                        <Link href="/">HuPikon</Link>
+                                        <Link href="/kontakt">Kontakt</Link>
                                     </li>
                                     <li>
-                                        <Link href="/">Blog</Link>
+                                        <Link href="/redakcija">Redakcija</Link>
                                     </li>
                                     <li>
-                                        <Link href="/">O nama</Link>
+                                        <Link href="/hupkast">HuPkast</Link>
                                     </li>
                                     <li>
-                                        <Link href="/">Kontakt</Link>
+                                        <Link href="/hupikon">HuPikon</Link>
                                     </li>
                                     <li>
-                                        <Link href="/">Redakcija</Link>
+                                        <Link href="/blog">Blog</Link>
                                     </li>
                                 </ul>
                                 {/* End of .footer-nav */}

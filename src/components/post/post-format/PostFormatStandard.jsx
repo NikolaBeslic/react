@@ -82,15 +82,19 @@ const PostFormatStandard = ({
                                         <hr className="m-t-xs-30 m-b-xs-30" />
                                         <Stack direction="horizontal" gap={2}>
                                             {postData.tagovi.map((tag) => (
-                                                <Badge
-                                                    pill
-                                                    bg="light"
-                                                    text="dark"
-                                                    key={tag.tagid}
+                                                <a
+                                                    href={`/tag/${tag.tag_slug}`}
                                                 >
-                                                    <i className="fa-solid fa-tag"></i>{" "}
-                                                    {tag.tag_naziv}
-                                                </Badge>
+                                                    <Badge
+                                                        pill
+                                                        bg="light"
+                                                        text="dark"
+                                                        key={tag.tagid}
+                                                    >
+                                                        <i className="fa-solid fa-tag"></i>{" "}
+                                                        {tag.tag_naziv}
+                                                    </Badge>
+                                                </a>
                                             ))}
                                         </Stack>
                                     </>

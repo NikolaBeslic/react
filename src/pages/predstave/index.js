@@ -1,8 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/StateContext";
 import HeadMeta from "../../components/elements/HeadMeta";
-import FooterOne from "../../components/footer/FooterOne";
-import HeaderOne from "../../components/header/HeaderOne";
 import axiosClient from "../../utils/axios";
 import Breadcrumb from "../../components/common/Breadcrumb";
 import { Spinner } from "react-bootstrap";
@@ -12,13 +10,16 @@ import PredstaveLayout from "../../components/post/layout/PredstaveLayout";
 import Select from "react-select";
 import WidgetPost from "../../components/widget/WidgetPost";
 import WidgetPremijere from "../../components/widget/WidgetPremijere";
+import { useRouter } from "next/router";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
     const [dbGradovi, setDbGradovi] = useState([]);
     const [dbZanrovi, setDbZanrovi] = useState([]);
     const { isLoading, showLoading, hideLoading } = useStateContext();
-
+    const router = useRouter();
+    const { zanr } = router.query;
+    const [isDbZanroviLoaded, setIsDbZanroviLoaded] = useState(false);
     const [filteredPredstave, setFilteredPredstave] = useState(predstave);
     const [selectedZanrovi, setSelectedZanrovi] = useState([]);
     const [selectedGradovi, setSelectedGradovi] = useState([]);
@@ -40,6 +41,7 @@ export default function PredstavePage() {
     ];
 
     useEffect(() => {
+        debugger;
         showLoading();
         axiosClient
             .get("/get-predstave")
@@ -74,20 +76,36 @@ export default function PredstavePage() {
                         label: zanr.naziv_zanra,
                     }))
                 );
+                setIsDbZanroviLoaded(true);
             })
             .catch((error) => console.error(error));
     }, []);
 
     useEffect(() => {
+        debugger;
+        if (zanr) {
+            console.log("Zanr " + zanr);
+            const matched = dbZanrovi.find(
+                (opt) => opt.label.toLowerCase() == zanr.toLowerCase()
+            );
+            if (matched) {
+                setSelectedZanrovi([matched]);
+            }
+        }
+    }, [zanr, isDbZanroviLoaded]);
+
+    useEffect(() => {
         showLoading();
+        debugger;
         let filteredPredstave = predstave;
         console.log("checking sel zanr after useEffect being triggred");
         console.log(selectedZanrovi);
         if (selectedZanrovi.length > 0) {
             console.log("FIlter by zanr..");
+            const selectedZanroviValues = selectedZanrovi.map((sz) => sz.value);
             filteredPredstave = filteredPredstave.filter((predstava) =>
-                predstava.zanrovi.some((zanr) =>
-                    selectedZanrovi.includes(zanr.zanrid)
+                predstava.zanrovi.some((z) =>
+                    selectedZanroviValues.includes(z.zanrid)
                 )
             );
         }
@@ -125,6 +143,7 @@ export default function PredstavePage() {
     }, [selectedZanrovi, selectedGradovi, sortBy]);
 
     const handleZanroviChange = useCallback((e) => {
+        debugger;
         const sz = e.map((obj) => obj.value);
         setSelectedZanrovi(sz);
     });
@@ -193,8 +212,10 @@ export default function PredstavePage() {
                                     name="zanrovi"
                                     placeholder="Izaberi zanrove"
                                     options={dbZanrovi}
+                                    value={selectedZanrovi}
                                     isMulti={true}
-                                    onChange={(e) => handleZanroviChange(e)}
+                                    // onChange={(e) => handleZanroviChange(e)}
+                                    onChange={setSelectedZanrovi}
                                 />
                             </div>
 

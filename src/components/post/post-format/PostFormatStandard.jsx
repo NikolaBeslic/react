@@ -84,6 +84,7 @@ const PostFormatStandard = ({
                                             {postData.tagovi.map((tag) => (
                                                 <a
                                                     href={`/tag/${tag.tag_slug}`}
+                                                    key={tag.tagid}
                                                 >
                                                     <Badge
                                                         pill

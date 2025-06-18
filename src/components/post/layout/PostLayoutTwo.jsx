@@ -1,7 +1,6 @@
 import Image from "next/legacy/image";
 import Link from "next/link";
 import moment from "moment";
-import { CategoryColor } from "../../../utils/enums";
 
 const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
     return (
@@ -10,9 +9,9 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                 postSizeMd === true ? "post-block__mid" : ""
             } ${postBgDark === true ? "post-block__on-dark-bg" : ""}`}
         >
-            <a
-                href={`${data.kategorija?.kategorija_slug}/${data.slug}`}
-                className="align-self-center"
+            <Link
+                href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                title={data.naslov}
             >
                 <Image
                     src={data.tekst_photo}
@@ -22,7 +21,7 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                     placeholder="blur"
                     blurDataURL="/images/placeholder.png"
                 />
-            </a>
+            </Link>
             <div className="media-body">
                 <div className="post-cat-group m-b-xs-10">
                     <a
@@ -44,14 +43,14 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                     </Link>
                 </h3>
                 {postSizeMd === true ? (
-                    <p
+                    <div
                         className="mid"
                         dangerouslySetInnerHTML={{
                             __html: data.uvod
                                 ? data.uvod
                                 : data.sadrzaj?.slice(0, 250) + "...",
                         }}
-                    ></p>
+                    ></div>
                 ) : (
                     ""
                 )}

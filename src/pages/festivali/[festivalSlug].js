@@ -1,39 +1,33 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import FooterOne from "../../components/footer/FooterOne";
-import HeadMeta from "../../components/elements/HeadMeta";
-import HeaderOne from "../../components/header/HeaderOne";
-import { Breadcrumb } from "react-bootstrap";
-import AdBanner from "../../components/common/AdBanner";
 import axiosClient from "../../utils/axios";
 import PostFormatFestival from "../../components/post/post-format/PostFormatFestival";
+import MetaDataFestival from "../../components/post/post-format/elements/meta/MetaDataFestival";
 
-export default function FestivaliPage() {
-    const router = useRouter();
-
-    const { festivalSlug } = router.query;
-
-    const [festival, setFestival] = useState([]);
-    useEffect(() => {
-        const fetchSingleFestival = async () => {
-            axiosClient
-                .get(`/festival-single/${router.query.festivalSlug}`)
-                .then((res) => {
-                    console.log(res.data);
-                    setFestival(res.data);
-                })
-                .catch((error) => console.error(error));
-        };
-        if (festivalSlug) {
-            fetchSingleFestival();
-        }
-    }, [festivalSlug]);
+export default function FestivalPage({ festival }) {
+    //
 
     return (
         <>
-            <HeadMeta metaTitle={festival.naziv_festivala} />
-            <Breadcrumb bCat="Festivali" aPage={festival.naziv_festivala} />
             <PostFormatFestival postData={festival} />{" "}
         </>
     );
 }
+
+export async function getServerSideProps(context) {
+    const { festivalSlug } = context.params;
+    const page = 1;
+    console.log("getServerSideProps called with params:", context.params);
+    const response = await axiosClient.get(`/festival-single/${festivalSlug}`);
+
+    const festival = response.data;
+    console.log("Fetched festival data:", festival);
+
+    return {
+        props: {
+            festival,
+        },
+    };
+}
+
+FestivalPage.getLayoutProps = (pageProps) => ({
+    header: <MetaDataFestival metaData={pageProps.festival} />,
+});

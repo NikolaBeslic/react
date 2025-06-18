@@ -1,8 +1,6 @@
-import SectionTitle from "../elements/SectionTitle";
 import Image from "next/legacy/image";
 
 const HuPkastIndexLayout = ({ hupkastData }) => {
-
     return (
         <div className="hupkast-naslovna-wrapper" key={hupkastData.tekstid}>
             <div className="hupkast-naslovna-photo">
@@ -20,16 +18,19 @@ const HuPkastIndexLayout = ({ hupkastData }) => {
             </div>
             <div className="hupkast-naslovna-info">
                 <div className="hupkast-naslovna-title">
-                    <h3><a href={`hupkast/${hupkastData.slug}`}>{hupkastData.naslov}</a></h3>
+                    <h3>
+                        <a href={`hupkast/${hupkastData.slug}`}>
+                            {hupkastData.naslov}
+                        </a>
+                    </h3>
                 </div>
-                <div className="hupkast-naslovna-desc">
-                    {hupkastData.uvod}
-                </div>
+                <div
+                    className="hupkast-naslovna-desc"
+                    dangerouslySetInnerHTML={{ __html: hupkastData.uvod }}
+                ></div>
             </div>
         </div>
-    )
-}
-
-
+    );
+};
 
 export default HuPkastIndexLayout;

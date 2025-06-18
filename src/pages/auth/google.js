@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useStateContext } from "../../contexts/StateContext";
 import axiosClient from "../../utils/axios";
@@ -20,6 +20,7 @@ const Page = () => {
             try {
                 // Save token and user data
                 localStorage.setItem("token", token);
+                document.cookie = `token=${token}; path=/; secure; samesite=lax`;
                 axiosClient.defaults.headers.common[
                     "Authorization"
                 ] = `Bearer ${token}`;

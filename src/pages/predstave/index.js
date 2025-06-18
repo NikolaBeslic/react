@@ -1,16 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useStateContext } from "../../contexts/StateContext";
-import HeadMeta from "../../components/elements/HeadMeta";
 import axiosClient from "../../utils/axios";
-import Breadcrumb from "../../components/common/Breadcrumb";
 import { Spinner } from "react-bootstrap";
-import WidgetAd from "../../components/widget/WidgetAd";
-import WidgetSocialShare from "../../components/widget/WidgetSocialShare";
 import PredstaveLayout from "../../components/post/layout/PredstaveLayout";
 import Select from "react-select";
-import WidgetPost from "../../components/widget/WidgetPost";
-import WidgetPremijere from "../../components/widget/WidgetPremijere";
 import { useRouter } from "next/router";
+import PredstaveHeader from "../../components/post/post-format/elements/meta/PredstaveHeader";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
@@ -28,9 +23,6 @@ export default function PredstavePage() {
     const [visibleCount, setVisibleCount] = useState(12);
     const visiblePredstave = filteredPredstave.slice(0, visibleCount);
 
-    const [sidePosts, setSidePosts] = useState([]);
-    const [premijere, setPremijere] = useState([]);
-
     const handleLoadMorePredstave = () => {
         setVisibleCount(visibleCount + 6);
     };
@@ -41,7 +33,6 @@ export default function PredstavePage() {
     ];
 
     useEffect(() => {
-        debugger;
         showLoading();
         axiosClient
             .get("/get-predstave")
@@ -49,8 +40,6 @@ export default function PredstavePage() {
                 console.log(res.data);
                 setPredstave(res.data);
                 setFilteredPredstave(res.data);
-                fetchSidePosts();
-                fetchPremijere();
                 hideLoading();
             })
             .catch((error) => console.error(error));
@@ -82,7 +71,6 @@ export default function PredstavePage() {
     }, []);
 
     useEffect(() => {
-        debugger;
         if (zanr) {
             console.log("Zanr " + zanr);
             const matched = dbZanrovi.find(
@@ -96,7 +84,7 @@ export default function PredstavePage() {
 
     useEffect(() => {
         showLoading();
-        debugger;
+
         let filteredPredstave = predstave;
         console.log("checking sel zanr after useEffect being triggred");
         console.log(selectedZanrovi);
@@ -157,128 +145,77 @@ export default function PredstavePage() {
         setSortBy(e.value);
     });
 
-    const fetchSidePosts = () => {
-        axiosClient
-            .get(`/get-trending-posts`)
-            .then((res) => {
-                setSidePosts(res.data);
-            })
-            .catch((error) => console.error(error));
-    };
-
-    const fetchPremijere = () => {
-        axiosClient
-            .get(`/get-premijere`)
-            .then((res) => {
-                setPremijere(res.data);
-            })
-            .catch((error) => console.error(error));
-    };
-
     return (
         <>
-            <HeadMeta metaTitle="Predstave" />
-            {/* <PredstaveSlider slidePost={predstave} /> */}
-            <Breadcrumb aPage="Predstave" />
-            {/* Banner Start here  */}
-            <div className="banner banner__default bg-grey-light-three">
-                <div className="container">
-                    <div className="row align-items-center">
-                        <div className="col-lg-12">
-                            <div className="post-title-wrapper">
-                                <h2 className="m-b-xs-0 axil-post-title hover-line">
-                                    Predstave
-                                </h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div className="m-b-xs-20">
+                <Select
+                    instanceId="znr"
+                    name="zanrovi"
+                    placeholder="Izaberi zanrove"
+                    options={dbZanrovi}
+                    value={selectedZanrovi}
+                    isMulti={true}
+                    // onChange={(e) => handleZanroviChange(e)}
+                    onChange={setSelectedZanrovi}
+                />
             </div>
-            {/* Banner End here  */}
-            <div className="random-posts section-gap">
-                <div className="container">
-                    <div className="row">
-                        <div className="col-lg-8">
-                            {isLoading && (
-                                <Spinner
-                                    animation="border"
-                                    role="status"
-                                    className="hup-spinner"
-                                />
-                            )}
-                            <div className="m-b-xs-20">
-                                <Select
-                                    instanceId="znr"
-                                    name="zanrovi"
-                                    placeholder="Izaberi zanrove"
-                                    options={dbZanrovi}
-                                    value={selectedZanrovi}
-                                    isMulti={true}
-                                    // onChange={(e) => handleZanroviChange(e)}
-                                    onChange={setSelectedZanrovi}
-                                />
-                            </div>
 
-                            <div className="m-b-xs-20">
-                                <Select
-                                    instanceId="grd"
-                                    name="gradovi"
-                                    placeholder="Izaberi gradove"
-                                    options={dbGradovi}
-                                    isMulti={true}
-                                    onChange={(e) => handleGradoviChange(e)}
-                                />
-                            </div>
+            <div className="m-b-xs-20">
+                <Select
+                    instanceId="grd"
+                    name="gradovi"
+                    placeholder="Izaberi gradove"
+                    options={dbGradovi}
+                    isMulti={true}
+                    onChange={(e) => handleGradoviChange(e)}
+                />
+            </div>
 
-                            <div className="m-b-xs-20">
-                                <Select
-                                    instanceId="srt"
-                                    name="sortBy"
-                                    placeholder="Sortiraj po"
-                                    options={sortOptions}
-                                    onChange={(e) => handleSort(e)}
-                                />
-                            </div>
+            <div className="m-b-xs-20">
+                <Select
+                    instanceId="srt"
+                    name="sortBy"
+                    placeholder="Sortiraj po"
+                    options={sortOptions}
+                    onChange={(e) => handleSort(e)}
+                />
+            </div>
 
-                            <div className="axil-content row">
-                                {visiblePredstave.map((pred) => (
-                                    <div
-                                        className="col-lg-6"
-                                        key={pred.predstavaid}
-                                    >
-                                        <PredstaveLayout
-                                            data={pred}
-                                            pClass=""
-                                            key={`pred${pred.predstavaid}`}
-                                            showPozoriste={true}
-                                        />
-                                    </div>
-                                ))}
-                                {visibleCount < filteredPredstave?.length && (
-                                    <button onClick={handleLoadMorePredstave}>
-                                        Load More
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-                        <div className="col-lg-4">
-                            <div className="post-sidebar">
-                                <WidgetAd />
-                                <WidgetPost posts={sidePosts} />
-                                <WidgetSocialShare />
-                                <WidgetPremijere premijere={premijere} />
-                                {/* <WidgetCategory cateData={allPosts} />
-                                <WidgetPost dataPost={allPosts} /> */}
-                                <WidgetAd
-                                    img="/images/clientbanner/clientbanner3.jpg"
-                                    height={492}
-                                    width={320}
-                                />
-                            </div>
-                        </div>
+            <div className="axil-content row">
+                {isLoading && (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        className="hup-spinner"
+                    />
+                )}
+                {visiblePredstave.map((pred) => (
+                    <div className="col-lg-6" key={pred.predstavaid}>
+                        <PredstaveLayout
+                            data={pred}
+                            pClass=""
+                            key={`pred${pred.predstavaid}`}
+                            showPozoriste={true}
+                        />
                     </div>
-                </div>
+                ))}
+                {visibleCount < filteredPredstave?.length && (
+                    <button onClick={handleLoadMorePredstave}>Load More</button>
+                )}
             </div>
         </>
     );
 }
+
+export async function getServerSideProps(context) {
+    return {
+        props: {
+            // No initial data fetching here, as we fetch data in the component
+            // This allows us to use client-side fetching with axiosClient
+        },
+    };
+}
+
+PredstavePage.getLayoutProps = (pageProps) => ({
+    header: <PredstaveHeader />,
+});

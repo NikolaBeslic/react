@@ -10,39 +10,39 @@ import ScrollToTopButton from "../components/post/post-format/elements/ScrollToT
 import { useRouter } from "next/router";
 import AdminLayout from "../layouts/AdminLayout";
 import HuPLayout from "../layouts/HuPLayout";
+import { SSRProvider } from "react-bootstrap";
 
-function MyApp({ Component, pageProps }) {
-    moment.locale("sr");
-    const { isAdmin, showLoading, hideLoading } = useStateContext();
-    const router = useRouter();
-    const isAdminRoute = router.pathname.startsWith("/admin");
-    const getLayout = isAdminRoute
+function isAdminRoute(router) {
+    return router.pathname.startsWith("/admin");
+}
+
+function MyApp({ Component, pageProps, router }) {
+    const layoutProps =
+        typeof Component.getLayoutProps === "function"
+            ? Component.getLayoutProps(pageProps)
+            : Component.getLayoutProps || {};
+
+    const getLayout = isAdminRoute(router)
         ? (page) => <AdminLayout>{page}</AdminLayout>
-        : (page) => <HuPLayout>{page}</HuPLayout>; // Use default layout for other pages
+        : (page) => {
+              const header = layoutProps?.header ?? null;
+              const noSidebar = layoutProps?.noSidebar ?? false;
+              const isNaslovna = layoutProps?.isNaslovna ?? false;
+              return (
+                  <HuPLayout
+                      header={header}
+                      noSidebar={noSidebar}
+                      isNaslovna={isNaslovna}
+                  >
+                      {page}
+                  </HuPLayout>
+              );
+          };
 
-    useEffect(() => {}, []);
     return (
-        <>
-            {/*  Global site tag (gtag.js) - Google Analytics */}
-            <Script
-                src="https://www.googletagmanager.com/gtag/js?id=G-E448GXQHG8"
-                strategy="afterInteractive"
-            />
-            <Script id="google-analytics" strategy="afterInteractive">
-                {`
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-      
-        gtag('config', 'G-E448GXQHG8');
-      `}
-            </Script>
-
-            <ContextProvider>
-                {getLayout(<Component {...pageProps} />)}
-            </ContextProvider>
-            <ScrollToTopButton />
-        </>
+        <ContextProvider>
+            {getLayout(<Component {...pageProps} />)}
+        </ContextProvider>
     );
 }
 

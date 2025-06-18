@@ -37,3 +37,8 @@ export default function HomeSix() {
         </>
     );
 }
+
+HomeSix.getLayoutProps = {
+    noSidebar: true,
+    isNaslovna: true,
+};

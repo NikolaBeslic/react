@@ -1,38 +1,55 @@
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
-import FooterOne from "../../components/footer/FooterOne";
 import HeadMeta from "../../components/elements/HeadMeta";
-import HeaderOne from "../../components/header/HeaderOne";
 import { Breadcrumb } from "react-bootstrap";
 import axiosClient from "../../utils/axios";
 import PostFormatHupkast from "../../components/post/post-format/PostFormatHupkast";
+import MetaDataHupkast from "../../components/post/post-format/elements/meta/MetaDataHupkast";
 
-export default function SingleHupkast() {
-    const router = useRouter();
-
-    const { hupkastSlug } = router.query;
-
-    const [hupkast, setHupkast] = useState([]);
-    useEffect(() => {
-        const fetchSingleHupkast = async () => {
-            axiosClient
-                .get(`/hupkast-single/${router.query.hupkastSlug}`)
-                .then((res) => {
-                    console.log(res.data);
-                    setHupkast(res.data);
-                })
-                .catch((error) => console.error(error));
-        };
-        if (hupkastSlug) {
-            fetchSingleHupkast();
-        }
-    }, [hupkastSlug]);
+export default function SingleHupkast({ hupkast, relatedPosts }) {
+    // useEffect(() => {
+    //     const fetchSingleHupkast = async () => {
+    //         axiosClient
+    //             .get(`/hupkast-single/${router.query.hupkastSlug}`)
+    //             .then((res) => {
+    //                 console.log(res.data);
+    //                 setHupkast(res.data);
+    //             })
+    //             .catch((error) => console.error(error));
+    //     };
+    //     if (hupkastSlug) {
+    //         fetchSingleHupkast();
+    //     }
+    // }, [hupkastSlug]);
 
     return (
         <>
             <HeadMeta metaTitle={hupkast.naslov} />
-            <Breadcrumb bCat="Festivali" aPage={hupkast.naslov} />
+            <Breadcrumb bCat="HuPkast" aPage={hupkast.naslov} />
             <PostFormatHupkast postData={hupkast} />
         </>
     );
 }
+
+export async function getServerSideProps(context) {
+    const { hupkastSlug } = context.params;
+    console.log("getServerSideProps called with params:", context.params);
+    const response = await axiosClient.get(`/hupkast-single/${hupkastSlug}`);
+
+    const hupkast = response.data;
+    console.log("Fetched post data:", hupkast);
+
+    const releatedResponse = await axiosClient.get(
+        `/get-related-posts/${hupkast.tekstid}`
+    );
+    const relatedPosts = releatedResponse.data;
+
+    return {
+        props: {
+            hupkast,
+            relatedPosts,
+        },
+    };
+}
+
+SingleHupkast.getLayoutProps = (pageProps) => ({
+    header: <MetaDataHupkast metaData={pageProps.hupkast} />,
+});

@@ -1,8 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 import axiosClient from "../utils/axios";
-import HeadMeta from "../components/elements/HeadMeta";
-import HeaderOne from "../components/header/HeaderOne";
-import FooterOne from "../components/footer/FooterOne";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -10,6 +7,7 @@ import Izvodjenje from "../components/predstave/Izvodjenje";
 import Select from "react-select";
 import PredstaveLayout from "../components/post/layout/PredstaveLayout";
 import SectionTitle from "../components/elements/SectionTitle";
+import RepertoariHeader from "../components/post/post-format/elements/meta/RepertoariHeader";
 
 const RepertoariNewPage = () => {
     const [date, setDate] = useState([new Date(), new Date()]);
@@ -141,10 +139,8 @@ const RepertoariNewPage = () => {
 
     return (
         <>
-            <HeadMeta metaTitle="Repertoari v2" />
             <div className="axil-about-us section-gap-top p-b-xs-20">
                 <div className="container">
-                    <h1>Repertoari</h1>
                     <p>
                         {" "}
                         {datumOd?.toDateString()} - {datumDo?.toDateString()}
@@ -223,3 +219,8 @@ const RepertoariNewPage = () => {
 };
 
 export default RepertoariNewPage;
+
+RepertoariNewPage.getLayoutProps = (pageProps) => ({
+    header: <RepertoariHeader />,
+    noSidebar: true,
+});

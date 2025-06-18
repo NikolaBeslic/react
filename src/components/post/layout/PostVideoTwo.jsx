@@ -1,5 +1,6 @@
 import Image from "next/legacy/image";
 import moment from "moment";
+import Link from "next/link";
 
 const PostVideoTwo = ({ data, pClass, videoIcon }) => {
     return (
@@ -8,42 +9,44 @@ const PostVideoTwo = ({ data, pClass, videoIcon }) => {
                 pClass ?? "post-block__on-dark-bg m-b-xs-30"
             }`}
         >
-            <a
-                href={`/${data.kategorija.kategorija_slug}/${data.slug}`}
-                className="align-self-center"
+            <Link
+                href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                title={data.naslov}
             >
                 <Image
                     src={data.tekst_photo}
                     alt={data.slug}
-                    width={100}
-                    height={100}
+                    width={110}
+                    height={110}
                     objectFit="cover"
+                    quality={90}
                 />
                 {videoIcon === true ? (
                     <span className="video-play-btn video-play-btn__small" />
                 ) : (
                     ""
                 )}
-            </a>
+            </Link>
 
             <div className="media-body">
                 <div className="post-cat-group">
                     <a
-                        href={`/category/${data.kategorija?.kategorija_slug}`}
-                        className={`post-cat ${
-                            data.cate_bg ?? "bg-color-blue-one"
-                        }`}
+                        href={`/${data.kategorija?.kategorija_slug}`}
+                        className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
+                        style={{
+                            backgroundColor: data.kategorija.kategorija_boja,
+                        }}
                     >
                         {data.kategorija.naziv_kategorije}
                     </a>
                 </div>
                 <h3 className="axil-post-title hover-line hover-line">
-                    <a
+                    <Link
                         href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
                         title={data.naslov}
                     >
                         {data.naslov}
-                    </a>
+                    </Link>
                 </h3>
                 <div className="post-metas">
                     <ul className="list-inline">

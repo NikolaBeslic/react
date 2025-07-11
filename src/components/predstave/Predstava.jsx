@@ -1,9 +1,12 @@
 import SectionTitle from "../elements/SectionTitle";
 import PostLayoutTwo from "../post/layout/PostLayoutTwo";
 import Izvodjenje from "./Izvodjenje";
+import Form from "react-bootstrap/Form";
 import moment from "moment";
 import { useState } from "react";
 import PredstavaRecenzija from "./PredstavaRecenzija";
+import { useStateContext } from "../../contexts/StateContext";
+import axiosClient from "../../utils/axios";
 
 const Predstava = ({ data, updateData }) => {
     const recenzije = data.tekstovi?.filter(
@@ -36,6 +39,42 @@ const Predstava = ({ data, updateData }) => {
 
     const updatePostRating = (updatedPredstava) => {
         updateData(updatedPredstava);
+    };
+    const { currentUser } = useStateContext();
+    const [komentarFormData, setKomentarFormData] = useState({
+        tekst_komentara: "",
+        predstavaid: data.predstavaid,
+        korisnikid: currentUser.id,
+    });
+    const [errors, setErrors] = useState({});
+    const handleCommentSubmit = (e) => {
+        e.preventDefault();
+
+        console.log("Submitting comment:", komentarFormData);
+
+        if (!currentUser) {
+            alert("You must be logged in to rate a post.");
+            return;
+        }
+        axiosClient
+            .post("/predstava/dodaj-komentar", komentarFormData, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
+            })
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((err) => {
+                console.error(err);
+                setErrors(
+                    err.response.data.errors || {
+                        general:
+                            "An error occurred while submitting the comment.",
+                    }
+                );
+            });
     };
 
     return (
@@ -167,6 +206,39 @@ const Predstava = ({ data, updateData }) => {
                                         : "Prikazi sve komentare"}
                                 </button>
                             )}
+                            <div className="predstava-komentar-form-wrapper">
+                                <h3>Dodaj komentar</h3>
+                                <form
+                                    onSubmit={(e) => {
+                                        e.preventDefault();
+                                        // Handle comment submission logic here
+                                    }}
+                                >
+                                    <Form.Control
+                                        as="textarea"
+                                        rows={4}
+                                        placeholder="Unesite svoj komentar"
+                                        onChange={(e) =>
+                                            setKomentarFormData({
+                                                ...komentarFormData,
+                                                tekst_komentara: e.target.value,
+                                            })
+                                        }
+                                    />
+                                    {errors && (
+                                        <p className="text-danger">
+                                            {errors.tekst_komentara}
+                                        </p>
+                                    )}
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary btn-small m-t-xs-20"
+                                        onClick={handleCommentSubmit}
+                                    >
+                                        Pošalji komentar
+                                    </button>
+                                </form>
+                            </div>
                         </div>
                     </div>
 

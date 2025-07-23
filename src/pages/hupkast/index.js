@@ -8,7 +8,9 @@ import CategoryHeader from "../../components/post/post-format/elements/meta/Cate
 
 export default function HuPkast({ initialHuPkast, initTotalPages }) {
     const { isLoading, showLoading, hideLoading } = useStateContext();
-    const [hupkast, setHupkast] = useState(initialHuPkast.tekstovi || []);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(initTotalPages);
+    const [hupkast, setHupkast] = useState(initialHuPkast.tekstovi.data || []);
     // useEffect(() => {
     //     showLoading();
     //     axiosClient
@@ -21,6 +23,21 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
     //         .catch((error) => console.error(error));
     // }, []);
 
+    const loadMore = async () => {
+        if (currentPage >= totalPages) return;
+
+        showLoading(true);
+        try {
+            const nextPage = currentPage + 1;
+            const res = await axiosClient.get(`/get-hupkast?page=${nextPage}`);
+            console.log("Loaded more hupkast data:", res.data);
+            setHupkast((prev) => [...prev, ...res.data.tekstovi.data]);
+            setCurrentPage(nextPage);
+        } catch (err) {
+            console.error("Failed to load more posts", err);
+        }
+        hideLoading();
+    };
     return (
         <>
             <HeadMeta metaTitle="HuPkast" />
@@ -42,6 +59,14 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
                                 key={hup.tekstid}
                             />
                         ))}
+                        {!isLoading && currentPage < totalPages && (
+                            <button
+                                className="btn btn-primary btn-small"
+                                onClick={loadMore}
+                            >
+                                Ucitaj jos
+                            </button>
+                        )}
                     </div>
                 </article>
             </main>
@@ -58,6 +83,7 @@ export async function getServerSideProps(context) {
     return {
         props: {
             initialHuPkast: response.data || [],
+            initTotalPages: response.data?.tekstovi.last_page || 1,
         },
     };
 }

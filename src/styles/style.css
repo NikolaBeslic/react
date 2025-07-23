@@ -9217,11 +9217,11 @@ ul.gallery img {
 .side-nav-inner {
     height: 100%;
     overflow-x: hidden;
-    padding: 5rem 1.5rem;
+    padding: 4rem 1.5rem;
 }
 
 .side-nav-content .axil-contact-info-inner {
-    padding: 0.7rem 0 0;
+    padding: 6.7rem 0 0;
 }
 
 /*--Footer--*/
@@ -11037,14 +11037,16 @@ address .tel i {
 
 .sidemenu-horizontal-list {
     display: flex;
-    font-family: var(--secondary-font);
+    font-family: var(--primary-font);
 }
 
 .sidemenu-horizontal-list li {
     flex: auto;
     text-transform: uppercase;
     font-size: 0.85em;
-    color: var(--grey-dark-eight)
+    color: var(--grey-dark-eight);
+    font-size: 1.1em;
+    font-weight: 600;
 }
 
 .side-nav-content hr {
@@ -11052,10 +11054,11 @@ address .tel i {
 }
 
 .side-navigation {
-    padding-top: 20px !important;
+    padding-top: 40px !important;
     border-top: 1px solid var(--color-blue-grey-one);
+    margin-top: 5px;
 }
 
 .side-navigation li a {
-    font-size: 1.7em;
+    /* font-size: 1.7em; */
 }

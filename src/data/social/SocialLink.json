@@ -1,6 +1,6 @@
 {
     "fb": {
-        "url": "https://facebook.com/",
+        "url": "https://facebook.com/hocupozoriste",
         "icon": "fab fa-facebook-f",
         "follower": "2000+"
     },
@@ -10,7 +10,7 @@
         "follower": "4000+"
     },
     "instagram": {
-        "url": "https://www.instagram.com/",
+        "url": "https://www.instagram.com/hocupozoriste/",
         "icon": "fab fa-instagram",
         "follower": "1K+"
     },
@@ -20,7 +20,7 @@
         "follower": "600+"
     },
     "yt": {
-        "url": "https://www.youtube.com/",
+        "url": "https://www.youtube.com/@hocuupozoriste4227",
         "icon": "fab fa-youtube",
         "follower": "1M+"
     },
@@ -43,5 +43,10 @@
         "url": "https://www.behance.net/",
         "icon": "fab fa-behance",
         "follower": "2000+"
+    }, 
+    "spotify": {
+        "url": "https://open.spotify.com/show/1bbMxBiF8W5tcCrgXDyv3H",
+        "icon": "fab fa-spotify",
+        "follower": "500+"
     }
 }

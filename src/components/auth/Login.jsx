@@ -3,7 +3,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
-import React from "react";
 import { Spinner } from "react-bootstrap";
 
 const Login = ({ handleGoogleLogin }) => {
@@ -25,6 +24,7 @@ const Login = ({ handleGoogleLogin }) => {
     } = useStateContext();
 
     const csrf = () => axiosClient.get("/csrf-cookie");
+    const [errors, setErrors] = useState([]);
 
     const handleSubmit = async (event) => {
         showLoading();
@@ -44,7 +44,11 @@ const Login = ({ handleGoogleLogin }) => {
                 hideLoading();
                 setModalOpen(false);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => {
+                console.error(error);
+                hideLoading();
+                setErrors(error.response.data.errors);
+            });
 
         // to do: send it to API
     };
@@ -80,6 +84,11 @@ const Login = ({ handleGoogleLogin }) => {
                         value={formData.korisnickoIme}
                         onChange={handleChange}
                     ></Form.Control>
+                    {errors?.korisnickoIme && (
+                        <span className="text-danger">
+                            {errors.korisnickoIme}
+                        </span>
+                    )}
                 </Form.Group>
                 <Form.Group className="form-group mb-3">
                     <Form.Control
@@ -89,6 +98,9 @@ const Login = ({ handleGoogleLogin }) => {
                         value={formData.email}
                         onChange={handleChange}
                     ></Form.Control>
+                    {errors?.email && (
+                        <span className="text-danger">{errors.email}</span>
+                    )}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Control
@@ -98,19 +110,22 @@ const Login = ({ handleGoogleLogin }) => {
                         value={formData.password}
                         onChange={handleChange}
                     ></Form.Control>
+                    {errors?.password && (
+                        <span className="text-danger">{errors.password}</span>
+                    )}
                 </Form.Group>
                 <Button type="submit" variant="primary" onClick={handleSubmit}>
-                    Submit
+                    LOGIN
+                </Button>
+                <Button
+                    variant="secondary"
+                    type="button"
+                    onClick={handleGoogleLogin}
+                >
+                    <i className="fa-brands fa-google"></i> Prijavite se putem
+                    Google naloga
                 </Button>
             </Form>
-
-            <Button
-                variant="secondary"
-                type="button"
-                onClick={handleGoogleLogin}
-            >
-                Prijavite se putem Google naloga
-            </Button>
         </>
     );
 };

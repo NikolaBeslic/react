@@ -11062,3 +11062,16 @@ address .tel i {
 .side-navigation li a {
     /* font-size: 1.7em; */
 }
+
+.modal-header {
+    height: 60px;
+}
+
+.modal-title {
+    margin: 0 !important;
+}
+
+.modal-footer p {
+    font-size: 1.5rem;
+
+}

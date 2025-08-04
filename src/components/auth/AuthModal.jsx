@@ -63,7 +63,11 @@ const AuthModal = ({ closeModal }) => {
                         {showLogin ? (
                             <>
                                 Nemate nalog na našem sajtu? Kliknite{" "}
-                                <a href="#" onClick={toggleForm}>
+                                <a
+                                    href="#"
+                                    onClick={toggleForm}
+                                    className="text-primary"
+                                >
                                     ovde
                                 </a>
                                 .
@@ -71,7 +75,11 @@ const AuthModal = ({ closeModal }) => {
                         ) : (
                             <>
                                 Već imate nalog? Ulogujte se{" "}
-                                <a href="#" onClick={toggleForm}>
+                                <a
+                                    href="#"
+                                    onClick={toggleForm}
+                                    className="text-primary"
+                                >
                                     ovde
                                 </a>
                                 .

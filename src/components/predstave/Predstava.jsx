@@ -44,7 +44,7 @@ const Predstava = ({ data, updateData }) => {
     const [komentarFormData, setKomentarFormData] = useState({
         tekst_komentara: "",
         predstavaid: data.predstavaid,
-        korisnikid: currentUser.id,
+        korisnikid: currentUser?.id,
     });
     const [errors, setErrors] = useState({});
     const handleCommentSubmit = (e) => {
@@ -53,7 +53,7 @@ const Predstava = ({ data, updateData }) => {
         console.log("Submitting comment:", komentarFormData);
 
         if (!currentUser) {
-            alert("You must be logged in to rate a post.");
+            alert("Ulogujte se da biste mogli da komentarišete predstavu.");
             return;
         }
         axiosClient
@@ -84,7 +84,10 @@ const Predstava = ({ data, updateData }) => {
                     {!showAllComments && (
                         <div className="grid-wrapper predstava-single-section-wrapper">
                             <div className="row">
-                                <SectionTitle title="Opis predstave" />
+                                <SectionTitle
+                                    title="Opis predstave"
+                                    key="opis-predstave"
+                                />
                                 {description?.length > 0 && (
                                     <div
                                         dangerouslySetInnerHTML={{
@@ -114,7 +117,10 @@ const Predstava = ({ data, updateData }) => {
                         <>
                             <div className="grid-wrapper predstava-single-section-wrapper">
                                 <div className="row">
-                                    <SectionTitle title="Iz našeg ugla" />
+                                    <SectionTitle
+                                        title="Iz našeg ugla"
+                                        key="iz-naseg-ugla"
+                                    />
                                     {recenzije.map((tekst) => (
                                         <div key={tekst.tekstid}>
                                             <PredstavaRecenzija
@@ -130,7 +136,7 @@ const Predstava = ({ data, updateData }) => {
                     {!showAllComments && (
                         <div className="grid-wrapper predstava-single-section-wrapper">
                             <div className="row">
-                                <SectionTitle title="Uloge" />
+                                <SectionTitle title="Uloge" key="uloge" />
                                 <div
                                     dangerouslySetInnerHTML={{
                                         __html: data.uloge,
@@ -143,6 +149,7 @@ const Predstava = ({ data, updateData }) => {
                         <div className="row">
                             <SectionTitle
                                 title={`Komentari (${data.komentari?.length})`}
+                                key="komentari"
                             />
                             {showAllComments
                                 ? data.komentari?.map((komentar) => (
@@ -246,7 +253,10 @@ const Predstava = ({ data, updateData }) => {
                         <div className="row">
                             {!showAllComments && (
                                 <>
-                                    <SectionTitle title="Izvodjenja" />
+                                    <SectionTitle
+                                        title="Izvodjenja"
+                                        key="izvodjenja"
+                                    />
 
                                     {izvodjenja?.length > 0 ? (
                                         izvodjenja
@@ -275,7 +285,10 @@ const Predstava = ({ data, updateData }) => {
                             {povezaniTekstovi?.length > 0 &&
                                 !showAllComments && (
                                     <>
-                                        <SectionTitle title="Povezani tekstovi" />
+                                        <SectionTitle
+                                            title="Povezani tekstovi"
+                                            key="povezani-tekstovi"
+                                        />
                                         {povezaniTekstovi.map((tekst) => (
                                             <PostLayoutTwo
                                                 data={tekst}

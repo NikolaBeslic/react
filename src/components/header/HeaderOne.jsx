@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SocialLink from "../../data/social/SocialLink.json";
@@ -9,6 +9,7 @@ import axiosClient from "../../utils/axios";
 import { Spinner, NavDropdown } from "react-bootstrap";
 import SearchResult from "../elements/SearchResult";
 import { toast } from "react-hot-toast";
+import Cookies from "js-cookie";
 
 const HeaderOne = () => {
     // Main Menu Toggle
@@ -121,7 +122,7 @@ const HeaderOne = () => {
             .post("/logout", currentUser)
             .then((res) => {
                 console.log(res.data);
-                localStorage.removeItem("token");
+                Cookies.remove("token"); // Remove the token cookie
                 setCurrentUser(null);
                 setLogoutLoading(false);
                 toast.success("Uspešno ste se izlogovali");

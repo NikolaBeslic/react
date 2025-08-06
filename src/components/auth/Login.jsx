@@ -1,9 +1,9 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
+import { useRouter } from "next/router";
 
 const Login = ({ handleGoogleLogin }) => {
     const [formData, setFormData] = useState({
@@ -23,32 +23,35 @@ const Login = ({ handleGoogleLogin }) => {
         hideLoading,
     } = useStateContext();
 
-    const csrf = () => axiosClient.get("/csrf-cookie");
     const [errors, setErrors] = useState([]);
+    const router = useRouter();
 
     const handleSubmit = async (event) => {
+        debugger;
         showLoading();
         event.preventDefault();
         console.log(formData);
-        await csrf();
 
-        axiosClient
-            .post(`/login`, formData)
-            .then((res) => {
-                localStorage.setItem("token", res.data.token);
-                axiosClient.defaults.headers.common[
-                    "Authorization"
-                ] = `Bearer ${res.data.token}`;
-                console.log(res.data.token);
-                setCurrentUser(res.data.user);
-                hideLoading();
-                setModalOpen(false);
-            })
-            .catch((error) => {
-                console.error(error);
-                hideLoading();
-                setErrors(error.response.data.errors);
-            });
+        const res = await fetch("/api/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                email: formData.email,
+                password: formData.password,
+            }),
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            setCurrentUser(data); // Update the current user context
+            setModalOpen(false); // Close the modal
+            hideLoading();
+            // router.reload(); // Or redirect to a protected page
+        } else {
+            hideLoading();
+            const data = await res.json();
+            setErrors(data.message || "Login failed");
+        }
 
         // to do: send it to API
     };

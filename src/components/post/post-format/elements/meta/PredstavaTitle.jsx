@@ -24,11 +24,13 @@ const PredstavaTitle = ({ metaData }) => {
     const [naListiOdgledanih, setNaListiOdgledanih] = useState(
         metaData.naListiOdgledanihKorisnika
     );
+    const { setModalOpen } = useStateContext();
 
     const [ratingLoading, setRatingLoading] = useState(false);
     const handleRating = async (value) => {
         if (!currentUser) {
-            alert("You must be logged in to rate a post.");
+            alert("Ulogujte se da biste mogli da ocenite predstavu.");
+            setModalOpen(true);
             return;
         }
         setRatingLoading(true);
@@ -52,7 +54,7 @@ const PredstavaTitle = ({ metaData }) => {
             .then((res) => {
                 console.log(res);
                 setRatingLoading(false);
-                handleUpdatePostRating(res.data.data);
+                updateData(res.data.data);
             });
     };
     const ratingProps = {

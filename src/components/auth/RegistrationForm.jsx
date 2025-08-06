@@ -105,7 +105,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     <span className="text-danger">{errors.password}</span>
                 )}
             </Form.Group>
-            <div class="justify-content-center">
+            <div className="justify-content-center">
                 <Button type="submit" variant="primary">
                     SAČUVAJ
                 </Button>

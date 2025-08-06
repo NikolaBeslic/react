@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useStateContext } from "../../contexts/StateContext";
+import Cookies from "js-cookie";
 import axiosClient from "../../utils/axios";
 
 const Page = () => {
@@ -19,8 +20,11 @@ const Page = () => {
         if (token && user) {
             try {
                 // Save token and user data
-                localStorage.setItem("token", token);
-                document.cookie = `token=${token}; path=/; secure; samesite=lax`;
+                Cookies.set("token", token, {
+                    path: "/",
+                    secure: true,
+                    sameSite: "lax",
+                });
                 axiosClient.defaults.headers.common[
                     "Authorization"
                 ] = `Bearer ${token}`;

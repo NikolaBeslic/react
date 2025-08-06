@@ -1,5 +1,6 @@
 import { useContext, useState, createContext, useEffect } from "react";
 import axiosClient from "../utils/axios";
+import Cookies from "js-cookie";
 
 const StateContext = createContext({
     currentUser: {},
@@ -19,7 +20,7 @@ export const ContextProvider = ({ children }) => {
     const [isModalOpen, setModalOpen] = useState(false);
 
     useEffect(() => {
-        const token = localStorage.getItem("token");
+        const token = Cookies.get("token");
         console.log("Token");
         console.log(token);
         setIsAdmin(false);

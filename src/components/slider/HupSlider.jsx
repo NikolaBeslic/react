@@ -121,6 +121,9 @@ const HuPSlider = ({ slidePost }) => {
                                                                                 height={
                                                                                     50
                                                                                 }
+                                                                                key={
+                                                                                    autor.autorid
+                                                                                }
                                                                             />
                                                                             <span className="m-l-xs-20">
                                                                                 {

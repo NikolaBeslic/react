@@ -103,7 +103,12 @@ const HuPSlider = ({ slidePost }) => {
                                                             0 &&
                                                             data.autori.map(
                                                                 (autor) => (
-                                                                    <li className="m-r-xs-20">
+                                                                    <li
+                                                                        className="m-r-xs-20"
+                                                                        key={
+                                                                            autor.autor_slug
+                                                                        }
+                                                                    >
                                                                         <a
                                                                             href={`/autori/${autor.autor_slug}`}
                                                                             className="d-flex align-items-center"

@@ -48,7 +48,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     return (
         <>
             <article className="post-details">
-                <div class="random-posts section-gap">
+                <div className="random-posts section-gap">
                     <div className="axil-content">
                         <div className="row">
                             {isLoading && (

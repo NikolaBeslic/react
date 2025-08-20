@@ -6,6 +6,7 @@ import PredstaveLayout from "../../components/post/layout/PredstaveLayout";
 import Select from "react-select";
 import { useRouter } from "next/router";
 import PredstaveHeader from "../../components/post/post-format/elements/meta/PredstaveHeader";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
@@ -207,14 +208,14 @@ export default function PredstavePage() {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     return {
         props: {
             // No initial data fetching here, as we fetch data in the component
             // This allows us to use client-side fetching with axiosClient
         },
     };
-}
+});
 
 PredstavePage.getLayoutProps = (pageProps) => ({
     header: <PredstaveHeader />,

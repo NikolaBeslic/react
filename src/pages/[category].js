@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../utils/axios";
+import { withSSRHandler } from "../utils/withSSRHandler";
 import { Spinner } from "react-bootstrap";
 import PostLayoutTwo from "../components/post/layout/PostLayoutTwo";
 import { useStateContext } from "../contexts/StateContext";
@@ -72,7 +73,7 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const { category } = context.params;
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
@@ -88,7 +89,7 @@ export async function getServerSideProps(context) {
             initTotalPages: categoryData.tekstovi?.last_page || 0,
         },
     };
-}
+});
 
 Page.getLayoutProps = (pageProps) => ({
     header: <CategoryHeader categoryData={pageProps.categoryData} />,

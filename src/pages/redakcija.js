@@ -1,6 +1,7 @@
 import axiosClient from "../utils/axios";
 import TeamOne from "../components/team/TeamOne";
 import RedakcijaHeader from "../components/post/post-format/elements/meta/RedakcijaHeader";
+import { withSSRHandler } from "../utils/withSSRHandler";
 
 export default function RedakcijaPage({ autori }) {
     return (
@@ -37,7 +38,7 @@ export default function RedakcijaPage({ autori }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const response = await axiosClient.get("/get-autori");
 
     const autori = response.data;
@@ -48,7 +49,7 @@ export async function getServerSideProps(context) {
             autori: autori,
         },
     };
-}
+});
 
 RedakcijaPage.getLayoutProps = (pageProps) => ({
     header: <RedakcijaHeader />,

@@ -4,6 +4,7 @@ import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 import AutorHeader from "../../components/post/post-format/elements/meta/AutorHeader";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function PostAuthor({ autor }) {
     const [autorPosts, setAutorPosts] = useState(autor.tekstovi.data || []);
@@ -59,7 +60,7 @@ export default function PostAuthor({ autor }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const { category, autorSlug } = context.params;
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
@@ -75,7 +76,7 @@ export async function getServerSideProps(context) {
             autor,
         },
     };
-}
+});
 
 PostAuthor.getLayoutProps = (pageProps) => ({
     header: <AutorHeader autor={pageProps.autor} />,

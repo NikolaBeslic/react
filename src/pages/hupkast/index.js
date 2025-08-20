@@ -5,6 +5,7 @@ import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 import HuPkastIndexLayout from "../../components/post/HuPkastIndexLayout";
 import CategoryHeader from "../../components/post/post-format/elements/meta/CategoryHeader";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function HuPkast({ initialHuPkast, initTotalPages }) {
     const { isLoading, showLoading, hideLoading } = useStateContext();
@@ -74,7 +75,7 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(`/get-hupkast?page=${page}`);
@@ -86,7 +87,7 @@ export async function getServerSideProps(context) {
             initTotalPages: response.data?.tekstovi.last_page || 1,
         },
     };
-}
+});
 
 HuPkast.getLayoutProps = (pageProps) => ({
     header: <CategoryHeader categoryData={pageProps.initialHuPkast} />,

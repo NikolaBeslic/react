@@ -21,5 +21,7 @@ const ErrorPage = () => {
         </>
     );
 };
-
+ErrorPage.getLayoutProps = (pageProps) => ({
+    noSidebar: true,
+});
 export default ErrorPage;

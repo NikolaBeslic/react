@@ -4,6 +4,7 @@ import FestivaliLayout from "../../components/post/layout/FestivaliLayout";
 import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 import FestivaliHeader from "../../components/post/post-format/elements/meta/FestivaliHeader";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function FestivaliPage({ initialFestivali }) {
     const { isLoading, showLoading, hideLoading } = useStateContext();
@@ -67,7 +68,7 @@ export default function FestivaliPage({ initialFestivali }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const response = await axiosClient.get("/get-festivali");
 
     const festivali = response.data;
@@ -78,7 +79,7 @@ export async function getServerSideProps(context) {
             initialFestivali: festivali,
         },
     };
-}
+});
 
 FestivaliPage.getLayoutProps = (pageProps) => ({
     header: <FestivaliHeader />,

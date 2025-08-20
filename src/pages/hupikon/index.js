@@ -6,6 +6,7 @@ import { Breadcrumb, Spinner } from "react-bootstrap";
 import HupikonIndexLayout from "../../components/post/layout/HupikonIndexLayout";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
 import CategoryHeader from "../../components/post/post-format/elements/meta/CategoryHeader";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function Hupikon({ initialHuPikon, initTotalPages }) {
     const { isLoading, showLoading, hideLoading } = useStateContext();
@@ -89,7 +90,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(`/get-hupikon?page=${page}`);
@@ -100,7 +101,7 @@ export async function getServerSideProps(context) {
             initialHuPikon: response.data || [],
         },
     };
-}
+});
 
 Hupikon.getLayoutProps = (pageProps) => ({
     header: <CategoryHeader categoryData={pageProps.initialHuPikon} />,

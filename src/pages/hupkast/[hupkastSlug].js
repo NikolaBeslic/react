@@ -3,6 +3,7 @@ import { Breadcrumb } from "react-bootstrap";
 import axiosClient from "../../utils/axios";
 import PostFormatHupkast from "../../components/post/post-format/PostFormatHupkast";
 import MetaDataHupkast from "../../components/post/post-format/elements/meta/MetaDataHupkast";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function SingleHupkast({ hupkast, relatedPosts }) {
     // useEffect(() => {
@@ -29,7 +30,7 @@ export default function SingleHupkast({ hupkast, relatedPosts }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const { hupkastSlug } = context.params;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(`/hupkast-single/${hupkastSlug}`);
@@ -48,7 +49,7 @@ export async function getServerSideProps(context) {
             relatedPosts,
         },
     };
-}
+});
 
 SingleHupkast.getLayoutProps = (pageProps) => ({
     header: <MetaDataHupkast metaData={pageProps.hupkast} />,

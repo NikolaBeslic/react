@@ -13,6 +13,7 @@ const PostSectionTwo = ({ postData }) => {
                     title="Recenzije"
                     btnText="Sve recenzije"
                     btnUrl="/recenzije"
+                    key={`st-rec-${postData.kategorijaid}`}
                 />
                 <div className="row">
                     <div className="col-lg-8">
@@ -20,13 +21,16 @@ const PostSectionTwo = ({ postData }) => {
                             <PostLayoutThree
                                 data={data}
                                 postSizeLg={true}
-                                key={data.slug}
+                                key={`rec-${data.tekstid}`}
                             />
                         ))}
                     </div>
                     <div className="col-lg-4">
                         {storyPost.slice(1, 3).map((data) => (
-                            <PostLayoutThree data={data} key={data.slug} />
+                            <PostLayoutThree
+                                data={data}
+                                key={`rec2-${data.tekstid}`}
+                            />
                         ))}
                     </div>
                 </div>

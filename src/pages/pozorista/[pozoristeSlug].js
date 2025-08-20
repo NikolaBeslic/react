@@ -2,6 +2,7 @@ import axiosClient from "../../utils/axios";
 import Pozoriste from "../../components/pozorista/Pozoriste";
 import PozoristeSingleHeader from "../../components/post/post-format/elements/meta/PozoristeSingleHeader";
 import * as cookie from "cookie";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function PozoristePage({ data }) {
     return (
@@ -15,7 +16,7 @@ PozoristePage.getLayoutProps = (pageProps) => ({
     header: <PozoristeSingleHeader data={pageProps.data} />,
 });
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const { pozoristeSlug } = context.params;
     const cookies = context.req.headers.cookie;
     const token = cookie.parse(cookies).token;
@@ -31,4 +32,4 @@ export async function getServerSideProps(context) {
             data,
         },
     };
-}
+});

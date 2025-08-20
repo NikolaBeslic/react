@@ -5,10 +5,10 @@ import moment from "moment";
 const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
     return (
         <div className={`axil-img-container ${pClass ?? "m-b-xs-30"}`}>
-            <a
+            <Link
                 href={`/post/${data.slug}`}
                 className={`d-block ${videoPost === true ? "h-100" : ""}`}
-                legacyBehavior
+                key={`lnk-${data.slug}`}
             >
                 <Image
                     src={data.tekst_photo}
@@ -17,13 +17,14 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
                     height={postSizeLg === true ? 550 : 260}
                     className="w-100"
                     objectFit="cover"
+                    key={`img-${data.slug}`}
                 />
                 <div
                     className={`grad-overlay ${
                         videoPost === true ? "grad-overlay__transparent" : ""
                     }`}
                 />
-            </a>
+            </Link>
             <div className="media post-block position-absolute">
                 <div
                     className={`media-body ${
@@ -36,7 +37,7 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
                             <Link
                                 href={`${data.kategorija?.kategorija_slug}/${data.slug}`}
                                 title={data.naslov}
-                                legacyBehavior
+                                key={`link-${data.slug}`}
                             >
                                 {data.naslov}
                             </Link>

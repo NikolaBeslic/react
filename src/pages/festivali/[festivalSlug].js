@@ -1,6 +1,7 @@
 import axiosClient from "../../utils/axios";
 import PostFormatFestival from "../../components/post/post-format/PostFormatFestival";
 import MetaDataFestival from "../../components/post/post-format/elements/meta/MetaDataFestival";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function FestivalPage({ festival }) {
     //
@@ -12,7 +13,7 @@ export default function FestivalPage({ festival }) {
     );
 }
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const { festivalSlug } = context.params;
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
@@ -26,7 +27,7 @@ export async function getServerSideProps(context) {
             festival,
         },
     };
-}
+});
 
 FestivalPage.getLayoutProps = (pageProps) => ({
     header: <MetaDataFestival metaData={pageProps.festival} />,

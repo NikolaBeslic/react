@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axios";
 import Predstava from "../../components/predstave/Predstava";
 import PredstavaTitle from "../../components/post/post-format/elements/meta/PredstavaTitle";
+import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function PredstavaPage({ predstavaData }) {
     const [predstava, setPredstava] = useState(predstavaData);
@@ -30,7 +31,7 @@ PredstavaPage.getLayoutProps = (pageProps) => ({
     header: <PredstavaTitle metaData={pageProps.predstavaData} />,
 });
 
-export async function getServerSideProps(context) {
+export const getServerSideProps = withSSRHandler(async (context) => {
     const { slug } = context.params;
     const cookies = context.req.headers.cookie;
     const token = cookie.parse(cookies).token;
@@ -47,4 +48,4 @@ export async function getServerSideProps(context) {
             predstavaData,
         },
     };
-}
+});

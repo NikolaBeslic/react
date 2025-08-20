@@ -27,7 +27,6 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                                     height={180}
                                     placeholder="blur"
                                     blurDataURL="/images/placeholder.png"
-                                    fill={true}
                                     objectFit="cover"
                                     layout="responsive"
                                 />

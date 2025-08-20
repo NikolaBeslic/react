@@ -48,42 +48,47 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     return (
         <>
             <article className="post-details">
-                <div className="row">
-                    {isLoading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
-                        />
-                    )}
-                    <div className="masonry-grid">
-                        <ResponsiveMasonry
-                            columnsCountBreakPoints={{
-                                575: 1,
-                                576: 2,
-                                991: 2,
-                            }}
+                <div class="random-posts section-gap">
+                    <div className="axil-content">
+                        <div className="row">
+                            {isLoading && (
+                                <Spinner
+                                    animation="border"
+                                    role="status"
+                                    className="hup-spinner"
+                                />
+                            )}
+                            <div className="masonry-grid">
+                                <ResponsiveMasonry
+                                    columnsCountBreakPoints={{
+                                        575: 1,
+                                        576: 2,
+                                        991: 2,
+                                    }}
+                                >
+                                    <Masonry gutter="0 40px">
+                                        {hupikonPosts.map((hup, index) => (
+                                            <div
+                                                className="grid-item"
+                                                key={hup.slug}
+                                            >
+                                                <HupikonIndexLayout
+                                                    data={hup}
+                                                    index={index}
+                                                />
+                                            </div>
+                                        ))}
+                                    </Masonry>
+                                </ResponsiveMasonry>
+                            </div>
+                        </div>
+                        <button
+                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                            onClick={loadMore}
                         >
-                            <Masonry gutter="0 40px">
-                                {hupikonPosts.map((hup, index) => (
-                                    <div className="grid-item" key={hup.slug}>
-                                        <HupikonIndexLayout
-                                            data={hup}
-                                            index={index}
-                                        />
-                                    </div>
-                                ))}
-                            </Masonry>
-                        </ResponsiveMasonry>
+                            Učitaj još
+                        </button>
                     </div>
-                </div>
-                <div className="load-more-posts-button-wraper">
-                    <button
-                        className="btn btn-primary btn-small"
-                        onClick={loadMore}
-                    >
-                        Ucitaj jos
-                    </button>
                 </div>
             </article>
         </>

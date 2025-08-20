@@ -201,7 +201,12 @@ export default function PredstavePage() {
                     </div>
                 ))}
                 {visibleCount < filteredPredstave?.length && (
-                    <button onClick={handleLoadMorePredstave}>Load More</button>
+                    <button
+                        className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                        onClick={handleLoadMorePredstave}
+                    >
+                        Učitaj još
+                    </button>
                 )}
             </div>
         </>

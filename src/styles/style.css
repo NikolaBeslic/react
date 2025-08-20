@@ -11075,3 +11075,8 @@ address .tel i {
     font-size: 1.5rem;
 
 }
+
+.btn-load-more {
+    width: 160px;
+    text-transform: uppercase;
+}

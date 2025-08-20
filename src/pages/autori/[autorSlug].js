@@ -31,30 +31,34 @@ export default function PostAuthor({ autor }) {
 
     return (
         <>
-            {isLoading && (
-                <Spinner
-                    animation="border"
-                    role="status"
-                    className="hup-spinner"
-                />
-            )}
-            <div className="axil-content">
-                <h2 className="h3 m-b-xs-40">Tekstovi autorke</h2>
-                {autorPosts.map((data) => (
-                    <PostLayoutTwo
-                        data={data}
-                        postSizeMd={true}
-                        key={data.slug}
-                    />
-                ))}
-                {!isLoading && currentPage < totalPages && (
-                    <button
-                        className="btn btn-primary btn-small"
-                        onClick={loadMore}
-                    >
-                        Ucitaj jos
-                    </button>
-                )}
+            <div className="random-posts section-gap">
+                <div className="container">
+                    {isLoading && (
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            className="hup-spinner"
+                        />
+                    )}
+                    <div className="axil-content">
+                        <h2 className="h3 m-b-xs-40">Tekstovi autorke</h2>
+                        {autorPosts.map((data) => (
+                            <PostLayoutTwo
+                                data={data}
+                                postSizeMd={true}
+                                key={data.slug}
+                            />
+                        ))}
+                        {!isLoading && currentPage < totalPages && (
+                            <button
+                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                                onClick={loadMore}
+                            >
+                                Učitaj još
+                            </button>
+                        )}
+                    </div>
+                </div>
             </div>
         </>
     );

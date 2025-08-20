@@ -55,10 +55,10 @@ export default function FestivaliPage({ initialFestivali }) {
                         ))}
                         {!isLoading && (
                             <button
-                                className="btn btn-primary btn-small"
+                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                 onClick={loadMore}
                             >
-                                Ucitaj jos
+                                Učitaj još
                             </button>
                         )}
                     </div>

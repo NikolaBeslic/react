@@ -38,7 +38,6 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
 
     return (
         <>
-            {/* Banner End here  */}
             <div className="random-posts section-gap">
                 <div className="container">
                     {isLoading && (
@@ -59,10 +58,10 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
                             ))}
                             {!isLoading && (
                                 <button
-                                    className="btn btn-primary btn-small"
+                                    className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                     onClick={loadMore}
                                 >
-                                    Ucitaj jos
+                                    Učitaj još
                                 </button>
                             )}
                         </div>

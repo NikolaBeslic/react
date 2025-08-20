@@ -43,17 +43,17 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
         <>
             <HeadMeta metaTitle="HuPkast" />
 
-            <main className="site-main">
-                <article className="post-details">
-                    <div className="single-blog-wrapper">
-                        {isLoading && (
-                            <Spinner
-                                animation="border"
-                                role="status"
-                                className="hup-spinner"
-                            />
-                        )}
+            <div className="random-posts section-gap">
+                <div className="container">
+                    {isLoading && (
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            className="hup-spinner"
+                        />
+                    )}
 
+                    <div className="axil-content">
                         {hupkast.map((hup) => (
                             <HuPkastIndexLayout
                                 hupkastData={hup}
@@ -62,15 +62,15 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
                         ))}
                         {!isLoading && currentPage < totalPages && (
                             <button
-                                className="btn btn-primary btn-small"
+                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                 onClick={loadMore}
                             >
-                                Ucitaj jos
+                                Učitaj još
                             </button>
                         )}
                     </div>
-                </article>
-            </main>
+                </div>
+            </div>
         </>
     );
 }

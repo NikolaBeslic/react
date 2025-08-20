@@ -2,7 +2,7 @@ import { Toaster } from "react-hot-toast";
 import FooterOne from "../components/footer/FooterOne";
 import HeaderOne from "../components/header/HeaderOne";
 import Sidebar from "../components/sidebar/Sidebar";
-
+import ScrollToTopButton from "../components/post/post-format/elements/ScrollToTop";
 const HuPLayout = ({
     header,
     children,
@@ -31,6 +31,7 @@ const HuPLayout = ({
                                         <div className="col-lg-4">
                                             <Sidebar />
                                         </div>
+                                        <ScrollToTopButton />
                                     </>
                                 )}
                             </div>

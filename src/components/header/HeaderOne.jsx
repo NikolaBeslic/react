@@ -63,6 +63,7 @@ const HeaderOne = () => {
 
     // Header Search
     const [searchshow, setSearchShow] = useState(false);
+    const [searchInput, setSearchInput] = useState("");
 
     const headerSearchShow = () => {
         setSearchShow(true);
@@ -134,6 +135,7 @@ const HeaderOne = () => {
     function handleKeyUp(e) {
         window.clearTimeout(timer); // prevent errant multiple timeouts from being generated
         timer = window.setTimeout(() => {
+            setSearchInput(e.target.value);
             performSearch(e.target.value + "*");
         }, timeoutVal);
     }
@@ -144,9 +146,11 @@ const HeaderOne = () => {
 
     const performSearch = (searchInput) => {
         //const searchInput = e.target.value + "*";
+        // TO DO: Fix loading layout
+        // setSearchLoading(true);
         console.log(searchInput);
         if (searchInput.length > 3) {
-            setSearchLoading(true);
+            //setSearchLoading(true);
             axiosClient
                 .get("/search", { params: { inputSearch: searchInput } })
                 .then((res) => {
@@ -157,6 +161,7 @@ const HeaderOne = () => {
                 })
                 .catch((err) => {
                     console.error(err);
+                    setSearchLoading(false);
                 });
         }
     };
@@ -342,6 +347,13 @@ const HeaderOne = () => {
                                             onKeyUp={handleKeyUp}
                                             onKeyDownCapture={handleKeyPress}
                                         />
+                                        {searchLoading && (
+                                            <Spinner
+                                                animation="border"
+                                                role="status"
+                                                className="hup-spinner"
+                                            />
+                                        )}
                                         <button
                                             className="navbar-search-btn"
                                             type="button"
@@ -398,22 +410,17 @@ const HeaderOne = () => {
                     searchResultsActive ? "-active" : ""
                 }`}
             >
-                {searchLoading && (
-                    <Spinner
-                        animation="border"
-                        role="status"
-                        className="hup-spinner"
-                    />
-                )}
                 {searchResults && (
-                    <ul className="ul">
-                        {searchResults.slice(0, 5).map((item) => (
-                            // <li className="searchResultItem" key={item.tekstid}>
-                            //     {item.naslov}
-                            // </li>
-                            <SearchResult data={item} key={item.tekstid} />
-                        ))}
-                    </ul>
+                    <>
+                        <ul className="ul">
+                            {searchResults.slice(0, 5).map((item) => (
+                                <SearchResult data={item} key={item.id} />
+                            ))}
+                        </ul>
+                        <Link href={`/search?query=${searchInput}`}>
+                            See more results
+                        </Link>
+                    </>
                 )}
             </div>
         </>

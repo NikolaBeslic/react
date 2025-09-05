@@ -4,11 +4,11 @@ import moment from "moment";
 
 const SearchResult = ({ data }) => {
     return (
-        <Link href={`${data.kategorija?.kategorija_slug}/${data.slug}`}>
+        <Link href={`/${data.kategorija_slug}/${data.slug}`}>
             <div className="search-result-item">
                 <div className="search-result-photo">
                     <Image
-                        src={data.tekst_photo}
+                        src={data.photo ?? ""}
                         alt={data.naslov}
                         objectFit="cover"
                         height={60}
@@ -21,12 +21,12 @@ const SearchResult = ({ data }) => {
                     <span
                         className="search-result-category"
                         style={{
-                            backgroundColor: data.kategorija?.kategorija_boja,
+                            backgroundColor: data.boja,
                         }}
                     >
-                        {data.kategorija.naziv_kategorije}{" "}
-                    </span>{" "}
-                    {moment(data.published_at).fromNow()}
+                        {data.kategorija}
+                    </span>
+                    {moment(data.datum)?.fromNow()}
                 </div>
             </div>
         </Link>

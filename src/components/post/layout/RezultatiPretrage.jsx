@@ -2,7 +2,7 @@ import Image from "next/legacy/image";
 import Link from "next/link";
 import moment from "moment";
 
-const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
+const RezultatiPretrage = ({ data, postSizeMd, postBgDark }) => {
     return (
         <div
             className={`media post-block m-b-xs-30 ${
@@ -10,12 +10,12 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
             } ${postBgDark === true ? "post-block__on-dark-bg" : ""}`}
         >
             <Link
-                href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                href={`/${data.kategorija_slug}/${data.slug}`}
                 title={data.naslov}
             >
                 <Image
-                    src={data?.tekst_photo}
-                    alt={data.naslov}
+                    src={data.photo ?? "/images/placeholder.png"}
+                    alt={data.naslov ?? ""}
                     width={postSizeMd === true ? 285 : 150}
                     height={postSizeMd === true ? 285 : 150}
                     placeholder="blur"
@@ -25,18 +25,18 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
             <div className="media-body">
                 <div className="post-cat-group m-b-xs-10">
                     <a
-                        href={`/${data.kategorija?.kategorija_slug}`}
-                        className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
+                        href={`/${data.kategorija_slug}`}
+                        className={`post-cat cat-btn ${data.kategorija}-tag-bg-color`}
                         style={{
-                            backgroundColor: data.kategorija.kategorija_boja,
+                            backgroundColor: data.boja,
                         }}
                     >
-                        {data.kategorija?.naziv_kategorije}
+                        {data.kategorija}
                     </a>
                 </div>
                 <h3 className="axil-post-title hover-line hover-line">
                     <Link
-                        href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                        href={`/${data.kategorija_slug}/${data.slug}`}
                         title={data.naslov}
                     >
                         {data.naslov}
@@ -57,15 +57,8 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                 <div className="post-metas">
                     <ul className="list-inline">
                         <li>
-                            <span>
-                                <i className="fa-regular fa-clock"></i>
-                            </span>
-                            <a
-                                href={`/author/${data.slug}`}
-                                className="post-author"
-                            >
-                                {moment(data.published_at).fromNow()}
-                            </a>
+                            <i className="fa-regular fa-clock"></i>
+                            {moment(data.datum).fromNow()}
                         </li>
                     </ul>
                 </div>
@@ -74,4 +67,4 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
     );
 };
 
-export default PostLayoutTwo;
+export default RezultatiPretrage;

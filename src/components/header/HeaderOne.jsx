@@ -180,7 +180,7 @@ const HeaderOne = () => {
                                         <Link href="/o-nama">O nama</Link>
                                     </li>
                                     <li>
-                                        <Link href="/contact">Kontakt</Link>
+                                        <Link href="/kontakt">Kontakt</Link>
                                     </li>
                                     <li>
                                         <Link href="/redakcija">Redakcija</Link>

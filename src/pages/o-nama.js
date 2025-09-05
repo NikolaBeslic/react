@@ -57,7 +57,7 @@ const AboutPage = () => {
                         <a
                             href="https://www.facebook.com/hocupozoriste/"
                             target="_blank"
-                            rel="noopener"
+                            rel="noreferrer"
                         >
                             fejsbuku
                         </a>
@@ -65,7 +65,7 @@ const AboutPage = () => {
                         <a
                             href="https://twitter.com/hocupozoriste"
                             target="_blank"
-                            rel="noopener"
+                            rel="noreferrer"
                         >
                             tviteru
                         </a>

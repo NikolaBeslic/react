@@ -41,7 +41,6 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                                 color: zanr.zanr_boja,
                                 borderColor: zanr.zanr_boja,
                             }}
-                            legacyBehavior
                             key={zanr.zanrid}
                         >
                             {zanr.naziv_zanra}
@@ -49,10 +48,7 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                     ))}
                 </div>
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                    <a
-                        href={`/predstave/${data.predstava_slug}`}
-                        legacyBehavior
-                    >
+                    <a href={`/predstave/${data.predstava_slug}`}>
                         {data.naziv_predstave}
                     </a>
                 </h3>

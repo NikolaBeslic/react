@@ -3,10 +3,19 @@ import Izvodjenje from "../predstave/Izvodjenje";
 import PostLayoutTwo from "../post/layout/PostLayoutTwo";
 import PredstaveLayout from "../post/layout/PredstaveLayout";
 import { useState } from "react";
-import axiosClient from "../../utils/axios";
-import { useStateContext } from "../../contexts/StateContext";
 
 const Pozoriste = ({ data, sidePosts, premijere }) => {
+    const [visibleCountIzvodjenja, setVisibleCountIzvodjenja] = useState(15);
+    const izvodjenjaPredstva = data?.igranja || [];
+    const visibleIzvodjenja = izvodjenjaPredstva.slice(
+        0,
+        visibleCountIzvodjenja
+    );
+
+    const handleLoadMoreIzvodjenja = () => {
+        setVisibleCountIzvodjenja((prevCount) => prevCount + 10);
+    };
+
     const [visibleCount, setVisibleCount] = useState(7);
     const tekstoviPozorista = data?.tekstovi || [];
     const visibleTexts = tekstoviPozorista.slice(0, visibleCount);
@@ -61,7 +70,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
 
                             <Tab.Content>
                                 <Tab.Pane eventKey="repertoar">
-                                    {data.igranja?.map((igranje) => (
+                                    {visibleIzvodjenja?.map((igranje) => (
                                         <Izvodjenje
                                             izvodjenjeData={igranje}
                                             showPredstava={true}
@@ -69,6 +78,15 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                             key={igranje.seigraid}
                                         />
                                     ))}
+                                    {visibleCountIzvodjenja <
+                                        izvodjenjaPredstva?.length && ( // Show button if there are more items to load
+                                        <button
+                                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                                            onClick={handleLoadMoreIzvodjenja}
+                                        >
+                                            Load More
+                                        </button>
+                                    )}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="tekstovi">
                                     {visibleTexts?.map((tekst) => (
@@ -79,7 +97,10 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                     ))}
                                     {visibleCount <
                                         tekstoviPozorista?.length && ( // Show button if there are more items to load
-                                        <button onClick={handleLoadMore}>
+                                        <button
+                                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                                            onClick={handleLoadMore}
+                                        >
                                             Load More
                                         </button>
                                     )}
@@ -95,6 +116,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                     {visibleCountPredstave <
                                         predstave?.length && (
                                         <button
+                                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                             onClick={handleLoadMorePredstave}
                                         >
                                             Load More

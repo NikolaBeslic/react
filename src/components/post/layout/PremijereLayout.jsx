@@ -12,22 +12,20 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                 href={`/predstave/${data.predstava_slug}`}
                 className="align-self-center"
             >
-                {data.plakat && (
-                    <>
-                        <Image
-                            src={data.plakat}
-                            alt={data.predstava_slug}
-                            width={80}
-                            height={120}
-                            objectFit="cover"
-                        />
-                        {videoIcon === true ? (
-                            <span className="video-play-btn video-play-btn__small" />
-                        ) : (
-                            ""
-                        )}
-                    </>
-                )}
+                <>
+                    <Image
+                        src={data.plakat || "/slike/vizitke-cover.jpg"}
+                        alt={data.predstava_slug}
+                        width={80}
+                        height={120}
+                        objectFit="cover"
+                    />
+                    {videoIcon === true ? (
+                        <span className="video-play-btn video-play-btn__small" />
+                    ) : (
+                        ""
+                    )}
+                </>
             </a>
 
             <div className="media-body predstava-index-info">

@@ -1,4 +1,3 @@
-import React, { Component } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
@@ -41,7 +40,10 @@ function PredstaveTwoSlider({ predstaveData }) {
                                     <Card.Img
                                         className="predstave-naslovna-card-img"
                                         variant="cover"
-                                        src={data.plakat}
+                                        src={
+                                            data.plakat ||
+                                            "/slike/vizitke-cover.jpg"
+                                        }
                                         alt={data.naziv_predstave}
                                         key={`cimg-${data.predstavaid}`}
                                     />

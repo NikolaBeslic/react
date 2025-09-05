@@ -72,7 +72,10 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                             href={`/predstave/${izvodjenjeData.predstava.predstava_slug}`}
                         >
                             <Image
-                                src={izvodjenjeData?.predstava.plakat ?? ""}
+                                src={
+                                    izvodjenjeData?.predstava.plakat ||
+                                    "/slike/vizitke-cover.jpg"
+                                }
                                 alt={izvodjenjeData?.predstava.predstava_slug}
                                 height={100}
                                 width={50}

@@ -193,7 +193,10 @@ const PredstavaTitle = ({ metaData }) => {
                                             style={{ position: "relative" }}
                                         >
                                             <Image
-                                                src={metaData.plakat}
+                                                src={
+                                                    metaData.plakat ||
+                                                    "/slike/vizitke-cover.jpg"
+                                                }
                                                 alt={metaData.predstava_slug}
                                                 style={{
                                                     width: "100%",
@@ -242,7 +245,10 @@ const PredstavaTitle = ({ metaData }) => {
                                         style={{ position: "relative" }}
                                     >
                                         <Image
-                                            src={metaData.plakat}
+                                            src={
+                                                metaData.plakat ||
+                                                "/slike/vizitke-cover.jpg"
+                                            }
                                             alt={metaData.predstava_slug}
                                             style={{
                                                 width: "100%",

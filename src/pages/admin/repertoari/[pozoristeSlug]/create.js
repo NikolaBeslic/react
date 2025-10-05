@@ -359,6 +359,7 @@ export default function RepertoarPozoristaCreatePage() {
                 if (isInEditMode) {
                     return [
                         <GridActionsCellItem
+                            key={"save"}
                             icon={<SaveIcon />}
                             label="Save"
                             material={{
@@ -369,6 +370,7 @@ export default function RepertoarPozoristaCreatePage() {
                             onClick={handleSaveClick(id)}
                         />,
                         <GridActionsCellItem
+                            key={"Cancel"}
                             icon={<CancelIcon />}
                             label="Cancel"
                             className="textPrimary"
@@ -380,6 +382,7 @@ export default function RepertoarPozoristaCreatePage() {
 
                 return [
                     <GridActionsCellItem
+                        key={"edit"}
                         icon={<EditIcon />}
                         label="Edit"
                         className="textPrimary"
@@ -387,6 +390,7 @@ export default function RepertoarPozoristaCreatePage() {
                         color="inherit"
                     />,
                     <GridActionsCellItem
+                        key={"delete"}
                         icon={<GridDeleteIcon />}
                         label="Delete"
                         onClick={() => handleDeleteClick(id)}

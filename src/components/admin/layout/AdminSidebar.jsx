@@ -20,6 +20,7 @@ import PodcastsOutlinedIcon from "@mui/icons-material/PodcastsOutlined";
 import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
 import GrainOutlinedIcon from "@mui/icons-material/GrainOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
+import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 import { useState } from "react";
 import Link from "next/link";
 
@@ -94,13 +95,27 @@ function AdminSidebar() {
                         <ListItemText primary="Ostali tekstovi" />
                     </ListItemButton>
                 </ListItem>
+
+                <ListItem
+                    component={Link}
+                    href="/admin/komentari"
+                    key={994}
+                    disablePadding
+                >
+                    <ListItemButton title="Komentari">
+                        <ListItemIcon>
+                            <QuestionAnswerOutlinedIcon />
+                        </ListItemIcon>
+                        <ListItemText primary="Komentari" />
+                    </ListItemButton>
+                </ListItem>
             </List>
             <Divider />
             <List>
                 <ListItem
                     component={Link}
                     href="/admin/statistika"
-                    key={993}
+                    key={995}
                     disablePadding
                 >
                     <ListItemButton title="Statistika">

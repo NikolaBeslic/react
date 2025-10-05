@@ -41,18 +41,6 @@ import AdminHeader from "../../../../components/admin/layout/AdminHeader";
 function EditToolbar(props) {
     const { setRows, setRowModesModel } = props;
 
-    const handleClick = () => {
-        const id = randomId();
-        setRows((oldRows) => [
-            ...oldRows,
-            { id, name: "", age: "", role: "", isNew: true },
-        ]);
-        setRowModesModel((oldModel) => ({
-            ...oldModel,
-            [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
-        }));
-    };
-
     return (
         <Toolbar>
             <Tooltip title="Add record">

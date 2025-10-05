@@ -8,22 +8,93 @@ import {
     Grid2,
     Paper,
     TextField,
+    Toolbar,
+    Tooltip,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    CircularProgress,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
 import { toast } from "react-hot-toast";
 import { useStateContext } from "../../../../contexts/StateContext";
-import { Spinner } from "react-bootstrap";
-import { DataGrid } from "@mui/x-data-grid";
+import { Row, Spinner } from "react-bootstrap";
+import {
+    DataGrid,
+    GridRowModes,
+    GridRowEditStopReasons,
+    GridActionsCellItem,
+    GridDeleteIcon,
+} from "@mui/x-data-grid";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/DeleteOutlined";
+import SaveIcon from "@mui/icons-material/Save";
+import CancelIcon from "@mui/icons-material/Close";
+import AdminHeader from "../../../../components/admin/layout/AdminHeader";
+
+function EditToolbar(props) {
+    const { setRows, setRowModesModel } = props;
+
+    const handleClick = () => {
+        const id = randomId();
+        setRows((oldRows) => [
+            ...oldRows,
+            { id, name: "", age: "", role: "", isNew: true },
+        ]);
+        setRowModesModel((oldModel) => ({
+            ...oldModel,
+            [id]: { mode: GridRowModes.Edit, fieldToFocus: "name" },
+        }));
+    };
+
+    return (
+        <Toolbar>
+            <Tooltip title="Add record">
+                {/* <ToolbarButton onClick={handleClick}>
+                    <AddIcon fontSize="small" />
+                </ToolbarButton> */}
+            </Tooltip>
+        </Toolbar>
+    );
+}
+
+function TimeEditInputCell(props) {
+    const { id, value, field, api } = props;
+
+    const handleChange = (newValue) => {
+        console.log(newValue);
+        api.setEditCellValue({
+            id,
+            field,
+            value: newValue.format("HH:mm"),
+        });
+    };
+
+    return (
+        <LocalizationProvider dateAdapter={AdapterMoment}>
+            <TimePicker
+                value={moment("1970.01.01 " + value)} // 👈 ensure value is moment, not string
+                onChange={handleChange}
+                slotProps={{
+                    textField: { size: "small", variant: "standard" },
+                }}
+            />
+        </LocalizationProvider>
+    );
+}
 
 export default function RepertoarPozoristaCreatePage() {
     const router = useRouter();
     const { isLoading, showLoading, hideLoading } = useStateContext();
     const { pozoristeSlug } = router.query;
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
     const [pozoriste, setPozoriste] = useState([]);
     const [igranja, setIgranja] = useState([]);
 
@@ -33,6 +104,9 @@ export default function RepertoarPozoristaCreatePage() {
     const [datum, setDatum] = useState(null);
     const [vreme, setVreme] = useState(null);
 
+    let [rows, setRows] = useState([]);
+    const [rowModesModel, setRowModesModel] = useState({});
+
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
@@ -40,6 +114,41 @@ export default function RepertoarPozoristaCreatePage() {
         datum: null,
         vreme: null,
     });
+
+    /* dialog constants */
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
+
+    /* Dialog functions */
+    const handleDeleteClick = (id) => {
+        setSelectedRow(rows.find((row) => row.id === id));
+        setOpenDialog(true);
+    };
+
+    const handleConfirmDelete = () => {
+        setDeleteLoading(true);
+        axiosClient
+            .delete(`/admin/igranje-delete/${selectedRow.id}`)
+            .then((res) => {
+                setRows((prev) => prev.filter((r) => r.id !== selectedRow.id));
+                toast.success("Uspesno obrisano izvodjenje");
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Greska prilikom brisanja izvodjenja");
+            })
+            .finally(() => {
+                setDeleteLoading(false);
+                setOpenDialog(false);
+                setSelectedRow(null);
+            });
+    };
+
+    const handleCancel = () => {
+        setOpenDialog(false);
+        setSelectedRow(null);
+    };
 
     useEffect(() => {
         if (pozoristeSlug) {
@@ -69,7 +178,9 @@ export default function RepertoarPozoristaCreatePage() {
                             }))
                         );
                 })
-                .catch((err) => console.error(err));
+                .catch((err) => {
+                    console.error(err);
+                });
         }
     }, [pozoristeSlug]);
 
@@ -111,40 +222,186 @@ export default function RepertoarPozoristaCreatePage() {
     };
 
     const fetchIgranja = (pozoristeid) => {
+        setLoading(true);
         axiosClient
             .get(`/admin/get-igranja-pozorista/${pozoristeid}`)
-            .then((res) => setIgranja(res.data))
-            .catch((err) => console.error(err));
+            .then((res) => {
+                setIgranja(res.data);
+                setRows(
+                    res.data?.map((igranje) => ({
+                        id: igranje.seigraid,
+                        naziv_predstave: igranje.predstava.naziv_predstave,
+                        scena: igranje.scena?.scenaid,
+                        datum: new Date(igranje.datum),
+                        vreme: moment("1970.01.01 " + igranje.vreme).format(
+                            "HH:mm"
+                        ),
+                    }))
+                );
+            })
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
+    };
+
+    /* МAKING GRID EDITABLE */
+    const handleRowEditStop = (params, event) => {
+        if (params.reason === GridRowEditStopReasons.rowFocusOut) {
+            event.defaultMuiPrevented = true;
+        }
+    };
+
+    const handleEditClick = (id) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.Edit },
+        });
+    };
+
+    const handleSaveClick = (id) => () => {
+        console.log(id);
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.View },
+        });
+    };
+
+    const handleCancelClick = (id) => () => {
+        setRowModesModel({
+            ...rowModesModel,
+            [id]: { mode: GridRowModes.View, ignoreModifications: true },
+        });
+
+        const editedRow = rows.find((row) => row.id === id);
+        if (editedRow.isNew) {
+            setRows(rows.filter((row) => row.id !== id));
+        }
+    };
+
+    const processRowUpdate = (newRow) => {
+        debugger;
+        const newDatum = moment(newRow.datum).format("YYYY-MM-DD");
+
+        axiosClient
+            .put(`/admin/igranje-update`, {
+                seigraid: newRow.id,
+                pozoristeid: pozoriste.pozoristeid,
+                scenaid: newRow.scena,
+                datum: newDatum,
+                vreme: newRow.vreme,
+            })
+            .then((res) => {
+                toast.success("Uspesno sacuvano izvodjenje");
+            })
+            .catch((err) => {
+                console.error(err);
+                toast.error("Greska prilikom cuvanja izvodjenja");
+            });
+
+        const updatedRow = { ...newRow, isNew: false };
+        setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+        return updatedRow;
+    };
+
+    const handleRowModesModelChange = (newRowModesModel) => {
+        setRowModesModel(newRowModesModel);
     };
 
     const columns = [
         { field: "id", headerName: "Id", flex: 0.5 },
-        { field: "naziv_predstave", headerName: "Naziv predstave", flex: 3 },
-        { field: "scena", headerName: "Scena", flex: 1 },
-        { field: "datum", headerName: "Datum", flex: 1 },
-        { field: "vreme", headerName: "Vreme", flex: 1 },
         {
-            field: "edit",
-            headerName: "Edit",
-            width: 200,
+            field: "naziv_predstave",
+            headerName: "Naziv predstave",
+            flex: 3,
+        },
+        {
+            field: "scena",
+            headerName: "Scena",
             flex: 1,
-            align: "center",
+            type: "singleSelect",
+            editable: true,
+            valueOptions: dbScene,
+        },
+        {
+            field: "datum",
+            headerName: "Datum",
+            flex: 1,
+            type: "date",
+            valueFormatter: (value) => {
+                // value is the raw date
+                return moment(value).format("DD. MMM YYYY.");
+            },
+            editable: true,
+        },
+        {
+            field: "vreme",
+            headerName: "Vreme",
+            flex: 1,
+            type: "time",
+            editable: true,
+
+            valueFormatter: (value) => {
+                // value is the raw time
+                return moment("1970.01.01 " + value).format("HH:mm");
+            },
+            renderEditCell: (params) => <TimeEditInputCell {...params} />,
+        },
+
+        {
+            field: "actions",
+            type: "actions",
+            headerName: "Actions",
+            flex: 1,
+            cellClassName: "actions",
+            getActions: ({ id }) => {
+                const isInEditMode =
+                    rowModesModel[id]?.mode === GridRowModes.Edit;
+
+                if (isInEditMode) {
+                    return [
+                        <GridActionsCellItem
+                            icon={<SaveIcon />}
+                            label="Save"
+                            material={{
+                                sx: {
+                                    color: "primary.main",
+                                },
+                            }}
+                            onClick={handleSaveClick(id)}
+                        />,
+                        <GridActionsCellItem
+                            icon={<CancelIcon />}
+                            label="Cancel"
+                            className="textPrimary"
+                            onClick={handleCancelClick(id)}
+                            color="inherit"
+                        />,
+                    ];
+                }
+
+                return [
+                    <GridActionsCellItem
+                        icon={<EditIcon />}
+                        label="Edit"
+                        className="textPrimary"
+                        onClick={handleEditClick(id)}
+                        color="inherit"
+                    />,
+                    <GridActionsCellItem
+                        icon={<GridDeleteIcon />}
+                        label="Delete"
+                        onClick={() => handleDeleteClick(id)}
+                        color="inherit"
+                    />,
+                ];
+            },
         },
     ];
-    const rows = new Array();
-
-    igranja?.map((igranje) =>
-        rows.push({
-            id: igranje.seigraid,
-            naziv_predstave: igranje.predstava.naziv_predstave,
-            scena: igranje.scena?.naziv_scene,
-            datum: moment(igranje.datum).format("DD. MMM YYYY. dddd"),
-            vreme: igranje.vreme, // TO DO fix this
-        })
-    );
 
     return (
         <>
+            <AdminHeader
+                metaTitle={`Dodaj repertoar - ${pozoriste.naziv_pozorista}`}
+            />
             <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
             <div className="container">
                 <Box sx={{ flexGrow: 1, my: 3 }}>
@@ -222,6 +479,21 @@ export default function RepertoarPozoristaCreatePage() {
                             columns={columns}
                             sx={{ border: 0 }}
                             autoPageSize
+                            loading={loading}
+                            showToolbar
+                            slots={{ toolbar: EditToolbar }}
+                            slotProps={{
+                                toolbar: { setRows, setRowModesModel },
+                            }}
+                            editMode="row"
+                            rowModesModel={rowModesModel}
+                            onRowModesModelChange={handleRowModesModelChange}
+                            onRowEditStop={handleRowEditStop}
+                            processRowUpdate={processRowUpdate}
+                            experimentalFeatures={{ newEditingApi: true }} // if using v5/v6
+                            onProcessRowUpdateError={(error) =>
+                                console.error(error)
+                            }
                             initialState={{
                                 sorting: {
                                     sortModel: [
@@ -235,6 +507,32 @@ export default function RepertoarPozoristaCreatePage() {
                         />
                     </Paper>
                 </Box>
+                {/* Confirmation Dialog */}
+                <Dialog open={openDialog} onClose={handleCancel}>
+                    <DialogTitle>Confirm Delete</DialogTitle>
+                    <DialogContent>
+                        Are you sure you want to delete{" "}
+                        <strong>{selectedRow?.name}</strong>?
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        <Button
+                            onClick={handleConfirmDelete}
+                            color="error"
+                            variant="contained"
+                            startIcon={
+                                deleteLoading ? (
+                                    <CircularProgress
+                                        size={18}
+                                        color="inherit"
+                                    />
+                                ) : undefined
+                            }
+                        >
+                            Delete
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
         </>
     );

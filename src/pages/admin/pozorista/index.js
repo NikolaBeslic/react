@@ -5,16 +5,20 @@ import { DataGrid } from "@mui/x-data-grid";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/router";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function PozoristaPage() {
+    const [loading, setLoading] = useState(false);
     const [pozorista, setPozorista] = useState([]);
     const router = useRouter();
 
     useEffect(() => {
+        setLoading(true);
         axiosClient
             .get("/admin/get-all-pozorista")
             .then((res) => setPozorista(res.data))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     }, []);
 
     function EditButton(params) {
@@ -57,25 +61,29 @@ export default function PozoristaPage() {
 
     return (
         <>
-            <h1>Pozorista</h1>
+            <AdminHeader metaTitle="Pozorišta" />
             <div className="container">
-                <Button
-                    href="/admin/pozorista/create"
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    className="mb-3"
-                    size="small"
-                >
-                    Dodaj pozoriste
-                </Button>
-                <Paper sx={{ height: 800, width: "100%" }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        sx={{ border: 0 }}
-                        autoPageSize
-                    />
-                </Paper>
+                <h1>Pozorista</h1>
+                <div className="container">
+                    <Button
+                        href="/admin/pozorista/create"
+                        variant="contained"
+                        startIcon={<AddIcon />}
+                        className="mb-3"
+                        size="small"
+                    >
+                        Dodaj pozoriste
+                    </Button>
+                    <Paper sx={{ height: 800, width: "100%" }}>
+                        <DataGrid
+                            rows={rows}
+                            columns={columns}
+                            sx={{ border: 0 }}
+                            autoPageSize
+                            loading={loading}
+                        />
+                    </Paper>
+                </div>
             </div>
         </>
     );

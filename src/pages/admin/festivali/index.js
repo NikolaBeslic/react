@@ -10,16 +10,19 @@ import { useRouter } from "next/router";
 
 export default function FestivaliPage() {
     const [festivali, setFestivali] = useState([]);
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
 
     useEffect(() => {
+        setLoading(true);
         axiosClient
             .get("/admin/get-all-festivali")
             .then((res) => {
                 setFestivali(res.data);
                 console.log(res.data);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     }, []);
 
     function EditButton(params) {
@@ -94,6 +97,7 @@ export default function FestivaliPage() {
                     <DataGrid
                         rows={rows}
                         columns={columns}
+                        loading={loading}
                         sx={{ border: 0 }}
                         autoPageSize
                         slots={{ toolbar: GridToolbar }}

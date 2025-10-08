@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
 import { useRouter } from "next/router";
 import moment from "moment";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
@@ -43,8 +44,8 @@ export default function PredstavePage() {
     }
 
     const columns = [
-        { field: "naziv_predstave", headerName: "Naziv predstave", flex: 1 },
-        { field: "pozorista", headerName: "Pozorista", flex: 1 },
+        { field: "naziv_predstave", headerName: "Naziv predstave", flex: 2 },
+        { field: "pozorista", headerName: "Pozorista", flex: 2 },
         {
             field: "premijera",
             headerName: "Premijera",
@@ -82,6 +83,7 @@ export default function PredstavePage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Predstave" />
             <div className="container">
                 <h1>Predstave</h1>
                 <Button

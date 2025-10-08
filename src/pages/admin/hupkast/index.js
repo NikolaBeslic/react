@@ -15,13 +15,15 @@ export default function HuPkastPage() {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        setLoading(true);
         axiosClient
             .get("/admin/get-all-hupkast")
             .then((res) => {
                 console.log(res.data);
                 setAllHupkast(res.data);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     }, []);
 
     const handleCheckRSSClick = () => {

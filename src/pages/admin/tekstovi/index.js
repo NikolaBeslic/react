@@ -6,6 +6,7 @@ import { useRouter } from "next/router";
 import { Button, ButtonGroup, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import moment from "moment";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function TekstoviPage() {
     const [posts, setPosts] = useState([]);
@@ -19,15 +20,16 @@ export default function TekstoviPage() {
     };
 
     useEffect(() => {
+        debugger;
         setLoading(true);
         axiosClient
             .get("/admin/tekstovi")
             .then((res) => {
                 console.log(res.data);
-                setPosts(res.data.data);
-                setLoading(false);
+                setPosts(res.data);
             })
-            .catch((error) => console.error(error));
+            .catch((error) => console.error(error))
+            .finally(() => setLoading(false));
     }, []);
 
     function EditButton(params) {
@@ -101,6 +103,7 @@ export default function TekstoviPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Tekstovi" />
             <div className="container">
                 <ButtonGroup
                     variant="contained"

@@ -181,7 +181,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         axiosClient
             .get("/get-autori")
             .then((res) => {
-                setSviAutori(res.data.data);
+                setSviAutori(res.data);
             })
             .catch((error) => console.error(error));
 
@@ -223,6 +223,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const optionsPredstave = svePredstave.map((predstava) => ({
         value: predstava.predstavaid,
         label: predstava.naziv_predstave,
+        key: predstava.predstavaid,
     }));
 
     const optionsPozorista = svaPozorista.map((pozoriste) => ({
@@ -712,6 +713,13 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                 value={dbPredstave}
                                 onChange={handlePredstaveChange}
                                 sx={{ mb: 2 }}
+                                renderOption={(props, option) => {
+                                    return (
+                                        <li {...props} key={option.predstavaid}>
+                                            {option.label}
+                                        </li>
+                                    );
+                                }}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}

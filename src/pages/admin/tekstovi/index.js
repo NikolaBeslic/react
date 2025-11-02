@@ -20,7 +20,6 @@ export default function TekstoviPage() {
     };
 
     useEffect(() => {
-        debugger;
         setLoading(true);
         axiosClient
             .get("/admin/tekstovi")

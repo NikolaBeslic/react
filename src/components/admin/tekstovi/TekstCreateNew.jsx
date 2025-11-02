@@ -35,6 +35,8 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         // Add more fields as needed
     });
 
+    const [previewTekstPhoto, setPreviewTekstPhoto] = useState(null);
+
     const [sviAutori, setSviAutori] = useState([]);
     const [dbAutori, setDbAutori] = useState([]);
 
@@ -134,6 +136,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                             }))
                         );
                     }
+                    setPreviewTekstPhoto(res.data.tekst_photo);
                     setLoading(false);
                 })
                 .catch((error) => {
@@ -251,8 +254,13 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     };
 
     const handleTekstPhoto = (event) => {
-        console.log(event.target.files[0]);
-        setFormData({ ...formData, slika: event.target.files[0] });
+        if (!event.target.files[0]) {
+            setFormData({ ...formData, slika: null });
+            setPreviewTekstPhoto(null);
+        } else {
+            setFormData({ ...formData, slika: event.target.files[0] });
+            setPreviewTekstPhoto(URL.createObjectURL(event.target.files[0]));
+        }
     };
 
     const editorUvod = useRef(null);
@@ -339,22 +347,34 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        setLoading(true);
+        setErrors({});
         linkovi.forEach((value, index) => {
             formData.hupkast_linkovi[index] = value;
             console.log(value);
         });
         console.log(formData);
+
         let storeUrl = "/admin/create-tekst";
         if (addHuPkast) storeUrl = "/admin/hupkast-store";
         if (addHuPikon) storeUrl = "/admin/hupikon-store";
         if (formData.tekstid) {
             axiosClient
-                .put("/update-tekst", formData)
-                .then((res) => console.log(res))
+                .post("/admin/update-tekst", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                .then((res) => {
+                    console.log(res);
+                    toast.success("Uspesno izmenjen tekst");
+                })
                 .catch((error) => {
                     console.error(error);
+                    setErrors(error.response.data.errors);
                     console.log(error.response.data);
-                });
+                })
+                .finally(() => setLoading(false));
         } else {
             axiosClient
                 .post(storeUrl, formData, {
@@ -371,7 +391,8 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                     console.error(error.response.data.errors);
                     setErrors(error.response.data.errors);
                     console.error(error);
-                });
+                })
+                .finally(() => setLoading(false));
         }
     };
 
@@ -600,6 +621,18 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                             </FormControl>
                             <FormControl fullWidth sx={{ mb: 3 }}>
                                 <FormLabel>Tekst foto</FormLabel>
+                                {previewTekstPhoto && (
+                                    <div style={{ marginBottom: "10px" }}>
+                                        <img
+                                            src={previewTekstPhoto}
+                                            alt="Preview"
+                                            style={{
+                                                maxWidth: "100%",
+                                                height: "100px",
+                                            }}
+                                        />
+                                    </div>
+                                )}
                                 <input
                                     type="file"
                                     accept="image/*"
@@ -608,6 +641,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                 {errors?.slika && (
                                     <span className="text-danger">
                                         {errors.slika}
+                                    </span>
+                                )}
+                                {errors?.tekst_photo && (
+                                    <span className="text-danger">
+                                        {errors.tekst_photo}
                                     </span>
                                 )}
                             </FormControl>

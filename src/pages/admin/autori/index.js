@@ -26,7 +26,7 @@ export default function AutoriPage() {
 
     const handleEditClick = (autorid) => {
         console.log(autorid);
-        router.push(`/admin/autori/create?autorid=${autorid}`);
+        router.push(`/admin/autori/edit?autorid=${autorid}`);
     };
 
     return (

@@ -13,9 +13,8 @@ import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
-import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
-const AutoriCreate = ({ autorid }) => {
+const AutoriCreateUpdate = ({ autorid }) => {
     const [gradovi, setGradovi] = useState([]);
     const [autorImage, setAutorImage] = useState(null);
     const [errors, setErrors] = useState({});
@@ -119,7 +118,6 @@ const AutoriCreate = ({ autorid }) => {
 
     return (
         <>
-            <AdminHeader metaTitle="Dodaj autora" />
             <Stack
                 component="form"
                 direction="column"
@@ -219,4 +217,4 @@ const AutoriCreate = ({ autorid }) => {
     );
 };
 
-export default AutoriCreate;
+export default AutoriCreateUpdate;

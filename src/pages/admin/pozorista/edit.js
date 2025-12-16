@@ -7,8 +7,8 @@ export default function Page() {
     const { pozoristeid } = router.query;
     return (
         <>
-            <AdminHeader metaTitle="Dodaj pozorište" />
-            <h1>Dodaj pozorište</h1>
+            <AdminHeader metaTitle="Izmeni pozorište" />
+            <h1>Izmeni pozorište</h1>
             <PozoristaCreateUpdate pozoristeid={pozoristeid} />
         </>
     );

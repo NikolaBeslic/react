@@ -56,7 +56,7 @@ export default function PozoristaPage() {
 
     const onEditButtonClick = (event, params) => {
         event.preventDefault();
-        router.push(`/admin/pozorista/create?pozoristeid=${params.id}`);
+        router.push(`/admin/pozorista/edit?pozoristeid=${params.id}`);
     };
 
     return (

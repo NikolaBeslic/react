@@ -11,9 +11,8 @@ import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
-import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
-const PozoristaCreate = ({ pozoristeid }) => {
+const PozoristaCreateUpdate = ({ pozoristeid }) => {
     const [gradovi, setGradovi] = useState([]);
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
@@ -109,7 +108,6 @@ const PozoristaCreate = ({ pozoristeid }) => {
 
     return (
         <>
-            <AdminHeader metaTitle="Dodaj pozorište" />
             <Stack
                 component="form"
                 direction="column"
@@ -208,4 +206,4 @@ const PozoristaCreate = ({ pozoristeid }) => {
     );
 };
 
-export default PozoristaCreate;
+export default PozoristaCreateUpdate;

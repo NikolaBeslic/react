@@ -78,7 +78,7 @@ export default function PredstavePage() {
 
     const onEditButtonClick = (event, params) => {
         event.preventDefault();
-        router.push(`/admin/predstave/create?predstavaid=${params.id}`);
+        router.push(`/admin/predstave/edit?predstavaid=${params.id}`);
     };
 
     return (

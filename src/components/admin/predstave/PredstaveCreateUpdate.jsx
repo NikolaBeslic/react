@@ -11,9 +11,8 @@ import {
 } from "@mui/material";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
-import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
-const PredstaveCreate = ({ predstavaid }) => {
+const PredstaveCreateUpdate = ({ predstavaid }) => {
     const [formData, setFormData] = useState({
         naziv_predstave: "",
         predstava_slug: "",
@@ -121,7 +120,6 @@ const PredstaveCreate = ({ predstavaid }) => {
 
     return (
         <>
-            <AdminHeader metaTitle="Dodaj predstavu" />
             <Stack
                 component="form"
                 direction="column"
@@ -254,4 +252,4 @@ const PredstaveCreate = ({ predstavaid }) => {
     );
 };
 
-export default PredstaveCreate;
+export default PredstaveCreateUpdate;

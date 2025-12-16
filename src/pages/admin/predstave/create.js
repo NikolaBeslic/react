@@ -1,13 +1,12 @@
-import { useRouter } from "next/router";
-import PredstaveCreate from "../../../components/admin/predstave/PredstaveCreate";
+import PredstaveCreateUpdate from "../../../components/admin/predstave/PredstaveCreateUpdate";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function Page() {
-    const router = useRouter();
-    const { predstavaid } = router.query;
     return (
         <>
-            <h1>Dodaj predstave</h1>
-            <PredstaveCreate predstavaid={predstavaid} />
+            <AdminHeader metaTitle="Dodaj predstavu" />
+            <h1>Dodaj predstavu</h1>
+            <PredstaveCreateUpdate />
         </>
     );
 }

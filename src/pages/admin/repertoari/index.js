@@ -5,6 +5,7 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/router";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function RepertoariPage() {
     const [pozorista, setPozorista] = useState([]);
@@ -82,6 +83,8 @@ export default function RepertoariPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Repertoari" />
+
             <h1>Repertoari</h1>
             <div className="container">
                 <Button

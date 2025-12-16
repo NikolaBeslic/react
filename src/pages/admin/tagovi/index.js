@@ -3,6 +3,7 @@ import axiosClient from "../../../utils/axios";
 import { Avatar, Button, Chip, InputLabel, NativeSelect } from "@mui/material";
 import { slugify } from "../../../../lib/slugify";
 import toast from "react-hot-toast";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function TagoviPage() {
     const [tagovi, setTagovi] = useState([]);
@@ -86,6 +87,7 @@ export default function TagoviPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Tagovi" />
             <h1>Tagovi</h1>
             <div className="row mb-3">
                 <div className="col-lg-6">

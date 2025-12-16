@@ -8,6 +8,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import DvrIcon from "@mui/icons-material/Dvr";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useRouter } from "next/router";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function StatistikaPage() {
     const [fetches, setFetches] = useState([]);
@@ -87,6 +88,7 @@ export default function StatistikaPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Statistika" />
             <h1>Statistika</h1>
 
             <Paper sx={{ height: 800, width: "100%" }}>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import toast from "react-hot-toast";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 const ZanrCreate = ({ zanrid }) => {
     const [errors, setErrors] = useState({});
@@ -67,6 +68,7 @@ const ZanrCreate = ({ zanrid }) => {
 
     return (
         <>
+            <AdminHeader metaTitle="Dodaj žanr" />
             <Stack
                 component="form"
                 direction="column"

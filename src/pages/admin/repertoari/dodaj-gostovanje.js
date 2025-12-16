@@ -17,6 +17,7 @@ import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DataGrid } from "@mui/x-data-grid";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function DodajGostovanjePage() {
     const { isLoading, showLoading, hideLoading } = useStateContext();
@@ -152,6 +153,7 @@ export default function DodajGostovanjePage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Dodaj gostovanje" />
             <h1>Dodaj gostovanje</h1>
             <div className="container">
                 <Box sx={{ flexGrow: 1, my: 3 }}>

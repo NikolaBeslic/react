@@ -11,6 +11,7 @@ import {
 import AddIcon from "@mui/icons-material/Add";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useRouter } from "next/router";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function AutoriPage() {
     const [autori, setAutori] = useState([]);
@@ -30,6 +31,8 @@ export default function AutoriPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Autori" />
+
             <div className="container">
                 <h1>Autori na sajtu </h1>
                 <Button

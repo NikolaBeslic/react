@@ -12,6 +12,7 @@ import AddIcon from "@mui/icons-material/Add";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useRouter } from "next/router";
 import { Spinner } from "react-bootstrap";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function ZanroviPage() {
     const [zanrovi, setZanrovi] = useState([]);
@@ -38,6 +39,7 @@ export default function ZanroviPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Žanrovi" />
             <div className="container">
                 <h1>Zanrovi</h1>
                 <Button

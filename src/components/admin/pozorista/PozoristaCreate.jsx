@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 const PozoristaCreate = ({ pozoristeid }) => {
     const [gradovi, setGradovi] = useState([]);
@@ -107,98 +108,103 @@ const PozoristaCreate = ({ pozoristeid }) => {
     };
 
     return (
-        <Stack
-            component="form"
-            direction="column"
-            spacing={2}
-            alignItems="center"
-            sx={{ width: 500 }}
-            marginX={"auto"}
-        >
-            <FormControl fullWidth>
-                <TextField
-                    name="naziv_pozorista"
-                    label="Naziv pozorista"
-                    variant="outlined"
-                    value={formData.naziv_pozorista}
-                    onChange={handleChange}
-                />
-                {errors?.naziv_pozorista && (
-                    <span className="text-danger">
-                        {errors.naziv_pozorista}
-                    </span>
-                )}
-            </FormControl>
+        <>
+            <AdminHeader metaTitle="Dodaj pozorište" />
+            <Stack
+                component="form"
+                direction="column"
+                spacing={2}
+                alignItems="center"
+                sx={{ width: 500 }}
+                marginX={"auto"}
+            >
+                <FormControl fullWidth>
+                    <TextField
+                        name="naziv_pozorista"
+                        label="Naziv pozorista"
+                        variant="outlined"
+                        value={formData.naziv_pozorista}
+                        onChange={handleChange}
+                    />
+                    {errors?.naziv_pozorista && (
+                        <span className="text-danger">
+                            {errors.naziv_pozorista}
+                        </span>
+                    )}
+                </FormControl>
 
-            <FormControl fullWidth>
-                <TextField
-                    name="pozoriste_slug"
-                    label="Slug"
-                    variant="outlined"
-                    value={formData.pozoriste_slug}
-                    onChange={handleChange}
-                />
-                {errors?.pozoriste_slug && (
-                    <span className="text-danger">{errors.pozoriste_slug}</span>
-                )}
-            </FormControl>
-            <FormControl fullWidth>
-                <TextField
-                    name="adresa"
-                    label="Adresa"
-                    variant="outlined"
-                    value={formData.adresa}
-                    onChange={handleChange}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <TextField
-                    name="telefon"
-                    label="Telefon"
-                    variant="outlined"
-                    value={formData.telefon}
-                    onChange={handleChange}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <TextField
-                    name="email"
-                    label="Email"
-                    variant="outlined"
-                    value={formData.email}
-                    onChange={handleChange}
-                />
-            </FormControl>
-            <FormControl fullWidth>
-                <InputLabel id="select-label">Grad</InputLabel>
-                <Select
-                    labelId="select-label"
-                    name="grad"
-                    label="Grad"
-                    value={formData.gradid ?? ""}
-                    onChange={handleGradSelectChange}
-                    sx={{ mb: 2 }}
-                    variant="outlined"
-                    MenuProps={MenuProps}
-                >
-                    {gradovi.map((grad) => (
-                        <MenuItem key={grad.gradid} value={grad.gradid}>
-                            {grad.naziv_grada}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-            <FormControl>
-                <Button
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    onClick={handleSubmit}
-                >
-                    Submit
-                </Button>
-            </FormControl>
-        </Stack>
+                <FormControl fullWidth>
+                    <TextField
+                        name="pozoriste_slug"
+                        label="Slug"
+                        variant="outlined"
+                        value={formData.pozoriste_slug}
+                        onChange={handleChange}
+                    />
+                    {errors?.pozoriste_slug && (
+                        <span className="text-danger">
+                            {errors.pozoriste_slug}
+                        </span>
+                    )}
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField
+                        name="adresa"
+                        label="Adresa"
+                        variant="outlined"
+                        value={formData.adresa}
+                        onChange={handleChange}
+                    />
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField
+                        name="telefon"
+                        label="Telefon"
+                        variant="outlined"
+                        value={formData.telefon}
+                        onChange={handleChange}
+                    />
+                </FormControl>
+                <FormControl fullWidth>
+                    <TextField
+                        name="email"
+                        label="Email"
+                        variant="outlined"
+                        value={formData.email}
+                        onChange={handleChange}
+                    />
+                </FormControl>
+                <FormControl fullWidth>
+                    <InputLabel id="select-label">Grad</InputLabel>
+                    <Select
+                        labelId="select-label"
+                        name="grad"
+                        label="Grad"
+                        value={formData.gradid ?? ""}
+                        onChange={handleGradSelectChange}
+                        sx={{ mb: 2 }}
+                        variant="outlined"
+                        MenuProps={MenuProps}
+                    >
+                        {gradovi.map((grad) => (
+                            <MenuItem key={grad.gradid} value={grad.gradid}>
+                                {grad.naziv_grada}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </FormControl>
+                <FormControl>
+                    <Button
+                        size="large"
+                        type="submit"
+                        variant="contained"
+                        onClick={handleSubmit}
+                    >
+                        Submit
+                    </Button>
+                </FormControl>
+            </Stack>
+        </>
     );
 };
 

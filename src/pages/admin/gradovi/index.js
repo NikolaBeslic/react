@@ -11,6 +11,7 @@ import {
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import toast from "react-hot-toast";
+import AdminHeader from "../../../components/admin/layout/AdminHeader";
 
 export default function GradoviPage() {
     const [gradovi, setGradovi] = useState([]);
@@ -42,6 +43,7 @@ export default function GradoviPage() {
 
     return (
         <>
+            <AdminHeader metaTitle="Gradovi" />
             <div className="container">
                 <h1>Gradovi </h1>
                 <TextField

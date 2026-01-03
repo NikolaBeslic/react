@@ -28,6 +28,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
     const { isLoading, showLoading, hideLoading } = useStateContext();
 
     const [festival, setFestival] = useState([]);
+    const [festivalImage, setFestivalImage] = useState(null);
     const [gradovi, setGradovi] = useState([]);
     const [errors, setErrors] = useState({});
     const [datumod, setDatumod] = useState(null);
@@ -61,6 +62,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     setFormData({
                         ...res.data,
                     });
+                    setFestivalImage(res.data.festival_slika);
                     setDatumod(moment(res.data.datumod));
                     setDatumdo(moment(res.data.datumdo));
                     editorTekst.content = res.data.tekst_festivala;
@@ -72,7 +74,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     console.error(err);
                 });
         }
-    }, []);
+    }, [festivalid]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -89,8 +91,13 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
     };
 
     const handleFestivalFoto = (event) => {
-        console.log(event.target.files[0]);
-        setFormData({ ...formData, festival_slika: event.target.files[0] });
+        if (!event.target.files[0]) {
+            setFormData({ ...formData, festival_slika: null });
+            setFestivalImage(null);
+        } else {
+            setFormData({ ...formData, festival_slika: event.target.files[0] });
+            setFestivalImage(URL.createObjectURL(event.target.files[0]));
+        }
     };
 
     const editorTekst = useRef(null);
@@ -115,7 +122,11 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
             console.log("update");
 
             axiosClient
-                .put("/admin/festival-update", formData)
+                .post("/admin/festival-update", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     setErrors({});
@@ -274,7 +285,19 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                             )}
                         </FormControl>
                         <FormControl fullWidth sx={{ mb: 3 }}>
-                            <FormLabel>Tekst foto</FormLabel>
+                            <FormLabel>Festival foto</FormLabel>
+                            {festivalImage && (
+                                <div style={{ marginBottom: "10px" }}>
+                                    <img
+                                        src={festivalImage}
+                                        alt="Preview"
+                                        style={{
+                                            maxWidth: "100%",
+                                            height: "100px",
+                                        }}
+                                    />
+                                </div>
+                            )}
                             <input
                                 type="file"
                                 accept="image/*"

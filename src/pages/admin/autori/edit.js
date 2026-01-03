@@ -5,6 +5,7 @@ import AdminHeader from "../../../components/admin/layout/AdminHeader";
 export default function Page() {
     const router = useRouter();
     const { autorid } = router.query;
+
     return (
         <>
             <AdminHeader metaTitle="Izmeni autora" />

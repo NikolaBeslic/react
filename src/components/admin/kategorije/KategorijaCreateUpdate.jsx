@@ -13,7 +13,7 @@ import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
 
-const KategorijaCreate = ({ kategorijaid }) => {
+const KategorijaCreateUpdate = ({ kategorijaid }) => {
     const [color, setColor] = useState(null);
     const [sveKategorije, setSveKategorije] = useState([]);
     const [errors, setErrors] = useState({});
@@ -198,4 +198,4 @@ const KategorijaCreate = ({ kategorijaid }) => {
     );
 };
 
-export default KategorijaCreate;
+export default KategorijaCreateUpdate;

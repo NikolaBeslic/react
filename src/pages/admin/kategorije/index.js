@@ -22,7 +22,7 @@ export default function KategorijePage() {
 
     const handleEditClick = (kategorijaid) => {
         console.log(kategorijaid);
-        router.push(`/admin/kategorije/create?kategorijaid=${kategorijaid}`);
+        router.push(`/admin/kategorije/edit?kategorijaid=${kategorijaid}`);
     };
 
     return (

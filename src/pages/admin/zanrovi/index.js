@@ -33,8 +33,7 @@ export default function ZanroviPage() {
     }, []);
 
     const handleEditClick = (zanrid) => {
-        console.log(zanrid);
-        router.push(`/admin/zanrovi/create?zanrid=${zanrid}`);
+        router.push(`/admin/zanrovi/edit?zanrid=${zanrid}`);
     };
 
     return (

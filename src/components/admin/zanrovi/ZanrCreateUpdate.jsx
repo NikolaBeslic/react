@@ -4,9 +4,9 @@ import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import toast from "react-hot-toast";
-import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import AdminHeader from "../layout/AdminHeader";
 
-const ZanrCreate = ({ zanrid }) => {
+const ZanrCreateUpdate = ({ zanrid }) => {
     const [errors, setErrors] = useState({});
     const [color, setColor] = useState(null);
     const [formData, setFormData] = useState({
@@ -142,4 +142,4 @@ const ZanrCreate = ({ zanrid }) => {
     );
 };
 
-export default ZanrCreate;
+export default ZanrCreateUpdate;

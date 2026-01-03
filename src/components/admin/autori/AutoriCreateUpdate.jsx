@@ -43,6 +43,7 @@ const AutoriCreateUpdate = ({ autorid }) => {
                 .then((res) => {
                     console.log(res.data);
                     setFormData({ ...res.data });
+                    setAutorImage(res.data.url_slike);
                 })
                 .catch((error) => {
                     console.error(error);
@@ -64,17 +65,16 @@ const AutoriCreateUpdate = ({ autorid }) => {
         setFormData({ ...formData, gradid: event.target.value });
     };
 
-    const handleFile = (event) => {
-        console.log(event.target.files[0]);
-        setFormData({ ...formData, slika: event.target.files[0] });
-    };
-
     const handleSubmit = (event) => {
         event.preventDefault();
         console.log(formData);
         if (formData.autorid) {
             axiosClient
-                .put("/admin/update-autor", formData)
+                .post("/admin/update-autor", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     setErrors({});
@@ -102,6 +102,16 @@ const AutoriCreateUpdate = ({ autorid }) => {
                     console.log(error.response.data.errors);
                     setErrors(error.response.data.errors);
                 });
+        }
+    };
+
+    const handleAutorImageChange = (event) => {
+        if (!event.target.files[0]) {
+            setFormData({ ...formData, slika: null });
+            setAutorImage(null);
+        } else {
+            setFormData({ ...formData, slika: event.target.files[0] });
+            setAutorImage(URL.createObjectURL(event.target.files[0]));
         }
     };
 
@@ -194,9 +204,22 @@ const AutoriCreateUpdate = ({ autorid }) => {
 
                 <FormControl>
                     <FormLabel>Foto</FormLabel>
+
+                    {autorImage && (
+                        <div style={{ marginBottom: "10px" }}>
+                            <img
+                                src={autorImage}
+                                alt="Preview"
+                                style={{
+                                    maxWidth: "100%",
+                                    height: "100px",
+                                }}
+                            />
+                        </div>
+                    )}
                     <Input
                         type="file"
-                        onChange={handleFile}
+                        onChange={handleAutorImageChange}
                         accept="image/png, image/gif, image/jpeg"
                     />
                 </FormControl>

@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import EditNoteIcon from "@mui/icons-material/EditNote";
+import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import axiosClient from "../../../utils/axios";
 import { useRouter } from "next/router";
 import { Button, ButtonGroup, Paper } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import moment from "moment";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { toast } from "react-hot-toast";
 
 export default function TekstoviPage() {
     const [posts, setPosts] = useState([]);
@@ -44,6 +46,17 @@ export default function TekstoviPage() {
         );
     }
 
+    function CopyButton(params) {
+        return (
+            <Button
+                onClick={(e) => handleCopyButtonClick(e, params.params)}
+                variant="outlined"
+                startIcon={<ContentCopyIcon />}
+                size="small"
+            ></Button>
+        );
+    }
+
     const columns = [
         { field: "naslov", headerName: "Naslov", flex: 3 },
         { field: "kategorija", headerName: "Kategorija", flex: 1 },
@@ -52,6 +65,14 @@ export default function TekstoviPage() {
             headerName: "Datum objave",
             flex: 1,
             sortComparator: dayInMonthComparator,
+        },
+        {
+            field: "copy",
+            headerName: "",
+            width: 50,
+            flex: 1,
+            align: "center",
+            renderCell: (params) => <CopyButton params={params} />,
         },
         {
             field: "edit",
@@ -80,6 +101,24 @@ export default function TekstoviPage() {
 
     const handleCreateClick = (kategorijaid) => {
         router.push(`/admin/tekstovi/create?kategorijaid=${kategorijaid}`);
+    };
+
+    const handleCopyButtonClick = (e, params) => {
+        const post = posts.find((post) => post.tekstid == params.id);
+        if (post && post.kategorija && post.slug) {
+            const url = `${window.location.origin}/${post.kategorija.kategorija_slug}/${post.slug}`;
+            navigator.clipboard
+                .writeText(url)
+                .then(() => {
+                    toast.success("Link uspešno kopiran.");
+                })
+                .catch((err) => {
+                    console.error("Could not copy text: ", err);
+                    toast.error("Greška pri kopiranju linka.");
+                });
+        } else {
+            toast.error("Greška pri kopiranju linka.");
+        }
     };
 
     const handleIstakniClick = (row) => {

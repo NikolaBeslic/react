@@ -6,6 +6,7 @@ import {
     Button,
     FormControl,
     FormLabel,
+    Input,
     Stack,
     TextField,
 } from "@mui/material";
@@ -21,12 +22,14 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
         reditelj: "",
         opis: "",
         uloge: "",
+        plakat: "",
         pozorista: [],
+        slika: null,
     });
     const [errors, setErrors] = useState({});
     const [svaPozorista, setSvaPozorista] = useState([]);
     const [dbPozorista, setDbPozorista] = useState([]);
-
+    const [predstavaImage, setPredstavaImage] = useState(null);
     const optionsPozorista = svaPozorista?.map((pozoriste) => ({
         value: pozoriste.pozoristeid,
         label: pozoriste.naziv_pozorista,
@@ -45,6 +48,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                 .get(`/admin/get-single-predstava/${predstavaid}`)
                 .then((res) => {
                     setFormData(res.data);
+                    setPredstavaImage(res.data.plakat);
                     editorOpis.content = res.data.opis;
                     editorUloge.content = res.data.uloge;
                     if (res.data.pozorista)
@@ -93,7 +97,11 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
         console.log(formData);
         if (formData.predstavaid) {
             axiosClient
-                .put("/admin/update-predstava", formData)
+                .post("/admin/update-predstava", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     toast.success("Predstava uspesno izmenjena");
@@ -104,7 +112,11 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-predstava", formData)
+                .post("/admin/create-predstava", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     setErrors({});
@@ -115,6 +127,16 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                     console.log(error.response.data.errors);
                     setErrors(error.response.data.errors);
                 });
+        }
+    };
+
+    const handlePredstavaImageChange = (event) => {
+        if (!event.target.files[0]) {
+            setFormData({ ...formData, slika: null });
+            setPredstavaImage(null);
+        } else {
+            setFormData({ ...formData, slika: event.target.files[0] });
+            setPredstavaImage(URL.createObjectURL(event.target.files[0]));
         }
     };
 
@@ -201,6 +223,27 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                         value={formData.premijera}
                         className="form-control"
                         onChange={handleChange}
+                    />
+                </FormControl>
+                <FormControl>
+                    <FormLabel>Plakat</FormLabel>
+
+                    {predstavaImage && (
+                        <div style={{ marginBottom: "10px" }}>
+                            <img
+                                src={predstavaImage}
+                                alt="Preview"
+                                style={{
+                                    maxWidth: "100%",
+                                    height: "100px",
+                                }}
+                            />
+                        </div>
+                    )}
+                    <Input
+                        type="file"
+                        onChange={handlePredstavaImageChange}
+                        accept="image/png, image/gif, image/jpeg"
                     />
                 </FormControl>
                 <FormControl fullWidth>

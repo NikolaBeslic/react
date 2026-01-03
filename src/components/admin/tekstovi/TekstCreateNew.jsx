@@ -137,10 +137,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                         );
                     }
                     setPreviewTekstPhoto(res.data.tekst_photo);
-                    setLoading(false);
                 })
                 .catch((error) => {
                     console.error(error);
+                })
+                .finally(() => {
                     setLoading(false);
                 });
         }

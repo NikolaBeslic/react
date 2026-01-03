@@ -75,7 +75,7 @@ export default function TekstoviPage() {
 
     const onEditButtonClick = (e, params) => {
         console.log(params);
-        router.push(`/admin/tekstovi/create?tekstid=${params.id}`);
+        router.push(`/admin/tekstovi/edit?tekstid=${params.id}`);
     };
 
     const handleCreateClick = (kategorijaid) => {

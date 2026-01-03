@@ -5,13 +5,12 @@ import AdminHeader from "../../../components/admin/layout/AdminHeader";
 export default function Page() {
     const router = useRouter();
     const { tekstid, kategorijaid } = router.query;
-    const title = tekstid ? "Izmeni tekst" : "Dodaj tekst";
 
     return (
         <>
-            <AdminHeader metaTitle="Dodaj tekst" />
+            <AdminHeader metaTitle="Izmeni tekst" />
             <div className="container">
-                <h1>Dodaj tekst</h1>
+                <h1>Izmeni tekst</h1>
                 <TekstCreateNew tekstid={tekstid} kategorijaid={kategorijaid} />
             </div>
         </>

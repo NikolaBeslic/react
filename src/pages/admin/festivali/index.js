@@ -76,7 +76,7 @@ export default function FestivaliPage() {
 
     const onEditButtonClick = (event, params) => {
         event.preventDefault();
-        router.push(`/admin/festivali/create?festivalid=${params.id}`);
+        router.push(`/admin/festivali/edit?festivalid=${params.id}`);
     };
 
     return (

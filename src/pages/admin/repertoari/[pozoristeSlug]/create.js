@@ -79,8 +79,9 @@ function TimeEditInputCell(props) {
 
 export default function RepertoarPozoristaCreatePage() {
     const router = useRouter();
-    const { isLoading, showLoading, hideLoading } = useStateContext();
     const { pozoristeSlug } = router.query;
+    const { state } = useRouter();
+    const { isLoading, showLoading, hideLoading } = useStateContext();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [pozoriste, setPozoriste] = useState([]);
@@ -139,6 +140,12 @@ export default function RepertoarPozoristaCreatePage() {
     };
 
     useEffect(() => {
+        console.log("sessionData");
+        console.log(sessionStorage.getItem("scrapeResponseData"));
+        const scrapeResponseData = sessionStorage.getItem("scrapeResponseData");
+
+        console.log(scrapeResponseData);
+
         if (pozoristeSlug) {
             axiosClient
                 .get(`/admin/pozoriste-with-predstave/${pozoristeSlug}`)
@@ -294,6 +301,10 @@ export default function RepertoarPozoristaCreatePage() {
         setRowModesModel(newRowModesModel);
     };
 
+    const handleScrapeButtonClick = () => {
+        router.push(`/admin/repertoari/${pozoristeSlug}/scrape`);
+    };
+
     const columns = [
         { field: "id", headerName: "Id", flex: 0.5 },
         {
@@ -404,66 +415,86 @@ export default function RepertoarPozoristaCreatePage() {
                             className="hup-spinner"
                         />
                     )}
-                    <Grid2 container spacing={2} sx={{ width: 500, mb: 2 }}>
-                        <Autocomplete
-                            name="predstave"
-                            options={dbPredstave}
-                            onChange={handlePredstavaChange}
-                            sx={{ mb: 2 }}
-                            aria-required
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Izaberi predstavu"
-                                    style={{
-                                        fontSize: "1.2rem",
-                                        width: "400px",
-                                    }}
-                                />
-                            )}
-                        />
-                        <Autocomplete
-                            name="scena"
-                            options={dbScene}
-                            onChange={handleScenaChange}
-                            sx={{ mb: 2 }}
-                            aria-required
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Izaberi scenu"
-                                    style={{
-                                        fontSize: "1.2rem",
-                                        width: "400px",
-                                    }}
-                                />
-                            )}
-                        />
-                        <LocalizationProvider dateAdapter={AdapterMoment}>
-                            <DatePicker
-                                label="Datum"
-                                name="datum"
-                                value={datum}
-                                onChange={(value) => setDatum(value)}
-                            />
-                            <TimeField
-                                label="Vreme"
-                                name="vreme"
-                                format="HH:mm"
-                                value={vreme}
-                                onChange={(value) => setVreme(value)}
-                            />
-                        </LocalizationProvider>
-                        <Button
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            onClick={handleSubmit}
+                    <Grid2 container spacing={2} sx={{ mb: 2 }}>
+                        <Grid2
+                            size={6}
+                            direction="column"
+                            container
+                            alignItems="flex-start"
                         >
-                            Submit
-                        </Button>
+                            <Autocomplete
+                                name="predstave"
+                                options={dbPredstave}
+                                onChange={handlePredstavaChange}
+                                sx={{ mb: 2 }}
+                                aria-required
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Izaberi predstavu"
+                                        style={{
+                                            fontSize: "1.2rem",
+                                            width: "400px",
+                                        }}
+                                    />
+                                )}
+                            />
+                            <Autocomplete
+                                name="scena"
+                                options={dbScene}
+                                onChange={handleScenaChange}
+                                sx={{ mb: 2 }}
+                                aria-required
+                                renderInput={(params) => (
+                                    <TextField
+                                        {...params}
+                                        variant="standard"
+                                        label="Izaberi scenu"
+                                        style={{
+                                            fontSize: "1.2rem",
+                                            width: "400px",
+                                        }}
+                                    />
+                                )}
+                            />
+                            <LocalizationProvider
+                                dateAdapter={AdapterMoment}
+                                sx={{ w: "50%" }}
+                            >
+                                <DatePicker
+                                    label="Datum"
+                                    name="datum"
+                                    value={datum}
+                                    onChange={(value) => setDatum(value)}
+                                />
+                                <TimeField
+                                    label="Vreme"
+                                    name="vreme"
+                                    format="HH:mm"
+                                    value={vreme}
+                                    onChange={(value) => setVreme(value)}
+                                />
+                            </LocalizationProvider>
+
+                            <Button
+                                size="large"
+                                type="submit"
+                                variant="contained"
+                                onClick={handleSubmit}
+                            >
+                                Submit
+                            </Button>
+                        </Grid2>
+                        <Grid2 size={6}>
+                            <Button
+                                onClick={handleScrapeButtonClick}
+                                variant="outlined"
+                                className="mb-3"
+                            >
+                                Scrape
+                            </Button>
+                        </Grid2>
                     </Grid2>
                     <Paper sx={{ height: 800, width: "100%" }}>
                         <DataGrid

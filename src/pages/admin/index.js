@@ -126,7 +126,10 @@ export default function AdminHomePage() {
                 {tekstovi
                     .filter((t) => t.na_slajderu == 1)
                     .map((tekst) => (
-                        <Card sx={{ maxWidth: 300 }}>
+                        <Card
+                            sx={{ maxWidth: 300 }}
+                            key={`slajd-${tekst.tekstid}`}
+                        >
                             <CardMedia
                                 sx={{ height: 180 }}
                                 image={tekst.tekst_photo}

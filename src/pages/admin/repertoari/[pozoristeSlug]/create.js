@@ -140,12 +140,6 @@ export default function RepertoarPozoristaCreatePage() {
     };
 
     useEffect(() => {
-        console.log("sessionData");
-        console.log(sessionStorage.getItem("scrapeResponseData"));
-        const scrapeResponseData = sessionStorage.getItem("scrapeResponseData");
-
-        console.log(scrapeResponseData);
-
         if (pozoristeSlug) {
             axiosClient
                 .get(`/admin/pozoriste-with-predstave/${pozoristeSlug}`)

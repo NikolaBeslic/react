@@ -7,6 +7,7 @@ import {
     AlertTitle,
     IconButton,
     Collapse,
+    Box,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import CloseIcon from "@mui/icons-material/Close";
@@ -160,7 +161,37 @@ export default function RepertoarPozoristaScrapePage() {
         <>
             <AdminHeader metaTitle={`Preuzmi repertoar `} />
             <h1>Preuzmi repertoar </h1>
-            <SaveAllButton />
+            <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+            >
+                {/* LEFT */}
+                <SaveAllButton />
+
+                {/* RIGHT */}
+                <Box display="flex" gap={2}>
+                    <Button
+                        variant="contained"
+                        size="small"
+                        onClick={() =>
+                            router.push(
+                                `/admin/repertoari/${pozoristeSlug}/create`
+                            )
+                        }
+                    >
+                        Povratak na repertoar
+                    </Button>
+
+                    <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => router.push("/admin/repertoari")}
+                    >
+                        Povratak na listu pozorista
+                    </Button>
+                </Box>
+            </Box>
 
             {scrapeSaveResponse?.saved.length > 0 && (
                 <Collapse in={successAlertOpen}>

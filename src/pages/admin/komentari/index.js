@@ -9,6 +9,7 @@ import {
     DialogTitle,
     DialogContent,
     DialogActions,
+    Backdrop,
 } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { toast } from "react-hot-toast";
@@ -17,6 +18,7 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import DoneOutlineOutlinedIcon from "@mui/icons-material/DoneOutlineOutlined";
 import moment from "moment";
 import { useRouter } from "next/router";
+import { useStateContext } from "../../../contexts/StateContext";
 
 export default function KomentariPage() {
     const [komentari, setKomentari] = useState([]);
@@ -28,6 +30,8 @@ export default function KomentariPage() {
     const [loading, setLoading] = useState(false);
     const [odobriLoading, setOdobriLoading] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(null);
+    const { unnaprovedCommentsCount, setUnnapprovedCommentsCount } =
+        useStateContext();
 
     useEffect(() => {
         setLoading(true);
@@ -57,11 +61,16 @@ export default function KomentariPage() {
                 setKomentari((prev) =>
                     prev.filter((r) => r.komentarid !== selectedRow.komentarid)
                 );
-                toast.success("Uspesno obrisano izvodjenje");
+                toast.success("Uspesno obrisan komentar");
+                if (res.data.unnapprovedCommentsCount !== undefined) {
+                    setUnnapprovedCommentsCount(
+                        res.data.unnapprovedCommentsCount
+                    );
+                }
             })
             .catch((err) => {
                 console.error(err);
-                toast.error("Greska prilikom brisanja izvodjenja");
+                toast.error("Greska prilikom brisanja komentara");
             })
             .finally(() => {
                 setDeleteLoading(false);
@@ -115,7 +124,7 @@ export default function KomentariPage() {
     const onEditButtonClick = (event, params) => {
         debugger;
         event.preventDefault();
-        setOdobriLoading(params.id);
+        setLoading(true);
         axiosClient
             .put(`/admin/odobri-komentar/${params.id}`)
             .then((res) => {
@@ -127,6 +136,7 @@ export default function KomentariPage() {
                             : komentar
                     )
                 );
+                setUnnapprovedCommentsCount(unnaprovedCommentsCount - 1);
                 toast.success("Uspesno odobren komentar");
             })
             .catch((err) => {
@@ -134,7 +144,7 @@ export default function KomentariPage() {
                 toast.error("Doslo je do greske, pokusajte ponovo");
             })
             .finally(() => {
-                setOdobriLoading(null);
+                setLoading(false);
             });
     };
 
@@ -193,6 +203,17 @@ export default function KomentariPage() {
         <>
             <AdminHeader metaTitle="Komentari" />
             <div className="container">
+                {loading && (
+                    <Backdrop
+                        open={loading}
+                        sx={{
+                            color: "#fff",
+                            zIndex: (theme) => theme.zIndex.drawer + 1,
+                        }}
+                    >
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
+                )}
                 <h1>Komentari</h1>
                 <Paper sx={{ height: 800, width: "100%" }}>
                     <DataGrid
@@ -200,7 +221,6 @@ export default function KomentariPage() {
                         columns={columns}
                         sx={{ border: 0 }}
                         autoPageSize
-                        loading={loading}
                         slots={{ toolbar: GridToolbar }}
                         disableColumnFilter
                         disableColumnSelector

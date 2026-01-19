@@ -1,4 +1,5 @@
 import {
+    Badge,
     Divider,
     Drawer,
     IconButton,
@@ -23,6 +24,7 @@ import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 import { useState } from "react";
 import Link from "next/link";
+import { useStateContext } from "../../../contexts/StateContext";
 
 function AdminSidebar() {
     const drawerWidth = 240; // Full width
@@ -35,6 +37,7 @@ function AdminSidebar() {
     };
 
     const [listOpen, setListOpen] = useState(true);
+    const { unnaprovedCommentsCount } = useStateContext();
 
     return (
         <Drawer
@@ -104,9 +107,16 @@ function AdminSidebar() {
                 >
                     <ListItemButton title="Komentari">
                         <ListItemIcon>
-                            <QuestionAnswerOutlinedIcon />
+                            <Badge
+                                badgeContent={unnaprovedCommentsCount}
+                                color="error"
+                                invisible={unnaprovedCommentsCount === 0}
+                                title="Neodobreni komentari"
+                            >
+                                <QuestionAnswerOutlinedIcon />
+                            </Badge>
                         </ListItemIcon>
-                        <ListItemText primary="Komentari" />
+                        <ListItemText primary={"Komentari"} />
                     </ListItemButton>
                 </ListItem>
             </List>

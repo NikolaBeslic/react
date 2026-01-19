@@ -19,10 +19,13 @@ export const ContextProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
 
+    const [unnaprovedCommentsCount, setUnnapprovedCommentsCount] = useState(0);
+
     useEffect(() => {
         const token = Cookies.get("token");
         console.log("Token");
         console.log(token);
+
         setIsAdmin(false);
         if (token) {
             axiosClient
@@ -43,6 +46,8 @@ export const ContextProvider = ({ children }) => {
         } else {
             setCurrentUser(null);
         }
+
+        fetchUnapprovedCommentsCount();
     }, []);
 
     const showLoading = () => {
@@ -52,17 +57,33 @@ export const ContextProvider = ({ children }) => {
         setIsLoading(false);
     };
 
+    const fetchUnapprovedCommentsCount = () => {
+        axiosClient
+            .get("/admin/unapproved-comments-count")
+            .then((res) => {
+                console.log("Unnaproved comments count:" + res.data);
+
+                setUnnapprovedCommentsCount(res.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    };
+
     return (
         <StateContext.Provider
             value={{
                 currentUser,
                 setCurrentUser,
                 isAdmin,
+                setIsAdmin,
                 isLoading,
                 showLoading,
                 hideLoading,
                 isModalOpen,
                 setModalOpen,
+                unnaprovedCommentsCount,
+                setUnnapprovedCommentsCount,
             }}
         >
             {children}

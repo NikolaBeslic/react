@@ -5,8 +5,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Dodaj predstavu" />
-            <h1>Dodaj predstavu</h1>
-            <PredstaveCreateUpdate />
+            <div className="container">
+                <h1>Dodaj predstavu</h1>
+                <PredstaveCreateUpdate />
+            </div>
         </>
     );
 }

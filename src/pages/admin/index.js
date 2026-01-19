@@ -114,6 +114,8 @@ export default function AdminHomePage() {
                 href="/admin/tekstovi/create"
                 variant="contained"
                 sx={{ my: 2 }}
+                component={Link}
+                prefetch
             >
                 Dodaj tekst
             </Button>

@@ -183,39 +183,17 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         }
 
         axiosClient
-            .get("/get-autori")
-            .then((res) => {
-                setSviAutori(res.data);
+            .get("/admin/get-all-combobox-data")
+            .then((resCb) => {
+                setSviAutori(resCb.data.autori);
+                setSvePredstave(resCb.data.predstave);
+                setSvaPozorista(resCb.data.pozorista);
+                setSviTagovi(resCb.data.tagovi);
+                setSviFestivali(resCb.data.festivali);
+                setLoading(false);
             })
             .catch((error) => console.error(error));
 
-        axiosClient
-            .get("/get-all-predstave")
-            .then((resPredstave) => {
-                setSvePredstave(resPredstave.data);
-            })
-            .catch((error) => console.error(error));
-
-        axiosClient
-            .get("/get-all-pozorista")
-            .then((resPozorista) => {
-                setSvaPozorista(resPozorista.data);
-            })
-            .catch((error) => console.error(error));
-
-        axiosClient
-            .get("/get-all-tagovi")
-            .then((resTagovi) => {
-                setSviTagovi(resTagovi.data);
-            })
-            .catch((error) => console.error(error));
-
-        axiosClient
-            .get("/get-all-festivali")
-            .then((resFestivali) => {
-                setSviFestivali(resFestivali.data);
-            })
-            .catch((error) => console.error(error));
         setLoading(false);
     }, []);
 

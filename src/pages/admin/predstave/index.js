@@ -7,6 +7,7 @@ import axiosClient from "../../../utils/axios";
 import { useRouter } from "next/router";
 import moment from "moment";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import Link from "next/link";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
@@ -91,6 +92,8 @@ export default function PredstavePage() {
                     variant="contained"
                     sx={{ mb: 5 }}
                     startIcon={<AddIcon />}
+                    component={Link}
+                    prefetch
                 >
                     Dodaj predstavu
                 </Button>

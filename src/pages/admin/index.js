@@ -49,29 +49,25 @@ export default function AdminHomePage() {
         axiosClient
             .get("/admin/predstave-za-naslovnu")
             .then((res) => setPredstave(res.data))
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
 
         // axiosClient
         //     .get("/admin/komentari-za-naslovnu")
         //     .then((res) => setKomentari(res.data))
         //     .catch((err) => console.error(err));
 
-        axiosClient
-            .get("/admin/festivali-za-naslovnu")
-            .then((res) => setFestivali(res.data))
-            .catch((err) => console.error(err));
+        // axiosClient
+        //     .get("/admin/festivali-za-naslovnu")
+        //     .then((res) => setFestivali(res.data))
+        //     .catch((err) => console.error(err));
 
-        axiosClient
-            .get("/admin/igranja-za-naslovnu")
-            .then((res) => setIgranja(res.data))
-            .catch((err) => console.error(err))
-            .finally(() => setLoading(false));
+        // axiosClient
+        //     .get("/admin/igranja-za-naslovnu")
+        //     .then((res) => setIgranja(res.data))
+        //     .catch((err) => console.error(err))
+        //     .finally(() => setLoading(false));
     }, []);
-
-    const handleEditClick = (tekstid) => {
-        console.log(tekstid);
-        router.push(`/admin/tekstovi/create?tekstid=${tekstid}`);
-    };
 
     const handleRemoveFromSlider = (tekstid) => {
         setLoading(true);
@@ -213,9 +209,9 @@ export default function AdminHomePage() {
                                         color="secondary"
                                         size="small"
                                         startIcon={<EditNoteIcon />}
-                                        onClick={() =>
-                                            handleEditClick(tekst.tekstid)
-                                        }
+                                        component={Link}
+                                        href={`/admin/tekstovi/edit?tekstid=${tekst.tekstid}`}
+                                        prefetch
                                     >
                                         Izmeni
                                     </Button>
@@ -247,9 +243,11 @@ export default function AdminHomePage() {
                                         .join(", ")}
                                 </TableCell>
                                 <TableCell>
-                                    {moment(pred.premijera).format(
-                                        "DD.MM.YYYY"
-                                    )}
+                                    {pred.premijera
+                                        ? moment(pred.premijera).format(
+                                              "DD.MM.YYYY"
+                                          )
+                                        : ""}
                                 </TableCell>
                                 <TableCell>
                                     <Button
@@ -257,9 +255,9 @@ export default function AdminHomePage() {
                                         color="secondary"
                                         size="small"
                                         startIcon={<EditNoteIcon />}
-                                        onClick={() =>
-                                            handleEditClick(pred.predstavaid)
-                                        }
+                                        component={Link}
+                                        href={`/admin/predstave/edit?predstavaid=${pred.predstavaid}`}
+                                        prefetch
                                     >
                                         Izmeni
                                     </Button>

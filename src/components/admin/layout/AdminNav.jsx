@@ -18,26 +18,62 @@ function AdminNav() {
             >
                 <Container maxWidth="lg">
                     <Toolbar disableGutters className="admin-toolbar">
-                        <Button color="inherit">
-                            <Link href="/admin">Pocetna</Link>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin"
+                            prefetch
+                        >
+                            Početna
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/tekstovi">Tekstovi</Link>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin/tekstovi"
+                            prefetch
+                        >
+                            Tekstovi
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/repertoari">Repertoari</Link>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin/repertoari"
+                            prefetch
+                        >
+                            Repertoari
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/predstave">Predstave</Link>
+
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin/predstave"
+                            prefetch
+                        >
+                            Predstave
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/autori">Autori</Link>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin/autori"
+                            prefetch
+                        >
+                            Autori
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/festivali">Festivali</Link>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin/festivali"
+                            prefetch
+                        >
+                            Festivali
                         </Button>
-                        <Button color="inherit">
-                            <Link href="/admin/pozorista">Pozorista</Link>
+                        <Button
+                            color="inherit"
+                            component={Link}
+                            href="/admin/pozorista"
+                            prefetch
+                        >
+                            Pozorišta
                         </Button>
                     </Toolbar>
                 </Container>

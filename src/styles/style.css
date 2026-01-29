@@ -3699,7 +3699,7 @@ html {
     overflow-x: hidden;
 }
 
-body {
+.hup-layout body {
     position: relative;
     font-family: var(--primary-font);
     font-size: 1.6rem;
@@ -3707,6 +3707,18 @@ body {
     margin: 0;
     padding: 0;
     color: var(--grey-dark-two);
+}
+
+.hup-layout-body {
+    font-family: var(--primary-font);
+    font-size: 10px;
+    line-height: 1.7;
+    color: var(--grey-dark-two);
+    position: relative;
+}
+
+.hup-layout-body * {
+    box-sizing: border-box;
 }
 
 ::-moz-selection {

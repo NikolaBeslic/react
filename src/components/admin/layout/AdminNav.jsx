@@ -1,83 +1,83 @@
-import {
-    AppBar,
-    Box,
-    Button,
-    Container,
-    CssBaseline,
-    Toolbar,
-} from "@mui/material";
+import { useState } from "react";
+import { Container, Navbar, Nav, Button, Row, Col } from "react-bootstrap";
 import Link from "next/link";
 
 function AdminNav() {
     return (
         <>
-            <CssBaseline />
-            <AppBar
-                position="fixed"
-                sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            <Navbar
+                bg="dark"
+                variant="dark"
+                expand="lg"
+                className="w-100 d-flex justify-content-between"
             >
-                <Container maxWidth="lg">
-                    <Toolbar disableGutters className="admin-toolbar">
-                        <Button
+                <Container>
+                    {/*{" "}
+                    <Navbar.Brand href="/admin" className="mr-2">
+                        Admin Panel
+                    </Navbar.Brand>{" "}
+                    */}
+                    <Nav className="w-100 d-flex justify-content-between">
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin"
-                            prefetch
+                            key={101}
                         >
                             Početna
-                        </Button>
-                        <Button
+                        </Nav.Link>
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin/tekstovi"
-                            prefetch
+                            key={102}
                         >
                             Tekstovi
-                        </Button>
-                        <Button
+                        </Nav.Link>
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin/repertoari"
-                            prefetch
+                            key={107}
                         >
                             Repertoari
-                        </Button>
+                        </Nav.Link>
 
-                        <Button
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin/predstave"
-                            prefetch
+                            key={103}
                         >
                             Predstave
-                        </Button>
-                        <Button
+                        </Nav.Link>
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin/autori"
-                            prefetch
+                            key={104}
                         >
                             Autori
-                        </Button>
-                        <Button
+                        </Nav.Link>
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin/festivali"
-                            prefetch
+                            key={105}
                         >
                             Festivali
-                        </Button>
-                        <Button
+                        </Nav.Link>
+                        <Nav.Link
                             color="inherit"
-                            component={Link}
+                            as={Link}
                             href="/admin/pozorista"
-                            prefetch
+                            key={106}
                         >
                             Pozorišta
-                        </Button>
-                    </Toolbar>
+                        </Nav.Link>
+                    </Nav>
                 </Container>
-            </AppBar>
+            </Navbar>
         </>
     );
 }

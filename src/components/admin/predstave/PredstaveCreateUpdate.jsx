@@ -1,17 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../../utils/axios";
 import { slugify } from "../../../../lib/slugify";
-import {
-    Autocomplete,
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    Stack,
-    TextField,
-} from "@mui/material";
+import Select from "react-select";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
+import { Button, Form } from "react-bootstrap";
+import LoadingBackdrop from "../LoadingBackdrop";
 
 const PredstaveCreateUpdate = ({ predstavaid }) => {
     const [formData, setFormData] = useState({
@@ -26,41 +20,91 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
         pozorista: [],
         slika: null,
     });
-    const [errors, setErrors] = useState({});
+
     const [svaPozorista, setSvaPozorista] = useState([]);
     const [dbPozorista, setDbPozorista] = useState([]);
-    const [predstavaImage, setPredstavaImage] = useState(null);
+
     const optionsPozorista = svaPozorista?.map((pozoriste) => ({
         value: pozoriste.pozoristeid,
         label: pozoriste.naziv_pozorista,
     }));
 
-    useEffect(() => {
-        axiosClient
-            .get("/admin/get-all-pozorista")
-            .then((res) => setSvaPozorista(res.data))
-            .catch((err) => console.error(err));
-    }, []);
+    const [sviZanrovi, setSviZanrovi] = useState([]);
+    const [dbZanrovi, setDbZanrovi] = useState([]);
+
+    const optionsZanrovi = sviZanrovi?.map((zanr) => ({
+        value: zanr.zanrid,
+        label: zanr.naziv_zanra,
+    }));
+
+    const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [predstavaImage, setPredstavaImage] = useState(null);
 
     useEffect(() => {
-        if (predstavaid) {
-            axiosClient
-                .get(`/admin/get-single-predstava/${predstavaid}`)
-                .then((res) => {
-                    setFormData(res.data);
-                    setPredstavaImage(res.data.plakat);
-                    editorOpis.content = res.data.opis;
-                    editorUloge.content = res.data.uloge;
-                    if (res.data.pozorista)
+        let isMounted = true;
+
+        const fetchData = async () => {
+            setLoading(true);
+
+            try {
+                const requests = [
+                    axiosClient.get("/admin/get-all-pozorista"),
+                    axiosClient.get("/admin/zanrovi"),
+                ];
+
+                if (predstavaid) {
+                    requests.push(
+                        axiosClient.get(
+                            `/admin/get-single-predstava/${predstavaid}`,
+                        ),
+                    );
+                }
+
+                const [pozoristaRes, zanroviRes, predstavaRes] =
+                    await Promise.all(requests);
+
+                if (!isMounted) return;
+
+                setSvaPozorista(pozoristaRes.data);
+                setSviZanrovi(zanroviRes.data);
+
+                if (predstavaRes) {
+                    console.log(predstavaRes.data);
+
+                    setFormData(predstavaRes.data);
+                    setPredstavaImage(predstavaRes.data.plakat);
+                    editorOpis.content = predstavaRes.data.opis;
+                    editorUloge.content = predstavaRes.data.uloge;
+                    if (predstavaRes.data.pozorista)
                         setDbPozorista(
-                            res.data.pozorista.map((poz) => ({
+                            predstavaRes.data.pozorista.map((poz) => ({
                                 value: poz.pozoristeid,
                                 label: poz.naziv_pozorista,
-                            }))
+                            })),
                         );
-                })
-                .catch((err) => console.error(err));
-        }
+                    if (predstavaRes.data.zanrovi)
+                        setDbZanrovi(
+                            predstavaRes.data.zanrovi.map((zanr) => ({
+                                value: zanr.zanrid,
+                                label: zanr.naziv_zanra,
+                            })),
+                        );
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     }, [predstavaid]);
 
     const handleChange = (e) => {
@@ -84,12 +128,22 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
         editorUloge.content = content;
     };
 
-    const handlePozoristaChange = (event, selectedPozorista) => {
+    const handlePozoristaChange = (selectedPozorista) => {
+        console.log(selectedPozorista);
+
         setFormData({
             ...formData,
-            pozorista: selectedPozorista.map((sp) => sp.value),
+            pozorista: selectedPozorista.map((option) => option.value),
         });
         setDbPozorista(selectedPozorista);
+    };
+
+    const handleZanroviChange = (selectedZanrovi) => {
+        setFormData({
+            ...formData,
+            pozorista: selectedZanrovi.map((option) => option.value),
+        });
+        setDbPozorista(selectedZanrovi);
     };
 
     const handleSubmit = (event) => {
@@ -142,38 +196,23 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
 
     return (
         <>
-            <Stack
-                component="form"
-                direction="column"
-                spacing={2}
-                alignItems="center"
-                sx={{ width: 700 }}
-                marginX={"auto"}
-            >
-                <FormControl fullWidth>
-                    <Autocomplete
+            <LoadingBackdrop show={loading} text="Working..." />
+            <Form onSubmit={handleSubmit} className="w-50 m-auto">
+                <Form.Group className="mb-3">
+                    <Form.Label>Pozorista</Form.Label>
+                    <Select
                         name="pozorista"
                         options={optionsPozorista}
-                        multiple
+                        isMulti
                         value={dbPozorista}
                         onChange={handlePozoristaChange}
-                        sx={{ mb: 2 }}
-                        renderInput={(params) => (
-                            <TextField
-                                {...params}
-                                variant="standard"
-                                label="Pozorista"
-                                fullWidth
-                                style={{ fontSize: "1.2rem" }}
-                            />
-                        )}
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Naziv predstave</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="naziv_predstave"
-                        label="Naziv predstave"
-                        variant="outlined"
                         value={formData.naziv_predstave}
                         onChange={handleChange}
                     />
@@ -182,12 +221,12 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                             {errors.naziv_predstave}
                         </span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Slug</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="predstava_slug"
-                        label="Slug"
-                        variant="outlined"
                         value={formData.predstava_slug}
                         onChange={handleChange}
                     />
@@ -196,37 +235,37 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                             {errors.predstava_slug}
                         </span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Autor_ka</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="autor"
-                        label="Autor_ka"
-                        variant="outlined"
                         value={formData.autor}
                         onChange={handleChange}
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Reditelj_ka</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="reditelj"
-                        label="Reditelj_ka"
-                        variant="outlined"
                         value={formData.reditelj}
                         onChange={handleChange}
                     />
-                </FormControl>
-                <FormControl>
-                    <FormLabel>Premijera</FormLabel>
-                    <input
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Premijera</Form.Label>
+                    <Form.Control
                         type="date"
                         name="premijera"
                         value={formData.premijera}
                         className="form-control"
                         onChange={handleChange}
                     />
-                </FormControl>
-                <FormControl>
-                    <FormLabel>Plakat</FormLabel>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Plakat</Form.Label>
 
                     {predstavaImage && (
                         <div style={{ marginBottom: "10px" }}>
@@ -240,14 +279,14 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                             />
                         </div>
                     )}
-                    <Input
+                    <Form.Control
                         type="file"
                         onChange={handlePredstavaImageChange}
                         accept="image/png, image/gif, image/jpeg"
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <FormLabel>Opis</FormLabel>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Opis</Form.Label>
                     <Editor
                         name="opis"
                         onInit={(_evt, editor) => (editorOpis.current = editor)}
@@ -263,9 +302,9 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                                 "undo redo | bold italic underline strikethrough | removeformat",
                         }}
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <FormLabel>Uloge</FormLabel>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Uloge</Form.Label>
                     <Editor
                         name="uloge"
                         onInit={(_evt, editor) => (editorOpis.current = editor)}
@@ -281,16 +320,26 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                                 "undo redo | bold italic underline strikethrough  forecolor  | removeformat",
                         }}
                     />
-                </FormControl>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Žanrovi</Form.Label>
+                    <Select
+                        name="zanrovi"
+                        options={optionsZanrovi}
+                        isMulti
+                        value={dbZanrovi}
+                        onChange={handleZanroviChange}
+                    />
+                </Form.Group>
                 <Button
                     size="large"
                     type="submit"
-                    variant="contained"
+                    variant="primary"
                     onClick={handleSubmit}
                 >
                     Submit
                 </Button>
-            </Stack>
+            </Form>
         </>
     );
 };

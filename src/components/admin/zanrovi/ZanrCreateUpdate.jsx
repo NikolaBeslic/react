@@ -1,9 +1,9 @@
-import { Button, FormControl, Stack, TextField } from "@mui/material";
 import { ColorPicker } from "primereact/colorpicker";
 import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import toast from "react-hot-toast";
+import { Form, Button } from "react-bootstrap";
 
 const ZanrCreateUpdate = ({ zanrid }) => {
     const [errors, setErrors] = useState({});
@@ -67,43 +67,48 @@ const ZanrCreateUpdate = ({ zanrid }) => {
 
     return (
         <>
-            <Stack
-                component="form"
-                direction="column"
-                spacing={2}
-                alignItems="center"
-            >
-                <TextField
-                    name="naziv_zanra"
-                    label="Naziv zanra"
-                    variant="outlined"
-                    value={formData.naziv_zanra}
-                    onChange={handleChange}
-                />
-                {errors?.naziv_zanra && (
-                    <span className="text-danger">{errors.naziv_zanra}</span>
-                )}
-                <TextField
-                    name="zanr_slug"
-                    label="Slug"
-                    variant="outlined"
-                    value={formData.zanr_slug}
-                    onChange={handleChange}
-                />
-                {errors?.zanr_slug && (
-                    <span className="text-danger">{errors.zanr_slug}</span>
-                )}
-                <TextField
-                    name="zanr_mnozina"
-                    label="Mnozina"
-                    variant="outlined"
-                    value={formData.zanr_mnozina}
-                    onChange={handleChange}
-                />
-                {errors?.zanr_mnozina && (
-                    <span className="text-danger">{errors.zanr_mnozina}</span>
-                )}
-                <FormControl>
+            <Form onSubmit={handleSubmit} className="w-50 m-auto">
+                <Form.Group className="mb-3">
+                    <Form.Label>Naziv zanra</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="naziv_zanra"
+                        value={formData.naziv_zanra}
+                        onChange={handleChange}
+                    />
+                    {errors?.naziv_zanra && (
+                        <span className="text-danger">
+                            {errors.naziv_zanra}
+                        </span>
+                    )}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Slug</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="zanr_slug"
+                        value={formData.zanr_slug}
+                        onChange={handleChange}
+                    />
+                    {errors?.zanr_slug && (
+                        <span className="text-danger">{errors.zanr_slug}</span>
+                    )}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Mnozina</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="zanr_mnozina"
+                        value={formData.zanr_mnozina}
+                        onChange={handleChange}
+                    />
+                    {errors?.zanr_mnozina && (
+                        <span className="text-danger">
+                            {errors.zanr_mnozina}
+                        </span>
+                    )}
+                </Form.Group>
+                <Form.Group className="mb-3">
                     <ColorPicker
                         name="zanr_boja"
                         value={formData.zanr_boja}
@@ -112,8 +117,8 @@ const ZanrCreateUpdate = ({ zanrid }) => {
                     {errors?.zanr_boja && (
                         <span className="text-danger">{errors.zanr_boja}</span>
                     )}
-                </FormControl>
-                <FormControl>
+                </Form.Group>
+                <Form.Group className="mb-3">
                     Preview:{" "}
                     <span
                         className="zanr-button"
@@ -124,18 +129,16 @@ const ZanrCreateUpdate = ({ zanrid }) => {
                     >
                         {formData?.naziv_zanra}
                     </span>
-                </FormControl>
-                <FormControl>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
-                </FormControl>
-            </Stack>
+                </Form.Group>
+                <Button
+                    size="large"
+                    type="submit"
+                    variant="primary"
+                    onClick={handleSubmit}
+                >
+                    Submit
+                </Button>
+            </Form>
         </>
     );
 };

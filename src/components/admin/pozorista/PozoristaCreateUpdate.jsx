@@ -1,18 +1,12 @@
-import {
-    Button,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    TextField,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
+import { Form, Button } from "react-bootstrap";
+import LoadingBackdrop from "../LoadingBackdrop";
 
 const PozoristaCreateUpdate = ({ pozoristeid }) => {
+    const [loading, setLoading] = useState(false);
     const [gradovi, setGradovi] = useState([]);
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
@@ -27,25 +21,25 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
     });
 
     useEffect(() => {
+        setLoading(true);
         axiosClient
             .get("/admin/get-gradovi")
-            .then((res) => {
-                setGradovi(res.data);
+            .then((gradoviRes) => {
+                setGradovi(gradoviRes.data);
+
+                if (!pozoristeid) return null;
+
+                return axiosClient.get(
+                    `/admin/get-single-pozoriste/${pozoristeid}`,
+                );
             })
-            .catch((error) => {
-                console.error(error);
-            });
-        if (pozoristeid) {
-            axiosClient
-                .get(`/admin/get-single-pozoriste/${pozoristeid}`)
-                .then((res) => {
-                    console.log(res.data);
-                    setFormData({ ...res.data });
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
+            .then((pozoristeRes) => {
+                if (pozoristeRes) {
+                    setFormData({ ...pozoristeRes.data });
+                }
+            })
+            .catch(console.error)
+            .finally(() => setLoading(false));
     }, [pozoristeid]);
 
     const handleChange = (e) => {
@@ -108,19 +102,13 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
 
     return (
         <>
-            <Stack
-                component="form"
-                direction="column"
-                spacing={2}
-                alignItems="center"
-                sx={{ width: 500 }}
-                marginX={"auto"}
-            >
-                <FormControl fullWidth>
-                    <TextField
+            <LoadingBackdrop show={loading} text="Working..." />
+            <Form onSubmit={handleSubmit} className="w-50 m-auto">
+                <Form.Group className="mb-3">
+                    <Form.Label>Naziv pozorista</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="naziv_pozorista"
-                        label="Naziv pozorista"
-                        variant="outlined"
                         value={formData.naziv_pozorista}
                         onChange={handleChange}
                     />
@@ -129,13 +117,12 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
                             {errors.naziv_pozorista}
                         </span>
                     )}
-                </FormControl>
-
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Slug</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="pozoriste_slug"
-                        label="Slug"
-                        variant="outlined"
                         value={formData.pozoriste_slug}
                         onChange={handleChange}
                     />
@@ -144,64 +131,46 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
                             {errors.pozoriste_slug}
                         </span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Adresa</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="adresa"
-                        label="Adresa"
-                        variant="outlined"
                         value={formData.adresa}
                         onChange={handleChange}
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
-                        name="telefon"
-                        label="Telefon"
-                        variant="outlined"
-                        value={formData.telefon}
-                        onChange={handleChange}
-                    />
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                    {errors?.adresa && (
+                        <span className="text-danger">{errors.adresa}</span>
+                    )}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        type="email"
                         name="email"
-                        label="Email"
-                        variant="outlined"
                         value={formData.email}
                         onChange={handleChange}
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="select-label">Grad</InputLabel>
-                    <Select
-                        labelId="select-label"
-                        name="grad"
-                        label="Grad"
-                        value={formData.gradid ?? ""}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Grad</Form.Label>
+                    <Form.Select
                         onChange={handleGradSelectChange}
-                        sx={{ mb: 2 }}
-                        variant="outlined"
-                        MenuProps={MenuProps}
+                        value={formData.gradid}
                     >
                         {gradovi.map((grad) => (
-                            <MenuItem key={grad.gradid} value={grad.gradid}>
+                            <option key={grad.gradid} value={grad.gradid}>
                                 {grad.naziv_grada}
-                            </MenuItem>
+                            </option>
                         ))}
-                    </Select>
-                </FormControl>
-                <FormControl>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
-                </FormControl>
-            </Stack>
+                    </Form.Select>
+                </Form.Group>
+
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
         </>
     );
 };

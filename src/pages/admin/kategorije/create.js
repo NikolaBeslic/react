@@ -5,8 +5,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Dodaj kategoriju" />
-            <h1>Dodaj kategoriju</h1>
-            <KategorijaCreateUpdate />
+            <div className="container">
+                <h1>Dodaj kategoriju</h1>
+                <KategorijaCreateUpdate />
+            </div>
         </>
     );
 }

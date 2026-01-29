@@ -8,8 +8,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Izmeni pozorište" />
-            <h1>Izmeni pozorište</h1>
-            <PozoristaCreateUpdate pozoristeid={pozoristeid} />
+            <div className="container">
+                <h1>Izmeni pozorište</h1>
+                <PozoristaCreateUpdate pozoristeid={pozoristeid} />
+            </div>
         </>
     );
 }

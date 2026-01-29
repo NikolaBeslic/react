@@ -1,16 +1,16 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import { Button, Paper } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import AddIcon from "@mui/icons-material/Add";
-import { useRouter } from "next/router";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { Col, Row, Button } from "react-bootstrap";
+import { AgGridReact } from "ag-grid-react";
+import Link from "next/link";
 
 export default function PozoristaPage() {
     const [loading, setLoading] = useState(false);
     const [pozorista, setPozorista] = useState([]);
-    const router = useRouter();
+    const gridRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -21,28 +21,23 @@ export default function PozoristaPage() {
             .finally(() => setLoading(false));
     }, []);
 
-    function EditButton(params) {
-        return (
-            <Button
-                onClick={(e) => onEditButtonClick(e, params.params)}
-                variant="outlined"
-                startIcon={<EditNoteIcon />}
-                size="small"
-            >
-                Edit
-            </Button>
-        );
-    }
-
     const columns = [
-        { field: "naziv_pozorista", headerName: "Naziv pozorista", flex: 1 },
+        { field: "naziv_pozorista", headerName: "Naziv pozorista", flex: 4 },
         {
             field: "edit",
             headerName: "",
-            width: 200,
-            flex: 1,
-            align: "center",
-            renderCell: (params) => <EditButton params={params} />,
+            cellRenderer: (params) => {
+                return (
+                    <Button
+                        as={Link}
+                        href={`/admin/pozorista/edit?pozoristeid=${params.data.id}`}
+                        size="sm"
+                        variant="primary"
+                    >
+                        <FontAwesomeIcon icon={faPenToSquare} /> Edit
+                    </Button>
+                );
+            },
         },
     ];
     const rows = new Array();
@@ -51,38 +46,60 @@ export default function PozoristaPage() {
         rows.push({
             id: poz.pozoristeid,
             naziv_pozorista: poz.naziv_pozorista,
-        })
+        }),
     );
 
-    const onEditButtonClick = (event, params) => {
-        event.preventDefault();
-        router.push(`/admin/pozorista/edit?pozoristeid=${params.id}`);
-    };
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
 
     return (
         <>
             <AdminHeader metaTitle="Pozorišta" />
             <div className="container">
-                <h1>Pozorista</h1>
-                <div className="container">
-                    <Button
-                        href="/admin/pozorista/create"
-                        variant="contained"
-                        startIcon={<AddIcon />}
-                        className="mb-3"
-                        size="small"
-                    >
-                        Dodaj pozoriste
-                    </Button>
-                    <Paper sx={{ height: 800, width: "100%" }}>
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            sx={{ border: 0 }}
-                            autoPageSize
-                            loading={loading}
+                <Row>
+                    <Col lg={8} md={6} sm={12}>
+                        <h1>Pozorišta</h1>
+                    </Col>
+                    <Col lg={4} md={6} sm={12}>
+                        <Button
+                            as={Link}
+                            href="/admin/pozorista/create"
+                            variant="primary"
+                        >
+                            <FontAwesomeIcon icon={faPlus} /> Dodaj pozoriste
+                        </Button>
+                    </Col>
+                </Row>
+                <div
+                    style={{
+                        width: "100%",
+                        height: "600px",
+                        marginTop: "25px",
+                        marginBottom: "30px",
+                    }}
+                >
+                    <div className="example-header mb-3">
+                        <input
+                            type="text"
+                            id="filter-text-box"
+                            placeholder="Pretraga..."
+                            onInput={onFilterTextBoxChanged}
+                            className="form-control"
+                            style={{ width: "300px" }}
                         />
-                    </Paper>
+                    </div>
+                    <AgGridReact
+                        ref={gridRef}
+                        rowData={rows}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationAutoPageSize={true}
+                        loading={loading}
+                    />
                 </div>
             </div>
         </>

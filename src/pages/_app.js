@@ -1,6 +1,8 @@
 import "bootstrap/dist/css/bootstrap.css";
-import "../styles/admin.css";
 import "../styles/style.css";
+
+import "../styles/admin.css";
+
 import Script from "next/script";
 import { ContextProvider, useStateContext } from "../contexts/StateContext";
 import "moment/locale/sr";
@@ -8,7 +10,17 @@ import { useRouter } from "next/router";
 import AdminLayout from "../layouts/AdminLayout";
 import HuPLayout from "../layouts/HuPLayout";
 import { SSRProvider } from "react-bootstrap";
+import { config } from "@fortawesome/fontawesome-svg-core";
+import "@fortawesome/fontawesome-svg-core/styles.css";
+import {
+    ModuleRegistry,
+    AllCommunityModule, // or AllEnterpriseModule
+} from "ag-grid-community";
 
+// Register AG Grid modules ONCE
+ModuleRegistry.registerModules([AllCommunityModule]);
+
+config.autoAddCss = false;
 function isAdminRoute(router) {
     return router.pathname.startsWith("/admin");
 }

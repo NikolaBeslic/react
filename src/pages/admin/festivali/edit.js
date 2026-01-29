@@ -9,8 +9,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Izmeni festival" />
-            <h1>Izmeni festival</h1>
-            <FestivaliCreateUpdate festivalid={festivalid} />
+            <div className="container">
+                <h1>Izmeni festival</h1>
+                <FestivaliCreateUpdate festivalid={festivalid} />
+            </div>
         </>
     );
 }

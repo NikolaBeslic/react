@@ -1,9 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import { Avatar, Button, Chip, InputLabel, NativeSelect } from "@mui/material";
+import Select from "react-select";
+import { Button } from "react-bootstrap";
+import { Avatar, Chip } from "@mui/material";
 import { slugify } from "../../../../lib/slugify";
 import toast from "react-hot-toast";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import LoadingBackdrop from "../../../components/admin/LoadingBackdrop";
 
 export default function TagoviPage() {
     const [tagovi, setTagovi] = useState([]);
@@ -12,14 +15,23 @@ export default function TagoviPage() {
     const [text, setText] = useState("");
     const [chips, setChips] = useState([]);
 
+    const [loading, setLoading] = useState(false);
+
+    const sortOptions = [
+        { key: 0, value: 0, label: "Nazivu" },
+        { key: 1, value: 1, label: "Broju tekstova" },
+    ];
+
     useEffect(() => {
+        setLoading(true);
         axiosClient
             .get("/admin/get-svi-tagovi")
             .then((res) => {
                 console.log(res.data);
                 setTagovi(res.data);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     }, []);
 
     useEffect(() => {
@@ -50,6 +62,7 @@ export default function TagoviPage() {
     }
 
     const saveTagsToDb = () => {
+        setLoading(true);
         const tagArr = new Array();
         chips.forEach((x) => {
             const tagObj = {
@@ -61,24 +74,30 @@ export default function TagoviPage() {
         axiosClient
             .post("/admin/tagovi/store", tagArr)
             .then((res) => {
-                if (res.status == 200) toast.success("Tagovi uspesno sacuvani");
+                if (res.status == 200) {
+                    setChips([]);
+                    toast.success("Tagovi uspesno sacuvani");
+                }
+                setTagovi(res.data);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     };
 
-    const handleChangeSortSelect = useCallback((e) => {
-        setSortBy(e.target.value);
+    const handleChangeSortSelect = useCallback((selectedOption) => {
+        setSortBy(selectedOption.value);
+        console.log(selectedOption.value);
     });
 
     const handleSortTags = (sortBy) => {
         let ts = tagovi;
         if (sortBy == 1) {
             ts = [...tagovi].sort(
-                (a, b) => b.tekstovi_count - a.tekstovi_count
+                (a, b) => b.tekstovi_count - a.tekstovi_count,
             );
         } else {
             ts = [...tagovi].sort((a, b) =>
-                a.tag_naziv.localeCompare(b.tag_naziv)
+                a.tag_naziv.localeCompare(b.tag_naziv),
             );
         }
 
@@ -89,6 +108,7 @@ export default function TagoviPage() {
         <>
             <AdminHeader metaTitle="Tagovi" />
             <h1>Tagovi</h1>
+            <LoadingBackdrop show={loading} text="Working..." />
             <div className="row mb-3">
                 <div className="col-lg-6">
                     <div>
@@ -120,29 +140,17 @@ export default function TagoviPage() {
                         )} */}
                     </div>
 
-                    <Button onClick={saveTagsToDb} variant="contained">
-                        Dodaj tagove
+                    <Button onClick={saveTagsToDb} variant="primary">
+                        Sačuvaj tagove u bazi
                     </Button>
                 </div>
                 <div className="col-lg-6">
-                    <InputLabel id="select-label">
-                        Sortiraj tagove po
-                    </InputLabel>
-                    <NativeSelect
-                        // labelId="select-label"
+                    <Select
                         name="sortTags"
                         onChange={handleChangeSortSelect}
-                        sx={{ mb: 2 }}
-                        variant="outlined"
-                        fullWidth
-                    >
-                        <option key={0} value={0}>
-                            Nazivu
-                        </option>
-                        <option key={1} value={1}>
-                            Broju tekstova
-                        </option>
-                    </NativeSelect>
+                        options={sortOptions}
+                        placeholder="Sortiraj tagove po:"
+                    />
                 </div>
             </div>
             <div className="admin-tagovi-all-wrapper">

@@ -5,8 +5,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Dodaj festival" />
-            <h1>Dodaj festival</h1>
-            <FestivaliCreateUpdate />
+            <div className="container">
+                <h1>Dodaj festival</h1>
+                <FestivaliCreateUpdate />
+            </div>
         </>
     );
 }

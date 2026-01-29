@@ -1,17 +1,10 @@
-import {
-    Button,
-    FormControl,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    TextField,
-} from "@mui/material";
 import { ColorPicker } from "primereact/colorpicker";
 import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
+import { Form, Button } from "react-bootstrap";
+import Select from "react-select";
 
 const KategorijaCreateUpdate = ({ kategorijaid }) => {
     const [color, setColor] = useState(null);
@@ -103,19 +96,12 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
 
     return (
         <>
-            <Stack
-                component="form"
-                direction="column"
-                spacing={2}
-                alignItems="center"
-                sx={{ width: 300 }}
-                marginX={"auto"}
-            >
-                <FormControl>
-                    <TextField
+            <Form onSubmit={handleSubmit} className="w-50 m-auto">
+                <Form.Group className="mb-3">
+                    <Form.Label>Naziv kategorije</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="naziv_kategorije"
-                        label="Naziv kategorije"
-                        variant="outlined"
                         value={formData.naziv_kategorije}
                         onChange={handleChange}
                     />
@@ -124,12 +110,12 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                             {errors.naziv_kategorije}
                         </span>
                     )}
-                </FormControl>
-                <FormControl>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Slug</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="kategorija_slug"
-                        label="Slug"
-                        variant="outlined"
                         value={formData.kategorija_slug}
                         onChange={handleChange}
                     />
@@ -138,30 +124,17 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                             {errors.kategorija_slug}
                         </span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="select-label">NadKategorija</InputLabel>
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Nadkategorija</Form.Label>
                     <Select
-                        labelId="select-label"
-                        name="parentkategorija"
-                        options={optionsKategorije}
-                        label="Nadkategorija"
-                        value={formData.parent_kategorija ?? ""}
                         onChange={handleParentKategorijaChange}
-                        sx={{ mb: 2 }}
-                        variant="outlined"
-                    >
-                        {sveKategorije.map((kat) => (
-                            <MenuItem
-                                key={kat.kategorijaid}
-                                value={kat.kategorijaid}
-                            >
-                                {kat.naziv_kategorije}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </FormControl>
-                <FormControl>
+                        value={formData.parent_kategorija ?? ""}
+                        options={optionsKategorije}
+                    />
+                </Form.Group>
+
+                <Form.Group>
                     <ColorPicker
                         name="kategorija_boja"
                         value={formData.kategorija_boja}
@@ -172,8 +145,8 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                             {errors.kategorija_boja}
                         </span>
                     )}
-                </FormControl>
-                <FormControl>
+                </Form.Group>
+                <Form.Group>
                     Preview:{" "}
                     <a
                         href={`/${formData.kategorija_slug}`}
@@ -182,18 +155,11 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                     >
                         {formData.naziv_kategorije}
                     </a>
-                </FormControl>
-                <FormControl>
-                    <Button
-                        size="large"
-                        type="submit"
-                        variant="contained"
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
-                </FormControl>
-            </Stack>
+                </Form.Group>
+                <Button variant="primary" type="submit" size="lg">
+                    Submit
+                </Button>
+            </Form>
         </>
     );
 };

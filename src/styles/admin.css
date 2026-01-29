@@ -2,27 +2,121 @@
     justify-content: space-between;
 }
 
-#admin-root-div {
-    /* font-size: 12px; */
+.admin-root-div {
+    font-size: 16px !important;
 }
 
 .admin-root-div span {
     font-size: 14px;
 }
 
-.admin-root-div .MuiButtonBase-root {
-    font-size: 1.1rem;
-}
-
-.admin-root-div .MuiButtonBase-root a {
-    color: #fff;
-    text-decoration: none;
-}
-
-.admin-root-div .MuiTableCell-root {
+.admin-root-div .form-control {
     font-size: 14px;
 }
 
-.admin-root-div .MuiButtonBase-root:hover {
+.admin-root-div .form-select {
+    font-size: 14px;
+}
+
+.admin-root-div .btn {
+    font-size: 14px;
+}
+
+.container h1 {
+    text-align: center;
+}
+
+.fa-icon {
+    font-size: 1rem;
+}
+
+.sidebar {
+    width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: width 0.25s ease;
+    /* overflow-x: hidden; */
+    z-index: 1000;
+}
+
+.sidebar-toggle {
+    position: absolute;
+    top: 50%;
+    right: 2px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #212529;
     color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle-collapsed {
+    position: absolute;
+    top: 50%;
+    right: -22px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    border: none;
+    background: #212529;
+    color: #fff;
+    cursor: pointer;
+    z-index: 1001;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar-toggle:hover {
+    background: #343a40;
+}
+
+
+.sidebar.collapsed {
+    width: 40px;
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    white-space: nowrap;
+}
+
+.sidebar .link-text {
+    transition: opacity 0.2s ease;
+}
+
+.sidebar.collapsed .link-text {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.main-content {
+    padding-left: 300px;
+    margin-top: 50px;
+    transition: margin-left 0.25s ease;
+}
+
+.sidebar.collapsed~.main-content {
+    margin-left: 10px;
+}
+
+.css-1uat7vd-MuiButtonBase-root-MuiChip-root .MuiChip-avatar {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.ag-root-wrapper .ag-cell {
+    line-height: 1.4;
+    padding-top: 6px;
+    padding-bottom: 6px;
+    white-space: normal;
 }

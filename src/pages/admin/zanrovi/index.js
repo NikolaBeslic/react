@@ -1,18 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import {
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useRouter } from "next/router";
-import { Spinner } from "react-bootstrap";
+import { Button, Spinner, Table } from "react-bootstrap";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 
 export default function ZanroviPage() {
     const [zanrovi, setZanrovi] = useState([]);
@@ -40,58 +33,56 @@ export default function ZanroviPage() {
         <>
             <AdminHeader metaTitle="Žanrovi" />
             <div className="container">
-                <h1>Zanrovi</h1>
+                <h1>Žanrovi</h1>
                 <Button
+                    as={Link}
                     href="/admin/zanrovi/create"
-                    variant="contained"
-                    startIcon={<AddIcon />}
+                    variant="primary"
                 >
-                    Dodaj zanr
+                    <FontAwesomeIcon icon={faPlus} /> Dodaj žanr
                 </Button>
-                {loading && (
-                    <Spinner
-                        animation="border"
-                        role="status"
-                        className="hup-spinner"
-                    />
-                )}
                 {!loading && (
-                    <TableContainer>
-                        <Table>
-                            <TableBody>
-                                {zanrovi.map((zanr) => (
-                                    <TableRow key={zanr.zanrid}>
-                                        <TableCell>
+                    <Table striped className="mt-3">
+                        <thead>
+                            <tr>
+                                <th>Naziv zanra</th>
+                                <th>Preview</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {zanrovi.map((zanr) => (
+                                <tr key={zanr.zanrid}>
+                                    <td>{zanr.naziv_zanra}</td>
+                                    <td>
+                                        {" "}
+                                        <span
+                                            className="zanr-button"
+                                            style={{
+                                                color: zanr.zanr_boja,
+                                                borderColor: zanr.zanr_boja,
+                                            }}
+                                        >
                                             {zanr.naziv_zanra}
-                                        </TableCell>
-                                        <TableCell>
-                                            <span
-                                                className="zanr-button"
-                                                style={{
-                                                    color: zanr.zanr_boja,
-                                                    borderColor: zanr.zanr_boja,
-                                                }}
-                                            >
-                                                {zanr.naziv_zanra}
-                                            </span>
-                                        </TableCell>
-                                        <TableCell>
-                                            <Button
-                                                variant="contained"
-                                                color="secondary"
-                                                startIcon={<EditNoteIcon />}
-                                                onClick={() =>
-                                                    handleEditClick(zanr.zanrid)
-                                                }
-                                            >
-                                                Izmeni
-                                            </Button>
-                                        </TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
-                    </TableContainer>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <Button
+                                            as={Link}
+                                            href={`/admin/zanrovi/edit?zanrid=${zanr.zanrid}`}
+                                            size="sm"
+                                            variant="outline-primary"
+                                        >
+                                            <FontAwesomeIcon
+                                                icon={faPenToSquare}
+                                            />{" "}
+                                            Edit
+                                        </Button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </Table>
                 )}
             </div>
         </>

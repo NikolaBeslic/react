@@ -8,8 +8,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Izmeni predstavu" />
-            <h1>Izmeni predstavu</h1>
-            <PredstaveCreateUpdate predstavaid={predstavaid} />
+            <div className="container">
+                <h1>Izmeni predstavu</h1>
+                <PredstaveCreateUpdate predstavaid={predstavaid} />
+            </div>
         </>
     );
 }

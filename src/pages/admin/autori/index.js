@@ -1,17 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import {
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
-import EditNoteIcon from "@mui/icons-material/EditNote";
 import { useRouter } from "next/router";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { Col, Row, Table, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserPlus, faUserPen } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 export default function AutoriPage() {
     const [autori, setAutori] = useState([]);
@@ -34,38 +28,41 @@ export default function AutoriPage() {
             <AdminHeader metaTitle="Autori" />
 
             <div className="container">
-                <h1>Autori na sajtu </h1>
-                <Button
-                    href="/admin/autori/create"
-                    variant="contained"
-                    sx={{ mb: 5 }}
-                    startIcon={<AddIcon />}
-                >
-                    Dodaj autora
-                </Button>
-                <TableContainer>
-                    <Table>
-                        <TableBody>
-                            {autori.map((autor) => (
-                                <TableRow key={autor.autorid}>
-                                    <TableCell>{autor.ime_autora}</TableCell>
-                                    <TableCell>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            startIcon={<EditNoteIcon />}
-                                            onClick={() =>
-                                                handleEditClick(autor.autorid)
-                                            }
-                                        >
-                                            Izmeni
-                                        </Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <Row>
+                    <Col lg={8} md={6} sm={12}>
+                        <h1>Autori na sajtu </h1>
+                    </Col>
+                    <Col lg={4} md={6} sm={12}>
+                        <Button href="/admin/autori/create" variant="primary">
+                            <FontAwesomeIcon icon={faUserPlus} /> Dodaj autora
+                        </Button>
+                    </Col>
+                </Row>
+                <Table striped>
+                    <thead>
+                        <tr>
+                            <th>Ime i prezime autora </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {autori.map((autor) => (
+                            <tr key={autor.autorid}>
+                                <td>{autor.ime_autora}</td>
+                                <td>
+                                    <Button
+                                        as={Link}
+                                        variant="outline-secondary"
+                                        href={`/admin/autori/edit?autorid=${autor.autorid}`}
+                                    >
+                                        <FontAwesomeIcon icon={faUserPen} />{" "}
+                                        Izmeni
+                                    </Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
             </div>
         </>
     );

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import { Button, IconButton } from "@mui/material";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import AddIcon from "@mui/icons-material/Add";
+import { Button } from "react-bootstrap";
+import { faPlus, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useRouter } from "next/router";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import Link from "next/link";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function KategorijePage() {
     const [kategorije, setKategorije] = useState([]);
@@ -29,26 +30,20 @@ export default function KategorijePage() {
         <>
             <AdminHeader metaTitle="Kategorije" />
             <h1>Kategorije</h1>
-            <Button
-                href="/admin/kategorije/create"
-                variant="contained"
-                sx={{ mb: 5 }}
-                startIcon={<AddIcon />}
-            >
-                Dodaj kategoriju
+            <Button as={Link} href="/admin/kategorije/create" variant="primary">
+                <FontAwesomeIcon icon={faPlus} /> Dodaj kategoriju
             </Button>
 
             {kategorije.map((kategorija) => (
                 <div key={kategorija.kategorijaid} className="kategorije-list">
                     {kategorija.naziv_kategorije}
-                    <IconButton
-                        variant="outline"
-                        color="secondary"
+                    <Button
+                        variant="link"
+                        className="p-0 text-danger m-2"
                         onClick={() => handleEditClick(kategorija.kategorijaid)}
-                        title="Izmeni"
                     >
-                        <EditNoteIcon />
-                    </IconButton>
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                    </Button>
 
                     {kategorija.subkategorije.length > 0
                         ? kategorija.subkategorije.map((sk) => (
@@ -58,16 +53,18 @@ export default function KategorijePage() {
                                   <span key={sk.kategorijaid}>
                                       {" "}
                                       {sk.naziv_kategorije}
-                                      <IconButton
-                                          variant="outline"
-                                          color="secondary"
-                                          title="Izmeni"
+                                      <Button
+                                          variant="link"
+                                          className="p-0 text-danger m-2"
+                                          title="Edit"
                                           onClick={() =>
                                               handleEditClick(sk.kategorijaid)
                                           }
                                       >
-                                          <EditNoteIcon />
-                                      </IconButton>
+                                          <FontAwesomeIcon
+                                              icon={faPenToSquare}
+                                          />
+                                      </Button>
                                   </span>
                               </>
                           ))

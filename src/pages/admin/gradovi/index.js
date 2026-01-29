@@ -1,17 +1,8 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import {
-    Button,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableRow,
-    TextField,
-} from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import toast from "react-hot-toast";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { Button, Table, Form, Row, Col } from "react-bootstrap";
 
 export default function GradoviPage() {
     const [gradovi, setGradovi] = useState([]);
@@ -46,38 +37,41 @@ export default function GradoviPage() {
             <AdminHeader metaTitle="Gradovi" />
             <div className="container">
                 <h1>Gradovi </h1>
-                <TextField
-                    name="naziv_grada"
-                    label="Ime grada"
-                    variant="standard"
-                    onChange={(e) => setNazivGrada(e.target.value)}
-                    value={nazivGrada}
-                    sx={{ width: "300px", mr: 3 }}
-                />
-                {errors?.naziv_grada && (
-                    <span className="text-danger">{errors.naziv_grada}</span>
-                )}
-                <Button
-                    onClick={handleGradSave}
-                    variant="contained"
-                    sx={{ mb: 5 }}
-                    startIcon={<AddIcon />}
-                >
+
+                <Form.Group className="mb-3">
+                    <Form.Label>Ime grada</Form.Label>
+                    <Form.Control
+                        type="text"
+                        name="naziv_grada"
+                        value={nazivGrada}
+                        style={{ width: "300px" }}
+                        onChange={(e) => setNazivGrada(e.target.value)}
+                    />
+                    {errors?.naziv_grada && (
+                        <span className="text-danger">
+                            {errors.naziv_grada}
+                        </span>
+                    )}
+                </Form.Group>
+
+                <Button onClick={handleGradSave} sx={{ mb: 5 }}>
                     Dodaj grad
                 </Button>
 
-                <TableContainer>
-                    <Table>
-                        <TableBody>
-                            {gradovi.map((grad) => (
-                                <TableRow key={grad.grad}>
-                                    <TableCell>{grad.naziv_grada}</TableCell>
-                                    <TableCell></TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
+                <Table striped className="mt-3">
+                    <thead>
+                        <tr>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {gradovi.map((grad) => (
+                            <tr key={grad.gradid}>
+                                <td>{grad.naziv_grada}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
             </div>
         </>
     );

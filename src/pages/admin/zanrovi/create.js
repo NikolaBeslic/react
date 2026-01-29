@@ -5,8 +5,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Dodaj žanr" />
-            <h1>Novi zanr </h1>
-            <ZanrCreateUpdate />
+            <div className="container">
+                <h1>Novi zanr </h1>
+                <ZanrCreateUpdate />
+            </div>
         </>
     );
 }

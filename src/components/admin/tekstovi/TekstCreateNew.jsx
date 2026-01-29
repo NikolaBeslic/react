@@ -1,19 +1,11 @@
 import { useEffect, useRef, useState } from "react";
-import Form from "react-bootstrap/Form";
+import { Button, Form } from "react-bootstrap";
+import Select from "react-select";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
-import {
-    Autocomplete,
-    Box,
-    Button,
-    CircularProgress,
-    FormControl,
-    FormLabel,
-    Grid2,
-    TextField,
-} from "@mui/material";
+import LoadingBackdrop from "../LoadingBackdrop";
 
 const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const [loading, setLoading] = useState(false);
@@ -56,20 +48,72 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const [linkovi, setLinkovi] = useState([]);
 
     useEffect(() => {
+        setLoading(true);
+        let isMounted = true;
         console.log("tekstid" + tekstid);
-        if (tekstid) {
-            setLoading(true);
-            axiosClient
-                .get(`/get-tekst/${tekstid}`)
-                .then((res) => {
+        setFormData({ ...formData, kategorijaid: kategorijaid });
+
+        if (addHuPikon) {
+            setFormData({
+                ...formData,
+                kategorijaid: 5,
+                naslov_hupikona: "",
+                sagovornik: "",
+                zanimanje_sagovornika: "",
+                mesto_stanovanja: "",
+                biografija: "",
+            });
+        }
+
+        const fetchData = async () => {
+            try {
+                const requests = [
+                    axiosClient.get("/admin/get-all-combobox-data"),
+                ];
+
+                if (tekstid) {
+                    requests.push(axiosClient.get(`/get-tekst/${tekstid}`));
+                }
+
+                if (addHuPkast)
+                    requests.push(
+                        axiosClient.get("/admin/get-hupkast-platforme"),
+                    );
+
+                const [resCb, res, hupkastRes] = await Promise.all(requests);
+
+                if (!isMounted) return;
+
+                setSviAutori(resCb.data.autori);
+                setSvePredstave(resCb.data.predstave);
+                setSvaPozorista(resCb.data.pozorista);
+                setSviTagovi(resCb.data.tagovi);
+                setSviFestivali(resCb.data.festivali);
+
+                if (hupkastRes) {
+                    setHupkastPlatforme(hupkastRes.data);
+                    console.log("hupkast platforme");
+                    console.log(hupkastRes.data);
+
+                    setFormData({
+                        ...formData,
+                        kategorijaid: 11,
+                        sezona: 1,
+                        epizoda: 1,
+                        mp3_url: "",
+                        hupkast_linkovi: [],
+                    });
+                }
+                debugger;
+                if (res) {
                     console.log(res.data);
                     setFormData({
                         ...res.data,
                         predstave: res.data.predstave?.map(
-                            (pred) => pred.predstavaid
+                            (pred) => pred.predstavaid,
                         ),
                         pozorista: res.data.pozorista?.map(
-                            (poz) => poz.pozoristeid
+                            (poz) => poz.pozoristeid,
                         ),
                         tagovi: res.data.tagovi?.map((tag) => tag.tagid),
                         autori: res.data.autori?.map((a) => a.autorid),
@@ -77,7 +121,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                         epizoda: res.data.hupkast?.epizoda,
                         mp3_url: res.data.hupkast?.mp3_url,
                         hupkast_linkovi: res.data.hupkast?.linkovi.map((hl) => {
-                            hl.pivot.platformaid, hl.pivot.hupkast_url;
+                            (hl.pivot.platformaid, hl.pivot.hupkast_url);
                         }),
 
                         naslov_hupikona: res.data.hupikon?.naslov_hupikona,
@@ -98,28 +142,28 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                             res.data.autori.map((autor) => ({
                                 value: autor.autorid,
                                 label: autor.ime_autora,
-                            }))
+                            })),
                         );
                     if (res.data.predstave)
                         setDbPredstave(
                             res.data.predstave.map((predstava) => ({
                                 value: predstava.predstavaid,
                                 label: predstava.naziv_predstave,
-                            }))
+                            })),
                         );
                     if (res.data.pozorista)
                         setDbPozorista(
                             res.data.pozorista.map((poz) => ({
                                 value: poz.pozoristeid,
                                 label: poz.naziv_pozorista,
-                            }))
+                            })),
                         );
                     if (res.data.tagovi)
                         setDbTagovi(
                             res.data.tagovi.map((tag) => ({
                                 value: tag.tagid,
                                 label: tag.tag_naziv,
-                            }))
+                            })),
                         );
                     // if (res.data.hupkast)
                     //     setFormData({
@@ -133,69 +177,25 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                             res.data.hupkast.linkovi.map((hl) => ({
                                 platformaid: hl.pivot.platformaid,
                                 hupkast_url: hl.pivot.hupkast_url,
-                            }))
+                            })),
                         );
                     }
                     setPreviewTekstPhoto(res.data.tekst_photo);
-                })
-                .catch((error) => {
-                    console.error(error);
-                })
-                .finally(() => {
+                }
+            } catch (error) {
+                console.error(error);
+            } finally {
+                if (isMounted) {
                     setLoading(false);
-                });
-        }
+                }
+            }
+        };
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     }, [tekstid]);
-
-    useEffect(() => {
-        setFormData({ ...formData, kategorijaid: kategorijaid });
-
-        if (addHuPkast) {
-            setLoading(true);
-            axiosClient
-                .get("/admin/get-hupkast-platforme")
-                .then((res) => {
-                    setHupkastPlatforme(res.data);
-                    console.log("hupkast platforme");
-                    console.log(res.data);
-                })
-                .catch((error) => console.error(error));
-
-            setFormData({
-                ...formData,
-                kategorijaid: 11,
-                sezona: 1,
-                epizoda: 1,
-                mp3_url: "",
-                hupkast_linkovi: [],
-            });
-        }
-        if (addHuPikon) {
-            setFormData({
-                ...formData,
-                kategorijaid: 5,
-                naslov_hupikona: "",
-                sagovornik: "",
-                zanimanje_sagovornika: "",
-                mesto_stanovanja: "",
-                biografija: "",
-            });
-        }
-
-        axiosClient
-            .get("/admin/get-all-combobox-data")
-            .then((resCb) => {
-                setSviAutori(resCb.data.autori);
-                setSvePredstave(resCb.data.predstave);
-                setSvaPozorista(resCb.data.pozorista);
-                setSviTagovi(resCb.data.tagovi);
-                setSviFestivali(resCb.data.festivali);
-                setLoading(false);
-            })
-            .catch((error) => console.error(error));
-
-        setLoading(false);
-    }, []);
 
     const optionsAutori = sviAutori?.map((autor) => ({
         value: autor.autorid,
@@ -254,7 +254,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         editorSadrzaj.content = content;
     };
 
-    const handleAutoriChange = (event, selectedAutori) => {
+    const handleAutoriChange = (selectedAutori) => {
         console.log(selectedAutori);
         setFormData({
             ...formData,
@@ -263,7 +263,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         setDbAutori(selectedAutori);
     };
 
-    const handleFestivalChange = (event, selectedFestival) => {
+    const handleFestivalChange = (selectedFestival) => {
         console.log(selectedFestival);
         setFormData({
             ...formData,
@@ -272,7 +272,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         setDbFestival(selectedFestival);
     };
 
-    const handlePredstaveChange = (event, selectedPredstave) => {
+    const handlePredstaveChange = (selectedPredstave) => {
         setFormData({
             ...formData,
             predstave: selectedPredstave.map((sp) => sp.value),
@@ -280,7 +280,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         setDbPredstave(selectedPredstave);
     };
 
-    const handlePozoristaChange = (event, selectedPozorista) => {
+    const handlePozoristaChange = (selectedPozorista) => {
         setFormData({
             ...formData,
             pozorista: selectedPozorista.map((sp) => sp.value),
@@ -288,7 +288,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         setDbPozorista(selectedPozorista);
     };
 
-    const handleTagoviChange = (event, selectedTagovi) => {
+    const handleTagoviChange = (selectedTagovi) => {
         setFormData({
             ...formData,
             tagovi: selectedTagovi.map((st) => st.value),
@@ -310,7 +310,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
-                }
+                },
             );
             console.log(res);
 
@@ -396,10 +396,10 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         const newLinkovi = [...linkovi];
         debugger;
         const platformaid = parseInt(
-            event.target.getAttribute("data-platformaid")
+            event.target.getAttribute("data-platformaid"),
         );
         const matchedElement = newLinkovi.find(
-            (obj) => obj?.platformaid == platformaid
+            (obj) => obj?.platformaid == platformaid,
         );
         if (matchedElement) {
             matchedElement.hupkast_url = event.target.value;
@@ -419,388 +419,350 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
             <div className="row">
                 <div className="col-md-2"></div>
                 <div className="col-md-8">
-                    {loading && <CircularProgress />}
-                    {!loading && (
-                        <Form>
-                            {addHuPkast ? (
-                                <Box sx={{ flexGrow: 1, my: 3 }}>
-                                    <Grid2
-                                        container
-                                        spacing={2}
-                                        alignItems="center"
-                                        sx={{ width: 500, mb: 2 }}
-                                        marginX={"auto"}
-                                    >
-                                        <TextField
-                                            name="sezona"
-                                            label="Sezona"
-                                            variant="outlined"
-                                            type="number"
-                                            value={formData.sezona}
-                                            onChange={handleChange}
-                                            width={40}
-                                            slotProps={{
-                                                inputLabel: { shrink: true },
-                                            }}
-                                        />
-                                        <TextField
-                                            name="epizoda"
-                                            label="Epizoda"
-                                            variant="outlined"
-                                            type="number"
-                                            value={formData.epizoda}
-                                            onChange={handleChange}
-                                            width={40}
-                                            slotProps={{
-                                                inputLabel: { shrink: true },
-                                            }}
-                                        />
-                                    </Grid2>
-                                    <TextField
+                    <LoadingBackdrop show={loading} text="Working..." />
+                    <Form>
+                        {addHuPkast ? (
+                            <>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Sezona</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        name="sezona"
+                                        value={formData.sezona}
+                                        onChange={handleChange}
+                                    />
+                                    {errors?.sezona && (
+                                        <span className="text-danger">
+                                            {errors.sezona}
+                                        </span>
+                                    )}
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Epizoda</Form.Label>
+                                    <Form.Control
+                                        type="number"
+                                        name="epizoda"
+                                        value={formData.epizoda}
+                                        onChange={handleChange}
+                                    />
+                                    {errors?.epizoda && (
+                                        <span className="text-danger">
+                                            {errors.epizoda}
+                                        </span>
+                                    )}
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Link za mp3</Form.Label>
+                                    <Form.Control
+                                        type="text"
                                         name="mp3_url"
-                                        label="Link za mp3"
-                                        variant="standard"
                                         value={formData.mp3_url}
                                         onChange={handleChange}
-                                        fullWidth
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
-                                        }}
                                     />
-                                    <h4>Linkovi</h4>
-                                    {hupkastPlatforme?.map((hp, i) => (
-                                        <TextField
+                                    {errors?.mp3_url && (
+                                        <span className="text-danger">
+                                            {errors.mp3_url}
+                                        </span>
+                                    )}
+                                </Form.Group>
+                                <h3>Linkovi</h3>
+                                {hupkastPlatforme?.map((hp, i) => (
+                                    <Form.Group className="mb-3" key={i}>
+                                        <Form.Label>
+                                            {hp.naziv_platforme}
+                                        </Form.Label>
+                                        <Form.Control
+                                            data-platformaid={hp.platformaid}
+                                            type="text"
                                             name="hupkast_linkovi"
-                                            label={hp.naziv_platforme}
-                                            variant="standard"
-                                            slotProps={{
-                                                htmlInput: {
-                                                    "data-platformaid":
-                                                        hp.platformaid,
-                                                },
-                                                inputLabel: { shrink: true },
-                                            }}
-                                            onChange={(event) =>
-                                                handleLinkoviChange(i, event)
-                                            }
                                             value={
                                                 linkovi.find(
                                                     (obj) =>
                                                         obj?.platformaid ==
-                                                        hp.platformaid
+                                                        hp.platformaid,
                                                 )?.hupkast_url
                                             }
-                                            fullWidth
-                                            sx={{ mt: 1 }}
-                                            key={i}
+                                            onChange={(event) =>
+                                                handleLinkoviChange(i, event)
+                                            }
                                         />
-                                    ))}
-                                    <hr />
-                                </Box>
-                            ) : (
-                                ""
-                            )}
-                            {addHuPikon ? (
-                                <Box sx={{ flexGrow: 1, my: 3 }}>
-                                    <TextField
+                                    </Form.Group>
+                                ))}
+                                <hr />
+                            </>
+                        ) : (
+                            ""
+                        )}
+                        {addHuPikon ? (
+                            <>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>
+                                        Naslov HuPikona (izjava)
+                                    </Form.Label>
+                                    <Form.Control
+                                        type="text"
                                         name="naslov_hupikona"
-                                        label="Naslov HuPikona (izjava)"
-                                        variant="standard"
                                         value={formData.naslov_hupikona}
                                         onChange={handleChange}
-                                        fullWidth
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
-                                        }}
                                     />
-                                    <TextField
+                                    {errors?.naslov_hupikona && (
+                                        <span className="text-danger">
+                                            {errors.naslov_hupikona}
+                                        </span>
+                                    )}
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Sagovornik_ca</Form.Label>
+                                    <Form.Control
+                                        type="text"
                                         name="sagovornik"
-                                        label="Sagovornik_ca"
-                                        variant="standard"
                                         value={formData.sagovornik}
                                         onChange={handleChange}
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
-                                        }}
-                                        fullWidth
                                     />
+                                    {errors?.sagovornik && (
+                                        <span className="text-danger">
+                                            {errors.sagovornik}
+                                        </span>
+                                    )}
+                                </Form.Group>
 
-                                    <TextField
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Zanimanje</Form.Label>
+                                    <Form.Control
+                                        type="text"
                                         name="zanimanje_sagovornika"
-                                        label="Zanimanje"
-                                        variant="standard"
                                         value={formData.zanimanje_sagovornika}
                                         onChange={handleChange}
-                                        fullWidth
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
-                                        }}
                                     />
-                                    <TextField
+                                    {errors?.zanimanje_sagovornika && (
+                                        <span className="text-danger">
+                                            {errors.zanimanje_sagovornika}
+                                        </span>
+                                    )}
+                                </Form.Group>
+
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Mesto stanovanja</Form.Label>
+                                    <Form.Control
+                                        type="text"
                                         name="mesto_stanovanja"
-                                        label="Mesto"
-                                        variant="standard"
                                         value={formData.mesto_stanovanja}
                                         onChange={handleChange}
-                                        fullWidth
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
-                                        }}
                                     />
-
-                                    <TextField
+                                    {errors?.mesto_stanovanja && (
+                                        <span className="text-danger">
+                                            {errors.mesto_stanovanja}
+                                        </span>
+                                    )}
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Biografija</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        as="textarea"
+                                        rows={5}
                                         name="biografija"
-                                        label="Biografija"
-                                        variant="standard"
                                         value={formData.biografija}
                                         onChange={handleChange}
-                                        fullWidth
-                                        rows={5}
-                                        multiline
-                                        slotProps={{
-                                            inputLabel: { shrink: true },
+                                    />
+                                    {errors?.biografija && (
+                                        <span className="text-danger">
+                                            {errors.biografija}
+                                        </span>
+                                    )}
+                                </Form.Group>
+
+                                <hr />
+                            </>
+                        ) : (
+                            ""
+                        )}
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Naslov</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="naslov"
+                                value={formData.naslov}
+                                onChange={handleChange}
+                            />
+                            {errors?.naslov && (
+                                <span className="text-danger">
+                                    {errors.naslov}
+                                </span>
+                            )}
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Slug</Form.Label>
+                            <Form.Control
+                                type="text"
+                                name="slug"
+                                value={formData.slug}
+                                onChange={handleChange}
+                            />
+                            {errors?.slug && (
+                                <span className="text-danger">
+                                    {errors.slug}
+                                </span>
+                            )}
+                        </Form.Group>
+
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tekst foto</Form.Label>
+
+                            {previewTekstPhoto && (
+                                <div style={{ marginBottom: "10px" }}>
+                                    <img
+                                        src={previewTekstPhoto}
+                                        alt="Preview"
+                                        style={{
+                                            maxWidth: "100%",
+                                            height: "100px",
                                         }}
                                     />
-
-                                    <hr />
-                                </Box>
-                            ) : (
-                                ""
+                                </div>
                             )}
+                            <Form.Control
+                                type="file"
+                                accept="image/*"
+                                onChange={handleTekstPhoto}
+                            />
+                            {errors?.slika && (
+                                <span className="text-danger">
+                                    {errors.slika}
+                                </span>
+                            )}
+                            {errors?.tekst_photo && (
+                                <span className="text-danger">
+                                    {errors.tekst_photo}
+                                </span>
+                            )}
+                        </Form.Group>
 
-                            <FormControl fullWidth sx={{ mb: 3 }}>
-                                <TextField
-                                    name="naslov"
-                                    label="Naslov"
-                                    variant="standard"
-                                    value={formData.naslov}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                                {errors?.naslov && (
-                                    <span className="text-danger">
-                                        {errors.naslov}
-                                    </span>
-                                )}
-                            </FormControl>
-                            <FormControl fullWidth sx={{ mb: 3 }}>
-                                <TextField
-                                    name="slug"
-                                    label="Slug"
-                                    variant="standard"
-                                    value={formData.slug}
-                                    onChange={handleChange}
-                                    fullWidth
-                                />
-                                {errors?.slug && (
-                                    <span className="text-danger">
-                                        {errors.slug}
-                                    </span>
-                                )}
-                            </FormControl>
-                            <FormControl fullWidth sx={{ mb: 3 }}>
-                                <FormLabel>Tekst foto</FormLabel>
-                                {previewTekstPhoto && (
-                                    <div style={{ marginBottom: "10px" }}>
-                                        <img
-                                            src={previewTekstPhoto}
-                                            alt="Preview"
-                                            style={{
-                                                maxWidth: "100%",
-                                                height: "100px",
-                                            }}
-                                        />
-                                    </div>
-                                )}
-                                <input
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleTekstPhoto}
-                                />
-                                {errors?.slika && (
-                                    <span className="text-danger">
-                                        {errors.slika}
-                                    </span>
-                                )}
-                                {errors?.tekst_photo && (
-                                    <span className="text-danger">
-                                        {errors.tekst_photo}
-                                    </span>
-                                )}
-                            </FormControl>
-
-                            <Form.Group className="form-group mb-3">
-                                <Form.Label>Uvod</Form.Label>
-                                <br />
-                                <Editor
-                                    name="uvod"
-                                    onInit={(_evt, editor) =>
-                                        (editorUvod.current = editor)
-                                    }
-                                    value={editorUvod.content}
-                                    onEditorChange={(content) =>
-                                        handleEditorUvodChange(
-                                            content,
-                                            "editorUvod"
-                                        )
-                                    }
-                                    apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
-                                    init={{
-                                        height: 200,
-                                        menubar: false,
-                                        toolbar:
-                                            "undo redo | bold italic underline strikethrough | removeformat",
-                                    }}
-                                />
-                                {errors?.uvod && (
-                                    <span className="text-danger">
-                                        {errors.uvod}
-                                    </span>
-                                )}
-                            </Form.Group>
-                            <Form.Group className="form-group mb-3">
-                                <Form.Label>Tekst</Form.Label>
-                                <br />
-                                <Editor
-                                    name="sadrzaj"
-                                    onEditorChange={handleEditorSadrzajChange}
-                                    onInit={(_evt, editor2) =>
-                                        (editorSadrzaj.current = editor2)
-                                    }
-                                    value={editorSadrzaj.content}
-                                    apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
-                                    init={{
-                                        height: 700,
-                                        menubar: false,
-                                        automatic_uploads: true,
-                                        plugins: "code image link lists",
-                                        toolbar1:
-                                            "code | undo redo | styles fontsize | numlist bullist | blockquote  | paste pastetext | selectall",
-                                        toolbar2:
-                                            "formatSelect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | indent outdent | link unlink | forecolor backcolor hilitecolor | image  | removeformat ",
-                                        images_upload_url:
-                                            "http://127.0.0.1:8000/admin/uploadImage",
-                                        automatic_uploads: true,
-                                        images_reuse_filename: true,
-                                        images_upload_handler:
-                                            handleImageUpload,
-                                    }}
-                                />
-                            </Form.Group>
-
-                            <Autocomplete
-                                name="festival"
+                        <Form.Group className="form-group mb-3">
+                            <Form.Label>Uvod</Form.Label>
+                            <br />
+                            <Editor
+                                name="uvod"
+                                onInit={(_evt, editor) =>
+                                    (editorUvod.current = editor)
+                                }
+                                value={editorUvod.content}
+                                onEditorChange={(content) =>
+                                    handleEditorUvodChange(
+                                        content,
+                                        "editorUvod",
+                                    )
+                                }
+                                apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
+                                init={{
+                                    height: 200,
+                                    menubar: false,
+                                    toolbar:
+                                        "undo redo | bold italic underline strikethrough | removeformat",
+                                }}
+                            />
+                            {errors?.uvod && (
+                                <span className="text-danger">
+                                    {errors.uvod}
+                                </span>
+                            )}
+                        </Form.Group>
+                        <Form.Group className="form-group mb-3">
+                            <Form.Label>Tekst</Form.Label>
+                            <br />
+                            <Editor
+                                name="sadrzaj"
+                                onEditorChange={handleEditorSadrzajChange}
+                                onInit={(_evt, editor2) =>
+                                    (editorSadrzaj.current = editor2)
+                                }
+                                value={editorSadrzaj.content}
+                                apiKey="03k8vwp18ao4tt5y19jbhgstzi8foquxopmba2mxieyujnv3"
+                                init={{
+                                    height: 700,
+                                    menubar: false,
+                                    automatic_uploads: true,
+                                    plugins: "code image link lists",
+                                    toolbar1:
+                                        "code | undo redo | styles fontsize | numlist bullist | blockquote  | paste pastetext | selectall",
+                                    toolbar2:
+                                        "formatSelect | bold italic underline strikethrough | alignleft aligncenter alignright alignjustify | indent outdent | link unlink | forecolor backcolor hilitecolor | image  | removeformat ",
+                                    images_upload_url:
+                                        "http://127.0.0.1:8000/admin/uploadImage",
+                                    automatic_uploads: true,
+                                    images_reuse_filename: true,
+                                    images_upload_handler: handleImageUpload,
+                                }}
+                            />
+                        </Form.Group>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Festival</Form.Label>
+                            <Select
+                                name="festivali"
                                 options={optionsFestivali}
                                 value={dbFestival}
                                 onChange={handleFestivalChange}
-                                sx={{ mb: 2 }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Festivali"
-                                        fullWidth
-                                        style={{ fontSize: "1.2rem" }}
-                                    />
-                                )}
                             />
+                        </Form.Group>
 
-                            <Autocomplete
+                        <Form.Group className="mb-3">
+                            <Form.Label>Autori</Form.Label>
+                            <Select
                                 name="autori"
                                 options={optionsAutori}
-                                multiple
+                                isMulti
                                 value={dbAutori}
                                 onChange={handleAutoriChange}
-                                sx={{ mb: 2 }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Autori"
-                                        fullWidth
-                                        style={{ fontSize: "1.2rem" }}
-                                    />
-                                )}
                             />
+                        </Form.Group>
 
-                            <Autocomplete
+                        <Form.Group className="mb-3">
+                            <Form.Label>Predstave</Form.Label>
+                            <Select
                                 name="predstave"
                                 options={optionsPredstave}
-                                multiple
+                                isMulti
                                 value={dbPredstave}
                                 onChange={handlePredstaveChange}
-                                sx={{ mb: 2 }}
-                                renderOption={(props, option) => {
-                                    return (
-                                        <li {...props} key={option.predstavaid}>
-                                            {option.label}
-                                        </li>
-                                    );
-                                }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Predstave"
-                                        fullWidth
-                                        style={{ fontSize: "1.2rem" }}
-                                    />
-                                )}
                             />
+                        </Form.Group>
 
-                            <FormControl
-                                fullWidth
-                                variant="outlined"
-                                sx={{ mb: 2 }}
-                            >
-                                <Autocomplete
-                                    name="pozorista"
-                                    options={optionsPozorista}
-                                    multiple
-                                    value={dbPozorista}
-                                    onChange={handlePozoristaChange}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="standard"
-                                            label="Pozorista"
-                                            fullWidth
-                                            style={{ fontSize: "1.2rem" }}
-                                        />
-                                    )}
-                                />
-                            </FormControl>
+                        <Form.Group className="mb-3">
+                            <Form.Label>Pozorišta</Form.Label>
+                            <Select
+                                name="pozorista"
+                                options={optionsPozorista}
+                                isMulti
+                                isSearchable
+                                value={dbPozorista}
+                                onChange={handlePozoristaChange}
+                            />
+                        </Form.Group>
 
-                            <Autocomplete
+                        <Form.Group className="mb-3">
+                            <Form.Label>Tagovi</Form.Label>
+                            <Select
                                 name="tagovi"
                                 options={optionsTagovi}
-                                multiple
-                                value={dbTagovi}
+                                isMulti
                                 onChange={handleTagoviChange}
-                                sx={{ mb: 2 }}
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Tagovi"
-                                        fullWidth
-                                        style={{ fontSize: "1.2rem" }}
-                                    />
-                                )}
+                                value={dbTagovi}
+                                isSearchable
                             />
+                        </Form.Group>
 
-                            {/* <Select name='tagovi' options={optionsTagovi} isMulti={true} onChange={handleTagoviChange} value={dbTagovi} isSearchable={true} /> */}
-
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                onClick={handleSubmit}
-                            >
-                                Submit
-                            </Button>
-                        </Form>
-                    )}
+                        <Button
+                            size="large"
+                            variant="primary"
+                            type="submit"
+                            onClick={handleSubmit}
+                        >
+                            Submit
+                        </Button>
+                    </Form>
                 </div>
 
                 <div className="col-md-2"></div>

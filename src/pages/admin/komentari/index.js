@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import axiosClient from "../../../utils/axios";
+import { Button } from "react-bootstrap";
 import {
-    Button,
     CircularProgress,
-    Paper,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
-    Backdrop,
 } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+
 import { toast } from "react-hot-toast";
-import AddTaskOutlinedIcon from "@mui/icons-material/AddTaskOutlined";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import DoneOutlineOutlinedIcon from "@mui/icons-material/DoneOutlineOutlined";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faCheck,
+    faPenToSquare,
+    faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import { useRouter } from "next/router";
 import { useStateContext } from "../../../contexts/StateContext";
+import { AgGridReact } from "ag-grid-react";
 
 export default function KomentariPage() {
     const [komentari, setKomentari] = useState([]);
@@ -59,12 +61,12 @@ export default function KomentariPage() {
             .delete(`/admin/komentar-delete/${selectedRow.komentarid}`)
             .then((res) => {
                 setKomentari((prev) =>
-                    prev.filter((r) => r.komentarid !== selectedRow.komentarid)
+                    prev.filter((r) => r.komentarid !== selectedRow.komentarid),
                 );
                 toast.success("Uspesno obrisan komentar");
                 if (res.data.unnapprovedCommentsCount !== undefined) {
                     setUnnapprovedCommentsCount(
-                        res.data.unnapprovedCommentsCount
+                        res.data.unnapprovedCommentsCount,
                     );
                 }
             })
@@ -84,43 +86,6 @@ export default function KomentariPage() {
         setSelectedRow(null);
     };
 
-    function DeleteButton(params) {
-        const row = params.params.row;
-
-        return (
-            <Button
-                onClick={(e) => handleDeleteClick(e, row.id)}
-                variant="outlined"
-                size="small"
-                color="error"
-                startIcon={<DeleteOutlineOutlinedIcon />}
-            >
-                Obriši
-            </Button>
-        );
-    }
-
-    function EditButton(params) {
-        const row = params.params.row;
-        const isButtonLoading = odobriLoading === params.id;
-        return (
-            <Button
-                onClick={(e) => onEditButtonClick(e, row)}
-                variant="contained"
-                size="small"
-                startIcon={
-                    isButtonLoading ? (
-                        <CircularProgress size={18} color="inherit" />
-                    ) : (
-                        <AddTaskOutlinedIcon />
-                    )
-                }
-            >
-                Odobri
-            </Button>
-        );
-    }
-
     const onEditButtonClick = (event, params) => {
         debugger;
         event.preventDefault();
@@ -133,8 +98,8 @@ export default function KomentariPage() {
                     prevKom.map((komentar) =>
                         komentar.komentarid === updatedKomentar.komentarid
                             ? updatedKomentar
-                            : komentar
-                    )
+                            : komentar,
+                    ),
                 );
                 setUnnapprovedCommentsCount(unnaprovedCommentsCount - 1);
                 toast.success("Uspesno odobren komentar");
@@ -150,40 +115,60 @@ export default function KomentariPage() {
 
     const columns = [
         { field: "id", headerName: "Id", flex: 1 },
-        { field: "korisnik", headerName: "Korisnik", flex: 1 },
-        { field: "komentar", headerName: "Komentar", flex: 4 },
-        { field: "predstava", headerName: "Predstava", flex: 2 },
-        { field: "datum", headerName: "Datum", flex: 1 },
+        { field: "korisnik", headerName: "Korisnik", flex: 2 },
+        {
+            field: "komentar",
+            headerName: "Komentar",
+            flex: 7,
+            wrapText: true,
+            autoHeight: true,
+        },
+        { field: "predstava", headerName: "Predstava", flex: 3 },
+        { field: "datum", headerName: "Datum", flex: 2 },
         {
             field: "edit",
             headerName: "",
-            width: 200,
-            flex: 1,
+            width: 220,
+            flex: 2,
             align: "center",
-            renderCell: (params) => {
-                if (params.row.statusid == 2)
+            cellRenderer: (params) => {
+                if (params.data.statusid == 2)
                     return (
                         <Button
-                            variant="outlined"
-                            color="success"
-                            size="small"
-                            disabled
-                            startIcon={<DoneOutlineOutlinedIcon />}
+                            size="sm"
+                            variant="outline-primary"
+                            disabled={true}
                         >
-                            Odobren
+                            <FontAwesomeIcon icon={faCheck} /> Odobren
                         </Button>
                     );
-                else return <EditButton params={params} />;
+                else
+                    return (
+                        <Button
+                            onClick={(e) => onEditButtonClick(e, params.data)}
+                            size="sm"
+                            variant="info"
+                        >
+                            <FontAwesomeIcon icon={faPenToSquare} /> Odobri
+                        </Button>
+                    );
             },
         },
-
         {
             field: "delete",
             headerName: "",
             width: 200,
-            flex: 1,
+            flex: 2,
             align: "center",
-            renderCell: (params) => <DeleteButton params={params} />,
+            cellRenderer: (params) => (
+                <Button
+                    onClick={(e) => handleDeleteClick(e, params.data.id)}
+                    variant="danger"
+                    size="small"
+                >
+                    <FontAwesomeIcon icon={faTrashCan} /> Obriši
+                </Button>
+            ),
         },
     ];
     const rows = new Array();
@@ -196,47 +181,30 @@ export default function KomentariPage() {
             predstava: kom.predstava.naziv_predstave,
             datum: moment(kom.created_at).format("DD. MM. YYYY"),
             statusid: kom.statuskomentaraid,
-        })
+        }),
     );
 
     return (
         <>
             <AdminHeader metaTitle="Komentari" />
             <div className="container">
-                {loading && (
-                    <Backdrop
-                        open={loading}
-                        sx={{
-                            color: "#fff",
-                            zIndex: (theme) => theme.zIndex.drawer + 1,
-                        }}
-                    >
-                        <CircularProgress color="inherit" />
-                    </Backdrop>
-                )}
                 <h1>Komentari</h1>
-                <Paper sx={{ height: 800, width: "100%" }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        sx={{ border: 0 }}
-                        autoPageSize
-                        slots={{ toolbar: GridToolbar }}
-                        disableColumnFilter
-                        disableColumnSelector
-                        disableDensitySelector
-                        getRowHeight={() => "auto"}
-                        slotProps={{
-                            pagination: {
-                                showFirstButton: true,
-                                showLastButton: true,
-                            },
-                            toolbar: {
-                                showQuickFilter: true,
-                            },
-                        }}
+                <div
+                    style={{
+                        width: "100%",
+                        height: "600px",
+                        marginTop: "25px",
+                        marginBottom: "30px",
+                    }}
+                >
+                    <AgGridReact
+                        rowData={rows}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationAutoPageSize={true}
+                        loading={loading}
                     />
-                </Paper>
+                </div>
                 {/* Confirmation Dialog */}
                 <Dialog open={openDialog} onClose={handleCancel}>
                     <DialogTitle>Confirm Delete</DialogTitle>

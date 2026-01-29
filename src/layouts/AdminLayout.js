@@ -1,9 +1,8 @@
-import React from "react";
 import AdminNav from "../components/admin/layout/AdminNav";
 import { Toaster } from "react-hot-toast";
-import { Box, Toolbar } from "@mui/material";
 import AdminSidebar from "../components/admin/layout/AdminSidebar";
 import AdminHeader from "../components/admin/layout/AdminHeader";
+import { Col, Row } from "react-bootstrap";
 
 const AdminLayout = ({ children }) => {
     return (
@@ -11,15 +10,15 @@ const AdminLayout = ({ children }) => {
             <AdminHeader metaTitle="Početna" />
             <div className="admin-root-div">
                 {/* Admin specific header */}
-                <Box sx={{ display: "flex" }}>
-                    <AdminNav />
+
+                <AdminNav />
+                <Row className="flex-grow-1 no-gutters" style={{ margin: 0 }}>
                     <AdminSidebar />
-                    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-                        <Toolbar />
-                        {children}
-                    </Box>
-                </Box>
-                {/* <Container sx={{ flexGrow: 1, pt: 10 }}>{children}</Container> */}
+                    {/* Main content area */}
+                    {/* <Col xs={sidebarOpen ? 10 : 12} className="p-3"></Col> */}
+                    <div className="main-content">{children}</div>
+                </Row>
+
                 <Toaster position="bottom-center" reverseOrder={false} />
                 <footer>Admin Footer</footer>
             </div>

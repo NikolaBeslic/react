@@ -9,8 +9,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Izmeni autora" />
-            <h1>Izmeni autora</h1>
-            <AutoriCreateUpdate autorid={autorid} />
+            <div className="container">
+                <h1 className="text-center">Izmeni autora</h1>
+                <AutoriCreateUpdate autorid={autorid} />
+            </div>
         </>
     );
 }

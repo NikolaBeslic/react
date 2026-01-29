@@ -9,8 +9,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Izmeni kategoriju" />
-            <h1>Izmeni kategoriju</h1>
-            <KategorijaCreateUpdate kategorijaid={kategorijaid} />
+            <div className="container">
+                <h1>Izmeni kategoriju</h1>
+                <KategorijaCreateUpdate kategorijaid={kategorijaid} />
+            </div>
         </>
     );
 }

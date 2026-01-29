@@ -9,8 +9,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Izmeni žanr" />
-            <h1>Izmeni zanr </h1>
-            <ZanrCreateUpdate zanrid={zanrid} />
+            <div className="container">
+                <h1>Izmeni žanr </h1>
+                <ZanrCreateUpdate zanrid={zanrid} />
+            </div>
         </>
     );
 }

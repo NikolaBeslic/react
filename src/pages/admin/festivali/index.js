@@ -1,17 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import axiosClient from "../../../utils/axios";
-import { Button, Paper } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import AddIcon from "@mui/icons-material/Add";
+import { Col, Row, Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
-import { useRouter } from "next/router";
+import { AgGridReact } from "ag-grid-react";
+import Link from "next/link";
 
 export default function FestivaliPage() {
     const [festivali, setFestivali] = useState([]);
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
+    const gridRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -25,25 +25,12 @@ export default function FestivaliPage() {
             .finally(() => setLoading(false));
     }, []);
 
-    function EditButton(params) {
-        return (
-            <Button
-                onClick={(e) => onEditButtonClick(e, params.params)}
-                variant="outlined"
-                startIcon={<EditNoteIcon />}
-                size="small"
-            >
-                Edit
-            </Button>
-        );
-    }
-
     const formatDateRange = (date1, date2) => {
         const d1 = moment(date1);
         const d2 = moment(date2);
         if (d1.isSame(d2, "month") && d1.isSame(d2, "year")) {
             return `${d1.format("DD")} - ${d2.format("DD")}. ${d1.format(
-                "MMMM YYYY"
+                "MMMM YYYY",
             )}`;
         } else {
             return `${d1.format("DD. MM")} - ${d2.format("DD. MM. YYYY")}`;
@@ -60,7 +47,16 @@ export default function FestivaliPage() {
             width: 200,
             flex: 1,
             align: "center",
-            renderCell: (params) => <EditButton params={params} />,
+            cellRenderer: (params) => (
+                <Button
+                    as={Link}
+                    href={`/admin/festivali/edit?festivalid=${params.data.id}`}
+                    size="sm"
+                    variant="primary"
+                >
+                    <FontAwesomeIcon icon={faPenToSquare} /> Edit
+                </Button>
+            ),
         },
     ];
     const rows = new Array();
@@ -71,50 +67,61 @@ export default function FestivaliPage() {
             naziv_festivala: fest.naziv_festivala,
             naziv_grada: fest.grad.naziv_grada,
             datumi: formatDateRange(fest.datumod, fest.datumdo),
-        })
+        }),
     );
 
-    const onEditButtonClick = (event, params) => {
-        event.preventDefault();
-        router.push(`/admin/festivali/edit?festivalid=${params.id}`);
-    };
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
 
     return (
         <>
             <AdminHeader metaTitle="Festivali" />
             <div className="container">
-                <h1>Festivali</h1>
-                <Button
-                    href="/admin/festivali/create"
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    className="mb-3"
-                    size="small"
+                <Row>
+                    <Col lg={8} md={6} sm={12}>
+                        <h1>Festivali</h1>
+                    </Col>
+                    <Col lg={4} md={6} sm={12}>
+                        <Button
+                            as={Link}
+                            href="/admin/festivali/create"
+                            variant="primary"
+                        >
+                            <FontAwesomeIcon icon={faPlus} /> Dodaj festival
+                        </Button>
+                    </Col>
+                </Row>
+                <div
+                    style={{
+                        width: "100%",
+                        height: "600px",
+                        marginTop: "25px",
+                        marginBottom: "30px",
+                    }}
                 >
-                    Dodaj festival
-                </Button>
-                <Paper sx={{ height: 800, width: "100%" }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
+                    <div className="example-header mb-3">
+                        <input
+                            type="text"
+                            id="filter-text-box"
+                            placeholder="Pretraga..."
+                            onInput={onFilterTextBoxChanged}
+                            className="form-control"
+                            style={{ width: "300px" }}
+                        />
+                    </div>
+                    <AgGridReact
+                        ref={gridRef}
+                        rowData={rows}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationAutoPageSize={true}
                         loading={loading}
-                        sx={{ border: 0 }}
-                        autoPageSize
-                        slots={{ toolbar: GridToolbar }}
-                        disableColumnFilter
-                        disableColumnSelector
-                        disableDensitySelector
-                        slotProps={{
-                            pagination: {
-                                showFirstButton: true,
-                                showLastButton: true,
-                            },
-                            toolbar: {
-                                showQuickFilter: true,
-                            },
-                        }}
                     />
-                </Paper>
+                </div>
             </div>
         </>
     );

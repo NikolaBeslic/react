@@ -78,8 +78,8 @@ export default function AdminHomePage() {
                     prevTekstovi.map((tekst) =>
                         tekst.tekstid === tekstid
                             ? { ...tekst, na_slajderu: 0 }
-                            : tekst
-                    )
+                            : tekst,
+                    ),
                 );
             })
             .catch((err) => {
@@ -115,7 +115,6 @@ export default function AdminHomePage() {
                 variant="contained"
                 sx={{ my: 2 }}
                 component={Link}
-                prefetch
             >
                 Dodaj tekst
             </Button>
@@ -148,7 +147,6 @@ export default function AdminHomePage() {
                                     title="Edituj tekst"
                                     component={Link}
                                     href={`/admin/tekstovi/edit?tekstid=${tekst.tekstid}`}
-                                    prefetch
                                 >
                                     <EditNoteIcon />
                                 </IconButton>
@@ -159,7 +157,7 @@ export default function AdminHomePage() {
                                     onClick={() => {
                                         navigator.clipboard.writeText(
                                             window.location.origin +
-                                                `/tekst/${tekst.slug}`
+                                                `/tekst/${tekst.slug}`,
                                         );
                                     }}
                                 >
@@ -202,7 +200,7 @@ export default function AdminHomePage() {
                                 </TableCell>
                                 <TableCell>
                                     {moment(tekst.published_at).format(
-                                        "DD.MM.YYYY"
+                                        "DD.MM.YYYY",
                                     )}
                                 </TableCell>
                                 <TableCell>
@@ -213,7 +211,6 @@ export default function AdminHomePage() {
                                         startIcon={<EditNoteIcon />}
                                         component={Link}
                                         href={`/admin/tekstovi/edit?tekstid=${tekst.tekstid}`}
-                                        prefetch
                                     >
                                         Izmeni
                                     </Button>
@@ -247,7 +244,7 @@ export default function AdminHomePage() {
                                 <TableCell>
                                     {pred.premijera
                                         ? moment(pred.premijera).format(
-                                              "DD.MM.YYYY"
+                                              "DD.MM.YYYY",
                                           )
                                         : ""}
                                 </TableCell>
@@ -259,7 +256,6 @@ export default function AdminHomePage() {
                                         startIcon={<EditNoteIcon />}
                                         component={Link}
                                         href={`/admin/predstave/edit?predstavaid=${pred.predstavaid}`}
-                                        prefetch
                                     >
                                         Izmeni
                                     </Button>

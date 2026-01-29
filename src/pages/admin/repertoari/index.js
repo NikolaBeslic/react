@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useRef } from "react";
 import axiosClient from "../../../utils/axios";
-import { Button, Paper } from "@mui/material";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import AddIcon from "@mui/icons-material/Add";
-import { useRouter } from "next/router";
+import { Button } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faCalendarPlus } from "@fortawesome/free-solid-svg-icons";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { AgGridReact } from "ag-grid-react";
+import Link from "next/link";
 
 export default function RepertoariPage() {
     const [pozorista, setPozorista] = useState([]);
     const [loading, setLoading] = useState(false);
-    const router = useRouter();
+
+    const gridRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -23,41 +24,24 @@ export default function RepertoariPage() {
             .catch((err) => console.error(err));
     }, []);
 
-    function EditButton(params) {
-        return (
-            <Button
-                onClick={(e) => onEditButtonClick(e, params.params)}
-                variant="outlined"
-                startIcon={<EditNoteIcon />}
-                size="small"
-            >
-                Edit
-            </Button>
-        );
-    }
-
-    function AddButton(params) {
-        return (
-            <Button
-                onClick={(e) => onAddButtonClick(e, params.params)}
-                variant="outlined"
-                startIcon={<AddIcon />}
-                size="small"
-            >
-                Dodaj repertoar
-            </Button>
-        );
-    }
-
     const columns = [
-        { field: "naziv_pozorista", headerName: "Naziv pozorista", flex: 1 },
+        { field: "naziv_pozorista", headerName: "Naziv pozorista", flex: 2 },
         {
             field: "add",
             headerName: "",
             width: 200,
             flex: 1,
             align: "center",
-            renderCell: (params) => <AddButton params={params} />,
+            cellRenderer: (params) => (
+                <Button
+                    as={Link}
+                    href={`/admin/repertoari/${params.data.pozoriste_slug}/create`}
+                    variant="outline-primary"
+                    size="small"
+                >
+                    <FontAwesomeIcon icon={faPlus} /> Dodaj repertoar
+                </Button>
+            ),
         },
     ];
     const rows = new Array();
@@ -67,19 +51,15 @@ export default function RepertoariPage() {
             id: poz.pozoristeid,
             naziv_pozorista: poz.naziv_pozorista,
             pozoriste_slug: poz.pozoriste_slug,
-        })
+        }),
     );
 
-    const onEditButtonClick = (event, params) => {
-        event.preventDefault();
-        router.push(`/admin/repertoari/${params.pozoriste_slug}create`);
-    };
-
-    const onAddButtonClick = (event, params) => {
-        event.preventDefault();
-        console.log(params);
-        router.push(`/admin/repertoari/${params.row.pozoriste_slug}/create`);
-    };
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
 
     return (
         <>
@@ -88,49 +68,41 @@ export default function RepertoariPage() {
             <h1>Repertoari</h1>
             <div className="container">
                 <Button
+                    as={Link}
                     href="/admin/repertoari/dodaj-gostovanje"
-                    variant="contained"
-                    startIcon={<AddIcon />}
-                    className="mb-3"
+                    variant="primary"
+                    className="mb-3 mt-3"
                     size="small"
                 >
-                    Dodaj gostovanje
+                    <FontAwesomeIcon icon={faCalendarPlus} /> Dodaj gostovanje
                 </Button>
-                <Paper sx={{ height: 800, width: "100%" }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        sx={{ border: 0 }}
-                        autoPageSize
+                <div
+                    style={{
+                        width: "100%",
+                        height: "600px",
+                        marginTop: "25px",
+                        marginBottom: "30px",
+                    }}
+                >
+                    <div className="example-header mb-3">
+                        <input
+                            type="text"
+                            id="filter-text-box"
+                            placeholder="Pretraga..."
+                            onInput={onFilterTextBoxChanged}
+                            className="form-control"
+                            style={{ width: "300px" }}
+                        />
+                    </div>
+                    <AgGridReact
+                        ref={gridRef}
+                        rowData={rows}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationAutoPageSize={true}
                         loading={loading}
-                        slots={{ toolbar: GridToolbar }}
-                        disableColumnFilter
-                        disableColumnSelector
-                        disableDensitySelector
-                        slotProps={{
-                            pagination: {
-                                showFirstButton: true,
-                                showLastButton: true,
-                            },
-                            toolbar: {
-                                showQuickFilter: true,
-                            },
-                        }}
-                        initialState={{
-                            sorting: {
-                                sortModel: [
-                                    { field: "naziv_pozorista", sort: "asc" },
-                                ],
-                            },
-                            filter: {
-                                filterModel: {
-                                    items: [],
-                                    quickFilterValues: [],
-                                },
-                            },
-                        }}
                     />
-                </Paper>
+                </div>
             </div>
         </>
     );

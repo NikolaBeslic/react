@@ -8,8 +8,10 @@ export default function Page() {
     return (
         <>
             <AdminHeader metaTitle="Dodaj autora" />
-            <h1>Dodaj autora</h1>
-            <AutoriCreateUpdate />
+            <div className="container">
+                <h1 className="text-center">Dodaj autora</h1>
+                <AutoriCreateUpdate />
+            </div>
         </>
     );
 }

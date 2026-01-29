@@ -1,22 +1,14 @@
-import {
-    Button,
-    FormControl,
-    FormLabel,
-    Input,
-    InputLabel,
-    MenuItem,
-    Select,
-    Stack,
-    TextField,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
+import { Form, Button } from "react-bootstrap";
+import LoadingBackdrop from "../LoadingBackdrop";
 
 const AutoriCreateUpdate = ({ autorid }) => {
     const [gradovi, setGradovi] = useState([]);
     const [autorImage, setAutorImage] = useState(null);
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     const [formData, setFormData] = useState({
         ime_autora: "",
@@ -24,31 +16,51 @@ const AutoriCreateUpdate = ({ autorid }) => {
         pozicija: "",
         url_slike: "t",
         biografija: "",
-        gradid: 1,
+        gradid: "",
         slika: null,
     });
 
     useEffect(() => {
-        axiosClient
-            .get("/admin/get-gradovi")
-            .then((res) => {
-                setGradovi(res.data);
-            })
-            .catch((error) => {
+        let isMounted = true;
+
+        const fetchData = async () => {
+            setLoading(true);
+
+            try {
+                const requests = [axiosClient.get("/admin/get-gradovi")];
+
+                if (autorid) {
+                    requests.push(
+                        axiosClient.get(`/admin/get-single-autor/${autorid}`),
+                    );
+                }
+
+                const [gradoviRes, autorRes] = await Promise.all(requests);
+
+                if (!isMounted) return;
+
+                setGradovi(gradoviRes.data);
+
+                if (autorRes) {
+                    console.log(autorRes.data);
+
+                    setFormData({ ...autorRes.data });
+                    setAutorImage(autorRes.data.url_slike);
+                }
+            } catch (error) {
                 console.error(error);
-            });
-        if (autorid) {
-            axiosClient
-                .get(`/admin/get-single-autor/${autorid}`)
-                .then((res) => {
-                    console.log(res.data);
-                    setFormData({ ...res.data });
-                    setAutorImage(res.data.url_slike);
-                })
-                .catch((error) => {
-                    console.error(error);
-                });
-        }
+            } finally {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        fetchData();
+
+        return () => {
+            isMounted = false;
+        };
     }, [autorid]);
 
     const handleChange = (e) => {
@@ -128,83 +140,70 @@ const AutoriCreateUpdate = ({ autorid }) => {
 
     return (
         <>
-            <Stack
-                component="form"
-                direction="column"
-                spacing={2}
-                alignItems="left"
-                sx={{ width: 500 }}
-                marginX={"auto"}
-            >
-                <FormControl fullWidth>
-                    <TextField
+            <LoadingBackdrop show={loading} text="Working..." />
+            <Form onSubmit={handleSubmit} className="w-50 m-auto">
+                <Form.Group className="mb-3">
+                    <Form.Label>Ime autora</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="ime_autora"
-                        label="Ime autora"
-                        variant="outlined"
                         value={formData.ime_autora}
                         onChange={handleChange}
                     />
                     {errors?.ime_autora && (
                         <span className="text-danger">{errors.ime_autora}</span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Slug</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="autor_slug"
-                        label="Slug"
-                        variant="outlined"
                         value={formData.autor_slug}
                         onChange={handleChange}
                     />
                     {errors?.autor_slug && (
                         <span className="text-danger">{errors.autor_slug}</span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Pozicija</Form.Label>
+                    <Form.Control
+                        type="text"
                         name="pozicija"
-                        label="Pozicija"
-                        variant="outlined"
                         value={formData.pozicija}
                         onChange={handleChange}
                     />
                     {errors?.pozicija && (
                         <span className="text-danger">{errors.pozicija}</span>
                     )}
-                </FormControl>
-                <FormControl fullWidth>
-                    <TextField
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Biografija</Form.Label>
+                    <Form.Control
+                        type="text"
+                        as="textarea"
+                        rows={3}
                         name="biografija"
-                        label="Biografija"
-                        variant="outlined"
                         value={formData.biografija}
                         onChange={handleChange}
-                        multiline={true}
                     />
-                </FormControl>
-                <FormControl fullWidth>
-                    <InputLabel id="select-label">Grad</InputLabel>
-                    <Select
-                        labelId="select-label"
-                        name="grad"
-                        label="Grad"
-                        value={formData.gradid ?? ""}
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Grad</Form.Label>
+                    <Form.Select
                         onChange={handleGradSelectChange}
-                        sx={{ mb: 2 }}
-                        variant="outlined"
-                        MenuProps={MenuProps}
+                        value={formData.gradid}
                     >
                         {gradovi.map((grad) => (
-                            <MenuItem key={grad.gradid} value={grad.gradid}>
+                            <option key={grad.gradid} value={grad.gradid}>
                                 {grad.naziv_grada}
-                            </MenuItem>
+                            </option>
                         ))}
-                    </Select>
-                </FormControl>
-
-                <FormControl>
-                    <FormLabel>Foto</FormLabel>
-
+                    </Form.Select>
+                </Form.Group>
+                <Form.Group controlId="formFile" className="mb-3">
+                    <Form.Label>Fotka</Form.Label>
                     {autorImage && (
                         <div style={{ marginBottom: "10px" }}>
                             <img
@@ -217,25 +216,15 @@ const AutoriCreateUpdate = ({ autorid }) => {
                             />
                         </div>
                     )}
-                    <Input
+                    <Form.Control
                         type="file"
                         onChange={handleAutorImageChange}
-                        accept="image/png, image/gif, image/jpeg"
                     />
-                </FormControl>
-
-                <FormControl>
-                    <Button
-                        size="small"
-                        type="submit"
-                        variant="contained"
-                        sx={{ width: 100, alignSelf: "center" }}
-                        onClick={handleSubmit}
-                    >
-                        Submit
-                    </Button>
-                </FormControl>
-            </Stack>
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Submit
+                </Button>
+            </Form>
         </>
     );
 };

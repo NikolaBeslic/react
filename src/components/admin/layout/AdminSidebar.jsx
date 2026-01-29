@@ -1,202 +1,91 @@
-import {
-    Badge,
-    Divider,
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemButton,
-    ListItemIcon,
-    ListItemText,
-    Toolbar,
-} from "@mui/material";
-
-import LocationCityOutlinedIcon from "@mui/icons-material/LocationCityOutlined";
-import TypeSpecimenOutlinedIcon from "@mui/icons-material/TypeSpecimenOutlined";
-import CategoryOutlinedIcon from "@mui/icons-material/CategoryOutlined";
-import StyleOutlinedIcon from "@mui/icons-material/StyleOutlined";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import PodcastsOutlinedIcon from "@mui/icons-material/PodcastsOutlined";
-import SaveAsOutlinedIcon from "@mui/icons-material/SaveAsOutlined";
-import GrainOutlinedIcon from "@mui/icons-material/GrainOutlined";
-import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
-import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 import { useState } from "react";
 import Link from "next/link";
 import { useStateContext } from "../../../contexts/StateContext";
+import { Button, Col, Nav, Navbar, Row } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faPodcast,
+    faFilePen,
+    faList,
+    faComments,
+    faChartSimple,
+    faTags,
+    faIcons,
+    faShapes,
+    faCity,
+    faChevronLeft,
+    faChevronRight,
+} from "@fortawesome/free-solid-svg-icons";
 
 function AdminSidebar() {
-    const drawerWidth = 240; // Full width
-    const miniDrawerWidth = 60; // Collapsed width
-
-    const [open, setOpen] = useState(true);
-
-    const toggleDrawer = () => {
-        setOpen(!open);
-    };
-
-    const [listOpen, setListOpen] = useState(true);
-    const { unnaprovedCommentsCount } = useStateContext();
+    const [collapsed, setCollapsed] = useState(false);
 
     return (
-        <Drawer
-            variant="permanent"
-            open={open}
-            sx={{
-                width: open ? drawerWidth : miniDrawerWidth,
-                transition: "width 0.3s ease",
-                flexShrink: 0,
-                [`& .MuiDrawer-paper`]: {
-                    width: open ? drawerWidth : miniDrawerWidth,
-                    transition: "width 0.3s ease",
-                    boxSizing: "border-box",
-                    overflowX: "hidden",
-                },
-            }}
-        >
-            <Toolbar />
-
-            <List>
-                <ListItem
-                    component={Link}
-                    href="/admin/hupkast"
-                    key={991}
-                    disablePadding
-                >
-                    <ListItemButton title="HuPkast">
-                        <ListItemIcon>
-                            <PodcastsOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="HuPkast" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem
-                    component={Link}
-                    href="/admin/hupikon"
-                    key={992}
-                    disablePadding
-                >
-                    <ListItemButton title="HuPikon">
-                        <ListItemIcon>
-                            <SaveAsOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="HuPikon" />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem
-                    component={Link}
-                    href="/admin/tekstovi"
-                    key={993}
-                    disablePadding
-                >
-                    <ListItemButton title="Ostali tekstovi">
-                        <ListItemIcon>
-                            <GrainOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Ostali tekstovi" />
-                    </ListItemButton>
-                </ListItem>
-
-                <ListItem
-                    component={Link}
-                    href="/admin/komentari"
-                    key={994}
-                    disablePadding
-                >
-                    <ListItemButton title="Komentari">
-                        <ListItemIcon>
-                            <Badge
-                                badgeContent={unnaprovedCommentsCount}
-                                color="error"
-                                invisible={unnaprovedCommentsCount === 0}
-                                title="Neodobreni komentari"
-                            >
-                                <QuestionAnswerOutlinedIcon />
-                            </Badge>
-                        </ListItemIcon>
-                        <ListItemText primary={"Komentari"} />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-            <Divider />
-            <List>
-                <ListItem
-                    component={Link}
-                    href="/admin/statistika"
-                    key={995}
-                    disablePadding
-                >
-                    <ListItemButton title="Statistika">
-                        <ListItemIcon>
-                            <BarChartOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Statistika" />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-            <Divider />
-            <List>
-                <ListItem
-                    key={996}
-                    disablePadding
-                    component={Link}
-                    href="/admin/tagovi"
-                >
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <StyleOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Tagovi" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem
-                    key={997}
-                    disablePadding
-                    component={Link}
-                    href="/admin/zanrovi"
-                >
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <TypeSpecimenOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Žanrovi" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem
-                    key={998}
-                    disablePadding
-                    component={Link}
-                    href="/admin/kategorije"
-                >
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <CategoryOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Kategorije" />
-                    </ListItemButton>
-                </ListItem>
-                <ListItem
-                    key={999}
-                    disablePadding
-                    component={Link}
-                    href="/admin/gradovi"
-                >
-                    <ListItemButton>
-                        <ListItemIcon>
-                            <LocationCityOutlinedIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Gradovi" />
-                    </ListItemButton>
-                </ListItem>
-            </List>
-            <Toolbar sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <IconButton onClick={toggleDrawer}>
-                    {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                </IconButton>
-            </Toolbar>
-        </Drawer>
+        <>
+            <Navbar
+                className={`sidebar ${collapsed ? "collapsed" : ""}`}
+                bg="dark"
+                variant="dark"
+            >
+                <div className="sidebar-header">
+                    <Button
+                        className={`sidebar-toggle${collapsed ? "-collapsed" : ""}`}
+                        onClick={() => setCollapsed(!collapsed)}
+                        aria-label="Toggle sidebar"
+                        variant="dark"
+                    >
+                        <FontAwesomeIcon
+                            icon={collapsed ? faChevronRight : faChevronLeft}
+                        />
+                    </Button>
+                </div>
+                <Nav className="flex-column">
+                    <Nav.Link href="/admin/hupkast" as={Link} key={201}>
+                        <FontAwesomeIcon icon={faPodcast} className="fa-icon" />{" "}
+                        HuPkast
+                    </Nav.Link>
+                    <Nav.Link href="/admin/hupikon" as={Link} key={202}>
+                        <FontAwesomeIcon icon={faFilePen} className="fa-icon" />{" "}
+                        HuPikon
+                    </Nav.Link>
+                    <Nav.Link href="/admin/tekstovi" as={Link} key={203}>
+                        <FontAwesomeIcon icon={faList} className="fa-icon" />{" "}
+                        Ostali tekstovi
+                    </Nav.Link>
+                    <hr />
+                    <Nav.Link href="/admin/komentari" as={Link} key={204}>
+                        <FontAwesomeIcon
+                            icon={faComments}
+                            className="fa-icon"
+                        />{" "}
+                        Komentari
+                    </Nav.Link>
+                    <Nav.Link href="/admin/statistika" as={Link} key={205}>
+                        <FontAwesomeIcon
+                            icon={faChartSimple}
+                            className="fa-icon"
+                        />{" "}
+                        Statistika
+                    </Nav.Link>
+                    <Nav.Link href="/admin/tagovi" as={Link} key={206}>
+                        <FontAwesomeIcon icon={faTags} className="fa-icon" />{" "}
+                        Tagovi
+                    </Nav.Link>
+                    <Nav.Link href="/admin/zanrovi" as={Link} key={207}>
+                        <FontAwesomeIcon icon={faIcons} className="fa-icon" />{" "}
+                        Žanrovi
+                    </Nav.Link>
+                    <Nav.Link href="/admin/kategorije" as={Link} key={208}>
+                        <FontAwesomeIcon icon={faShapes} className="fa-icon" />{" "}
+                        Kategorije
+                    </Nav.Link>
+                    <Nav.Link href="/admin/gradovi" as={Link} key={209}>
+                        <FontAwesomeIcon icon={faCity} className="fa-icon" />{" "}
+                        Gradovi
+                    </Nav.Link>
+                </Nav>
+            </Navbar>
+        </>
     );
 }
 export default AdminSidebar;

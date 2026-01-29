@@ -1,26 +1,21 @@
 import moment from "moment";
 import { toast } from "react-hot-toast";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import {
-    Autocomplete,
-    Box,
-    Button,
-    Grid2,
-    Paper,
-    TextField,
-} from "@mui/material";
-import { Spinner } from "react-bootstrap";
+import { Autocomplete, Box, Grid2, Paper, TextField } from "@mui/material";
+import { Col, Form, Row, Spinner, Button, FormLabel } from "react-bootstrap";
+import Select from "react-select";
 import { useStateContext } from "../../../contexts/StateContext";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { DataGrid } from "@mui/x-data-grid";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { AgGridReact } from "ag-grid-react";
 
 export default function DodajGostovanjePage() {
     const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
     let [formData, setFormData] = useState({
         pozoristeid: null,
@@ -40,9 +35,9 @@ export default function DodajGostovanjePage() {
     const [vreme, setVreme] = useState(null);
 
     const [igranja, setIgranja] = useState([]);
-
+    const gridRef = useRef(null);
     useEffect(() => {
-        showLoading();
+        setLoading(true);
         axiosClient
             .get("/admin/get-all-for-gostovanja")
             .then((res) => {
@@ -51,25 +46,26 @@ export default function DodajGostovanjePage() {
                     res.data.predstave.map((pred) => ({
                         value: pred.predstavaid,
                         label: pred.naziv_predstave,
-                    }))
+                    })),
                 );
                 setDbPozorista(
                     res.data.pozorista.map((poz) => ({
                         value: poz.pozoristeid,
                         label: poz.naziv_pozorista,
-                    }))
+                    })),
                 );
                 setDbScene(
                     res.data.scene.map((scena) => ({
                         value: scena.scenaid,
                         label: scena.naziv_scene,
                         pozoristeid: scena.pozoristeid,
-                    }))
+                    })),
                 );
                 setIgranja(res.data.igranja);
                 hideLoading();
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     }, []);
 
     const handlePredstavaChange = (event, selectedPredstava) => {
@@ -81,8 +77,8 @@ export default function DodajGostovanjePage() {
         setFormData({ ...formData, pozoristeid: selectedPozoriste?.value });
         setSceneZaDropdown(
             dbScene.filter(
-                (scen) => scen.pozoristeid == selectedPozoriste?.value
-            )
+                (scen) => scen.pozoristeid == selectedPozoriste?.value,
+            ),
         );
     };
 
@@ -94,7 +90,7 @@ export default function DodajGostovanjePage() {
     const handleSubmit = () => {
         console.log(formData);
 
-        showLoading();
+        setLoading(true);
         formData.datum = moment(datum).format("YYYY-MM-DD");
         formData.vreme = moment(vreme).format("HH:mm");
 
@@ -114,22 +110,27 @@ export default function DodajGostovanjePage() {
                     vreme: null,
                 }); // TO DO reset form values
                 setIgranja(res.data);
-                hideLoading();
                 toast.success("Uspesno dodato izvodjenje");
             })
             .catch((err) => {
                 console.error(err);
                 toast.error(err.response.data);
                 setErrors(err.response.data.errors);
-                hideLoading();
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     const columns = [
         { field: "id", headerName: "Id", flex: 0.5 },
         { field: "naziv_predstave", headerName: "Naziv predstave", flex: 3 },
         { field: "scena", headerName: "Scena", flex: 1 },
-        { field: "datum", headerName: "Datum", flex: 1 },
+        {
+            field: "datum",
+            headerName: "Datum",
+            flex: 1,
+            wrapText: true,
+            autoHeight: true,
+        },
         { field: "vreme", headerName: "Vreme", flex: 1 },
         {
             field: "edit",
@@ -148,8 +149,15 @@ export default function DodajGostovanjePage() {
             scena: igranje.scena?.naziv_scene,
             datum: moment(igranje.datum).format("DD. MMM YYYY. dddd"),
             vreme: igranje.vreme, // TO DO fix this
-        })
+        }),
     );
+
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
 
     return (
         <>
@@ -164,104 +172,104 @@ export default function DodajGostovanjePage() {
                             className="hup-spinner"
                         />
                     )}
-                    <Grid2 container spacing={2} sx={{ width: 500, mb: 2 }}>
-                        <Autocomplete
-                            name="pozorista"
-                            options={dbPozorista}
-                            onChange={handlePozoristeChange}
-                            sx={{ mb: 2 }}
-                            aria-required
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Izaberi pozoriste"
-                                    style={{
-                                        fontSize: "1.2rem",
-                                        width: "400px",
-                                    }}
-                                />
-                            )}
-                        />
-                        <Autocomplete
-                            name="predstave"
-                            options={dbPredstave}
-                            onChange={handlePredstavaChange}
-                            sx={{ mb: 2 }}
-                            aria-required
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Izaberi predstavu"
-                                    style={{
-                                        fontSize: "1.2rem",
-                                        width: "400px",
-                                    }}
-                                />
-                            )}
-                        />
+                    <Row>
+                        <Col md={6}>
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Pozorišta</Form.Label>
+                                    <Select
+                                        name="pozorista"
+                                        options={dbPozorista}
+                                        isSearchable
+                                        onChange={handlePozoristeChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Predstava</Form.Label>
+                                    <Select
+                                        name="predstava"
+                                        options={dbPredstave}
+                                        isSearchable
+                                        onChange={handlePredstavaChange}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Scene</Form.Label>
+                                    <Select
+                                        name="scene"
+                                        options={sceneZaDropdown}
+                                        isSearchable
+                                        onChange={handleScenaChange}
+                                    />
+                                </Form.Group>
 
-                        <Autocomplete
-                            name="scene"
-                            options={sceneZaDropdown}
-                            onChange={handleScenaChange}
-                            sx={{ mb: 2 }}
-                            aria-required
-                            renderInput={(params) => (
-                                <TextField
-                                    {...params}
-                                    variant="standard"
-                                    label="Izaberi scenu"
-                                    style={{
-                                        fontSize: "1.2rem",
-                                        width: "400px",
-                                    }}
-                                />
-                            )}
-                        />
-                        <LocalizationProvider dateAdapter={AdapterMoment}>
-                            <DatePicker
-                                label="Datum"
-                                name="datum"
-                                value={datum}
-                                onChange={(value) => setDatum(value)}
+                                <LocalizationProvider
+                                    dateAdapter={AdapterMoment}
+                                >
+                                    <Row className="align-items-end g-2">
+                                        <Col xs="auto">
+                                            <Form.Label>Datum</Form.Label>
+                                            <Form.Control
+                                                type="date"
+                                                name="datum"
+                                                value={datum}
+                                                onChange={(value) =>
+                                                    setDatum(value)
+                                                }
+                                            />
+                                        </Col>
+                                        <Col xs="auto">
+                                            <Form.Label>Vreme</Form.Label>
+                                            <Form.Control
+                                                type="time"
+                                                name="vreme"
+                                                value={vreme}
+                                                onChange={(value) =>
+                                                    setVreme(value)
+                                                }
+                                            />
+                                        </Col>
+                                    </Row>
+                                </LocalizationProvider>
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="primary"
+                                    onClick={handleSubmit}
+                                    className="mt-4"
+                                >
+                                    Submit
+                                </Button>
+                            </Form>
+                        </Col>
+                    </Row>
+                    <div
+                        style={{
+                            width: "100%",
+                            height: "600px",
+                            marginTop: "25px",
+                            marginBottom: "30px",
+                        }}
+                    >
+                        <div className="example-header mb-3">
+                            <input
+                                type="text"
+                                id="filter-text-box"
+                                placeholder="Pretraga..."
+                                onInput={onFilterTextBoxChanged}
+                                className="form-control"
+                                style={{ width: "300px" }}
                             />
-                            <TimeField
-                                label="Vreme"
-                                name="vreme"
-                                format="HH:mm"
-                                value={vreme}
-                                onChange={(value) => setVreme(value)}
-                            />
-                        </LocalizationProvider>
-                        <Button
-                            size="large"
-                            type="submit"
-                            variant="contained"
-                            onClick={handleSubmit}
-                        >
-                            Submit
-                        </Button>
-                    </Grid2>
-                    <Paper sx={{ height: 800, width: "100%" }}>
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            sx={{ border: 0 }}
-                            autoPageSize
-                            initialState={{
-                                sorting: {
-                                    sortModel: [
-                                        {
-                                            field: "id",
-                                            sort: "desc",
-                                        },
-                                    ],
-                                },
-                            }}
+                        </div>
+                        <AgGridReact
+                            ref={gridRef}
+                            rowData={rows}
+                            columnDefs={columns}
+                            pagination={true}
+                            paginationAutoPageSize={true}
+                            loading={loading}
                         />
-                    </Paper>
+                    </div>
                 </Box>
             </div>
         </>

@@ -120,3 +120,8 @@
     padding-bottom: 6px;
     white-space: normal;
 }
+
+.admin-home-card-image {
+    height: 150px;
+    object-fit: cover;
+}

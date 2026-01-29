@@ -166,9 +166,24 @@ export default function TekstoviPage() {
                     </Col>
                     <Col lg={4} md={6} sm={12}>
                         <ButtonGroup className="mb-2">
-                            <Button variant="success">Dodaj vest</Button>
-                            <Button variant="warning">Dodaj intervju</Button>
-                            <Button variant="danger">Dodaj recenziju</Button>
+                            <Button
+                                variant="success"
+                                onClick={() => handleCreateClick(1)}
+                            >
+                                Dodaj vest
+                            </Button>
+                            <Button
+                                variant="warning"
+                                onClick={() => handleCreateClick(2)}
+                            >
+                                Dodaj intervju
+                            </Button>
+                            <Button
+                                variant="danger"
+                                onClick={() => handleCreateClick(4)}
+                            >
+                                Dodaj recenziju
+                            </Button>
                         </ButtonGroup>
                     </Col>
                 </Row>

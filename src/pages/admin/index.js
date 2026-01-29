@@ -1,23 +1,4 @@
-import {
-    Backdrop,
-    Button,
-    Card,
-    CardActions,
-    CardContent,
-    CardMedia,
-    Checkbox,
-    CircularProgress,
-    IconButton,
-    Paper,
-    Stack,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-    Typography,
-} from "@mui/material";
+import { IconButton, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
 import moment from "moment";
 import axiosClient from "../../utils/axios";
@@ -26,6 +7,22 @@ import PlaylistRemoveIcon from "@mui/icons-material/PlaylistRemove";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import LoadingBackdrop from "../../components/admin/LoadingBackdrop";
+import {
+    Button,
+    ButtonGroup,
+    Card,
+    Col,
+    Form,
+    Row,
+    Table,
+} from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faPlus,
+    faPenToSquare,
+    faClone,
+} from "@fortawesome/free-solid-svg-icons";
 
 export default function AdminHomePage() {
     const [tekstovi, setTekstovi] = useState([]);
@@ -90,19 +87,42 @@ export default function AdminHomePage() {
             });
     };
 
+    const handleIstakni = (tekstid) => {
+        setLoading(true);
+        axiosClient
+            .put("/admin/tekstovi/istakni", { tekstid })
+            .then((res) => {
+                setTekstovi((prevTekstovi) =>
+                    prevTekstovi.map((tekst) =>
+                        tekst.tekstid === tekstid
+                            ? { ...tekst, na_slajderu: 1 }
+                            : tekst,
+                    ),
+                );
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+    };
+
+    const handleCreateClick = (kategorijaid) => {
+        router.push(`/admin/tekstovi/create?kategorijaid=${kategorijaid}`);
+    };
+
+    const handleIstakniCheck = (tekstid, isChecked) => {
+        if (isChecked) {
+            handleIstakni(tekstid);
+        } else {
+            handleRemoveFromSlider(tekstid);
+        }
+    };
+
     return (
         <>
-            {loading && (
-                <Backdrop
-                    open={loading}
-                    sx={{
-                        color: "#fff",
-                        zIndex: (theme) => theme.zIndex.drawer + 1,
-                    }}
-                >
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-            )}
+            <LoadingBackdrop show={loading} text="Working..." />
             <h1>HuP Admin</h1>
             <p>
                 TO DO / IDEAS za naslovnu: najnoviji komentari za odobrenje,
@@ -110,37 +130,46 @@ export default function AdminHomePage() {
                 tekstovi force update, najposecenije stranice predstava (force
                 update), veliki sidebar menu
             </p>
-            <Button
-                href="/admin/tekstovi/create"
-                variant="contained"
-                sx={{ my: 2 }}
-                component={Link}
-            >
-                Dodaj tekst
-            </Button>
+            <ButtonGroup className="mb-2">
+                <Button
+                    size="lg"
+                    variant="success"
+                    onClick={() => handleCreateClick(1)}
+                >
+                    Dodaj vest
+                </Button>
+                <Button
+                    size="lg"
+                    variant="warning"
+                    onClick={() => handleCreateClick(2)}
+                >
+                    Dodaj intervju
+                </Button>
+                <Button
+                    size="lg"
+                    variant="danger"
+                    onClick={() => handleCreateClick(4)}
+                >
+                    Dodaj recenziju
+                </Button>
+            </ButtonGroup>
             <h2>Tekstovi na slajderu</h2>
             <Stack direction="row" spacing={2} sx={{ mb: 4 }}>
                 {tekstovi
                     .filter((t) => t.na_slajderu == 1)
                     .map((tekst) => (
                         <Card
-                            sx={{ maxWidth: 300 }}
+                            style={{ width: "18rem" }}
                             key={`slajd-${tekst.tekstid}`}
                         >
-                            <CardMedia
-                                sx={{ height: 180 }}
-                                image={tekst.tekst_photo}
+                            <Card.Img
+                                className="admin-home-card-image"
+                                variant="top"
+                                src={tekst.tekst_photo}
                             />
-                            <CardContent>
-                                <Typography
-                                    gutterBottom
-                                    variant="h5"
-                                    component="div"
-                                >
-                                    {tekst.naslov}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
+                            <Card.Body>
+                                <Card.Title>{tekst.naslov}</Card.Title>
+
                                 <IconButton
                                     aria-label="edit tekst"
                                     color="primary"
@@ -173,98 +202,98 @@ export default function AdminHomePage() {
                                 >
                                     <PlaylistRemoveIcon />
                                 </IconButton>
-                            </CardActions>
+                            </Card.Body>
                         </Card>
                     ))}
             </Stack>
 
             <h2>10 najnovijih tekstova</h2>
-            <TableContainer component={Paper} sx={{ mb: 4 }}>
-                <Table size="small">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Naslov</TableCell>
-                            <TableCell>Na slajderu</TableCell>
-                            <TableCell>Datum objave</TableCell>
-                            <TableCell>Akcije</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {tekstovi.map((tekst) => (
-                            <TableRow key={tekst.tekstid}>
-                                <TableCell>{tekst.naslov}</TableCell>
-                                <TableCell>
-                                    <Checkbox
-                                        checked={Boolean(tekst.na_slajderu)}
-                                    />
-                                </TableCell>
-                                <TableCell>
-                                    {moment(tekst.published_at).format(
-                                        "DD.MM.YYYY",
-                                    )}
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        size="small"
-                                        startIcon={<EditNoteIcon />}
-                                        component={Link}
-                                        href={`/admin/tekstovi/edit?tekstid=${tekst.tekstid}`}
-                                    >
-                                        Izmeni
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-
+            <Table striped className="mb-5">
+                <thead>
+                    <tr>
+                        <th>Naslov </th>
+                        <th>Na slajderu</th>
+                        <th>Datum objave</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {tekstovi.map((tekst) => (
+                        <tr key={tekst.tekstid}>
+                            <td>{tekst.naslov}</td>
+                            <td>
+                                <Form.Check // prettier-ignore
+                                    type="checkbox"
+                                    checked={Boolean(tekst.na_slajderu)}
+                                    onChange={(e) =>
+                                        handleIstakniCheck(
+                                            tekst.tekstid,
+                                            e.target.checked,
+                                        )
+                                    }
+                                />
+                            </td>
+                            <td>
+                                {moment(tekst.published_at).format(
+                                    "DD.MM.YYYY",
+                                )}
+                            </td>
+                            <td>
+                                <Button
+                                    variant="outline-primary"
+                                    color="secondary"
+                                    size="small"
+                                    as={Link}
+                                    href={`/admin/tekstovi/edit?tekstid=${tekst.tekstid}`}
+                                >
+                                    <FontAwesomeIcon icon={faPenToSquare} />{" "}
+                                    Izmeni
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
             <h2>10 najnovijih predstava</h2>
-            <TableContainer component={Paper} sx={{ mb: 4 }}>
-                <Table size="small">
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Naziv predstave</TableCell>
-                            <TableCell>Pozorista</TableCell>
-                            <TableCell>Datum premijere</TableCell>
-                            <TableCell>Akcije</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {predstave.map((pred) => (
-                            <TableRow key={pred.predstavaid}>
-                                <TableCell>{pred.naziv_predstave}</TableCell>
-                                <TableCell>
-                                    {pred.pozorista
-                                        .map((poz) => poz.naziv_pozorista)
-                                        .join(", ")}
-                                </TableCell>
-                                <TableCell>
-                                    {pred.premijera
-                                        ? moment(pred.premijera).format(
-                                              "DD.MM.YYYY",
-                                          )
-                                        : ""}
-                                </TableCell>
-                                <TableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="secondary"
-                                        size="small"
-                                        startIcon={<EditNoteIcon />}
-                                        component={Link}
-                                        href={`/admin/predstave/edit?predstavaid=${pred.predstavaid}`}
-                                    >
-                                        Izmeni
-                                    </Button>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
+            <Table striped>
+                <thead>
+                    <tr>
+                        <th>Naziv predstave </th>
+                        <th>Pozorista</th>
+                        <th>Premijera</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {predstave.map((pred) => (
+                        <tr key={pred.predstavaid}>
+                            <td>{pred.naziv_predstave}</td>
+                            <td>
+                                {pred.pozorista
+                                    .map((poz) => poz.naziv_pozorista)
+                                    .join(", ")}
+                            </td>
+                            <td>
+                                {pred.premijera
+                                    ? moment(pred.premijera).format(
+                                          "DD.MM.YYYY",
+                                      )
+                                    : ""}
+                            </td>
+                            <td>
+                                <Button
+                                    variant="outline-danger"
+                                    color="secondary"
+                                    size="small"
+                                    as={Link}
+                                    href={`/admin/predstave/edit?predstavaid=${pred.predstavaid}`}
+                                >
+                                    <FontAwesomeIcon icon={faPenToSquare} />{" "}
+                                    Izmeni
+                                </Button>
+                            </td>
+                        </tr>
+                    ))}
+                </tbody>
+            </Table>
         </>
     );
 }

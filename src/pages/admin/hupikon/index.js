@@ -1,19 +1,17 @@
-import { Button, Paper } from "@mui/material";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import AddIcon from "@mui/icons-material/Add";
+import { Button } from "react-bootstrap";
+import { faPlus, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../../../utils/axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import moment from "moment";
-import { useRouter } from "next/router";
 import Link from "next/link";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
-import toast from "react-hot-toast";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { AgGridReact } from "ag-grid-react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function HuPikonPage() {
     const [allHupikon, setAllHupikon] = useState([]);
-    const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const gridRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -27,10 +25,6 @@ export default function HuPikonPage() {
             .catch((err) => console.error(err));
     }, []);
 
-    const onEditButtonClick = (e, params) => {
-        router.push(`/admin/hupikon/create?tekstid=${params.id}`);
-    };
-
     /* data grid stuff */
     const dayInMonthComparator = (d1, d2) => {
         const a1 = d1 ? moment(d1, "DD.MM.YYYY") : null;
@@ -42,12 +36,12 @@ export default function HuPikonPage() {
     function EditButton(params) {
         return (
             <Button
-                onClick={(e) => onEditButtonClick(e, params.params)}
-                variant="outlined"
-                startIcon={<EditNoteIcon />}
+                as={Link}
+                href={`/admin/hupikon/edit?tekstid=${params.params.data.id}`}
+                variant="outline-primary"
                 size="small"
             >
-                Edit
+                <FontAwesomeIcon icon={faPenToSquare} /> Edit
             </Button>
         );
     }
@@ -66,7 +60,7 @@ export default function HuPikonPage() {
             width: 100,
             flex: 1,
             align: "center",
-            renderCell: (params) => <EditButton params={params} />,
+            cellRenderer: (params) => <EditButton params={params} />,
         },
     ];
 
@@ -74,10 +68,17 @@ export default function HuPikonPage() {
     allHupikon.map((hupikon) => {
         rows.push({
             id: hupikon.tekstid,
-            naslov: hupikon.naslov,
+            naslov: hupikon.hupikon.sagovornik + " - " + hupikon.naslov,
             published_at: moment(hupikon.published_at).format("DD.MM.YYYY"),
         });
     });
+
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
 
     return (
         <>
@@ -85,48 +86,40 @@ export default function HuPikonPage() {
             <h1>HuPikon</h1>
             <div className="container">
                 <Button
-                    variant="contained"
-                    color="primary"
-                    startIcon={<AddIcon />}
+                    variant="primary"
+                    as={Link}
+                    href="/admin/hupikon/create"
                 >
-                    <Link href="/admin/hupikon/create">Dodaj novi hupikon</Link>
+                    <FontAwesomeIcon icon={faPlus} /> Dodaj novi HuPikon
                 </Button>
 
-                <Paper sx={{ height: 800, width: "100%", mt: 2 }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        sx={{ border: 0 }}
-                        autoPageSize
+                <div
+                    style={{
+                        width: "100%",
+                        height: "600px",
+                        marginTop: "25px",
+                        marginBottom: "30px",
+                    }}
+                >
+                    <div className="example-header mb-3">
+                        <input
+                            type="text"
+                            id="filter-text-box"
+                            placeholder="Pretraga..."
+                            onInput={onFilterTextBoxChanged}
+                            className="form-control"
+                            style={{ width: "300px" }}
+                        />
+                    </div>
+                    <AgGridReact
+                        ref={gridRef}
+                        rowData={rows}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationAutoPageSize={true}
                         loading={loading}
-                        slots={{ toolbar: GridToolbar }}
-                        disableColumnFilter
-                        disableColumnSelector
-                        disableDensitySelector
-                        slotProps={{
-                            pagination: {
-                                showFirstButton: true,
-                                showLastButton: true,
-                            },
-                            toolbar: {
-                                showQuickFilter: true,
-                            },
-                        }}
-                        initialState={{
-                            sorting: {
-                                sortModel: [
-                                    { field: "datum_objave", sort: "desc" },
-                                ],
-                            },
-                            filter: {
-                                filterModel: {
-                                    items: [],
-                                    quickFilterValues: [],
-                                },
-                            },
-                        }}
                     />
-                </Paper>
+                </div>
             </div>
         </>
     );

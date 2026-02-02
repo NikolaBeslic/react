@@ -1,18 +1,24 @@
-import { Button, Paper } from "@mui/material";
-import EditNoteIcon from "@mui/icons-material/EditNote";
+import { Button, ButtonGroup, Col, Row } from "react-bootstrap";
+import {
+    faPlus,
+    faPenToSquare,
+    faSquareRss,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axiosClient from "../../../utils/axios";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import moment from "moment";
 import { useRouter } from "next/router";
 import Link from "next/link";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import toast from "react-hot-toast";
-import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { AgGridReact } from "ag-grid-react";
 
 export default function HuPkastPage() {
     const [allHupkast, setAllHupkast] = useState([]);
     const router = useRouter();
     const [loading, setLoading] = useState(false);
+    const gridRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -47,10 +53,6 @@ export default function HuPkastPage() {
             });
     };
 
-    const onEditButtonClick = (e, paramsd) => {
-        router.push(`/admin/hupkast/create?tekstid=${paramsd.id}`);
-    };
-
     /* data grid stuff */
     const dayInMonthComparator = (d1, d2) => {
         const a1 = d1 ? moment(d1, "DD.MM.YYYY") : null;
@@ -59,15 +61,22 @@ export default function HuPkastPage() {
         return a1 - a2;
     };
 
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
+
     function EditButton(params) {
         return (
             <Button
-                onClick={(e) => onEditButtonClick(e, params.params)}
-                variant="outlined"
-                startIcon={<EditNoteIcon />}
+                as={Link}
+                href={`/admin/hupkast/edit?tekstid=${params.params.data.id}`}
+                variant="outline-primary"
                 size="small"
             >
-                Edit
+                <FontAwesomeIcon icon={faPenToSquare} /> Edit
             </Button>
         );
     }
@@ -86,7 +95,7 @@ export default function HuPkastPage() {
             width: 100,
             flex: 1,
             align: "center",
-            renderCell: (params) => <EditButton params={params} />,
+            cellRenderer: (params) => <EditButton params={params} />,
         },
     ];
 
@@ -96,7 +105,7 @@ export default function HuPkastPage() {
             id: hupkastSingle.tekstid,
             naslov: hupkastSingle.naslov,
             published_at: moment(hupkastSingle.published_at).format(
-                "DD.MM.YYYY"
+                "DD.MM.YYYY",
             ),
         });
     });
@@ -104,51 +113,49 @@ export default function HuPkastPage() {
     return (
         <>
             <AdminHeader metaTitle="HuPkast" />
-            <h1>HuPkast</h1>
             <div className="container">
-                <Button variant="contained" onClick={handleCheckRSSClick}>
-                    Check RSS
+                <h1>HuPkast</h1>
+                <Button variant="primary" onClick={handleCheckRSSClick}>
+                    <FontAwesomeIcon icon={faSquareRss} /> Check RSS
                 </Button>
 
-                <Button variant="contained" type="secondary" color="inherit">
-                    <Link href="/admin/hupkast/create">Dodaj nove epizode</Link>
+                <Button
+                    variant="secondary"
+                    color="inherit"
+                    as={Link}
+                    href="/admin/hupkast/create"
+                >
+                    <FontAwesomeIcon icon={faPlus} />
+                    Dodaj novu epizodu
                 </Button>
 
-                <Paper sx={{ height: 800, width: "100%" }}>
-                    <DataGrid
-                        rows={rows}
-                        columns={columns}
-                        sx={{ border: 0 }}
-                        autoPageSize
+                <div
+                    style={{
+                        width: "100%",
+                        height: "600px",
+                        marginTop: "25px",
+                        marginBottom: "30px",
+                    }}
+                >
+                    <div className="example-header mb-3">
+                        <input
+                            type="text"
+                            id="filter-text-box"
+                            placeholder="Pretraga..."
+                            onInput={onFilterTextBoxChanged}
+                            className="form-control"
+                            style={{ width: "300px" }}
+                        />
+                    </div>
+                    <AgGridReact
+                        ref={gridRef}
+                        rowData={rows}
+                        columnDefs={columns}
+                        pagination={true}
+                        paginationAutoPageSize={true}
                         loading={loading}
-                        slots={{ toolbar: GridToolbar }}
-                        disableColumnFilter
-                        disableColumnSelector
-                        disableDensitySelector
-                        slotProps={{
-                            pagination: {
-                                showFirstButton: true,
-                                showLastButton: true,
-                            },
-                            toolbar: {
-                                showQuickFilter: true,
-                            },
-                        }}
-                        initialState={{
-                            sorting: {
-                                sortModel: [
-                                    { field: "datum_objave", sort: "desc" },
-                                ],
-                            },
-                            filter: {
-                                filterModel: {
-                                    items: [],
-                                    quickFilterValues: [],
-                                },
-                            },
-                        }}
                     />
-                </Paper>
+                </div>
             </div>
         </>
     );

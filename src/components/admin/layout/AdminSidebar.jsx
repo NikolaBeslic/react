@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useStateContext } from "../../../contexts/StateContext";
-import { Button, Col, Nav, Navbar, Row } from "react-bootstrap";
+import { Button, Col, Nav, Navbar, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faPodcast,
@@ -19,6 +19,7 @@ import {
 
 function AdminSidebar() {
     const [collapsed, setCollapsed] = useState(false);
+    const { unnaprovedCommentsCount } = useStateContext();
 
     return (
         <>
@@ -59,6 +60,11 @@ function AdminSidebar() {
                             className="fa-icon"
                         />{" "}
                         Komentari
+                        {unnaprovedCommentsCount > 0 && (
+                            <Badge pill bg="warning" text="dark">
+                                {unnaprovedCommentsCount}
+                            </Badge>
+                        )}
                     </Nav.Link>
                     <Nav.Link href="/admin/statistika" as={Link} key={205}>
                         <FontAwesomeIcon

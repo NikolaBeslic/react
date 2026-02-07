@@ -10,8 +10,6 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useRouter } from "next/router";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import { AgGridReact } from "ag-grid-react";
-import { Calendar } from "primereact/calendar";
-import { sortBy } from "lodash";
 
 export default function StatistikaPage() {
     const [fetches, setFetches] = useState([]);

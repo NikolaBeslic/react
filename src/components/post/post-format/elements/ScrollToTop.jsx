@@ -10,7 +10,10 @@ function ScrollToTopButton() {
         };
         window.addEventListener("scroll", handleScrollToTopButtonVisiblity);
         return () => {
-            window.removeEventListener("scroll", handleScrollToTopButtonVisiblity);
+            window.removeEventListener(
+                "scroll",
+                handleScrollToTopButtonVisiblity,
+            );
         };
     }, []);
 

@@ -42,7 +42,7 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                                 </h3>
                             </div>
                             <div
-                                className="hupkast-naslovna-desc"
+                                className="hupkast-naslovna-desc mid"
                                 dangerouslySetInnerHTML={{
                                     __html: hupkastData.uvod
                                         ? hupkastData.uvod

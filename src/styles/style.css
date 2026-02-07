@@ -4968,7 +4968,7 @@ address,
 .btn.btn-small {
     font-size: 1.2rem;
     line-height: 1.6rem;
-    padding: 1.1rem 3rem;
+    padding: 1.1rem 1.5rem;
 }
 
 .btn:hover {
@@ -6813,6 +6813,7 @@ input[type="radio"]+label::after {
     color: var(--grey-dark-four);
     font-weight: var(--p-light);
     margin: 0;
+    padding: 0 !important;
 }
 
 .post-metas ul li .post-author {
@@ -11091,4 +11092,91 @@ address .tel i {
 .btn-load-more {
     width: 160px;
     text-transform: uppercase;
+}
+
+.swiper-danas-repertoaru {
+    height: 330px;
+}
+
+.repertoar-naslovna-wrapper {
+    align-items: center;
+    display: flex;
+    text-align: start;
+    margin-bottom: 20px;
+    /* vertically centers the content */
+    gap: 16px;
+    width: 335px;
+    /* space between image and text */
+
+}
+
+.repertoar-naslovna-photo {
+    align-self: flex-start;
+    position: relative;
+    display: inline-block;
+    text-align: start;
+    margin-right: 10px !important;
+    border-radius: 8px;
+}
+
+.repertoar-naslovna-photo img {
+    height: 90px !important;
+    width: 60px !important;
+    max-width: 60px !important;
+    object-fit: cover;
+}
+
+
+.repertoar-naslovna-info {
+    /* position: relative;
+    flex-basis: 0%;
+    flex-grow: 1;
+    flex-shrink: 1;
+    text-align: start;
+    text-size-adjust: 100%; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.repertoar-naslovna-info p {
+    font-size: 1.5rem;
+    line-height: 1.9rem;
+}
+
+.repertoar-naslovna-wrapper .post-metas span {
+    font-size: 1.2rem;
+    color: var(--grey-dark-four)
+}
+
+.repertoar-naslovna-wrapper h6 {
+    font-size: 14px;
+    line-height: 16px;
+    margin-bottom: 8px;
+}
+
+.repertoar-naslovna-widget-wrapper .nav-btn {
+    align-self: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px 0;
+    font-size: 18px;
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+    margin: auto;
+}
+
+.repertoar-naslovna-widget-wrapper:hover .nav-btn {
+    opacity: 0.6;
+}
+
+.repertoar-naslovna-widget-wrapper .nav-btn:hover {
+    opacity: 1;
+}
+
+.repertoar-naslovna-show-all {
+    display: block;
+    text-align: right;
 }

@@ -8,7 +8,7 @@ const FooterOne = () => {
             <div className="container">
                 <div className="footer-top">
                     <div className="row">
-                        <div className="col-lg-2 col-md-4 col-6">
+                        <div className="col-lg-3 col-md-4 col-6">
                             <div className="footer-widget">
                                 <h2 className="footer-widget-title">
                                     Predstave
@@ -82,7 +82,7 @@ const FooterOne = () => {
                             {/* End of .footer-widget */}
                         </div>
                         {/* End of .col-lg-2 */}
-                        <div className="col-lg-2 col-md-4 col-6">
+                        <div className="col-lg-3 col-md-4 col-6">
                             <div className="footer-widget">
                                 <h2 className="footer-widget-title">
                                     Repertoari
@@ -112,7 +112,7 @@ const FooterOne = () => {
                             {/* End of .footer-widget */}
                         </div>
                         {/* End of .col-lg-2 */}
-                        <div className="col-lg-2 col-md-4 col-6">
+                        <div className="col-lg-3 col-md-4 col-6">
                             <div className="footer-widget">
                                 <h2 className="footer-widget-title">
                                     Pozorišta
@@ -152,7 +152,7 @@ const FooterOne = () => {
                             {/* End of .footer-widget */}
                         </div>
                         {/* End of .col-lg-2 */}
-                        <div className="col-lg-2 col-md-4 col-6">
+                        <div className="col-lg-3 col-md-4 col-6">
                             <div className="footer-widget">
                                 <h2 className="footer-widget-title">
                                     Festivali
@@ -176,69 +176,6 @@ const FooterOne = () => {
                                     </li>
                                     <li>
                                         <Link href="/">Joakim Interfest</Link>
-                                    </li>
-                                </ul>
-                                {/* End of .footer-nav */}
-                            </div>
-                            {/* End of .footer-widget */}
-                        </div>
-                        {/* End of .col-lg-2 */}
-                        <div className="col-lg-2 col-md-4 col-6">
-                            <div className="footer-widget">
-                                <h2 className="footer-widget-title">
-                                    Hoću u pozorište
-                                </h2>
-                                <ul className="footer-nav">
-                                    <li>
-                                        <Link href="/o-nama">O nama</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/kontakt">Kontakt</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/redakcija">Redakcija</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/hupkast">HuPkast</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/hupikon">HuPikon</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/blog">Blog</Link>
-                                    </li>
-                                </ul>
-                                {/* End of .footer-nav */}
-                            </div>
-                            {/* End of .footer-widget */}
-                        </div>
-                        {/* End of .col-lg-2 */}
-                        <div className="col-lg-2 col-md-4 col-6">
-                            <div className="footer-widget">
-                                <h2 className="footer-widget-title">About</h2>
-                                <ul className="footer-nav">
-                                    <li>
-                                        <Link href="/">Contact Us</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">Careers</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">
-                                            Fox Around the World
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">Advertise With Us</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">Ad Choices</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">Media Relations</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">Compliance</Link>
                                     </li>
                                 </ul>
                                 {/* End of .footer-nav */}
@@ -333,31 +270,13 @@ const FooterOne = () => {
                 <div className="footer-bottom">
                     <ul className="footer-bottom-links">
                         <li>
-                            <Link href="/">Terms of Use</Link>
+                            <Link href="/">Impressum</Link>
                         </li>
                         <li>
-                            <Link href="/">Accessibility &amp; CC</Link>
+                            <Link href="/">Politika privatnosti</Link>
                         </li>
                         <li>
-                            <Link href="/">AdChoices</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Modern Slavery Act Statement</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Advertise with us</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Papr Store</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Newsletters</Link>
-                        </li>
-                        <li>
-                            <Link href="/">Transcripts</Link>
-                        </li>
-                        <li>
-                            <Link href="/">License Footage</Link>
+                            <Link href="/">Uslovi korišćenja</Link>
                         </li>
                         <li>
                             <Link href="/">Sitemap</Link>
@@ -365,8 +284,8 @@ const FooterOne = () => {
                     </ul>
                     {/* End of .footer-bottom-links */}
                     <p className="axil-copyright-txt">
-                        © {new Date().getFullYear()}. All rights reserved by
-                        Your Company.
+                        © {new Date().getFullYear()}. Sva prava zadržava Hoću u
+                        pozorište.
                     </p>
                 </div>
                 {/* End of .footer-bottom */}

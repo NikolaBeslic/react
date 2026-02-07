@@ -47,7 +47,9 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
                                 <li>
                                     <i className="fa-solid fa-masks-theater"></i>{" "}
                                     {data.predstave?.map((pred) => (
-                                        <span key={pred.predstavaid}>
+                                        <span
+                                            key={`tekpred-${pred.predstavaid}`}
+                                        >
                                             {pred.naziv_predstave}
                                         </span>
                                     ))}
@@ -57,7 +59,7 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
                                         <li>
                                             <i className="fa-regular fa-calendar"></i>{" "}
                                             {moment(data.published_at).format(
-                                                "DD. MM. YYYY"
+                                                "DD. MM. YYYY",
                                             )}
                                         </li>
                                     </>

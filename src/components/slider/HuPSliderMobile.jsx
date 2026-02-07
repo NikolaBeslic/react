@@ -76,6 +76,33 @@ const HuPSliderMobile = ({ slidePost }) => {
                     <div className="row">
                         <div className="col-xl-5">
                             <div className="banner-slider-container">
+                                <div className="banner-slider-container-synced">
+                                    <Slider
+                                        asNavFor={nav3}
+                                        ref={(slider2) => setNav2(slider2)}
+                                        {...slideSettingsImage}
+                                        className="slick-slider-nav slick-synced"
+                                    >
+                                        {slidePost
+                                            .filter(
+                                                (item) => item.na_slajderu == 1,
+                                            )
+                                            .slice(0, 3)
+                                            .map((data) => (
+                                                <div
+                                                    className="item"
+                                                    key={data.slug}
+                                                >
+                                                    <Image
+                                                        src={data.tekst_photo}
+                                                        alt={data.slug}
+                                                        width={960}
+                                                        height={600}
+                                                    />
+                                                </div>
+                                            ))}
+                                    </Slider>
+                                </div>
                                 <Slider
                                     asNavFor={nav2}
                                     ref={(slider1) => setNav1(slider1)}
@@ -129,7 +156,7 @@ const HuPSliderMobile = ({ slidePost }) => {
                                                                         </span>
                                                                     </a>
                                                                 </li>
-                                                            )
+                                                            ),
                                                         )}
                                                     </ul>
                                                 </div>
@@ -163,76 +190,6 @@ const HuPSliderMobile = ({ slidePost }) => {
                                         ))}
                                 </Slider>
                             </div>
-                        </div>
-                    </div>
-                    <div className="banner-slider-container-synced">
-                        <Slider
-                            asNavFor={nav3}
-                            ref={(slider2) => setNav2(slider2)}
-                            {...slideSettingsImage}
-                            className="slick-slider-nav slick-synced"
-                        >
-                            {slidePost
-                                .filter((item) => item.na_slajderu == 1)
-                                .slice(0, 3)
-                                .map((data) => (
-                                    <div className="item" key={data.slug}>
-                                        <Image
-                                            src={data.tekst_photo}
-                                            alt={data.slug}
-                                            width={960}
-                                            height={600}
-                                        />
-                                    </div>
-                                ))}
-                        </Slider>
-                        <div className="banner-share-slider-container">
-                            <Slider
-                                asNavFor={nav1}
-                                ref={(slider3) => setNav3(slider3)}
-                                {...slideSettingsShare}
-                                className="banner-share-slider"
-                            >
-                                {slidePost
-                                    .filter((item) => item.na_slajderu == 1)
-                                    .slice(0, 3)
-                                    .map((data) => (
-                                        <div className="item" key={data.slug}>
-                                            <div className="banner-shares slick-banner-shares">
-                                                <div
-                                                    className="toggle-shares"
-                                                    onClick={ShareToggler}
-                                                >
-                                                    Shares <span>+</span>
-                                                </div>
-                                                <div className="social-share-wrapper">
-                                                    <ul className="social-share social-share__with-bg">
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fa-brands fa-x-twitter" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fab fa-behance" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fab fa-linkedin-in" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </Slider>
                         </div>
                     </div>
                 </>

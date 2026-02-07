@@ -61,8 +61,6 @@ export const ContextProvider = ({ children }) => {
         axiosClient
             .get("/admin/unapproved-comments-count")
             .then((res) => {
-                console.log("Unnaproved comments count:" + res.data);
-
                 setUnnapprovedCommentsCount(res.data);
             })
             .catch((error) => {

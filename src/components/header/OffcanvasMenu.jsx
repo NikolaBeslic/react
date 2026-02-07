@@ -10,6 +10,7 @@ const OffcanvasMenu = ({ ofcshow, ofcHandleClose }) => {
             onHide={ofcHandleClose}
             placement="end"
             className="offcanvas-menu"
+            container={() => document.querySelector(".user-layout")}
         >
             <Offcanvas.Header
                 closeButton

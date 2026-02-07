@@ -6,10 +6,12 @@ import WidgetNewsletter from "../widget/WidgetNewsletter";
 import WidgetPost from "../widget/WidgetPost";
 import WidgetPremijere from "../widget/WidgetPremijere";
 import WidgetSocialShare from "../widget/WidgetSocialShare";
+import WidgetToday from "../widget/WidgetToday";
 
 const Sidebar = () => {
     const [sidePosts, setSidePosts] = useState([]);
     const [premijere, setPremijere] = useState([]);
+    const [izvodjenja, setIzvodjenja] = useState([]);
 
     useEffect(() => {
         const fetchSidePosts = () => {
@@ -30,13 +32,24 @@ const Sidebar = () => {
                 .catch((error) => console.error(error));
         };
 
+        const fetchDanasNaRepertoaru = () => {
+            axiosClient
+                .get(`/get-danas-na-repertoaru`)
+                .then((res) => {
+                    setIzvodjenja(res.data);
+                })
+                .catch((error) => console.error(error));
+        };
+
         fetchSidePosts();
         fetchPremijere();
+        fetchDanasNaRepertoaru();
     }, []);
 
     return (
         <div className="post-sidebar">
             <WidgetAd />
+            <WidgetToday izvodjenja={izvodjenja} />
             {/* <RelatedPosts relatedPosts={sidePosts} /> */}
             <WidgetPost posts={sidePosts} />
             <WidgetNewsletter />

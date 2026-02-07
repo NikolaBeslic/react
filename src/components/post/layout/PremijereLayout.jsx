@@ -1,5 +1,6 @@
 import Image from "next/legacy/image";
 import moment from "moment";
+import Link from "next/link";
 
 const PremijereLayout = ({ data, pClass, videoIcon }) => {
     return (
@@ -8,7 +9,7 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                 pClass ?? "post-block__on-dark-bg m-b-xs-30"
             }`}
         >
-            <a
+            <Link
                 href={`/predstave/${data.predstava_slug}`}
                 className="align-self-center"
             >
@@ -26,7 +27,7 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                         ""
                     )}
                 </>
-            </a>
+            </Link>
 
             <div className="media-body predstava-index-info">
                 <div className="post-cat-group premijere-naziv-pozorista">
@@ -48,9 +49,9 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                     ))}
                 </div>
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                    <a href={`/predstave/${data.predstava_slug}`}>
+                    <Link href={`/predstave/${data.predstava_slug}`}>
                         {data.naziv_predstave}
-                    </a>
+                    </Link>
                 </h3>
                 <div className="post-metas">
                     <ul className="list-inline">

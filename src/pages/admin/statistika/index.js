@@ -1,20 +1,24 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import axiosClient from "../../../utils/axios";
 import moment from "moment";
-import { Button, Paper } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import { Button } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import DvrIcon from "@mui/icons-material/Dvr";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useRouter } from "next/router";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
+import { AgGridReact } from "ag-grid-react";
+import { Calendar } from "primereact/calendar";
+import { sortBy } from "lodash";
 
 export default function StatistikaPage() {
     const [fetches, setFetches] = useState([]);
     const [monthAndYear, setMonthAndYear] = useState(null);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
+    const gridRef = useRef(null);
 
     useEffect(() => {
         setLoading(true);
@@ -60,8 +64,8 @@ export default function StatistikaPage() {
             naziv: fetch.fetch_type.display_name,
             parameter: fetch.parameter,
             timestamp: moment(fetch.created_at).format("DD. MMM YYYY. HH:mm"),
-            brojTekstova: fetch.fetch_details.length,
-        })
+            brojTekstova: fetch.fetch_details_count,
+        }),
     );
 
     const handleSubmit = () => {
@@ -76,9 +80,10 @@ export default function StatistikaPage() {
             .then((res) => {
                 console.log(res.data);
                 setFetches(res.data);
-                setLoading(false);
+                toast.success("Podaci uspesno sacuvani");
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error(err))
+            .finally(() => setLoading(false));
     };
 
     const handleDetailClick = (e, params) => {
@@ -86,46 +91,61 @@ export default function StatistikaPage() {
         router.push(`/admin/statistika/details?fetchId=${params.id}`);
     };
 
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
+
     return (
         <>
             <AdminHeader metaTitle="Statistika" />
             <h1>Statistika</h1>
 
-            <Paper sx={{ height: 800, width: "100%" }}>
-                <LocalizationProvider dateAdapter={AdapterMoment}>
-                    <DatePicker
-                        label="Izaber mesec i godinu"
-                        views={["month", "year"]}
-                        value={monthAndYear}
-                        onChange={(value) => setMonthAndYear(value)}
-                    />
-                </LocalizationProvider>
-                <Button
-                    size="large"
-                    type="submit"
-                    variant="contained"
-                    onClick={handleSubmit}
-                >
-                    Submit
-                </Button>
-                <DataGrid
-                    rows={rows}
-                    columns={columns}
-                    sx={{ border: 0, mt: 4 }}
-                    autoPageSize
-                    loading={loading}
-                    initialState={{
-                        sorting: {
-                            sortModel: [
-                                {
-                                    field: "id",
-                                    sort: "desc",
-                                },
-                            ],
-                        },
-                    }}
+            <LocalizationProvider dateAdapter={AdapterMoment}>
+                <DatePicker
+                    label="Izaber mesec i godinu"
+                    views={["month", "year"]}
+                    value={monthAndYear}
+                    onChange={(value) => setMonthAndYear(value)}
                 />
-            </Paper>
+            </LocalizationProvider>
+            <Button
+                size="large"
+                type="submit"
+                variant="primary"
+                onClick={handleSubmit}
+            >
+                Submit
+            </Button>
+            <div
+                style={{
+                    width: "100%",
+                    height: "600px",
+                    marginTop: "25px",
+                    marginBottom: "30px",
+                }}
+            >
+                <div className="example-header mb-3">
+                    <input
+                        type="text"
+                        id="filter-text-box"
+                        placeholder="Pretraga..."
+                        onInput={onFilterTextBoxChanged}
+                        className="form-control"
+                        style={{ width: "300px" }}
+                    />
+                </div>
+                <AgGridReact
+                    ref={gridRef}
+                    rowData={rows}
+                    columnDefs={columns}
+                    pagination={true}
+                    paginationAutoPageSize={true}
+                    loading={loading}
+                />
+            </div>
         </>
     );
 }

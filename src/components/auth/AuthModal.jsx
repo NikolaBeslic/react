@@ -37,13 +37,17 @@ const AuthModal = ({ closeModal }) => {
         console.log("google");
         const redirectUrl = window.location.href; // Capture the current page URL
         window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
-            redirectUrl
+            redirectUrl,
         )}`;
     };
 
     return (
         <>
-            <Modal show={isModalOpen} onHide={closeModal}>
+            <Modal
+                show={isModalOpen}
+                onHide={closeModal}
+                container={() => document.querySelector(".user-layout")}
+            >
                 <Modal.Header closeButton>
                     <Modal.Title>
                         {showLogin ? "Ulogujte se" : "Registrujte se"}

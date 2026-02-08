@@ -8,6 +8,7 @@ const KorisnikKomentar = ({ data }) => {
                 <a
                     href={`/predstave/${data.predstava.predstava_slug}`}
                     target="_blank"
+                    rel="noreferrer"
                 >
                     <i className="fa-solid fa-arrow-up-right-from-square"></i>
                 </a>

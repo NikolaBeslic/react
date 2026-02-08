@@ -1,38 +1,37 @@
-import { useState, useEffect } from "react";
+import { withSSRHandler } from "../utils/withSSRHandler";
 import axiosClient from "../utils/axios";
-import { useStateContext } from "../contexts/StateContext";
-import HeadMeta from "../components/elements/HeadMeta";
-import Breadcrumb from "../components/common/Breadcrumb";
 import KorisnickiProfil from "../components/korisnik/KorisnickiProfil";
+import * as cookie from "cookie";
+import KorisnikHeader from "../components/post/post-format/elements/meta/KorisnikHeader";
 
-const KorisnikPage = () => {
-    const [korisnik, setKorisnik] = useState([]);
-    const { isLoading, showLoading, hideLoading } = useStateContext();
-
-    useEffect(() => {
-        showLoading();
-        axiosClient
-            .get("/get-korisnicki-profil", {
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                },
-            })
-            .then((res) => {
-                console.log(res.data);
-                setKorisnik(res.data);
-                hideLoading();
-            })
-            .catch((error) => console.error(error));
-    }, []);
-
+export default function KorisnikPage({ korisnik }) {
     return (
         <>
-            <HeadMeta metaTitle="Korisnicki profil" />
-            <Breadcrumb aPage="Korisnicki profil" />
             <KorisnickiProfil korisnik={korisnik} />
         </>
     );
-};
+}
 
-export default KorisnikPage;
+KorisnikPage.getLayoutProps = (pageProps) => ({
+    header: <KorisnikHeader korisnik={pageProps.korisnik} />,
+});
+
+export const getServerSideProps = withSSRHandler(async (context) => {
+    const cookies = context.req.headers.cookie || "";
+    const token = cookie.parse(cookies).token;
+
+    const res = await axiosClient.get("/get-korisnicki-profil", {
+        headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+        },
+    });
+    const korisnik = res.data;
+    console.log(res.data);
+
+    return {
+        props: {
+            korisnik,
+        },
+    };
+});

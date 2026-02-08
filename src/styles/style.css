@@ -3769,7 +3769,7 @@ textarea {
 }
 
 p {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 img {
@@ -11179,4 +11179,97 @@ address .tel i {
 .repertoar-naslovna-show-all {
     display: block;
     text-align: right;
+}
+
+.predstave-listazelja-card {
+    width: 200px;
+    height: 455px;
+    margin-bottom: 40px;
+    --scale: calc(100vw / 1920);
+    transform: scale(var(--scale));
+    transform-origin: top;
+}
+
+.predstave-listazelja-card-img {
+    height: 277px !important;
+    width: 100%;
+    object-fit: cover;
+}
+
+.predstave-listazelja-card-title {
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 54px;
+}
+
+.predstave-listazelja-card-title h5 {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.predstave-listazelja-card-text {
+    font-size: 1.3rem;
+    line-height: 2.2rem;
+}
+
+.korisnik-komentar-wrapper {
+    margin-bottom: 20px;
+}
+
+.korisnik-komentar-header {
+    background: rgb(248, 249, 250);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.korisnik-komentar-header h6 {
+    margin-bottom: 0;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.korisnik-komentar-body {
+    padding-left: 10px;
+
+}
+
+.korisnik-komentar-footer {
+    text-align: right;
+}
+
+.korisnik-komentar-footer p {
+    font-size: 1.4rem;
+}
+
+.omiljeno-pozoriste-card {
+    width: 200px;
+    height: 350px;
+    margin-bottom: 40px;
+    --scale: calc(100vw / 1920);
+    transform: scale(var(--scale));
+    transform-origin: top;
+}
+
+.omiljeno-pozoriste-card-img {
+    height: 150px !important;
+    width: 100%;
+    object-fit: cover;
+}
+
+.omiljeno-pozoriste-card-title {
+    margin-bottom: 8px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 54px;
+}
+
+.omiljeno-pozoriste-card-title h5 {
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.omiljeno-pozoriste-card-text {
+    font-size: 1.3rem;
+    line-height: 2.2rem;
 }

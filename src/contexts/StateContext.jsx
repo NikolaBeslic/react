@@ -1,6 +1,5 @@
 import { useContext, useState, createContext, useEffect } from "react";
 import axiosClient from "../utils/axios";
-import Cookies from "js-cookie";
 
 const StateContext = createContext({
     currentUser: {},
@@ -22,30 +21,22 @@ export const ContextProvider = ({ children }) => {
     const [unnaprovedCommentsCount, setUnnapprovedCommentsCount] = useState(0);
 
     useEffect(() => {
-        const token = Cookies.get("token");
-        console.log("Token");
-        console.log(token);
+        console.log("STATE Context");
 
-        setIsAdmin(false);
-        if (token) {
-            axiosClient
-                .get("/user", {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                })
-                .then((res) => {
-                    if (res.status == 200) {
-                        setCurrentUser(res.data);
-                    }
-                    console.log(res);
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        } else {
-            setCurrentUser(null);
-        }
+        axiosClient
+            .get("/user", {
+                withCredentials: true,
+            })
+            .then((res) => {
+                if (res.status == 200) {
+                    setCurrentUser(res.data);
+                }
+                console.log(res);
+            })
+            .catch((error) => {
+                setCurrentUser(null);
+                console.log(error);
+            });
 
         fetchUnapprovedCommentsCount();
     }, []);

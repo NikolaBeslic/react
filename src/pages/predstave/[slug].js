@@ -22,7 +22,11 @@ export default function PredstavaPage({ predstavaData }) {
 
     return (
         <>
-            <Predstava data={predstavaData} updateData={handleDataUpdate} />
+            <Predstava
+                data={predstavaData}
+                updateData={handleDataUpdate}
+                key={`predsingl-${predstava.predstavaid}`}
+            />
         </>
     );
 }

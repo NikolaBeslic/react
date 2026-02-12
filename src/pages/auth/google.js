@@ -9,7 +9,7 @@ const Page = () => {
     const { currentUser, setCurrentUser } = useStateContext();
 
     useEffect(() => {
-        const { token, user, redirect_url, error } = router.query;
+        const { user, redirect_url, error } = router.query;
 
         if (error) {
             console.error("Login error:", error);
@@ -17,10 +17,10 @@ const Page = () => {
             return;
         }
 
-        if (token && user) {
+        if (user) {
             try {
                 // Save token and user data
-                Cookies.set("token", token, {
+                /*  Cookies.set("token", token, {
                     path: "/",
                     secure: true,
                     sameSite: "lax",
@@ -28,8 +28,9 @@ const Page = () => {
                 axiosClient.defaults.headers.common[
                     "Authorization"
                 ] = `Bearer ${token}`;
-                console.log("USER");
+                console.log("USER"); */
 
+                console.log("USER");
                 console.log(decodeURIComponent(user));
                 //const json = atob(decodeURIComponent(user));
                 const loggedUser = JSON.parse(decodeURIComponent(user));

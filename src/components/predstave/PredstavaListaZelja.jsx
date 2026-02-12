@@ -2,7 +2,7 @@ import moment from "moment";
 import Link from "next/link";
 import { Card } from "react-bootstrap";
 
-const PredstavaListaZelja = ({ data }) => {
+function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
     return (
         <Card
             key={`card-${data.predstavaid}`}
@@ -64,11 +64,15 @@ const PredstavaListaZelja = ({ data }) => {
                         </>
                     )}
                 </Card.Text>
-                <Card.Link href="#">Prebaci u odgledane</Card.Link>
-                <Card.Link href="#">Obrisi sa liste</Card.Link>
+                <Card.Link onClick={() => onPrebaci(data.predstavaid)}>
+                    Prebaci u odgledane
+                </Card.Link>
+                <Card.Link onClick={() => onRemove(data.predstavaid)}>
+                    <i className="fa-solid fa-delete-left"></i> Obrisi sa liste
+                </Card.Link>
             </Card.Body>
         </Card>
     );
-};
+}
 
 export default PredstavaListaZelja;

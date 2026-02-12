@@ -26,7 +26,7 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(
-                `/get-category-posts/${categoryData.kategorija_slug}?page=${nextPage}`
+                `/get-category-posts/${categoryData.kategorija_slug}?page=${nextPage}`,
             );
             setPosts((prev) => [...prev, ...res.data.tekstovi?.data]);
             setCurrentPage(nextPage);
@@ -77,7 +77,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
-        `/get-category-posts/${category}?page=${page}`
+        `/get-category-posts/${category}?page=${page}`,
     );
     const categoryData = response.data;
     console.log("Response data:", categoryData);

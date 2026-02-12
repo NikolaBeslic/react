@@ -42,7 +42,7 @@ const PredstavaOdgledana = ({ data }) => {
                     </div>
                 </div>
             </div>
-            <div className="p-2 ms-auto">{data.ocena_korisnika.ocena}</div>
+            <div className="p-2 ms-auto">{data.ocena_korisnika?.ocena}</div>
             <div className="p-2">Komentar</div>
         </Stack>
     );

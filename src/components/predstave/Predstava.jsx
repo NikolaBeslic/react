@@ -7,13 +7,14 @@ import { useState } from "react";
 import PredstavaRecenzija from "./PredstavaRecenzija";
 import { useStateContext } from "../../contexts/StateContext";
 import axiosClient from "../../utils/axios";
+import { csrf, getCookieValue } from "../../utils";
 
 const Predstava = ({ data, updateData }) => {
     const recenzije = data.tekstovi?.filter(
-        (tekst) => tekst.kategorija.kategorijaid == 4
+        (tekst) => tekst.kategorija.kategorijaid == 4,
     );
     const povezaniTekstovi = data.tekstovi?.filter(
-        (tekst) => tekst.kategorija.kategorijaid != 4
+        (tekst) => tekst.kategorija.kategorijaid != 4,
     );
     console.log(povezaniTekstovi);
     const izvodjenja = data.igranja;
@@ -47,7 +48,7 @@ const Predstava = ({ data, updateData }) => {
         korisnikid: currentUser?.id,
     });
     const [errors, setErrors] = useState({});
-    const handleCommentSubmit = (e) => {
+    const handleCommentSubmit = async (e) => {
         e.preventDefault();
 
         console.log("Submitting comment:", komentarFormData);
@@ -56,11 +57,13 @@ const Predstava = ({ data, updateData }) => {
             alert("Ulogujte se da biste mogli da komentarišete predstavu.");
             return;
         }
+        await csrf();
         axiosClient
             .post("/predstava/dodaj-komentar", komentarFormData, {
+                withCredentials: true,
                 headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     "Content-Type": "application/json",
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
                 },
             })
             .then((res) => {
@@ -72,7 +75,7 @@ const Predstava = ({ data, updateData }) => {
                     err.response.data.errors || {
                         general:
                             "An error occurred while submitting the comment.",
-                    }
+                    },
                 );
             });
     };
@@ -82,11 +85,14 @@ const Predstava = ({ data, updateData }) => {
             <main className="site-main">
                 <div className="single-blog-wrapper">
                     {!showAllComments && (
-                        <div className="grid-wrapper predstava-single-section-wrapper">
-                            <div className="row">
+                        <div
+                            className="grid-wrapper predstava-single-section-wrapper"
+                            key="predsingl000001"
+                        >
+                            <div className="row" key="predrow0001">
                                 <SectionTitle
                                     title="Opis predstave"
-                                    key="opis-predstave"
+                                    key="pred-opis-predstave"
                                 />
                                 {description?.length > 0 && (
                                     <div
@@ -115,17 +121,20 @@ const Predstava = ({ data, updateData }) => {
 
                     {recenzije?.length > 0 && !showAllComments && (
                         <>
-                            <div className="grid-wrapper predstava-single-section-wrapper">
-                                <div className="row">
+                            <div
+                                className="grid-wrapper predstava-single-section-wrapper"
+                                key="predsingl000002"
+                            >
+                                <div className="row" key="predrow0002">
                                     <SectionTitle
                                         title="Iz našeg ugla"
-                                        key="iz-naseg-ugla"
+                                        key="pred-iz-naseg-ugla"
                                     />
                                     {recenzije.map((tekst) => (
-                                        <div key={tekst.tekstid}>
+                                        <div key={`recdiv-${tekst.tekstid}`}>
                                             <PredstavaRecenzija
                                                 data={tekst}
-                                                key={tekst.slug}
+                                                key={`rec-${tekst.tekstid}`}
                                             />
                                         </div>
                                     ))}
@@ -134,9 +143,12 @@ const Predstava = ({ data, updateData }) => {
                         </>
                     )}
                     {!showAllComments && (
-                        <div className="grid-wrapper predstava-single-section-wrapper">
-                            <div className="row">
-                                <SectionTitle title="Uloge" key="uloge" />
+                        <div
+                            className="grid-wrapper predstava-single-section-wrapper"
+                            key="predsingl000003"
+                        >
+                            <div className="row" key="predrow0003">
+                                <SectionTitle title="Uloge" key="pred-uloge" />
                                 <div
                                     dangerouslySetInnerHTML={{
                                         __html: data.uloge,
@@ -145,18 +157,21 @@ const Predstava = ({ data, updateData }) => {
                             </div>
                         </div>
                     )}
-                    <div className="grid-wrapper predstava-single-section-wrapper">
-                        <div className="row">
+                    <div
+                        className="grid-wrapper predstava-single-section-wrapper"
+                        key="predsingl000004"
+                    >
+                        <div className="row" key="predrow0004">
                             <SectionTitle
                                 title={`Komentari (${data.komentari?.length})`}
-                                key="komentari"
+                                key="pred-komentari"
                             />
                             {showAllComments
                                 ? data.komentari?.map((komentar) => (
                                       <>
                                           <div
                                               className="predstava-komentar-wrapper m-b-xs-20"
-                                              key={komentar.komentarid}
+                                              key={`allkom-${komentar.komentarid}`}
                                           >
                                               <div className="predstava-komentar-info">
                                                   <strong>
@@ -168,7 +183,7 @@ const Predstava = ({ data, updateData }) => {
                                                   |{" "}
                                                   <span className="text-muted">
                                                       {moment(
-                                                          komentar.created_at
+                                                          komentar.created_at,
                                                       ).fromNow()}
                                                   </span>
                                               </div>
@@ -196,7 +211,7 @@ const Predstava = ({ data, updateData }) => {
                                                       |{" "}
                                                       <span className="text-muted">
                                                           {moment(
-                                                              komentar.created_at
+                                                              komentar.created_at,
                                                           ).fromNow()}
                                                       </span>
                                                   </div>
@@ -249,13 +264,16 @@ const Predstava = ({ data, updateData }) => {
                         </div>
                     </div>
 
-                    <div className="grid-wrapper predstava-single-section-wrapper">
-                        <div className="row">
+                    <div
+                        className="grid-wrapper predstava-single-section-wrapper"
+                        key="predsingl000005"
+                    >
+                        <div className="row" key="predrow0005">
                             {!showAllComments && (
                                 <>
                                     <SectionTitle
                                         title="Izvodjenja"
-                                        key="izvodjenja"
+                                        key="pred-izvodjenja"
                                     />
 
                                     {izvodjenja?.length > 0 ? (
@@ -280,20 +298,23 @@ const Predstava = ({ data, updateData }) => {
                         </div>
                     </div>
 
-                    <div className="grid-wrapper predstava-single-section-wrapper">
-                        <div className="row">
+                    <div
+                        className="grid-wrapper predstava-single-section-wrapper"
+                        key="predsingl000006"
+                    >
+                        <div className="row" key="predrow0006">
                             {povezaniTekstovi?.length > 0 &&
                                 !showAllComments && (
                                     <>
                                         <SectionTitle
                                             title="Povezani tekstovi"
-                                            key="povezani-tekstovi"
+                                            key="pred-povezani-tekstovi"
                                         />
                                         {povezaniTekstovi.map((tekst) => (
                                             <PostLayoutTwo
                                                 data={tekst}
                                                 postSizeMd={false}
-                                                key={tekst.slug}
+                                                key={`pt-${tekst.tekstid}`}
                                             />
                                         ))}
                                     </>

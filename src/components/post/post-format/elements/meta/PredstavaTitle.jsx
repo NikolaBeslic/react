@@ -8,6 +8,7 @@ import { Button, Spinner } from "react-bootstrap";
 import { useState } from "react";
 import HeadMeta from "../../../../elements/HeadMeta";
 import Breadcrumb from "../../../../common/Breadcrumb";
+import { csrf, getCookieValue } from "../../../../../utils";
 
 const PredstavaTitle = ({ metaData }) => {
     const isDesktopOrLaptop = useMediaQuery({
@@ -19,10 +20,10 @@ const PredstavaTitle = ({ metaData }) => {
     const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
     const { currentUser } = useStateContext();
     const [naListiZelja, setNaListiZelja] = useState(
-        metaData.naListiZeljaKorisnika
+        metaData.naListiZeljaKorisnika,
     );
     const [naListiOdgledanih, setNaListiOdgledanih] = useState(
-        metaData.naListiOdgledanihKorisnika
+        metaData.naListiOdgledanihKorisnika,
     );
     const { setModalOpen } = useStateContext();
 
@@ -34,6 +35,7 @@ const PredstavaTitle = ({ metaData }) => {
             return;
         }
         setRatingLoading(true);
+        await csrf();
         axiosClient
             .post(
                 "/predstava/oceni",
@@ -43,18 +45,17 @@ const PredstavaTitle = ({ metaData }) => {
                     predstavaid: metaData.predstavaid,
                 },
                 {
+                    withCredentials: true,
                     headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
                     },
-                }
+                },
             )
             .then((res) => {
                 console.log(res);
                 setRatingLoading(false);
-                updateData(res.data.data);
+                // updateData(res.data.data); TO DO
             });
     };
     const ratingProps = {
@@ -68,12 +69,13 @@ const PredstavaTitle = ({ metaData }) => {
         ratingProps.initialRating = metaData.ocenaKorisnika;
     }
     const [naListiZeljaLoading, setNaListiZeljaLoading] = useState(false);
-    const handleDodajNaListuZelja = () => {
+    const handleDodajNaListuZelja = async () => {
         if (!currentUser) {
             alert("You must be logged in to rate a post.");
             return;
         }
         setNaListiZeljaLoading(true);
+        await csrf();
         axiosClient
             .post(
                 "/predstava/dodajNaListuZelja",
@@ -82,32 +84,32 @@ const PredstavaTitle = ({ metaData }) => {
                     predstavaid: metaData.predstavaid,
                 },
                 {
+                    withCredentials: true,
                     headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
                     },
-                }
+                },
             )
             .then((res) => {
                 console.log(res);
                 setNaListiZelja(true);
-                setNaListiZeljaLoading(false);
                 handleUpdateDodajNaListuZelja();
             })
             .catch((err) => {
                 console.error(err);
-            });
+            })
+            .finally(() => setNaListiZeljaLoading(false));
     };
 
     const [odgledaneLoading, setOdgledaneLoading] = useState(false);
-    const handleDodajUOdgledane = () => {
+    const handleDodajUOdgledane = async () => {
         if (!currentUser) {
             alert("You must be logged in to do this");
             return;
         }
         setOdgledaneLoading(true);
+        await csrf();
         axiosClient
             .post(
                 "/predstava/dodajUOdgledane",
@@ -116,23 +118,23 @@ const PredstavaTitle = ({ metaData }) => {
                     predstavaid: metaData.predstavaid,
                 },
                 {
+                    withCredentials: true,
                     headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                         "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token"
-                        )}`,
                     },
-                }
+                },
             )
             .then((res) => {
                 console.log(res);
                 setNaListiOdgledanih(true);
-                setOdgledaneLoading(false);
+
                 handleUpdateListaOdgledanih();
             })
             .catch((err) => {
                 console.error(err);
-            });
+            })
+            .finally(() => setOdgledaneLoading(false));
     };
 
     return (
@@ -182,7 +184,7 @@ const PredstavaTitle = ({ metaData }) => {
                                                                 }
                                                             </a>
                                                         </span>
-                                                    )
+                                                    ),
                                                 )}
                                             </p>
                                         </li>
@@ -222,7 +224,7 @@ const PredstavaTitle = ({ metaData }) => {
                                                     <i className="feather icon-share-2" />
                                                     Premijera:{" "}
                                                     {moment(
-                                                        metaData.premijera
+                                                        metaData.premijera,
                                                     ).format("dd.MMM.YYYY")}
                                                 </li>
                                             </ul>
@@ -298,14 +300,14 @@ const PredstavaTitle = ({ metaData }) => {
                                                                     }
                                                                 </a>{" "}
                                                             </span>
-                                                        )
+                                                        ),
                                                     )}
                                                 </li>
                                                 <li>
                                                     <i className="feather icon-share-2" />
                                                     Premijera:{" "}
                                                     {moment(
-                                                        metaData.premijera
+                                                        metaData.premijera,
                                                     ).format("DD. MMMM YYYY.")}
                                                 </li>
                                             </ul>
@@ -355,7 +357,7 @@ const PredstavaTitle = ({ metaData }) => {
                                                             {...ratingProps}
                                                             onChange={(value) =>
                                                                 handleRating(
-                                                                    value
+                                                                    value,
                                                                 )
                                                             }
                                                         />

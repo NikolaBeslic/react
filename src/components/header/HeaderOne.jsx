@@ -9,7 +9,7 @@ import axiosClient from "../../utils/axios";
 import { Spinner, NavDropdown } from "react-bootstrap";
 import SearchResult from "../elements/SearchResult";
 import { toast } from "react-hot-toast";
-import Cookies from "js-cookie";
+import { csrf, getCookieValue } from "../../utils";
 
 const HeaderOne = () => {
     // Main Menu Toggle
@@ -117,16 +117,21 @@ const HeaderOne = () => {
     const { currentUser, setCurrentUser } = useStateContext();
     const [logoutLoading, setLogoutLoading] = useState(false);
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         setLogoutLoading(true);
+        await csrf();
         axiosClient
-            .post("/logout", currentUser)
+            .post("/logout", currentUser, {
+                withCredentials: true,
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
             .then((res) => {
                 console.log(res.data);
-                Cookies.remove("token"); // Remove the token cookie
                 setCurrentUser(null);
-                setLogoutLoading(false);
                 toast.success("Uspešno ste se izlogovali");
+                setLogoutLoading(false);
             })
             .catch((err) => console.error(err));
     };
@@ -313,10 +318,13 @@ const HeaderOne = () => {
                                             <NavDropdown
                                                 title={currentUser.korisnicko_ime?.substring(
                                                     0,
-                                                    2
+                                                    2,
                                                 )}
                                             >
-                                                <NavDropdown.Item href="/korisnicki-profil">
+                                                <NavDropdown.Item
+                                                    as={Link}
+                                                    href="/korisnicki-profil"
+                                                >
                                                     Korisnicki profil
                                                 </NavDropdown.Item>
                                                 <NavDropdown.Item

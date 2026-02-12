@@ -3,8 +3,11 @@ export function withSSRHandler(ssrFn) {
         try {
             return await ssrFn(context);
         } catch (error) {
+            console.error(error);
+
             if (error.response) {
                 const status = error.response.status;
+                console.error(error.response);
 
                 // 🔹 404 → Next.js built-in 404 page
                 if (status === 404) {

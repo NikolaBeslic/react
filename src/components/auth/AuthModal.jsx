@@ -35,10 +35,13 @@ const AuthModal = ({ closeModal }) => {
     const handleGoogleLogin = (e) => {
         e.preventDefault();
         console.log("google");
-        const redirectUrl = window.location.href; // Capture the current page URL
-        window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
-            redirectUrl,
-        )}`;
+        const redirectUrl = window.location.href; // Capture the current page URL;
+        window.location.href =
+            "http://localhost:8000/auth/google?redirect_url=" +
+            encodeURIComponent(window.location.href);
+        // window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
+        //     redirectUrl,
+        // )}`;
     };
 
     return (

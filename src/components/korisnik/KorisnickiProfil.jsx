@@ -3,8 +3,70 @@ import PredstavaListaZelja from "../predstave/PredstavaListaZelja";
 import PredstavaOdgledana from "../predstave/PredstavaOdgledana";
 import KorisnikKomentar from "./KorisnikKomentar";
 import OmiljenoPozoriste from "./OmiljenoPozoriste";
+import { useState } from "react";
+import axiosClient from "../../utils/axios";
+import { csrf, getCookieValue } from "../../utils";
 
 const KorisnickiProfil = ({ korisnik }) => {
+    const [listaZelja, setListaZelja] = useState(korisnik.lista_zelja);
+    const [listaOdgledanih, setListaOdgledanih] = useState(
+        korisnik.lista_odgledanih,
+    );
+
+    const handleObrisiSaListeZelja = async (predstavaid) => {
+        //setLoading(true);
+        await csrf();
+        axiosClient
+            .delete(`/obrisi-sa-liste-zelja/${predstavaid}`, {
+                withCredentials: true,
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
+            .then((res) => {
+                setListaZelja((prev) =>
+                    prev.filter((item) => item.predstavaid !== res.data),
+                );
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => {
+                //setLoading(false);
+            });
+    };
+
+    const handlePrebaciUOdgledane = async (predstavaid) => {
+        //setLoading(true);
+        await csrf();
+        axiosClient
+            .post(
+                "/predstava/dodajUOdgledane",
+                { predstavaid },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            )
+            .then((res) => {
+                const predstava = res.data;
+                setListaZelja((prev) =>
+                    prev.filter(
+                        (item) => item.predstavaid !== predstava.predstavaid,
+                    ),
+                );
+                setListaOdgledanih((prev) => [...prev, predstava]);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => {
+                //setLoading(false);
+            });
+    };
+
     return (
         <>
             <main className="site-main">
@@ -41,7 +103,7 @@ const KorisnickiProfil = ({ korisnik }) => {
                                 <Tab.Pane eventKey="zelje">
                                     <div className="axil-team-grid-wrapper p-t-xs-10">
                                         <Row>
-                                            {korisnik.lista_zelja?.map((lz) => (
+                                            {listaZelja?.map((lz) => (
                                                 <div
                                                     className="col-lg-4 col-md-4 col-sm-6"
                                                     key={`lzdiv-${lz.predstavaid}`}
@@ -49,6 +111,12 @@ const KorisnickiProfil = ({ korisnik }) => {
                                                     <PredstavaListaZelja
                                                         key={`lz-${lz.predstavaid}`}
                                                         data={lz}
+                                                        onPrebaci={
+                                                            handlePrebaciUOdgledane
+                                                        }
+                                                        onRemove={
+                                                            handleObrisiSaListeZelja
+                                                        }
                                                     />
                                                 </div>
                                             ))}
@@ -56,7 +124,7 @@ const KorisnickiProfil = ({ korisnik }) => {
                                     </div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="odgledane">
-                                    {korisnik.lista_odgledanih?.map((odg) => (
+                                    {listaOdgledanih?.map((odg) => (
                                         <PredstavaOdgledana
                                             key={`odg-${odg.predstavaid}`}
                                             data={odg}

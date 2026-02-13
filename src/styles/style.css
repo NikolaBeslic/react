@@ -3827,7 +3827,6 @@ a:hover {
 
 .container {
     position: relative;
-    margin-bottom: 30px;
 }
 
 @media (min-width: 1599px) {
@@ -6417,6 +6416,7 @@ input[type="radio"]+label::after {
 .navbar .container,
 .navbar .container-fluid {
     position: static;
+    margin-bottom: 0;
 }
 
 .navbar.bg-white {
@@ -8822,6 +8822,10 @@ ul.gallery img {
     padding: 0.5rem 0;
     position: relative;
     z-index: 999;
+}
+
+.header-top .container {
+    margin-bottom: 0;
 }
 
 @media (max-width: 991px) {
@@ -11410,4 +11414,8 @@ address .tel i {
     .toolbar-control {
         min-width: 100%;
     }
+}
+
+.post-single-wrapper {
+    padding-bottom: 30px;
 }

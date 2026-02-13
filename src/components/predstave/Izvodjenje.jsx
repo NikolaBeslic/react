@@ -17,7 +17,11 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                     </span>
                     <br />
                     <span className="izvodjenje-datum">
-                        {moment(izvodjenjeData.datum).format("DD. MMM")}{" "}
+                        {moment(izvodjenjeData.datum).format("DD.")}{" "}
+                    </span>{" "}
+                    <br />
+                    <span className="izvodjenje-mesec">
+                        {moment(izvodjenjeData.datum).format("MMM")}{" "}
                     </span>{" "}
                     <br />
                 </div>
@@ -28,9 +32,9 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                 key={`izvodjenje-col2-${izvodjenjeData.seigraid}`}
             >
                 <div className="izvodjenje-vreme">
-                    <i className="fa-thin fa-clock"></i>{" "}
+                    <i className="fa-regular fa-clock"></i>{" "}
                     {moment(`1970-01-01 ${izvodjenjeData.vreme}`).format(
-                        "HH:mm"
+                        "HH:mm",
                     )}
                 </div>
                 {showPredstava && (
@@ -77,9 +81,10 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                                     "/slike/vizitke-cover.jpg"
                                 }
                                 alt={izvodjenjeData?.predstava.predstava_slug}
-                                height={100}
-                                width={50}
+                                height={90}
+                                width={60}
                                 objectFit="cover"
+                                quality={90}
                             />
                         </a>
                     )}

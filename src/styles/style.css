@@ -3827,6 +3827,7 @@ a:hover {
 
 .container {
     position: relative;
+    margin-bottom: 30px;
 }
 
 @media (min-width: 1599px) {
@@ -10912,10 +10913,30 @@ address .tel i {
     border-radius: 5%;
     margin-left: 5px;
     margin-right: 5px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.izvodjenje-wrapper:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+.izvodjenje-date {
+
+    min-width: 70px;
+    text-align: center;
+    border-right: 1px solid #ddd;
+    padding-right: 16px;
 }
 
 .izvodjenje-datum {
-    font-size: 2.8rem;
+    font-size: 3rem;
+    font-weight: 600;
+}
+
+.izvodjenje-mesec {
+    font-size: 2.0rem;
 }
 
 @media (max-width: 767px) {
@@ -10931,20 +10952,27 @@ address .tel i {
 }
 
 .izvodjenje-predstava {
-    font-size: 1.1em;
+    font-size: 1.3em;
+    margin-top: 5px;
+    margin-bottom: 5px;
 }
 
 .izvodjenje-vreme {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 .izvodjenje-plakat {
     display: grid;
     justify-content: right;
+
+}
+
+.izvodjenje-plakat img {
+    border-radius: 8px;
 }
 
 .izvodjenje-pozoriste {
-    font-size: 0.9em;
+    font-size: 1em;
 }
 
 .izvodjenje-scena {
@@ -10978,13 +11006,6 @@ address .tel i {
 
 .predstava-recenzija-wrapper {
     padding: 30px;
-}
-
-.repertoari-wrapper {
-    padding-left: 10px;
-    padding-right: 10px;
-    height: 1500px;
-    overflow-y: scroll;
 }
 
 .premijere-naziv-pozorista {
@@ -11272,4 +11293,121 @@ address .tel i {
 .omiljeno-pozoriste-card-text {
     font-size: 1.3rem;
     line-height: 2.2rem;
+}
+
+.repertoar-filter-wrapper {
+    font-size: 14px;
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .07);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 18px 0 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .04);
+    position: sticky;
+    top: 10px;
+    z-index: 50;
+}
+
+.repertoar-filter-gradovi-zanrovi-wrapper {
+    margin-bottom: 20px;
+    display: inline-flex;
+    gap: 20px;
+}
+
+.repertoar-filter-date-wrapper .btn-group button {
+    margin-bottom: 0;
+}
+
+.repertoar-filter-wrapper .flatpickr .input-group {
+    flex-wrap: initial;
+}
+
+.date-filter-custom-btn {
+    margin-right: 20px;
+
+}
+
+.date-filter-btn {
+    border: 1px solid #ddd;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.date-filter-btn:hover {
+    background: rgba(0, 0, 0, .03);
+    transform: translateY(-1px);
+}
+
+.date-filter-btn.active {
+    background: rgba(0, 0, 0, .92);
+    color: #fff;
+    border-color: rgba(0, 0, 0, .92);
+}
+
+.repertoar-toolbar {
+    background: #fff;
+    border: 1px solid rgba(0, 0, 0, .07);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin: 18px 0 22px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .04);
+}
+
+.repertoar-toolbar__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+}
+
+.repertoar-toolbar__left,
+.repertoar-toolbar__right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.toolbar-control {
+    min-width: 240px;
+}
+
+/* React-select inside toolbar */
+.repertoar-toolbar .react-select__control {
+    border-radius: 12px !important;
+    border-color: rgba(0, 0, 0, .10) !important;
+    min-height: 42px;
+    box-shadow: none !important;
+}
+
+.repertoar-toolbar .react-select__control--is-focused {
+    border-color: rgba(0, 0, 0, .22) !important;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, .06) !important;
+}
+
+/* date pills */
+.date-filter-group {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+/* Optional meta separator under toolbar */
+.repertoar-toolbar__meta {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(0, 0, 0, .06);
+    font-size: .92rem;
+    color: rgba(0, 0, 0, .62);
+}
+
+@media (max-width: 576px) {
+    .toolbar-control {
+        min-width: 100%;
+    }
 }

@@ -18,12 +18,13 @@ PozoristePage.getLayoutProps = (pageProps) => ({
 
 export const getServerSideProps = withSSRHandler(async (context) => {
     const { pozoristeSlug } = context.params;
-    const cookies = context.req.headers.cookie;
-    const token = cookie.parse(cookies).token;
+    const cookies = context.req.headers.cookie || "";
     const res = await axiosClient.get(`/pozoriste-single/${pozoristeSlug}`, {
         headers: {
-            Authorization: `Bearer ${token}`,
+            cookie: cookies,
+            origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
         },
+        withCredentials: true,
     });
     const data = res.data;
 

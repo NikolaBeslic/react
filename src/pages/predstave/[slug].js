@@ -38,13 +38,14 @@ PredstavaPage.getLayoutProps = (pageProps) => ({
 
 export const getServerSideProps = withSSRHandler(async (context) => {
     const { slug } = context.params;
-    const cookies = context.req.headers.cookie;
-    const token = cookie.parse(cookies).token;
+    const cookies = context.req.headers.cookie || "";
 
     const res = await axiosClient.get(`/predstava-single/${slug}`, {
         headers: {
-            Authorization: `Bearer ${token}`,
+            cookie: cookies,
+            origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
         },
+        withCredentials: true,
     });
     const predstavaData = res.data;
 

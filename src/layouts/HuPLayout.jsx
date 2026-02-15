@@ -27,25 +27,23 @@ export default function HuPLayout({
                         <>{children}</>
                     ) : (
                         <div className="post-single-wrapper p-t-xs-60">
-                            <div className="container">
-                                <div className="row">
-                                    {noSidebar ? (
-                                        <div className="col-lg-12">
-                                            {children}
-                                        </div>
-                                    ) : (
-                                        <>
+                            {noSidebar ? (
+                                <div className="col-lg-12">{children}</div>
+                            ) : (
+                                <>
+                                    <div className="container">
+                                        <div className="row">
                                             <div className="col-lg-8">
                                                 {children}
                                             </div>
                                             <div className="col-lg-4">
                                                 <Sidebar />
                                             </div>
-                                            <ScrollToTopButton />
-                                        </>
-                                    )}
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
+                                    <ScrollToTopButton />
+                                </>
+                            )}
                         </div>
                     )}
                 </main>

@@ -33,6 +33,7 @@ export default function PredstavaPage({ predstavaData }) {
 
 PredstavaPage.getLayoutProps = (pageProps) => ({
     header: <PredstavaTitle metaData={pageProps.predstavaData} />,
+    noSidebar: true,
 });
 
 export const getServerSideProps = withSSRHandler(async (context) => {
@@ -45,7 +46,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
             Authorization: `Bearer ${token}`,
         },
     });
-    const predstavaData = res.data.data;
+    const predstavaData = res.data;
 
     return {
         props: {

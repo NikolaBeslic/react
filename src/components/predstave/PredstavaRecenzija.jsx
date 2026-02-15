@@ -4,7 +4,7 @@ import moment from "moment";
 
 const PredstavaRecenzija = ({ data }) => {
     return (
-        <div className="media post-block m-b-xs-30 bg-grey-light-three predstava-recenzija-wrapper">
+        <div className="media post-block">
             <a
                 href={`${data.kategorija?.kategorija_slug}/${data.slug}`}
                 className="align-self-center"
@@ -30,22 +30,42 @@ const PredstavaRecenzija = ({ data }) => {
                         {data.kategorija?.naziv_kategorije}
                     </a>
                 </div>
-                <h3 className="axil-post-title hover-line hover-line">
-                    <Link
-                        href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
-                    >
+
+                <Link
+                    href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                >
+                    <h3 className="axil-post-title hover-line hover-line">
                         {data.naslov}
-                    </Link>
-                </h3>
+                    </h3>
+                </Link>
+
                 <div
                     className="mid"
                     dangerouslySetInnerHTML={{
-                        __html: data.sadrzaj?.slice(0, 250) + "...",
+                        __html: data.sadrzaj?.slice(0, 400) + "...",
                     }}
                 ></div>
 
                 <div className="post-metas">
                     <ul className="list-inline">
+                        {data.autori?.map((autorData) => (
+                            <li key={autorData.autor_slug}>
+                                <a
+                                    className="post-author post-author-with-img"
+                                    href={`/autori/${autorData.autor_slug}`}
+                                >
+                                    <Image
+                                        src={autorData.url_slike}
+                                        alt={autorData.autor_slug}
+                                        width={30}
+                                        height={30}
+                                    />
+                                    <span className="author-name">
+                                        {autorData.ime_autora}
+                                    </span>
+                                </a>
+                            </li>
+                        ))}
                         <li>
                             <span>
                                 <i className="fa-regular fa-clock"></i>

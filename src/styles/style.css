@@ -4055,6 +4055,7 @@ figure {
     -webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
+    padding-right: 15px;
 }
 
 .text-right {
@@ -10675,8 +10676,14 @@ address .tel i {
     border-bottom: solid 3px red;
 }
 
+.section-subtitle h4 {
+    border-bottom: solid 2px red;
+}
+
 .predstava-single-section-wrapper {
-    margin-bottom: 20px;
+
+    padding-bottom: 32px;
+    /* TO do mobile less ~ 40-50 */
 }
 
 .predstava-single-plakat {
@@ -10689,17 +10696,62 @@ address .tel i {
     line-height: 4.2rem;
     color: #fff;
     font-weight: var(--p-bold);
+    height: 280px;
+    aspect-ratio: 2 / 3;
+    /* portrait base */
+    background: #efefef;
+    overflow: hidden;
+    border-radius: 4px;
+    margin-right: 30px;
     /* max-width: 18rem; */
+}
+
+.predstava-single-plakat img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+
+}
+
+.predstava-title-wrapper h1 {
+    margin-top: 0;
+    font-size: 42px;
+    line-height: 1.15;
+    font-weight: 700;
+    max-width: 22ch;
+}
+
+.predstava-meta-info-list {
+    list-style-type: none;
+}
+
+.predstava-komentar-wrapper {
+
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    padding: 24px;
+    margin-bottom: 10px;
 }
 
 .predstava-komentar-info {
     font-size: 1.8rem;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
 }
 
 .predstava-komentar-info span {
     font-size: 1.5rem;
 
+}
+
+.predstava-komentar-tekst {
+    line-height: 20px;
+    max-width: 900px;
+    margin-top: 20px;
+
+}
+
+.predstava-komentar-form-wrapper textarea {
+    background: #fff;
 }
 
 .predstava-single-zanr {
@@ -10720,18 +10772,30 @@ address .tel i {
     text-transform: lowercase;
 }
 
+.average-rating-text {
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+}
+
 .current-rating {
     font-size: 18px;
 }
 
+.number-of-ratings {
+    font-size: 1.2rem;
+}
+
 .rating-wrapper {
-    width: 50%;
+    width: 55%;
     display: inline-flex;
     margin-top: 20px;
+    font-size: 13px;
+
 }
 
 .average-rating {
     flex: 1;
+
 }
 
 .user-rating {
@@ -11010,6 +11074,37 @@ address .tel i {
 
 .predstava-recenzija-wrapper {
     padding: 30px;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    margin-bottom: 50px;
+}
+
+.predstava-recenzija-wrapper .post-block {
+    margin-bottom: 0;
+}
+
+.predstava-recenzija-wrapper .media-body .mid {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* adjust lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-bottom: 13px;
+}
+
+.predstava-recenzija-wrapper .media-body h3 {
+    font-size: 3rem;
+    margin-top: 20px;
+    margin-bottom: 15px;
+    line-height: 38px;
+}
+
+.predstava-povezani-tekst-single-wrapper {
+    margin-bottom: 2.0rem;
+}
+
+.predstava-povezani-tekst-single-wrapper .post-block {
+    background: rgba(255, 255, 255, 0.6);
 }
 
 .premijere-naziv-pozorista {
@@ -11418,4 +11513,158 @@ address .tel i {
 
 .post-single-wrapper {
     padding-bottom: 30px;
+}
+
+/* Reserve this height mentally: it's a thin mini-hero strip */
+.predstava-sticky {
+    position: sticky;
+    top: 0px;
+    /* top: 72px; */
+    /* <-- set to your sticky navbar height */
+    z-index: 1000;
+    pointer-events: none;
+    /* prevents clicks when hidden */
+    transform: translateY(-12px);
+    opacity: 0;
+    filter: blur(6px);
+    transition: opacity .22s ease, transform .22s ease, filter .22s ease;
+    display: none;
+}
+
+.predstava-sticky.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+    pointer-events: auto;
+    display: block;
+}
+
+.predstava-sticky .container {
+    padding: 15px 0;
+}
+
+/* The strip */
+.predstava-sticky-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    background: rgba(255, 255, 255);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 0, 0, .06);
+    border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 10px 22px rgba(0, 0, 0, .06);
+}
+
+/* Left group */
+.predstava-sticky-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.predstava-sticky-poster {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    width: 44px;
+    aspect-ratio: 3 / 4;
+    border-radius: 8px;
+    background: #f1f1f1;
+    overflow: hidden;
+    flex: 0 0 auto;
+}
+
+.predstava-sticky-poster img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+}
+
+.predstava-sticky-text {
+    min-width: 0;
+}
+
+.predstava-sticky-title {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 1.1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 52vw;
+}
+
+.predstava-sticky-rating {
+    margin-top: 4px;
+    font-size: 13px;
+    color: rgba(0, 0, 0, .68);
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.predstava-sticky-rating-num {
+    font-weight: 700;
+    color: rgba(0, 0, 0, .88);
+}
+
+.predstava-sticky-rating-count {
+    margin-left: 4px;
+}
+
+/* Right links */
+.predstava-sticky-right {
+    display: flex;
+    gap: 10px;
+    flex: 0 0 auto;
+}
+
+.predstava-sticky-link {
+    font-size: 13px;
+    text-decoration: none;
+    color: rgba(0, 0, 0, .72);
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, .04);
+}
+
+.predstava-sticky-link:hover {
+    background: rgba(0, 0, 0, .07);
+}
+
+/* Compact mode (a subtle transformation as you scroll deeper) */
+.predstava-sticky.is-compact .predstava-sticky-inner {
+    padding: 8px 10px;
+    border-radius: 12px;
+}
+
+.predstava-sticky.is-compact .predstava-sticky-poster {
+    width: 40px;
+}
+
+.predstava-sticky.is-compact .predstava-sticky-title {
+    font-size: 15px;
+}
+
+/* Mobile: keep only essential (poster + title + rating) */
+@media (max-width: 768px) {
+    .predstava-sticky {
+        top: 64px;
+        /* mobile navbar height */
+    }
+
+    .predstava-sticky-right {
+        display: none;
+    }
+
+    .predstava-sticky-title {
+        max-width: 70vw;
+    }
 }

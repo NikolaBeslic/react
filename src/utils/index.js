@@ -56,6 +56,13 @@ const getCookieValue = (name) => {
         return decodeURIComponent(parts.pop().split(";").shift());
 };
 
+const addParagraphIfNotExists = (text) => {
+    const hasParagraph = /^\s*<p/i.test(text);
+    if (!hasParagraph) return `<p>${text}</p>`;
+
+    return text;
+};
+
 export {
     slugify,
     removeDuplicates,
@@ -63,4 +70,5 @@ export {
     dateFormate,
     csrf,
     getCookieValue,
+    addParagraphIfNotExists,
 };

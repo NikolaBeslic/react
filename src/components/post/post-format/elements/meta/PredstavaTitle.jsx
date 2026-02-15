@@ -9,6 +9,7 @@ import { useState } from "react";
 import HeadMeta from "../../../../elements/HeadMeta";
 import Breadcrumb from "../../../../common/Breadcrumb";
 import { csrf, getCookieValue } from "../../../../../utils";
+import PredstavaStickyTitle from "./PredstavaStickyTitle";
 
 const PredstavaTitle = ({ metaData }) => {
     const isDesktopOrLaptop = useMediaQuery({
@@ -141,9 +142,18 @@ const PredstavaTitle = ({ metaData }) => {
         <>
             <HeadMeta metaTitle={metaData.naziv_predstave} />
             <Breadcrumb bCat="Predstave" aPage={metaData.naziv_predstave} />
-            <div className="banner banner__default bg-grey-light-three">
+            <PredstavaStickyTitle
+                posterUrl={metaData.plakat}
+                title={metaData.naziv_predstave}
+                avgRating={metaData.prosecnaOcena}
+                ratingCount={metaData.brojOcena}
+            />
+            <div
+                className="banner banner__default bg-grey-light-three"
+                id="predstava-hero"
+            >
                 <div className="container">
-                    <div className="row">
+                    <div className="row g-4 align-items-start">
                         {isTabletOrMobile ? (
                             <>
                                 <div className="col-sm-12 col-xs-12">
@@ -241,7 +251,7 @@ const PredstavaTitle = ({ metaData }) => {
                             </>
                         ) : (
                             <>
-                                <div className="col-lg-2">
+                                <div className="col-12 col-md-auto">
                                     <div
                                         className="predstava-single-plakat"
                                         style={{ position: "relative" }}
@@ -259,174 +269,207 @@ const PredstavaTitle = ({ metaData }) => {
                                         />
                                     </div>
                                 </div>
-                                <div className="col-lg-8">
-                                    <div className="post-title-wrapper">
-                                        <div className="btn-group">
-                                            {metaData.zanrovi?.map((zanr) => (
-                                                <div
-                                                    className="zanr-button post-cat"
-                                                    key={zanr.zanrid}
-                                                    style={{
-                                                        color: zanr.zanr_boja,
-                                                        borderColor:
-                                                            zanr.zanr_boja,
-                                                    }}
-                                                >
-                                                    {zanr.naziv_zanra}
-                                                </div>
-                                            ))}
-                                        </div>
-                                        <h1 className="m-b-xs-0 m-t-xs-10 axil-title hover-line">
-                                            {metaData.naziv_predstave}
-                                        </h1>
-                                        <div className="post-metas banner-post-metas m-t-xs-20">
-                                            <ul className="list-inline">
-                                                <li>
-                                                    <i className="fa-solid fa-masks-theater"></i>
-                                                    {metaData.pozorista?.map(
-                                                        (pozoriste) => (
-                                                            <span
-                                                                className="author-name text-muted"
-                                                                key={
-                                                                    pozoriste.pozoristeid
-                                                                }
-                                                            >
-                                                                <a
-                                                                    href={`/pozorista/${pozoriste.pozoriste_slug}`}
-                                                                >
-                                                                    {" "}
-                                                                    {
-                                                                        pozoriste.naziv_pozorista
+                                {/* INFO + ACTIONS WRAPPER */}
+                                <div className="col-12 col-md">
+                                    <div className="d-flex flex-column flex-lg-row gap-3">
+                                        {/* INFO (title + meta + rating) */}
+                                        <div className="flex-grow-1">
+                                            <div className="post-title-wrapper predstava-title-wrapper">
+                                                {metaData.zanrovi.length >
+                                                    0 && (
+                                                    <div className="btn-group">
+                                                        {metaData.zanrovi?.map(
+                                                            (zanr) => (
+                                                                <div
+                                                                    className="zanr-button post-cat"
+                                                                    key={
+                                                                        zanr.zanrid
                                                                     }
-                                                                </a>{" "}
-                                                            </span>
-                                                        ),
-                                                    )}
-                                                </li>
-                                                <li>
-                                                    <i className="feather icon-share-2" />
-                                                    Premijera:{" "}
-                                                    {moment(
-                                                        metaData.premijera,
-                                                    ).format("DD. MMMM YYYY.")}
-                                                </li>
-                                            </ul>
-                                            <ul className="list-inline">
-                                                <li>
-                                                    <i className="fa-solid fa-pen-fancy"></i>
-                                                    Autor: {metaData.autor}
-                                                </li>
-                                                <li>
-                                                    <i className="fa-solid fa-signs-post"></i>
-                                                    Režija: {metaData.reditelj}
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                    {/* TO DO Font awesome as React comp, and rating as component */}
-                                    <div className="row">
-                                        <div className="rating-wrapper">
-                                            <div className="average-rating">
-                                                <span>Prosecna ocena:</span>{" "}
-                                                <br />
-                                                <i className="fa-xl fa-solid fa-star"></i>
-                                                <span className="current-rating">
-                                                    {metaData.prosecnaOcena} /
-                                                    10
-                                                </span>{" "}
-                                                <br />
-                                                <span className="number-of-ratings">
-                                                    Ocena: {metaData.brojOcena}
-                                                </span>
-                                            </div>
-                                            <div className="user-rating">
-                                                {ratingLoading ? (
-                                                    <Spinner
-                                                        animation="border"
-                                                        role="status"
-                                                        className="hup-spinner"
-                                                        size="sm"
-                                                    />
-                                                ) : (
-                                                    <>
-                                                        <span>
-                                                            Ocena korisnika:
-                                                        </span>
-                                                        <br />
-                                                        <Rating
-                                                            {...ratingProps}
-                                                            onChange={(value) =>
-                                                                handleRating(
-                                                                    value,
-                                                                )
-                                                            }
-                                                        />
-                                                    </>
+                                                                    style={{
+                                                                        color: zanr.zanr_boja,
+                                                                        borderColor:
+                                                                            zanr.zanr_boja,
+                                                                    }}
+                                                                >
+                                                                    {
+                                                                        zanr.naziv_zanra
+                                                                    }
+                                                                </div>
+                                                            ),
+                                                        )}
+                                                    </div>
                                                 )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-lg-2">
-                                    {metaData.naListiZeljaKorisnika ? (
-                                        <Button
-                                            variant="outline-primary"
-                                            className="btn btn-secondary btn-small"
-                                            disabled
-                                        >
-                                            <i className="fa-solid fa-check"></i>
-                                            Na listi zelja
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            variant="outline-primary"
-                                            className="btn btn-secondary btn-small"
-                                            onClick={handleDodajNaListuZelja}
-                                        >
-                                            {naListiZeljaLoading ? (
-                                                <Spinner
-                                                    as="span"
-                                                    animation="border"
-                                                    role="status"
-                                                    size="sm"
-                                                />
-                                            ) : (
-                                                <i className="fa-solid fa-circle-plus"></i>
-                                            )}
-                                            Dodaj na listu zelja
-                                        </Button>
-                                    )}
+                                                <h1 className="m-b-xs-0 m-t-xs-0 axil-title hover-line">
+                                                    {metaData.naziv_predstave}
+                                                </h1>
+                                                <div className="post-metas banner-post-metas m-t-xs-20">
+                                                    <ul className="predstava-meta-info-list">
+                                                        <li>
+                                                            <i className="fa-solid fa-masks-theater"></i>
+                                                            {metaData.pozorista?.map(
+                                                                (pozoriste) => (
+                                                                    <span
+                                                                        className="author-name text-muted"
+                                                                        key={
+                                                                            pozoriste.pozoristeid
+                                                                        }
+                                                                    >
+                                                                        <a
+                                                                            href={`/pozorista/${pozoriste.pozoriste_slug}`}
+                                                                        >
+                                                                            {" "}
+                                                                            {
+                                                                                pozoriste.naziv_pozorista
+                                                                            }
+                                                                        </a>{" "}
+                                                                    </span>
+                                                                ),
+                                                            )}
+                                                        </li>
+                                                        <li>
+                                                            <i className="feather icon-share-2" />
+                                                            Premijera:{" "}
+                                                            {moment(
+                                                                metaData.premijera,
+                                                            ).format(
+                                                                "DD. MMMM YYYY.",
+                                                            )}
+                                                        </li>
 
-                                    <br />
-                                    {metaData.naListiOdgledanihKorisnika ? (
-                                        <Button
-                                            variant="outline-primary"
-                                            className="btn btn-secondary btn-small"
-                                            disabled
-                                        >
-                                            <i className="fa-solid fa-check"></i>
-                                            Na listi odgledanih
-                                        </Button>
-                                    ) : (
-                                        <>
-                                            <Button
-                                                variant="outline"
-                                                className="btn btn-primary btn-small"
-                                                onClick={handleDodajUOdgledane}
-                                            >
-                                                {odgledaneLoading ? (
-                                                    <Spinner
-                                                        as="span"
-                                                        animation="border"
-                                                        role="status"
-                                                    />
-                                                ) : (
-                                                    <i className="fa-solid fa-circle-plus"></i>
-                                                )}
-                                                Dodaj u odgledane
-                                            </Button>
-                                        </>
-                                    )}
+                                                        <li>
+                                                            <i className="fa-solid fa-pen-fancy"></i>
+                                                            Autor:{" "}
+                                                            {metaData.autor}
+                                                        </li>
+                                                        <li>
+                                                            <i className="fa-solid fa-signs-post"></i>
+                                                            Režija:{" "}
+                                                            {metaData.reditelj}
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            {/* TO DO Font awesome as React comp, and rating as component */}
+
+                                            <div className="rating-wrapper">
+                                                <div className="average-rating">
+                                                    <p className="average-rating-text">
+                                                        Prosečna ocena
+                                                    </p>
+                                                    <p className="average-rating-current-rate">
+                                                        <i className="fa-xl fa-solid fa-star"></i>{" "}
+                                                        <span className="current-rating">
+                                                            {
+                                                                metaData.prosecnaOcena
+                                                            }{" "}
+                                                            / 10
+                                                        </span>{" "}
+                                                        <span className="number-of-ratings">
+                                                            (
+                                                            {metaData.brojOcena}
+                                                            )
+                                                        </span>
+                                                    </p>
+                                                </div>
+                                                <div className="user-rating">
+                                                    {ratingLoading ? (
+                                                        <Spinner
+                                                            animation="border"
+                                                            role="status"
+                                                            className="hup-spinner"
+                                                            size="sm"
+                                                        />
+                                                    ) : (
+                                                        <>
+                                                            <p className="average-rating-text">
+                                                                Tvoja ocena
+                                                            </p>
+
+                                                            <Rating
+                                                                style={{
+                                                                    fontSize:
+                                                                        "16px",
+                                                                }}
+                                                                {...ratingProps}
+                                                                onChange={(
+                                                                    value,
+                                                                ) =>
+                                                                    handleRating(
+                                                                        value,
+                                                                    )
+                                                                }
+                                                            />
+                                                        </>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="predstava-actions ms-lg-auto">
+                                            {metaData.naListiZeljaKorisnika ? (
+                                                <Button
+                                                    variant="outline-primary"
+                                                    className="btn btn-secondary btn-small"
+                                                    disabled
+                                                >
+                                                    <i className="fa-solid fa-check"></i>
+                                                    Na listi zelja
+                                                </Button>
+                                            ) : (
+                                                <Button
+                                                    variant="outline-primary"
+                                                    className="btn btn-secondary btn-small"
+                                                    onClick={
+                                                        handleDodajNaListuZelja
+                                                    }
+                                                >
+                                                    {naListiZeljaLoading ? (
+                                                        <Spinner
+                                                            as="span"
+                                                            animation="border"
+                                                            role="status"
+                                                            size="sm"
+                                                        />
+                                                    ) : (
+                                                        <i className="fa-solid fa-circle-plus"></i>
+                                                    )}
+                                                    Dodaj na listu zelja
+                                                </Button>
+                                            )}
+
+                                            <br />
+                                            {metaData.naListiOdgledanihKorisnika ? (
+                                                <Button
+                                                    variant="outline-primary"
+                                                    className="btn btn-secondary btn-small"
+                                                    disabled
+                                                >
+                                                    <i className="fa-solid fa-check"></i>
+                                                    Na listi odgledanih
+                                                </Button>
+                                            ) : (
+                                                <>
+                                                    <Button
+                                                        variant="outline"
+                                                        className="btn btn-primary btn-small"
+                                                        onClick={
+                                                            handleDodajUOdgledane
+                                                        }
+                                                    >
+                                                        {odgledaneLoading ? (
+                                                            <Spinner
+                                                                as="span"
+                                                                animation="border"
+                                                                role="status"
+                                                            />
+                                                        ) : (
+                                                            <i className="fa-solid fa-circle-plus"></i>
+                                                        )}
+                                                        Dodaj u odgledane
+                                                    </Button>
+                                                </>
+                                            )}
+                                        </div>
+                                    </div>
                                 </div>
                             </>
                         )}

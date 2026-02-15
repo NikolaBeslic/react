@@ -93,7 +93,7 @@ const Predstava = ({ data, updateData }) => {
                             className="grid-wrapper predstava-single-section-wrapper"
                             key="predsingl000001"
                         >
-                            <div class="container">
+                            <div className="container">
                                 <div className="row" key="predrow0001">
                                     <SectionTitle
                                         title="Opis predstave"
@@ -134,7 +134,7 @@ const Predstava = ({ data, updateData }) => {
                                 key="predsingl000002"
                                 id="tekstovi"
                             >
-                                <div class="container">
+                                <div className="container">
                                     <div className="row" key="predrow0002">
                                         <SectionTitle
                                             title="Iz našeg ugla"

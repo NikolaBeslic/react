@@ -1,10 +1,13 @@
 import Image from "next/legacy/image";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faComments } from "@fortawesome/free-regular-svg-icons";
+import Link from "next/link";
 
 const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
     return (
         <div
-            className={`media post-block post-block__small predstava-index-wrapper ${
+            className={`media post-block post-block__small bg-grey-light-three predstava-index-wrapper ${
                 pClass ?? "post-block__on-dark-bg m-b-xs-30"
             }`}
         >
@@ -66,12 +69,42 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                                       <i className="fa-light fa-calendar-day"></i>
                                       Premijera:{" "}
                                       {moment(data.premijera).format(
-                                          "DD.MMM.YYYY."
+                                          "DD.MMM.YYYY.",
                                       )}
                                   </li>
                               )}
                     </ul>
                 </div>
+            </div>
+            <div className="predstava-index-ocena-recenzija-wrapper">
+                <div className="predstava-index-ocena-komentari">
+                    {data.prosecna_ocena && (
+                        <div className="rating-wrapper">
+                            <FontAwesomeIcon icon={faStar} />{" "}
+                            <span className="current-rating">
+                                {" "}
+                                {data.prosecna_ocena}
+                            </span>
+                        </div>
+                    )}
+                    {data.broj_komentara > 0 && (
+                        <div className="predstava-index-komentari">
+                            <FontAwesomeIcon icon={faComments} />{" "}
+                            <span className="komentari-count">
+                                {data.broj_komentara}
+                            </span>
+                        </div>
+                    )}
+                </div>
+                {data.review_slug && (
+                    <div className="predstava-index-recenzija">
+                        <Link
+                            href={`/predstave/${data.predstava_slug}#tekstovi`}
+                        >
+                            Pročitaj recenziju
+                        </Link>
+                    </div>
+                )}
             </div>
         </div>
     );

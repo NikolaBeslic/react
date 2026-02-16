@@ -258,7 +258,7 @@ export default function PredstavePage() {
             </p>
             <div className="axil-content row">
                 {predstave?.map((pred) => (
-                    <div className="col-lg-6" key={pred.predstavaid}>
+                    <div className="col-lg-12" key={pred.predstavaid}>
                         <PredstaveLayout
                             data={pred}
                             pClass=""

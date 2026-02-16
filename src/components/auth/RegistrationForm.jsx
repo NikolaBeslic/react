@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axiosClient from "../../utils/axios";
 import { useStateContext } from "../../contexts/StateContext";
-import { Spinner } from "react-bootstrap";
+import { InputGroup, Spinner } from "react-bootstrap";
 import toast from "react-hot-toast";
+import { csrf, getCookieValue } from "../../utils";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 const RegistrationForm = ({ handleGoogleLogin }) => {
     const [formData, setFormData] = useState({
@@ -15,37 +19,39 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
         // Add more fields as needed
     });
 
+    const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState([]);
     const { isModalOpen, setModalOpen, isLoading, showLoading, hideLoading } =
         useStateContext();
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         showLoading();
         console.log(formData);
-        axiosClient.get("/csrf-cookie").then((response) => {
-            axiosClient
-                .post(`/register`, formData)
-                .then((res) => {
-                    hideLoading();
-                    setModalOpen(false);
-                    toast.success("Uspešno ste se registrovali!");
-                    setFormData({
-                        korisnickoIme: "",
-                        email: "",
-                        password: "",
-                        password_confirmation: "",
-                    });
-                })
-                .catch((error) => {
-                    console.error(error);
-                    hideLoading();
-                    setErrors(error.response.data.errors);
+        await csrf();
+        axiosClient
+            .post(`/register`, formData, {
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
+            .then((res) => {
+                hideLoading();
+                setModalOpen(false);
+                toast.success("Uspešno ste se registrovali!");
+                setFormData({
+                    korisnickoIme: "",
+                    email: "",
+                    password: "",
+                    password_confirmation: "",
                 });
-        });
+            })
+            .catch((error) => {
+                console.error(error);
+                hideLoading();
+                setErrors(error.response.data.errors);
+            });
     };
-
-    // to do: send it to API
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -86,21 +92,41 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                 )}
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Control
-                    name="password"
-                    type="password"
-                    placeholder="Lozinka"
-                    value={formData.password}
-                    onChange={handleChange}
-                ></Form.Control>
+                <InputGroup className="flex-nowrap">
+                    <Form.Control
+                        name="password"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Lozinka"
+                        value={formData.password}
+                        onChange={handleChange}
+                    ></Form.Control>
+                    <InputGroup.Text
+                        role="button"
+                        style={{ cursor: "pointer" }}
+                        onClick={() => setShowPassword((s) => !s)}
+                        aria-label={
+                            showPassword ? "Sakrij lozinku" : "Prikaži lozinku"
+                        }
+                        aria-pressed={showPassword}
+                        id="basic-addon2"
+                    >
+                        {showPassword ? (
+                            <FontAwesomeIcon icon={faEyeSlash} />
+                        ) : (
+                            <FontAwesomeIcon icon={faEye} />
+                        )}
+                    </InputGroup.Text>
+                </InputGroup>
             </Form.Group>
             <Form.Group className="mb-3">
-                <Form.Control
-                    name="password_confirmation"
-                    type="password"
-                    placeholder="Potvrdite lozinku"
-                    onChange={handleChange}
-                ></Form.Control>
+                <InputGroup className="flex-nowrap">
+                    <Form.Control
+                        name="password_confirmation"
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Potvrdite lozinku"
+                        onChange={handleChange}
+                    ></Form.Control>
+                </InputGroup>
                 {errors?.password && (
                     <span className="text-danger">{errors.password}</span>
                 )}
@@ -115,6 +141,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     onClick={handleGoogleLogin}
                     align="right"
                 >
+                    <FontAwesomeIcon icon={faGoogle} />
                     Prijavite se koristeci Google
                 </Button>
             </div>

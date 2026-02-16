@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { forwardRef, useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import SocialLink from "../../data/social/SocialLink.json";
@@ -6,10 +6,11 @@ import OffcanvasMenu from "./OffcanvasMenu";
 import AuthModal from "../auth/AuthModal";
 import { useStateContext } from "../../contexts/StateContext";
 import axiosClient from "../../utils/axios";
-import { Spinner, NavDropdown } from "react-bootstrap";
+import { Spinner, Dropdown } from "react-bootstrap";
 import SearchResult from "../elements/SearchResult";
 import { toast } from "react-hot-toast";
 import { csrf, getCookieValue } from "../../utils";
+import UserAvatar from "../common/UserAvatar";
 
 const HeaderOne = () => {
     // Main Menu Toggle
@@ -135,6 +136,23 @@ const HeaderOne = () => {
             })
             .catch((err) => console.error(err));
     };
+
+    const AvatarToggle = forwardRef(({ children, onClick }, ref) => (
+        <a
+            href="#"
+            ref={ref}
+            onClick={(e) => {
+                e.preventDefault();
+                onClick(e);
+            }}
+            className="d-flex align-items-center text-decoration-none"
+            style={{ cursor: "pointer" }}
+        >
+            {children}
+        </a>
+    ));
+
+    AvatarToggle.displayName = "AvatarToggle";
 
     /* search functions */
     function handleKeyUp(e) {
@@ -304,39 +322,6 @@ const HeaderOne = () => {
                                             Blog
                                         </Link>
                                     </li>
-                                    {currentUser ? (
-                                        <>
-                                            {logoutLoading ? (
-                                                <Spinner
-                                                    animation="border"
-                                                    role="status"
-                                                    size="sm"
-                                                />
-                                            ) : (
-                                                ""
-                                            )}
-                                            <NavDropdown
-                                                title={currentUser.korisnicko_ime?.substring(
-                                                    0,
-                                                    2,
-                                                )}
-                                            >
-                                                <NavDropdown.Item
-                                                    as={Link}
-                                                    href="/korisnicki-profil"
-                                                >
-                                                    Korisnicki profil
-                                                </NavDropdown.Item>
-                                                <NavDropdown.Item
-                                                    onClick={handleLogout}
-                                                >
-                                                    Logout
-                                                </NavDropdown.Item>
-                                            </NavDropdown>
-                                        </>
-                                    ) : (
-                                        ""
-                                    )}
                                 </ul>
                             </div>
                             <div className="navbar-extra-features ml-auto">
@@ -392,12 +377,56 @@ const HeaderOne = () => {
                                     <span />
                                 </button>
 
-                                <button
-                                    className="m-l-xs-10"
-                                    onClick={openModal}
-                                >
-                                    <i className="fa-regular fa-user"></i>
-                                </button>
+                                {currentUser ? (
+                                    logoutLoading ? (
+                                        <Spinner
+                                            animation="border"
+                                            role="status"
+                                            size="sm"
+                                        />
+                                    ) : (
+                                        <>
+                                            <Dropdown
+                                                align="end"
+                                                className="user-dropdown"
+                                            >
+                                                <Dropdown.Toggle
+                                                    as={AvatarToggle}
+                                                    id="user-menu-toggle"
+                                                >
+                                                    <UserAvatar
+                                                        name={
+                                                            currentUser?.korisnicko_ime
+                                                        }
+                                                        size={28}
+                                                    />
+                                                </Dropdown.Toggle>
+
+                                                <Dropdown.Menu>
+                                                    <Dropdown.Item
+                                                        as={Link}
+                                                        href="/korisnicki-profil"
+                                                    >
+                                                        Korisnički profil
+                                                    </Dropdown.Item>
+
+                                                    <Dropdown.Item
+                                                        onClick={handleLogout}
+                                                    >
+                                                        Logout
+                                                    </Dropdown.Item>
+                                                </Dropdown.Menu>
+                                            </Dropdown>
+                                        </>
+                                    )
+                                ) : (
+                                    <button
+                                        className="m-l-xs-10 nav-search-field-toggler"
+                                        onClick={openModal}
+                                    >
+                                        <i className="fa-regular fa-user"></i>
+                                    </button>
+                                )}
                             </div>
                             {/* <div
               className={`main-nav-toggler d-block d-lg-none ${mobileToggle ? "expanded" : ""

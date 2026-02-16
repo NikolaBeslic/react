@@ -11742,3 +11742,7 @@ address .tel i {
         max-width: 70vw;
     }
 }
+
+.user-dropdown .dropdown-item {
+    font-size: 14px;
+}

@@ -32,7 +32,6 @@
     "axios": "^1.6.5",
     "bootstrap": "^5.3.1",
     "cookie": "^1.0.2",
-    
     "flmngr": "^2.0.13",
     "gray-matter": "^4.0.3",
     "jquery": "^3.7.1",
@@ -43,9 +42,7 @@
     "next-auth": "^4.24.6",
     "primereact": "^10.8.5",
     "react": "18.2.0",
-    
     "react-bootstrap": "^2.5.0",
-    "react-bootstrap-star-rating": "^0.0.2",
     "react-calendar": "^5.0.0",
     "react-data-table-component": "^7.6.2",
     "react-dom": "18.2.0",

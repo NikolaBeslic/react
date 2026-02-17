@@ -12,6 +12,8 @@ import HuPLayout from "../layouts/HuPLayout";
 import { SSRProvider } from "react-bootstrap";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import "@fortawesome/fontawesome-free/css/all.min.css";
+
 import {
     ModuleRegistry,
     AllCommunityModule, // or AllEnterpriseModule

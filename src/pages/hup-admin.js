@@ -16,7 +16,3 @@ const HuPAdminPage = () => {
 };
 
 export default HuPAdminPage;
-
-HuPAdminPage.getLayoutProps = (pageProps) => ({
-    noSidebar: true,
-});

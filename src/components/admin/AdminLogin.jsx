@@ -17,8 +17,6 @@ const AdminLogin = () => {
     });
     const router = useRouter();
 
-    const { admin, refreshAdmin } = useAdmin();
-
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);

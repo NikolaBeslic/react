@@ -34,6 +34,7 @@ export default function TekstoviPage() {
             .then((res) => {
                 console.log(res.data);
                 setPosts(res.data);
+                setLoading(false);
             })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));

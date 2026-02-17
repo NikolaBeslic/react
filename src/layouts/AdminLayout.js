@@ -6,12 +6,14 @@ import { Col, Row } from "react-bootstrap";
 
 import { AdminProvider, useAdmin } from "../contexts/AdminContext";
 import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 export const AdminLayoutInner = ({ children }) => {
     const { loading, admin } = useAdmin();
+    const router = useRouter();
 
     if (loading) return <div className="p-3">Loading admin...</div>;
-    if (!admin) return <div className="p-3">Not logged in as admin.</div>; // later redirect
+    if (!admin) return router.push("/hup-admin"); // later redirect
 
     return (
         <>

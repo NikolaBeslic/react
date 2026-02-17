@@ -16,6 +16,7 @@ import {
     ModuleRegistry,
     AllCommunityModule, // or AllEnterpriseModule
 } from "ag-grid-community";
+import AdminAuthLayout from "../layouts/AdminAuthLayout";
 
 // Register AG Grid modules ONCE
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -25,28 +26,42 @@ function isAdminRoute(router) {
     return router.pathname.startsWith("/admin");
 }
 
+function isAdminLoginRoute(router) {
+    return router.pathname.startsWith("/hup-admin");
+}
+
 function MyApp({ Component, pageProps, router }) {
     const layoutProps =
         typeof Component.getLayoutProps === "function"
             ? Component.getLayoutProps(pageProps)
             : Component.getLayoutProps || {};
 
-    const getLayout = isAdminRoute(router)
-        ? (page) => <AdminLayout>{page}</AdminLayout>
-        : (page) => {
-              const header = layoutProps?.header ?? null;
-              const noSidebar = layoutProps?.noSidebar ?? false;
-              const isNaslovna = layoutProps?.isNaslovna ?? false;
-              return (
-                  <HuPLayout
-                      header={header}
-                      noSidebar={noSidebar}
-                      isNaslovna={isNaslovna}
-                  >
-                      {page}
-                  </HuPLayout>
-              );
-          };
+    let getLayout = "";
+
+    if (isAdminLoginRoute(router)) {
+        getLayout = (page) => {
+            return <AdminAuthLayout>{page}</AdminAuthLayout>;
+        };
+    } else if (isAdminRoute(router)) {
+        getLayout = (page) => {
+            return <AdminLayout>{page}</AdminLayout>;
+        };
+    } else {
+        getLayout = (page) => {
+            const header = layoutProps?.header ?? null;
+            const noSidebar = layoutProps?.noSidebar ?? false;
+            const isNaslovna = layoutProps?.isNaslovna ?? false;
+            return (
+                <HuPLayout
+                    header={header}
+                    noSidebar={noSidebar}
+                    isNaslovna={isNaslovna}
+                >
+                    {page}
+                </HuPLayout>
+            );
+        };
+    }
 
     return (
         <ContextProvider>

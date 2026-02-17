@@ -2,9 +2,9 @@
     "buildCommand": "npm run build",
     
      "rewrites": [
-    {
-      "source": "/api/:path*",
-      "destination": "https://hup-test.vercel.app/:path*"
-    }
+      {
+        "source": "/api/:path*",
+        "destination": "https://hup-test.vercel.app/:path*"
+      }
   ]
 }

@@ -5,6 +5,10 @@
       {
         "source": "/api/:path*",
         "destination": "https://huplaravelreact-production.up.railway.app/api/:path*"
-      }
+      },
+      {
+      "source": "/csrf-cookie",
+      "destination": "https://huplaravelreact-production.up.railway.app/csrf-cookie"
+    }
   ]
 }

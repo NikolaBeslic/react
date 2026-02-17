@@ -3,13 +3,12 @@ import SearchHeader from "../components/post/post-format/elements/meta/SearchHea
 import { useRouter } from "next/router";
 import axiosClient from "../utils/axios";
 import RezultatiPretrage from "../components/post/layout/RezultatiPretrage";
-import { useStateContext } from "../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 
 const SearchPage = () => {
     const router = useRouter();
     const { query } = router.query;
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const [searchResults, setSearchResults] = useState([]);
@@ -17,7 +16,7 @@ const SearchPage = () => {
     useEffect(() => {
         if (query) {
             try {
-                showLoading();
+                setLoading(true);
                 axiosClient
                     .get(`/pretraga?query=${query}&page=${currentPage}`)
                     .then((res) => {
@@ -27,10 +26,10 @@ const SearchPage = () => {
                             ...res.data.data,
                         ]);
                         setTotalPages(res.data.last_page || 1);
-                        hideLoading();
+                        setLoading(false);
                     });
             } catch (error) {
-                hideLoading();
+                setLoading(false);
                 console.error("Failed to search", error);
             }
         }
@@ -40,7 +39,7 @@ const SearchPage = () => {
         <>
             <div className="axil-about-us section-gap-top p-b-xs-20">
                 <div className="container">
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"
@@ -61,7 +60,7 @@ const SearchPage = () => {
                         <p>No results found.</p>
                     )}
 
-                    {!isLoading &&
+                    {loading &&
                         searchResults.length > 0 &&
                         currentPage < totalPages && (
                             <button

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import HeadMeta from "../../components/elements/HeadMeta";
 import axiosClient from "../../utils/axios";
-import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 import HuPkastIndexLayout from "../../components/post/HuPkastIndexLayout";
 import CategoryHeader from "../../components/post/post-format/elements/meta/CategoryHeader";
 import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function HuPkast({ initialHuPkast, initTotalPages }) {
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
+
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(initTotalPages);
     const [hupkast, setHupkast] = useState(initialHuPkast.tekstovi.data || []);
@@ -27,7 +27,7 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
     const loadMore = async () => {
         if (currentPage >= totalPages) return;
 
-        showLoading(true);
+        setLoading(true);
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(`/get-hupkast?page=${nextPage}`);
@@ -37,7 +37,7 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
         } catch (err) {
             console.error("Failed to load more posts", err);
         }
-        hideLoading();
+        setLoading(false);
     };
     return (
         <>
@@ -45,7 +45,7 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
 
             <div className="random-posts section-gap">
                 <div className="container">
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"

@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { Container, Navbar, Nav, Button, Row, Col } from "react-bootstrap";
 import Link from "next/link";
+import { useAdmin } from "../../../contexts/AdminContext";
 
 function AdminNav() {
+    const { admin } = useAdmin();
+
     return (
         <>
             <Navbar
@@ -75,6 +78,7 @@ function AdminNav() {
                         >
                             Pozorišta
                         </Nav.Link>
+                        {admin && <Nav.Link>{admin?.username}</Nav.Link>}
                     </Nav>
                 </Container>
             </Navbar>

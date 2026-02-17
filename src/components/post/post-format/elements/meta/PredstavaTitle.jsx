@@ -2,7 +2,6 @@ import Image from "react-bootstrap/Image";
 import moment from "moment";
 import { useMediaQuery } from "react-responsive";
 import Rating from "react-rating";
-import { useStateContext } from "../../../../../contexts/StateContext";
 import axiosClient from "../../../../../utils/axios";
 import { Button, Spinner } from "react-bootstrap";
 import { useState } from "react";
@@ -10,6 +9,7 @@ import HeadMeta from "../../../../elements/HeadMeta";
 import Breadcrumb from "../../../../common/Breadcrumb";
 import { csrf, getCookieValue } from "../../../../../utils";
 import PredstavaStickyTitle from "./PredstavaStickyTitle";
+import { useUser } from "../../../../../contexts/UserContext";
 
 const PredstavaTitle = ({ metaData }) => {
     const isDesktopOrLaptop = useMediaQuery({
@@ -19,18 +19,17 @@ const PredstavaTitle = ({ metaData }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
     const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
-    const { currentUser } = useStateContext();
+    const { user, setModalOpen } = useUser();
     const [naListiZelja, setNaListiZelja] = useState(
         metaData.naListiZeljaKorisnika,
     );
     const [naListiOdgledanih, setNaListiOdgledanih] = useState(
         metaData.naListiOdgledanihKorisnika,
     );
-    const { setModalOpen } = useStateContext();
 
     const [ratingLoading, setRatingLoading] = useState(false);
     const handleRating = async (value) => {
-        if (!currentUser) {
+        if (!user) {
             alert("Ulogujte se da biste mogli da ocenite predstavu.");
             setModalOpen(true);
             return;
@@ -42,7 +41,7 @@ const PredstavaTitle = ({ metaData }) => {
                 "/predstava/oceni",
                 {
                     ocena: value,
-                    user: currentUser,
+                    user: user,
                     predstavaid: metaData.predstavaid,
                 },
                 {
@@ -71,7 +70,7 @@ const PredstavaTitle = ({ metaData }) => {
     }
     const [naListiZeljaLoading, setNaListiZeljaLoading] = useState(false);
     const handleDodajNaListuZelja = async () => {
-        if (!currentUser) {
+        if (!user) {
             alert("You must be logged in to rate a post.");
             return;
         }
@@ -81,7 +80,7 @@ const PredstavaTitle = ({ metaData }) => {
             .post(
                 "/predstava/dodajNaListuZelja",
                 {
-                    user: currentUser,
+                    user: user,
                     predstavaid: metaData.predstavaid,
                 },
                 {
@@ -105,7 +104,7 @@ const PredstavaTitle = ({ metaData }) => {
 
     const [odgledaneLoading, setOdgledaneLoading] = useState(false);
     const handleDodajUOdgledane = async () => {
-        if (!currentUser) {
+        if (!user) {
             alert("You must be logged in to do this");
             return;
         }
@@ -115,7 +114,7 @@ const PredstavaTitle = ({ metaData }) => {
             .post(
                 "/predstava/dodajUOdgledane",
                 {
-                    user: currentUser,
+                    user: user,
                     predstavaid: metaData.predstavaid,
                 },
                 {

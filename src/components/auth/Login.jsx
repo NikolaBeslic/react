@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { useStateContext } from "../../contexts/StateContext";
+import { useUser } from "../../contexts/UserContext";
 import { InputGroup, Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { csrf, getCookieValue } from "../../utils";
@@ -18,22 +18,13 @@ const Login = ({ handleGoogleLogin }) => {
         // Add more fields as needed
     });
 
-    const {
-        currentUser,
-        setCurrentUser,
-        isModalOpen,
-        setModalOpen,
-        isLoading,
-        showLoading,
-        hideLoading,
-    } = useStateContext();
-
+    const { user, refreshUser, isModalOpen, setModalOpen } = useUser();
+    const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
-    const router = useRouter();
 
     const handleSubmit = async (event) => {
-        showLoading();
+        setLoading(true);
         event.preventDefault();
         console.log(formData);
         await csrf();
@@ -44,17 +35,15 @@ const Login = ({ handleGoogleLogin }) => {
                 },
             })
             .then((res) => {
-                setCurrentUser(res.data);
+                refreshUser();
                 setModalOpen(false); // Close the modal
-                hideLoading();
                 toast.success("Uspešno ste se ulogovali");
             })
             .catch((err) => {
                 console.error(err);
-
                 setErrors(err?.response?.data);
-                hideLoading();
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     // const handleGoogleLogin = (e) => {
@@ -72,7 +61,7 @@ const Login = ({ handleGoogleLogin }) => {
     };
     return (
         <>
-            {isLoading && (
+            {loading && (
                 <Spinner
                     animation="border"
                     role="status"

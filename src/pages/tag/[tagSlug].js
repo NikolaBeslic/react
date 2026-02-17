@@ -8,28 +8,27 @@ import WidgetPremijere from "../../components/widget/WidgetPremijere";
 import PostLayoutTwo from "../../components/post/layout/PostLayoutTwo";
 import { Breadcrumb, Spinner } from "react-bootstrap";
 import HeadMeta from "../../components/elements/HeadMeta";
-import { useStateContext } from "../../contexts/StateContext";
 
 export default function Page() {
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
     const router = useRouter();
     const elementRef = useRef(null);
     const tag_slug = router.query.tagSlug;
     const [tag, setTag] = useState([]);
 
     useEffect(() => {
-        showLoading();
+        setLoading(treu);
         if (tag_slug) {
             axiosClient
                 .get(`/get-texts-by-tag/${tag_slug}`)
                 .then((res) => {
                     console.log(res.data);
                     setTag(res.data);
-                    hideLoading();
+                    setLoading(false);
                 })
                 .catch((err) => {
                     console.error(err);
-                    hideLoading();
+                    setLoading(false);
                 });
         }
     }, [tag_slug]);
@@ -55,7 +54,7 @@ export default function Page() {
             {/* Banner End here  */}
             <div className="random-posts section-gap">
                 <div className="container">
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"

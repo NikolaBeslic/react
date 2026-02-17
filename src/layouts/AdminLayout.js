@@ -4,7 +4,15 @@ import AdminSidebar from "../components/admin/layout/AdminSidebar";
 import AdminHeader from "../components/admin/layout/AdminHeader";
 import { Col, Row } from "react-bootstrap";
 
-const AdminLayout = ({ children }) => {
+import { AdminProvider, useAdmin } from "../contexts/AdminContext";
+import { useEffect } from "react";
+
+export const AdminLayoutInner = ({ children }) => {
+    const { loading, admin } = useAdmin();
+
+    if (loading) return <div className="p-3">Loading admin...</div>;
+    if (!admin) return <div className="p-3">Not logged in as admin.</div>; // later redirect
+
     return (
         <>
             <AdminHeader metaTitle="Početna" />
@@ -26,4 +34,10 @@ const AdminLayout = ({ children }) => {
     );
 };
 
-export default AdminLayout;
+export default function AdminLayout({ children }) {
+    return (
+        <AdminProvider>
+            <AdminLayoutInner>{children}</AdminLayoutInner>
+        </AdminProvider>
+    );
+}

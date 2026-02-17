@@ -1,9 +1,9 @@
 import Link from "next/link";
 import React from "react";
-import { useStateContext } from "../contexts/StateContext";
+import { useUser } from "../contexts/UserContext";
 
 const ErrorPage = () => {
-    const { setModalOpen } = useStateContext();
+    const { setModalOpen } = useUser();
 
     const handleOpenModal = () => {
         setModalOpen(true);

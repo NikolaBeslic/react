@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Login from "./Login";
 import RegistrationForm from "./RegistrationForm";
-import { useStateContext } from "../../contexts/StateContext";
+import { useUser } from "../../contexts/UserContext";
 
 const AuthModal = ({ closeModal }) => {
-    const { isModalOpen } = useStateContext();
+    const { isModalOpen } = useUser();
 
     const [showLogin, setShowLogin] = useState(true);
     const [formData, setFormData] = useState({

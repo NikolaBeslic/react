@@ -3,7 +3,6 @@ import axiosClient from "../utils/axios";
 import { withSSRHandler } from "../utils/withSSRHandler";
 import { Spinner } from "react-bootstrap";
 import PostLayoutTwo from "../components/post/layout/PostLayoutTwo";
-import { useStateContext } from "../contexts/StateContext";
 import CategoryHeader from "../components/post/post-format/elements/meta/CategoryHeader";
 
 export default function Page({ categoryData, initialPosts, initTotalPages }) {
@@ -12,7 +11,8 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
     const [posts, setPosts] = useState(initialPosts);
 
     const elementRef = useRef(null);
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         setPosts(initialPosts);
@@ -22,7 +22,7 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
     const loadMore = async () => {
         if (currentPage >= totalPages) return;
 
-        showLoading(true);
+        setLoading(true);
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(
@@ -33,14 +33,14 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
         } catch (err) {
             console.error("Failed to load more posts", err);
         }
-        hideLoading();
+        setLoading(false);
     };
 
     return (
         <>
             <div className="random-posts section-gap">
                 <div className="container">
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"
@@ -56,7 +56,7 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
                                     key={data.slug}
                                 />
                             ))}
-                            {!isLoading && (
+                            {!loading && (
                                 <button
                                     className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                     onClick={loadMore}

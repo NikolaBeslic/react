@@ -5,7 +5,6 @@ import axiosClient from "../../../utils/axios";
 import { Autocomplete, Box, Grid2, Paper, TextField } from "@mui/material";
 import { Col, Form, Row, Spinner, Button, FormLabel } from "react-bootstrap";
 import Select from "react-select";
-import { useStateContext } from "../../../contexts/StateContext";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { TimeField } from "@mui/x-date-pickers/TimeField";
@@ -14,9 +13,9 @@ import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import { AgGridReact } from "ag-grid-react";
 
 export default function DodajGostovanjePage() {
-    const { isLoading, showLoading, hideLoading } = useStateContext();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
@@ -36,6 +35,7 @@ export default function DodajGostovanjePage() {
 
     const [igranja, setIgranja] = useState([]);
     const gridRef = useRef(null);
+
     useEffect(() => {
         setLoading(true);
         axiosClient
@@ -62,7 +62,6 @@ export default function DodajGostovanjePage() {
                     })),
                 );
                 setIgranja(res.data.igranja);
-                hideLoading();
             })
             .catch((err) => console.error(err))
             .finally(() => setLoading(false));
@@ -165,7 +164,7 @@ export default function DodajGostovanjePage() {
             <h1>Dodaj gostovanje</h1>
             <div className="container">
                 <Box sx={{ flexGrow: 1, my: 3 }}>
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"

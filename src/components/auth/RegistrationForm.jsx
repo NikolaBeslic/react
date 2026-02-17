@@ -2,13 +2,13 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axiosClient from "../../utils/axios";
-import { useStateContext } from "../../contexts/StateContext";
 import { InputGroup, Spinner } from "react-bootstrap";
 import toast from "react-hot-toast";
 import { csrf, getCookieValue } from "../../utils";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { useUser } from "../../contexts/UserContext";
 
 const RegistrationForm = ({ handleGoogleLogin }) => {
     const [formData, setFormData] = useState({
@@ -21,12 +21,12 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
 
     const [showPassword, setShowPassword] = useState(false);
     const [errors, setErrors] = useState([]);
-    const { isModalOpen, setModalOpen, isLoading, showLoading, hideLoading } =
-        useStateContext();
+    const [loading, setLoading] = useState(false);
+    const { user, refreshUser, isModalOpen, setModalOpen } = useUser();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        showLoading();
+        setLoading(true);
         console.log(formData);
         await csrf();
         axiosClient
@@ -36,7 +36,6 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                 },
             })
             .then((res) => {
-                hideLoading();
                 setModalOpen(false);
                 toast.success("Uspešno ste se registrovali!");
                 setFormData({
@@ -48,9 +47,9 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
             })
             .catch((error) => {
                 console.error(error);
-                hideLoading();
                 setErrors(error.response.data.errors);
-            });
+            })
+            .finally(() => setLoading(false));
     };
 
     const handleChange = (e) => {
@@ -60,7 +59,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            {isLoading && (
+            {loading && (
                 <Spinner
                     animation="border"
                     role="status"

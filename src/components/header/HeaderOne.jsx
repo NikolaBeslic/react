@@ -4,7 +4,7 @@ import Image from "next/image";
 import SocialLink from "../../data/social/SocialLink.json";
 import OffcanvasMenu from "./OffcanvasMenu";
 import AuthModal from "../auth/AuthModal";
-import { useStateContext } from "../../contexts/StateContext";
+import { useUser } from "../../contexts/UserContext";
 import axiosClient from "../../utils/axios";
 import { Spinner, Dropdown } from "react-bootstrap";
 import SearchResult from "../elements/SearchResult";
@@ -105,7 +105,7 @@ const HeaderOne = () => {
 
     // Modal
     //const [isModalOpen, setIsModalOpen] = useState(false);
-    const { isModalOpen, setModalOpen } = useStateContext();
+    const { isModalOpen, setModalOpen, user, refreshUser } = useUser();
 
     const openModal = () => {
         setModalOpen(true);
@@ -115,14 +115,13 @@ const HeaderOne = () => {
         setModalOpen(false);
     };
 
-    const { currentUser, setCurrentUser } = useStateContext();
     const [logoutLoading, setLogoutLoading] = useState(false);
 
     const handleLogout = async () => {
         setLogoutLoading(true);
         await csrf();
         axiosClient
-            .post("/logout", currentUser, {
+            .post("/logout", user, {
                 withCredentials: true,
                 headers: {
                     "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
@@ -130,7 +129,7 @@ const HeaderOne = () => {
             })
             .then((res) => {
                 console.log(res.data);
-                setCurrentUser(null);
+                refreshUser();
                 toast.success("Uspešno ste se izlogovali");
                 setLogoutLoading(false);
             })
@@ -377,7 +376,7 @@ const HeaderOne = () => {
                                     <span />
                                 </button>
 
-                                {currentUser ? (
+                                {user ? (
                                     logoutLoading ? (
                                         <Spinner
                                             animation="border"
@@ -396,7 +395,7 @@ const HeaderOne = () => {
                                                 >
                                                     <UserAvatar
                                                         name={
-                                                            currentUser?.korisnicko_ime
+                                                            user?.korisnicko_ime
                                                         }
                                                         size={28}
                                                     />

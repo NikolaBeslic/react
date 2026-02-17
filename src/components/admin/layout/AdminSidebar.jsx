@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Link from "next/link";
-import { useStateContext } from "../../../contexts/StateContext";
 import { Button, Col, Nav, Navbar, Badge } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,10 +15,11 @@ import {
     faChevronLeft,
     faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { useAdmin } from "../../../contexts/AdminContext";
 
 function AdminSidebar() {
     const [collapsed, setCollapsed] = useState(false);
-    const { unnaprovedCommentsCount } = useStateContext();
+    const { unnaprovedCommentsCount } = useAdmin();
 
     return (
         <>

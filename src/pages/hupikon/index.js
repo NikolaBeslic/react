@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import axiosClient from "../../utils/axios";
-import { useStateContext } from "../../contexts/StateContext";
 import { Breadcrumb, Spinner } from "react-bootstrap";
 import HupikonIndexLayout from "../../components/post/layout/HupikonIndexLayout";
 import Masonry, { ResponsiveMasonry } from "react-responsive-masonry";
@@ -9,9 +7,9 @@ import CategoryHeader from "../../components/post/post-format/elements/meta/Cate
 import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function Hupikon({ initialHuPikon, initTotalPages }) {
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
     const [hupikonPosts, setHupikonPosts] = useState(
-        initialHuPikon.tekstovi || []
+        initialHuPikon.tekstovi || [],
     );
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(initTotalPages);
@@ -33,7 +31,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     const loadMore = async () => {
         if (currentPage >= totalPages) return;
 
-        showLoading(true);
+        setLoading(true);
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(`/get-hupikon?page=${nextPage}`);
@@ -42,7 +40,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
         } catch (err) {
             console.error("Failed to load more posts", err);
         }
-        hideLoading();
+        setLoading(false);
     };
 
     return (
@@ -51,7 +49,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
                 <div className="random-posts section-gap">
                     <div className="axil-content">
                         <div className="row">
-                            {isLoading && (
+                            {loading && (
                                 <Spinner
                                     animation="border"
                                     role="status"

@@ -1,7 +1,6 @@
 import PostLayoutTwo from "../../components/post/layout/PostLayoutTwo";
 import { useState } from "react";
 import axiosClient from "../../utils/axios";
-import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 import AutorHeader from "../../components/post/post-format/elements/meta/AutorHeader";
 import { withSSRHandler } from "../../utils/withSSRHandler";
@@ -10,30 +9,30 @@ export default function PostAuthor({ autor }) {
     const [autorPosts, setAutorPosts] = useState(autor.tekstovi.data || []);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(autor.tekstovi.last_page || 1);
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
 
     const loadMore = async () => {
         if (currentPage >= totalPages) return;
 
-        showLoading();
+        setLoading(true);
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(
-                `/get-single-autor/${autor.autor_slug}?page=${nextPage}`
+                `/get-single-autor/${autor.autor_slug}?page=${nextPage}`,
             );
             setAutorPosts((prev) => [...prev, ...res.data.tekstovi?.data]);
             setCurrentPage(nextPage);
         } catch (err) {
             console.error("Failed to load more posts", err);
         }
-        hideLoading();
+        setLoading(false);
     };
 
     return (
         <>
             <div className="random-posts section-gap">
                 <div className="container">
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"
@@ -49,7 +48,7 @@ export default function PostAuthor({ autor }) {
                                 key={data.slug}
                             />
                         ))}
-                        {!isLoading && currentPage < totalPages && (
+                        {!loading && currentPage < totalPages && (
                             <button
                                 className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                 onClick={loadMore}
@@ -69,7 +68,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
-        `/get-single-autor/${autorSlug}?page=${page}`
+        `/get-single-autor/${autorSlug}?page=${page}`,
     );
 
     const autor = response.data;

@@ -1,20 +1,22 @@
 import AdminLogin from "../components/admin/AdminLogin";
-import AdminLayout from "../layouts/AdminLayout";
 
 const HuPAdminPage = () => {
-
-    return <>
-        <AdminLayout>
+    return (
+        <>
             <div className="row">
-                <div className="col-md-1"></div>
-                <div className="col-md-10">
-                    <p>HuP Admin</p>
+                <div className="col-md-3"></div>
+                <div className="col-md-6">
+                    <h1>HuP Admin</h1>
                     <AdminLogin></AdminLogin>
                 </div>
-                <div className="col-md-1"></div>
+                <div className="col-md-3"></div>
             </div>
-        </AdminLayout>
-    </>
-}
+        </>
+    );
+};
 
 export default HuPAdminPage;
+
+HuPAdminPage.getLayoutProps = (pageProps) => ({
+    noSidebar: true,
+});

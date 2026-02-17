@@ -5,11 +5,11 @@ import Form from "react-bootstrap/Form";
 import moment from "moment";
 import { useState } from "react";
 import PredstavaRecenzija from "./PredstavaRecenzija";
-import { useStateContext } from "../../contexts/StateContext";
 import axiosClient from "../../utils/axios";
 import { addParagraphIfNotExists, csrf, getCookieValue } from "../../utils";
 import PostLayoutFour from "../post/layout/PostLayoutFour";
 import SectionSubtitle from "../elements/SectionSubtitle";
+import { useUser } from "../../contexts/UserContext";
 
 const Predstava = ({ data, updateData }) => {
     const recenzije = data.tekstovi?.filter(
@@ -44,11 +44,12 @@ const Predstava = ({ data, updateData }) => {
     const updatePostRating = (updatedPredstava) => {
         updateData(updatedPredstava);
     };
-    const { currentUser } = useStateContext();
+    const { user } = useUser();
+
     const [komentarFormData, setKomentarFormData] = useState({
         tekst_komentara: "",
         predstavaid: data.predstavaid,
-        korisnikid: currentUser?.id,
+        korisnikid: user?.id,
     });
     const [errors, setErrors] = useState({});
     const handleCommentSubmit = async (e) => {
@@ -56,7 +57,7 @@ const Predstava = ({ data, updateData }) => {
 
         console.log("Submitting comment:", komentarFormData);
 
-        if (!currentUser) {
+        if (!user) {
             alert("Ulogujte se da biste mogli da komentarišete predstavu.");
             return;
         }

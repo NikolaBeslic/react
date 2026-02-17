@@ -2,18 +2,17 @@ import { useEffect, useState } from "react";
 import HupHome from "../components/home/HupHome";
 import axiosClient from "../utils/axios";
 import { Spinner } from "react-bootstrap";
-import { useStateContext } from "../contexts/StateContext";
 
 export default function HomeSix() {
     const [posts, setPosts] = useState([]);
     const [predstave, setPredstave] = useState([]);
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        showLoading();
+        setLoading(true);
         axiosClient.get("/get-posts").then((res) => {
             setPosts(res.data);
-            hideLoading();
+            setLoading(false);
         });
         axiosClient
             .get("/get-predstave-naslovna")
@@ -26,7 +25,7 @@ export default function HomeSix() {
 
     return (
         <>
-            {isLoading && (
+            {loading && (
                 <Spinner
                     animation="border"
                     role="status"

@@ -19,8 +19,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 import { useRouter } from "next/router";
-import { useStateContext } from "../../../contexts/StateContext";
 import { AgGridReact } from "ag-grid-react";
+import { useAdmin } from "../../../contexts/AdminContext";
 
 export default function KomentariPage() {
     const [komentari, setKomentari] = useState([]);
@@ -32,8 +32,8 @@ export default function KomentariPage() {
     const [loading, setLoading] = useState(false);
     const [odobriLoading, setOdobriLoading] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(null);
-    const { unnaprovedCommentsCount, setUnnapprovedCommentsCount } =
-        useStateContext();
+
+    const { unnaprovedCommentsCount, setUnnapprovedCommentsCount } = useAdmin();
 
     useEffect(() => {
         setLoading(true);

@@ -1,17 +1,17 @@
 import HeadMeta from "../../../../elements/HeadMeta";
 import Breadcrumb from "../../../../common/Breadcrumb";
 import { Button, Spinner } from "react-bootstrap";
-import { useStateContext } from "../../../../../contexts/StateContext";
 import { useState } from "react";
 import axiosClient from "../../../../../utils/axios";
+import { useUser } from "../../../../../contexts/UserContext";
 
 const PozoristeSingleHeader = ({ data }) => {
-    const { currentUser } = useStateContext();
+    const { user } = useUser();
     const [omiljenaLoading, setOmiljenaLoading] = useState(false);
     let omiljenoKorisnika = data.omiljenoKorisnika;
 
     const handleDodajUOmiljena = () => {
-        if (!currentUser) {
+        if (!user) {
             alert("You must be logged in to rate a post.");
             return;
         }
@@ -24,10 +24,10 @@ const PozoristeSingleHeader = ({ data }) => {
                     headers: {
                         "Content-Type": "application/json",
                         Authorization: `Bearer ${localStorage.getItem(
-                            "token"
+                            "token",
                         )}`,
                     },
-                }
+                },
             )
             .then((res) => {
                 console.log(res.data);

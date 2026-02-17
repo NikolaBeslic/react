@@ -1,15 +1,15 @@
 import { useEffect } from "react";
 import { useRouter } from "next/router";
-import { useStateContext } from "../../contexts/StateContext";
 import Cookies from "js-cookie";
 import axiosClient from "../../utils/axios";
+import { useUser } from "../../contexts/UserContext";
 
 const Page = () => {
     const router = useRouter();
-    const { currentUser, setCurrentUser } = useStateContext();
+    const { user, refreshUser } = useUser();
 
     useEffect(() => {
-        const { user, redirect_url, error } = router.query;
+        const { userFromUri, redirect_url, error } = router.query;
 
         if (error) {
             console.error("Login error:", error);
@@ -17,9 +17,9 @@ const Page = () => {
             return;
         }
 
-        if (user) {
+        if (userFromUri) {
             try {
-                // Save token and user data
+                // Save token and userFromUri data
                 /*  Cookies.set("token", token, {
                     path: "/",
                     secure: true,
@@ -28,13 +28,14 @@ const Page = () => {
                 axiosClient.defaults.headers.common[
                     "Authorization"
                 ] = `Bearer ${token}`;
-                console.log("USER"); */
+                console.log("userFromUri"); */
 
-                console.log("USER");
-                console.log(decodeURIComponent(user));
-                //const json = atob(decodeURIComponent(user));
-                const loggedUser = JSON.parse(decodeURIComponent(user));
-                setCurrentUser(loggedUser);
+                console.log("userFromUri");
+                console.log(decodeURIComponent(userFromUri));
+                //const json = atob(decodeURIComponent(userFromUri));
+                const loggedUser = JSON.parse(decodeURIComponent(userFromUri));
+                //setCurrentUser(loggedUser);
+                refreshUser();
 
                 // Redirect to the original page or fallback to home
                 const redirectTo = redirect_url
@@ -42,7 +43,7 @@ const Page = () => {
                     : "/";
                 router.push(redirectTo);
             } catch (err) {
-                console.error("Error processing user data:", err);
+                console.error("Error processing userFromUri data:", err);
                 router.push("/login"); // Redirect to login page on failure
             }
         }

@@ -23,7 +23,6 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import moment from "moment";
 import { toast } from "react-hot-toast";
-import { useStateContext } from "../../../../contexts/StateContext";
 import { Row, Spinner } from "react-bootstrap";
 import {
     DataGrid,
@@ -81,7 +80,6 @@ export default function RepertoarPozoristaCreatePage() {
     const router = useRouter();
     const { pozoristeSlug } = router.query;
     const { state } = useRouter();
-    const { isLoading, showLoading, hideLoading } = useStateContext();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [pozoriste, setPozoriste] = useState([]);
@@ -157,14 +155,14 @@ export default function RepertoarPozoristaCreatePage() {
                             res.data.predstave.map((pred) => ({
                                 value: pred.predstavaid,
                                 label: pred.naziv_predstave,
-                            }))
+                            })),
                         );
                     if (res.data.scene)
                         setDbScene(
                             res.data.scene.map((scena) => ({
                                 value: scena.scenaid,
                                 label: scena.naziv_scene,
-                            }))
+                            })),
                         );
                 })
                 .catch((err) => {
@@ -182,7 +180,7 @@ export default function RepertoarPozoristaCreatePage() {
     };
 
     const handleSubmit = () => {
-        showLoading();
+        setLoading(true);
         formData.datum = moment(datum).format("YYYY-MM-DD");
         formData.vreme = moment(vreme).format("HH:mm");
         axiosClient
@@ -197,14 +195,14 @@ export default function RepertoarPozoristaCreatePage() {
                     datum: null,
                     vreme: null,
                 }); // TO DO reset form values
-                hideLoading();
+                setLoading(false);
                 toast.success("Uspesno dodato izvodjenje");
             })
             .catch((err) => {
                 console.error(err);
                 toast.error(err.response.data);
                 setErrors(err.response.data.errors);
-                hideLoading();
+                setLoading(false);
             });
 
         console.log(formData);
@@ -223,9 +221,9 @@ export default function RepertoarPozoristaCreatePage() {
                         scena: igranje.scena?.scenaid,
                         datum: new Date(igranje.datum),
                         vreme: moment("1970.01.01 " + igranje.vreme).format(
-                            "HH:mm"
+                            "HH:mm",
                         ),
-                    }))
+                    })),
                 );
             })
             .catch((err) => console.error(err))
@@ -402,7 +400,7 @@ export default function RepertoarPozoristaCreatePage() {
             <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
             <div className="container">
                 <Box sx={{ flexGrow: 1, my: 3 }}>
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"

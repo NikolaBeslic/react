@@ -1,83 +1,26 @@
-import { useContext, useState, createContext, useEffect } from "react";
-import axiosClient from "../utils/axios";
+import { useContext, useState, createContext, useMemo } from "react";
 
-const StateContext = createContext({
-    currentUser: {},
-    userToken: null,
-    isAdmin: false,
-
-    isLoading: false,
-    setCurrentUser: () => {},
-    setUserToken: () => {},
-});
+const StateContext = createContext(null);
 
 export const ContextProvider = ({ children }) => {
-    const [currentUser, setCurrentUser] = useState({});
-    // const [userToken, _setUserToken] = useState(localStorage.getItem('TOKEN') || '');
-    const [isAdmin, setIsAdmin] = useState([false]);
-    const [isLoading, setIsLoading] = useState(false);
     const [isModalOpen, setModalOpen] = useState(false);
 
-    const [unnaprovedCommentsCount, setUnnapprovedCommentsCount] = useState(0);
+    const [auth, setAuth] = useState({
+        status: "idle",
+        actorType: null,
+        user: null,
+        admin: null,
+    });
 
-    useEffect(() => {
-        console.log("STATE Context");
-
-        axiosClient
-            .get("/user", {
-                withCredentials: true,
-            })
-            .then((res) => {
-                if (res.status == 200) {
-                    setCurrentUser(res.data);
-                }
-                console.log(res);
-            })
-            .catch((error) => {
-                setCurrentUser(null);
-                console.log(error);
-            });
-
-        fetchUnapprovedCommentsCount();
-    }, []);
-
-    const showLoading = () => {
-        setIsLoading(true);
-    };
-    const hideLoading = () => {
-        setIsLoading(false);
-    };
-
-    const fetchUnapprovedCommentsCount = () => {
-        axiosClient
-            .get("/admin/unapproved-comments-count")
-            .then((res) => {
-                setUnnapprovedCommentsCount(res.data);
-            })
-            .catch((error) => {
-                console.error(error);
-            });
-    };
+    const value = useMemo(() => ({ auth, setAuth }), [auth]);
 
     return (
-        <StateContext.Provider
-            value={{
-                currentUser,
-                setCurrentUser,
-                isAdmin,
-                setIsAdmin,
-                isLoading,
-                showLoading,
-                hideLoading,
-                isModalOpen,
-                setModalOpen,
-                unnaprovedCommentsCount,
-                setUnnapprovedCommentsCount,
-            }}
-        >
-            {children}
-        </StateContext.Provider>
+        <StateContext.Provider value={value}>{children}</StateContext.Provider>
     );
 };
 
-export const useStateContext = () => useContext(StateContext);
+export function useAuth() {
+    const ctx = useContext(StateContext);
+    if (!ctx) throw new Error("useAuth must be used within AuthProvider");
+    return ctx;
+}

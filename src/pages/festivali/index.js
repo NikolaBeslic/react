@@ -1,42 +1,41 @@
 import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axios";
 import FestivaliLayout from "../../components/post/layout/FestivaliLayout";
-import { useStateContext } from "../../contexts/StateContext";
 import { Spinner } from "react-bootstrap";
 import FestivaliHeader from "../../components/post/post-format/elements/meta/FestivaliHeader";
 import { withSSRHandler } from "../../utils/withSSRHandler";
 
 export default function FestivaliPage({ initialFestivali }) {
-    const { isLoading, showLoading, hideLoading } = useStateContext();
+    const [loading, setLoading] = useState(false);
 
     const [festivali, setFestivali] = useState(initialFestivali.data || []);
     const [currentPage, setCurrentPage] = useState(1);
     const [totalPages, setTotalPages] = useState(
-        initialFestivali.last_page || 1
+        initialFestivali.last_page || 1,
     );
 
     const loadMore = async () => {
         if (currentPage >= totalPages) return;
 
-        showLoading(true);
+        setLoading(true);
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(
-                `/get-festivali?page=${nextPage}`
+                `/get-festivali?page=${nextPage}`,
             );
             setFestivali((prev) => [...prev, ...res.data.data]);
             setCurrentPage(nextPage);
         } catch (err) {
             console.error("Failed to load more posts", err);
         }
-        hideLoading();
+        setLoading(false);
     };
 
     return (
         <>
             <div className="random-posts section-gap">
                 <div className="container">
-                    {isLoading && (
+                    {loading && (
                         <Spinner
                             animation="border"
                             role="status"
@@ -53,7 +52,7 @@ export default function FestivaliPage({ initialFestivali }) {
                                 key={festival.festivalid}
                             />
                         ))}
-                        {!isLoading && (
+                        {!loading && (
                             <button
                                 className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                 onClick={loadMore}

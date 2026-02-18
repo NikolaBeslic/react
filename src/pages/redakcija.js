@@ -39,7 +39,9 @@ export default function RedakcijaPage({ autori }) {
 }
 
 export const getServerSideProps = withSSRHandler(async (context) => {
-    const response = await axiosClient.get("/get-autori");
+    const response = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-autori`,
+    );
 
     const autori = response.data;
     console.log("Fetched autor data:", autori);

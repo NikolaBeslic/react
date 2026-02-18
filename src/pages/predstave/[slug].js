@@ -40,7 +40,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     const cookies = context.req.headers.cookie || "";
 
     const res = await axiosClient.get(
-        `${process.env.NEXT_PUBLIC_API_BASEPATH}/predstava-single/${slug}`,
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/predstava-single/${slug}`,
         {
             headers: {
                 cookie: cookies,

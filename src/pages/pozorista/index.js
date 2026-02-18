@@ -21,7 +21,9 @@ export default function PozoristaPage({ pozorista }) {
 }
 
 export const getServerSideProps = withSSRHandler(async (context) => {
-    const response = await axiosClient.get("/get-all-pozorista");
+    const response = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-all-pozorista`,
+    );
     const pozorista = response.data;
     console.log("Fetched pozorista data:", pozorista);
 

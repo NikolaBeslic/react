@@ -78,7 +78,9 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
 export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
-    const response = await axiosClient.get(`/get-hupkast?page=${page}`);
+    const response = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-hupkast?page=${page}`,
+    );
 
     console.log("Response data:", response.data);
     return {

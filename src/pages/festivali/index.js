@@ -68,7 +68,9 @@ export default function FestivaliPage({ initialFestivali }) {
 }
 
 export const getServerSideProps = withSSRHandler(async (context) => {
-    const response = await axiosClient.get("/get-festivali");
+    const response = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-festivali`,
+    );
 
     const festivali = response.data;
     console.log("Fetched festivali data:", festivali);

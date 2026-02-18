@@ -68,7 +68,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
-        `/get-single-autor/${autorSlug}?page=${page}`,
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-single-autor/${autorSlug}?page=${page}`,
     );
 
     const autor = response.data;

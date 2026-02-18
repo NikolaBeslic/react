@@ -7,10 +7,12 @@ const Document = () => {
             <Head>
                 {/* Static Css File  */}
                 {/* <link rel="stylesheet" href={`${process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASEPATH ?? '' : ''}/css/fontawesome-all.min.css`} /> */}
-                <link
+                {/* <link
                     rel="stylesheet"
                     href={`${process.env.NODE_ENV === "production" ? (process.env.NEXT_PUBLIC_BASEPATH ?? "") : ""}/css/iconfont.css`}
-                />
+                /> */}
+                <link rel="stylesheet" href="/css/iconfont.css" />
+                <link rel="stylesheet" href="/css/fontawesome-all.min.css" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link
                     rel="preconnect"

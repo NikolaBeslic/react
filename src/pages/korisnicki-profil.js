@@ -19,13 +19,16 @@ KorisnikPage.getLayoutProps = (pageProps) => ({
 export const getServerSideProps = withSSRHandler(async (context) => {
     const cookies = context.req.headers.cookie || "";
 
-    const res = await axiosClient.get("/get-korisnicki-profil", {
-        headers: {
-            cookie: cookies,
-            origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
+    const res = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-korisnicki-profil`,
+        {
+            headers: {
+                cookie: cookies,
+                origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
+            },
+            withCredentials: true,
         },
-        withCredentials: true,
-    });
+    );
 
     console.log(res.data);
 

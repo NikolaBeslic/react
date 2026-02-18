@@ -77,7 +77,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
     console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
-        `/get-category-posts/${category}?page=${page}`,
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-category-posts/${category}?page=${page}`,
     );
     const categoryData = response.data;
     console.log("Response data:", categoryData);

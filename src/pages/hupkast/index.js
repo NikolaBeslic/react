@@ -60,7 +60,7 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
                                 key={hup.tekstid}
                             />
                         ))}
-                        {!isLoading && currentPage < totalPages && (
+                        {!loading && currentPage < totalPages && (
                             <button
                                 className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                 onClick={loadMore}

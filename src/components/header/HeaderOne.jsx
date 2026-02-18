@@ -11,6 +11,8 @@ import SearchResult from "../elements/SearchResult";
 import { toast } from "react-hot-toast";
 import { csrf, getCookieValue } from "../../utils";
 import UserAvatar from "../common/UserAvatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-regular-svg-icons";
 
 const HeaderOne = () => {
     // Main Menu Toggle
@@ -365,7 +367,7 @@ const HeaderOne = () => {
                                     className="nav-search-field-toggler"
                                     onClick={headerSearchShow}
                                 >
-                                    <i className="far fa-search" />
+                                    <i className="fal fa-magnifying-glass"></i>
                                 </button>
                                 <button
                                     className="side-nav-toggler m-r-xs-10"

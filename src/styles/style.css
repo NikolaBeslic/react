@@ -10590,6 +10590,9 @@ address .tel i {
 .banner__single-post .post-main-thumbnail img {
     object-fit: cover;
     object-position: center;
+    /* Nikola added below */
+    aspect-ratio: 4 / 3;
+
 }
 
 .single-blog-wrapper .masonry-grid {
@@ -11744,5 +11747,27 @@ address .tel i {
 }
 
 .user-dropdown .dropdown-item {
+    font-size: 14px;
+}
+
+.single-text-wrapper {
+    width: 720px;
+    margin: auto;
+}
+
+.single-text-wrapper img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 2rem auto;
+    float: none !important;
+}
+
+.single-text-wrapper p img {
+    display: block;
+    margin: 1.8rem auto;
+}
+
+.post-tags-stack span {
     font-size: 14px;
 }

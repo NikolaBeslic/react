@@ -50,4 +50,5 @@ export const getServerSideProps = withSSRHandler(async (context) => {
 
 Page.getLayoutProps = (pageProps) => ({
     header: <MetaDataOne metaData={pageProps.post} />,
+    noSidebar: true,
 });

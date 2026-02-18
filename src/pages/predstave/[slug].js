@@ -1,10 +1,9 @@
-import * as cookie from "cookie";
 import { useEffect, useState } from "react";
 import axiosClient from "../../utils/axios";
 import Predstava from "../../components/predstave/Predstava";
 import PredstavaTitle from "../../components/post/post-format/elements/meta/PredstavaTitle";
 import { withSSRHandler } from "../../utils/withSSRHandler";
-
+import { ssrApiUrl } from "../../utils";
 export default function PredstavaPage({ predstavaData }) {
     const [predstava, setPredstava] = useState(predstavaData);
 
@@ -40,13 +39,16 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     const { slug } = context.params;
     const cookies = context.req.headers.cookie || "";
 
-    const res = await axiosClient.get(`/predstava-single/${slug}`, {
-        headers: {
-            cookie: cookies,
-            origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
+    const res = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_API_BASEPATH}/predstava-single/${slug}`,
+        {
+            headers: {
+                cookie: cookies,
+            },
+            withCredentials: true,
         },
-        withCredentials: true,
-    });
+    );
+
     const predstavaData = res.data;
 
     return {

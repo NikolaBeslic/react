@@ -33,34 +33,32 @@ export default function FestivaliPage({ initialFestivali }) {
 
     return (
         <>
-            <div className="random-posts section-gap">
-                <div className="container">
-                    {loading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
-                        />
-                    )}
+            <div className="container">
+                {loading && (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        className="hup-spinner"
+                    />
+                )}
 
-                    <div className="axil-content row">
-                        {festivali.map((festival) => (
-                            <FestivaliLayout
-                                data={festival}
-                                pClass=""
-                                videoIcon={false}
-                                key={festival.festivalid}
-                            />
-                        ))}
-                        {!loading && (
-                            <button
-                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                                onClick={loadMore}
-                            >
-                                Učitaj još
-                            </button>
-                        )}
-                    </div>
+                <div className="axil-content row">
+                    {festivali.map((festival) => (
+                        <FestivaliLayout
+                            data={festival}
+                            pClass=""
+                            videoIcon={false}
+                            key={festival.festivalid}
+                        />
+                    ))}
+                    {!loading && (
+                        <button
+                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                            onClick={loadMore}
+                        >
+                            Učitaj još
+                        </button>
+                    )}
                 </div>
             </div>
         </>

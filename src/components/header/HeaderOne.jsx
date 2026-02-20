@@ -273,11 +273,14 @@ const HeaderOne = () => {
                                             Vesti
                                         </Link>
                                     </li>
-                                    <li key="101" className="has-dropdown">
+                                    <li
+                                        key="101"
+                                        className="has-dropdown intervju-navbar-li"
+                                    >
                                         <Link href="/intervjui" legacyBehavior>
                                             Intervjui
                                         </Link>
-                                        <ul className="submenu">
+                                        <ul className="submenu intervju-submenu">
                                             <li key={1011}>
                                                 <Link href="/hupikon">
                                                     HuPikon

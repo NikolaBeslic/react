@@ -11855,3 +11855,41 @@ address .tel i {
     font-size: 2.1rem;
     font-weight: 700;
 }
+
+.intervju-navbar-li {
+    position: absolute;
+}
+
+.intervju-navbar-li .intervju-submenu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+
+    min-width: 180px;
+    padding: 12px 0;
+
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+
+    transition: opacity 0.2s ease,
+        transform 0.2s ease,
+        visibility 0.2s ease;
+
+    z-index: 1000;
+}
+
+.intervju-submenu {
+    margin-top: -12px;
+}
+
+.intervju-navbar-li:hover .intervju-submenu {
+    opacity: 1;
+    visibility: visible;
+
+    transform: translateY(0);
+}

@@ -2,6 +2,7 @@ import Image from "next/legacy/image";
 import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 const FestivaliLayout = ({ data, pClass, videoIcon }) => {
     const formatDateRange = (date1, date2) => {
@@ -18,7 +19,7 @@ const FestivaliLayout = ({ data, pClass, videoIcon }) => {
         <div
             className={`media post-block post-block__small bg-grey-light-three festival-index-wrapper ${pClass ?? "post-block__on-dark-bg m-b-xs-30"}`}
         >
-            <a
+            <Link
                 href={`/festivali/${data.festival_slug}`}
                 className="align-self-center"
             >
@@ -38,13 +39,13 @@ const FestivaliLayout = ({ data, pClass, videoIcon }) => {
                         )}
                     </>
                 )}
-            </a>
+            </Link>
 
             <div className="media-body festival-index-info">
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                    <a href={`/festivali/${data.festival_slug}`}>
+                    <Link href={`/festivali/${data.festival_slug}`}>
                         {data.naziv_festivala}
-                    </a>
+                    </Link>
                 </h3>
                 <div className="post-metas">
                     <ul className="list-unstyled">

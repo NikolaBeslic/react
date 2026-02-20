@@ -2,6 +2,8 @@ import Image from "next/image";
 import moment from "moment";
 import HeadMeta from "../../../../elements/HeadMeta";
 import Breadcrumb from "../../../../common/Breadcrumb";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMapPin } from "@fortawesome/free-solid-svg-icons";
 
 const MetaDataFestival = ({ metaData }) => {
     const formatDateRange = (date1, date2) => {
@@ -9,7 +11,7 @@ const MetaDataFestival = ({ metaData }) => {
         const d2 = moment(date2);
         if (d1.isSame(d2, "month") && d1.isSame(d2, "year")) {
             return `${d1.format("DD")} - ${d2.format("DD")}. ${d1.format(
-                "MMMM YYYY"
+                "MMMM YYYY",
             )}`;
         } else {
             return `${d1.format("DD. MM")} - ${d2.format("DD. MM. YYYY")}`;
@@ -38,19 +40,20 @@ const MetaDataFestival = ({ metaData }) => {
                         </div>
                         <div className="col-lg-8">
                             <div className="post-title-wrapper">
-                                <div className="btn-group">
-                                    {metaData.grad?.naziv_grada}
-                                </div>
                                 <h2 className="m-b-xs-0 m-t-xs-10 axil-title hover-line">
                                     {metaData.naziv_festivala}
                                 </h2>
                                 <div className="post-metas banner-post-metas m-t-xs-20">
                                     <ul className="list-inline">
                                         <li>
+                                            <FontAwesomeIcon icon={faMapPin} />
+                                            {metaData.grad?.naziv_grada}
+                                        </li>
+                                        <li>
                                             <i className="fa-light fa-calendar-range"></i>{" "}
                                             {formatDateRange(
                                                 metaData.datumod,
-                                                metaData.datumdo
+                                                metaData.datumdo,
                                             )}
                                         </li>
                                     </ul>

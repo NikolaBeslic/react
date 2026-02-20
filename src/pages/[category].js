@@ -38,35 +38,33 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
 
     return (
         <>
-            <div className="random-posts section-gap">
-                <div className="container">
-                    {loading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
-                        />
-                    )}
-                    <>
-                        <div className="axil-content" ref={elementRef}>
-                            {posts.map((data) => (
-                                <PostLayoutTwo
-                                    data={data}
-                                    postSizeMd={true}
-                                    key={data.slug}
-                                />
-                            ))}
-                            {!loading && (
-                                <button
-                                    className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                                    onClick={loadMore}
-                                >
-                                    Učitaj još
-                                </button>
-                            )}
-                        </div>
-                    </>
-                </div>
+            <div className="container">
+                {loading && (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        className="hup-spinner"
+                    />
+                )}
+                <>
+                    <div className="axil-content" ref={elementRef}>
+                        {posts.map((data) => (
+                            <PostLayoutTwo
+                                data={data}
+                                postSizeMd={true}
+                                key={data.slug}
+                            />
+                        ))}
+                        {!loading && (
+                            <button
+                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                                onClick={loadMore}
+                            >
+                                Učitaj još
+                            </button>
+                        )}
+                    </div>
+                </>
             </div>
         </>
     );

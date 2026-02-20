@@ -6806,6 +6806,7 @@ input[type="radio"]+label::after {
     margin: 0 1rem 1rem 0;
     letter-spacing: 0.1rem;
     text-transform: uppercase;
+    opacity: .85
 }
 
 .post-metas ul {
@@ -11770,4 +11771,34 @@ address .tel i {
 
 .post-tags-stack span {
     font-size: 14px;
+}
+
+.category-index-post-block {
+
+    border-radius: 10px;
+    padding: 18px;
+    margin-bottom: 40px;
+    transition: all 0.25s ease;
+}
+
+.category-index-post-block:hover {
+    background: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+    transform: translateY(-3px);
+}
+
+.category-index-post-block .mid p {
+    text-align: left;
+    margin-bottom: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    line-clamp: 3 !important;
+    -webkit-line-clamp: 3 !important;
+    -webkit-box-orient: vertical;
+}
+
+.category-index-post-block h3 {
+    font-size: 2.1rem;
+    font-weight: 700;
 }

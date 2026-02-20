@@ -5,7 +5,7 @@ import moment from "moment";
 const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
     return (
         <div
-            className={`media post-block m-b-xs-30 ${
+            className={`category-index-post-block media post-block m-b-xs-60 bg-grey-light-three ${
                 postSizeMd === true ? "post-block__mid" : ""
             } ${postBgDark === true ? "post-block__on-dark-bg" : ""}`}
         >
@@ -16,8 +16,8 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                 <Image
                     src={data?.tekst_photo}
                     alt={data.naslov}
-                    width={postSizeMd === true ? 285 : 150}
-                    height={postSizeMd === true ? 285 : 150}
+                    width={postSizeMd === true ? 250 : 150}
+                    height={postSizeMd === true ? 250 : 150}
                     placeholder="blur"
                     blurDataURL="/images/placeholder.png"
                 />
@@ -60,12 +60,8 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                             <span>
                                 <i className="fa-regular fa-clock"></i>
                             </span>
-                            <a
-                                href={`/author/${data.slug}`}
-                                className="post-author"
-                            >
-                                {moment(data.published_at).fromNow()}
-                            </a>
+
+                            {moment(data.published_at).fromNow()}
                         </li>
                     </ul>
                 </div>

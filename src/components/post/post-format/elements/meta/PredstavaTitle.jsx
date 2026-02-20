@@ -11,7 +11,7 @@ import { csrf, getCookieValue } from "../../../../../utils";
 import PredstavaStickyTitle from "./PredstavaStickyTitle";
 import { useUser } from "../../../../../contexts/UserContext";
 
-const PredstavaTitle = ({ metaData }) => {
+const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
     const isDesktopOrLaptop = useMediaQuery({
         query: "(min-width: 1224px)",
     });
@@ -27,37 +27,6 @@ const PredstavaTitle = ({ metaData }) => {
         metaData.naListiOdgledanihKorisnika,
     );
 
-    const [ratingLoading, setRatingLoading] = useState(false);
-    const handleRating = async (value) => {
-        if (!user) {
-            alert("Ulogujte se da biste mogli da ocenite predstavu.");
-            setModalOpen(true);
-            return;
-        }
-        setRatingLoading(true);
-        await csrf();
-        axiosClient
-            .post(
-                "/predstava/oceni",
-                {
-                    ocena: value,
-                    user: user,
-                    predstavaid: metaData.predstavaid,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
-                        "Content-Type": "application/json",
-                    },
-                },
-            )
-            .then((res) => {
-                console.log(res);
-                setRatingLoading(false);
-                // updateData(res.data.data); TO DO
-            });
-    };
     const ratingProps = {
         stop: 10,
         emptySymbol: "fa-regular fa-star",

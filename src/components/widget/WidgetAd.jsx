@@ -2,8 +2,8 @@ import Image from "next/image";
 
 const WidgetAd = ({ img, height, width }) => {
     return (
-        <div className="add-block-widget m-b-xs-40">
-            <div className="widget-title">
+        <div className="add-block-widget m-b-xs-50">
+            <div className="widget-title m-b-xs-50">
                 <h3>Izdvajamo</h3>
             </div>
             <a

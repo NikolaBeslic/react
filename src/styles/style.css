@@ -10096,15 +10096,16 @@ address .tel i {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-bottom: 2.3rem;
     padding-bottom: 1rem;
-    border-bottom: 0.1rem solid var(--grey-light-one);
+    border-bottom: 0.1rem solid var(--primary-color);
 }
 
 .widget-title h3 {
-    font-size: 1.8rem;
+    font-size: 1.9rem;
     line-height: 3rem;
     margin-bottom: 0;
+    font-weight: 700;
 }
 
 /*--Category widget--*/
@@ -10279,7 +10280,7 @@ address .tel i {
 .sidebar-post-widget .nav-pills {
     border: 0 solid var(--grey-light-one);
     border-width: 0 0 0.1rem 0.1rem;
-    margin-bottom: 2rem;
+    margin-bottom: 3rem;
 }
 
 .sidebar-post-widget .nav-pills .nav-item {
@@ -11180,7 +11181,8 @@ address .tel i {
     background: rgba(255, 255, 255, 0.6);
 }
 
-.premijere-naziv-pozorista {
+.premijere-naziv-pozorista,
+.repertoar-naslovna-vreme {
     font-size: 1.3rem;
     margin-bottom: 5px;
 }
@@ -11338,8 +11340,7 @@ address .tel i {
 }
 
 .repertoar-naslovna-wrapper .post-metas span {
-    font-size: 1.2rem;
-    color: var(--grey-dark-four)
+    font-size: 1.3rem;
 }
 
 .repertoar-naslovna-wrapper h6 {
@@ -11355,14 +11356,10 @@ address .tel i {
     cursor: pointer;
     padding: 6px 0;
     font-size: 18px;
-    opacity: 0;
+    opacity: 0.6;
 
     transition: opacity 0.2s ease;
     margin: auto;
-}
-
-.repertoar-naslovna-widget-wrapper:hover .nav-btn {
-    opacity: 0.6;
 }
 
 .repertoar-naslovna-widget-wrapper .nav-btn:hover {
@@ -11372,6 +11369,13 @@ address .tel i {
 .repertoar-naslovna-show-all {
     display: block;
     text-align: right;
+}
+
+.repertoar-naslovna-vreme {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 10px;
 }
 
 .predstave-listazelja-card {

@@ -5,8 +5,8 @@ import Link from "next/link";
 const PostVideoTwo = ({ data, pClass, videoIcon }) => {
     return (
         <div
-            className={`media post-block post-block__small ${
-                pClass ?? "post-block__on-dark-bg m-b-xs-30"
+            className={`media post-block post-block__small m-b-xs-40 ${
+                pClass ?? "post-block__on-dark-bg"
             }`}
         >
             <Link

@@ -56,7 +56,7 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                 <div className="post-metas">
                     <ul className="list-inline">
                         {data.premijera && (
-                            <li>
+                            <li className="text-muted">
                                 <i className="fa-light fa-calendar-day"></i>
                                 Premijera:{" "}
                                 {moment(data.premijera).format("DD.MMM.YYYY.")}

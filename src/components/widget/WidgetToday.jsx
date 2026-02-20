@@ -1,12 +1,8 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-    faClock,
-    faChevronUp,
-    faChevronDown,
-} from "@fortawesome/free-solid-svg-icons";
-
+import { faChevronUp, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 import "swiper/css";
 import "swiper/css/navigation";
 import Link from "next/link";
@@ -50,7 +46,7 @@ const WidgetToday = ({ izvodjenja }) => {
                                     pClass ?? "post-block__on-dark-bg m-b-xs-30"
                                 }`}
                             >
-                                <div className="repertoar-naslovna-photo">
+                                {/* <div className="repertoar-naslovna-photo">
                                     <Link
                                         href={`/predstave/${izv.predstava.predstava_slug}`}
                                         className="align-self-center"
@@ -67,12 +63,10 @@ const WidgetToday = ({ izvodjenja }) => {
                                             quality={90}
                                         />
                                     </Link>
-                                </div>
+                                </div> */}
 
                                 <div className="media-body repertoar-naslovna-info">
-                                    <div className="post-cat-group premijere-naziv-pozorista">
-                                        {/* {moment(izv.datum).format("DD.MM.yyyy")}{" "}
-                                        u{" "} */}
+                                    <div className="post-cat-group repertoar-naslovna-vreme">
                                         <FontAwesomeIcon icon={faClock} />{" "}
                                         {moment(
                                             `2020-01-01 ${izv.vreme}`,
@@ -105,7 +99,7 @@ const WidgetToday = ({ izvodjenja }) => {
                 <div className="repertoar-naslovna-show-all">
                     <Link
                         href="/repertoari-v2"
-                        className="btn btn-small btn-primary "
+                        className="btn btn-small btn-primary btn-nofill "
                     >
                         Pogledaj sve
                     </Link>

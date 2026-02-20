@@ -23,8 +23,8 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                                 <Image
                                     src={hupkastData.tekst_photo}
                                     alt="hupkast"
-                                    width={180}
-                                    height={180}
+                                    width={250}
+                                    height={250}
                                     placeholder="blur"
                                     blurDataURL="/images/placeholder.png"
                                     objectFit="cover"
@@ -46,8 +46,7 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                                 dangerouslySetInnerHTML={{
                                     __html: hupkastData.uvod
                                         ? hupkastData.uvod
-                                        : hupkastData.sadrzaj?.slice(0, 400) +
-                                          "...",
+                                        : hupkastData.sadrzaj?.slice(0, 500),
                                 }}
                             ></div>
                         </div>

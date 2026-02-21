@@ -11894,3 +11894,12 @@ address .tel i {
 
     transform: translateY(0);
 }
+
+.predstava-actions button {
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.svg-inline--fa {
+    margin-right: 5px;
+}

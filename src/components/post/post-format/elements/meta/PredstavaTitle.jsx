@@ -10,8 +10,23 @@ import Breadcrumb from "../../../../common/Breadcrumb";
 import { csrf, getCookieValue } from "../../../../../utils";
 import PredstavaStickyTitle from "./PredstavaStickyTitle";
 import { useUser } from "../../../../../contexts/UserContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+    faFileCirclePlus,
+    faCheckDouble,
+    faFileImport,
+    faCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
-const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
+const PredstavaTitle = ({
+    metaData,
+    ratingLoading,
+    handleRating,
+    naListiZeljaLoading,
+    handleDodajNaListuZelja,
+    odgledaneLoading,
+    handleDodajUOdgledane,
+}) => {
     const isDesktopOrLaptop = useMediaQuery({
         query: "(min-width: 1224px)",
     });
@@ -19,13 +34,6 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
     const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
-    const { user, setModalOpen } = useUser();
-    const [naListiZelja, setNaListiZelja] = useState(
-        metaData.naListiZeljaKorisnika,
-    );
-    const [naListiOdgledanih, setNaListiOdgledanih] = useState(
-        metaData.naListiOdgledanihKorisnika,
-    );
 
     const ratingProps = {
         stop: 10,
@@ -37,74 +45,6 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
         ratingProps.readonly = true;
         ratingProps.initialRating = metaData.ocenaKorisnika;
     }
-    const [naListiZeljaLoading, setNaListiZeljaLoading] = useState(false);
-    const handleDodajNaListuZelja = async () => {
-        if (!user) {
-            alert("You must be logged in to rate a post.");
-            return;
-        }
-        setNaListiZeljaLoading(true);
-        await csrf();
-        axiosClient
-            .post(
-                "/predstava/dodajNaListuZelja",
-                {
-                    user: user,
-                    predstavaid: metaData.predstavaid,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
-                        "Content-Type": "application/json",
-                    },
-                },
-            )
-            .then((res) => {
-                console.log(res);
-                setNaListiZelja(true);
-                handleUpdateDodajNaListuZelja();
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => setNaListiZeljaLoading(false));
-    };
-
-    const [odgledaneLoading, setOdgledaneLoading] = useState(false);
-    const handleDodajUOdgledane = async () => {
-        if (!user) {
-            alert("You must be logged in to do this");
-            return;
-        }
-        setOdgledaneLoading(true);
-        await csrf();
-        axiosClient
-            .post(
-                "/predstava/dodajUOdgledane",
-                {
-                    user: user,
-                    predstavaid: metaData.predstavaid,
-                },
-                {
-                    withCredentials: true,
-                    headers: {
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
-                        "Content-Type": "application/json",
-                    },
-                },
-            )
-            .then((res) => {
-                console.log(res);
-                setNaListiOdgledanih(true);
-
-                handleUpdateListaOdgledanih();
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => setOdgledaneLoading(false));
-    };
 
     return (
         <>
@@ -285,7 +225,6 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
                                                                         <a
                                                                             href={`/pozorista/${pozoriste.pozoriste_slug}`}
                                                                         >
-                                                                            {" "}
                                                                             {
                                                                                 pozoriste.naziv_pozorista
                                                                             }
@@ -375,17 +314,19 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
                                         <div className="predstava-actions ms-lg-auto">
                                             {metaData.naListiZeljaKorisnika ? (
                                                 <Button
-                                                    variant="outline-primary"
-                                                    className="btn btn-secondary btn-small"
+                                                    variant="primary"
+                                                    className="btn btn-primary btn-small"
                                                     disabled
                                                 >
-                                                    <i className="fa-solid fa-check"></i>
+                                                    <FontAwesomeIcon
+                                                        icon={faCheck}
+                                                    />
                                                     Na listi zelja
                                                 </Button>
                                             ) : (
                                                 <Button
-                                                    variant="outline-primary"
-                                                    className="btn btn-secondary btn-small"
+                                                    variant="primary"
+                                                    className="btn btn-primary btn-small"
                                                     onClick={
                                                         handleDodajNaListuZelja
                                                     }
@@ -398,7 +339,11 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
                                                             size="sm"
                                                         />
                                                     ) : (
-                                                        <i className="fa-solid fa-circle-plus"></i>
+                                                        <FontAwesomeIcon
+                                                            icon={
+                                                                faFileCirclePlus
+                                                            }
+                                                        />
                                                     )}
                                                     Dodaj na listu zelja
                                                 </Button>
@@ -407,18 +352,18 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
                                             <br />
                                             {metaData.naListiOdgledanihKorisnika ? (
                                                 <Button
-                                                    variant="outline-primary"
-                                                    className="btn btn-secondary btn-small"
+                                                    className="btn btn-primary btn-small btn-nofill"
                                                     disabled
                                                 >
-                                                    <i className="fa-solid fa-check"></i>
+                                                    <FontAwesomeIcon
+                                                        icon={faCheckDouble}
+                                                    />
                                                     Na listi odgledanih
                                                 </Button>
                                             ) : (
                                                 <>
                                                     <Button
-                                                        variant="outline"
-                                                        className="btn btn-primary btn-small"
+                                                        className="btn btn-primary btn-small btn-nofill"
                                                         onClick={
                                                             handleDodajUOdgledane
                                                         }
@@ -430,7 +375,11 @@ const PredstavaTitle = ({ metaData, ratingLoading, handleRating }) => {
                                                                 role="status"
                                                             />
                                                         ) : (
-                                                            <i className="fa-solid fa-circle-plus"></i>
+                                                            <FontAwesomeIcon
+                                                                icon={
+                                                                    faFileImport
+                                                                }
+                                                            />
                                                         )}
                                                         Dodaj u odgledane
                                                     </Button>

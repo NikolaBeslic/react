@@ -15,14 +15,6 @@ export default function PredstavaPage(pageProps) {
         setPredstava(updatedData);
     };
 
-    const updateListaZelja = () => {
-        setPredstava({ ...predstava, naListiZeljaKorisnika: 1 });
-    };
-
-    const updateListaOdgledanih = () => {
-        setPredstava({ ...predstava, naListiOdgledanihKorisnika: 1 });
-    };
-
     const [ratingLoading, setRatingLoading] = useState(false);
     const handleRating = async (value) => {
         if (!user) {
@@ -64,12 +56,88 @@ export default function PredstavaPage(pageProps) {
             });
     };
 
+    const [naListiZeljaLoading, setNaListiZeljaLoading] = useState(false);
+    const handleDodajNaListuZelja = async () => {
+        if (!user) {
+            alert("You must be logged in to rate a post.");
+            return;
+        }
+        setNaListiZeljaLoading(true);
+        await csrf();
+        axiosClient
+            .post(
+                "/predstava/dodajNaListuZelja",
+                {
+                    user: user,
+                    predstavaid: predstava.predstavaid,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        "Content-Type": "application/json",
+                    },
+                },
+            )
+            .then((res) => {
+                console.log(res);
+                setPredstava((prev) => ({
+                    ...prev,
+                    naListiZeljaKorisnika: true,
+                }));
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => setNaListiZeljaLoading(false));
+    };
+
+    const [odgledaneLoading, setOdgledaneLoading] = useState(false);
+    const handleDodajUOdgledane = async () => {
+        if (!user) {
+            alert("You must be logged in to do this");
+            return;
+        }
+        setOdgledaneLoading(true);
+        await csrf();
+        axiosClient
+            .post(
+                "/predstava/dodajUOdgledane",
+                {
+                    user: user,
+                    predstavaid: predstava.predstavaid,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        "Content-Type": "application/json",
+                    },
+                },
+            )
+            .then((res) => {
+                console.log(res);
+                setPredstava((prev) => ({
+                    ...prev,
+                    naListiOdgledanihKorisnika: true,
+                }));
+            })
+            .catch((err) => {
+                console.error(err);
+            })
+            .finally(() => setOdgledaneLoading(false));
+    };
+
     return (
         <>
             <PredstavaTitle
                 metaData={predstava}
                 ratingLoading={ratingLoading}
                 handleRating={handleRating}
+                naListiZeljaLoading={naListiZeljaLoading}
+                handleDodajNaListuZelja={handleDodajNaListuZelja}
+                odgledaneLoading={odgledaneLoading}
+                handleDodajUOdgledane={handleDodajUOdgledane}
             />
             <Predstava
                 data={predstava}
@@ -93,6 +161,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
         {
             headers: {
                 cookie: cookies,
+                origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
             },
             withCredentials: true,
         },

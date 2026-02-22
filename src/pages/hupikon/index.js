@@ -46,47 +46,48 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     return (
         <>
             <article className="post-details">
-                <div className="random-posts section-gap">
-                    <div className="axil-content">
-                        <div className="row">
-                            {loading && (
-                                <Spinner
-                                    animation="border"
-                                    role="status"
-                                    className="hup-spinner"
-                                />
-                            )}
-                            <div className="masonry-grid">
-                                <ResponsiveMasonry
-                                    columnsCountBreakPoints={{
-                                        575: 1,
-                                        576: 2,
-                                        991: 2,
-                                    }}
+                <div className="axil-content">
+                    <div className="row">
+                        {loading && (
+                            <Spinner
+                                animation="border"
+                                role="status"
+                                className="hup-spinner"
+                            />
+                        )}
+                        <div className="masonry-grid">
+                            <ResponsiveMasonry
+                                columnsCountBreakPoints={{
+                                    575: 1,
+                                    576: 2,
+                                    991: 2,
+                                }}
+                            >
+                                <Masonry
+                                    gutter="0 40px"
+                                    key={hupikonPosts.length}
                                 >
-                                    <Masonry gutter="0 40px">
-                                        {hupikonPosts.map((hup, index) => (
-                                            <div
-                                                className="grid-item"
-                                                key={hup.slug}
-                                            >
-                                                <HupikonIndexLayout
-                                                    data={hup}
-                                                    index={index}
-                                                />
-                                            </div>
-                                        ))}
-                                    </Masonry>
-                                </ResponsiveMasonry>
-                            </div>
+                                    {hupikonPosts.map((hup, index) => (
+                                        <div
+                                            className="grid-item"
+                                            key={hup.slug}
+                                        >
+                                            <HupikonIndexLayout
+                                                data={hup}
+                                                index={index}
+                                            />
+                                        </div>
+                                    ))}
+                                </Masonry>
+                            </ResponsiveMasonry>
                         </div>
-                        <button
-                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                            onClick={loadMore}
-                        >
-                            Učitaj još
-                        </button>
                     </div>
+                    <button
+                        className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                        onClick={loadMore}
+                    >
+                        Učitaj još
+                    </button>
                 </div>
             </article>
         </>

@@ -11250,6 +11250,10 @@ address .tel i {
     -webkit-box-orient: vertical;
 }
 
+.hupikon-title {
+    margin-top: 2rem !important;
+}
+
 .search-result-item {
     align-items: center;
     display: flex;

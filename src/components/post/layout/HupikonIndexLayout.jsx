@@ -8,7 +8,7 @@ const HupikonIndexLayout = ({ data, index }) => {
                     src={data.tekst_photo}
                     alt={data.slug}
                     width={528}
-                    height={index % 2 == 1 ? 782 : 586}
+                    height={528}
                 />
                 <div className="grad-overlay grad-overlay__transparent" />
             </a>

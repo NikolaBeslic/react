@@ -1,15 +1,11 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "../styles/style.css";
-
 import "../styles/admin.css";
-
-import Script from "next/script";
-import { ContextProvider, useStateContext } from "../contexts/StateContext";
+import { useState, useEffect } from "react";
+import { ContextProvider } from "../contexts/StateContext";
 import "moment/locale/sr";
-import { useRouter } from "next/router";
 import AdminLayout from "../layouts/AdminLayout";
 import HuPLayout from "../layouts/HuPLayout";
-import { SSRProvider } from "react-bootstrap";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
@@ -32,7 +28,41 @@ function isAdminLoginRoute(router) {
     return router.pathname.startsWith("/hup-admin");
 }
 
+function PageLoader({ show }) {
+    if (!show) return null;
+    return (
+        <div className="page-loader">
+            <div className="spinner" />
+            <style jsx>{`
+                .page-loader {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(255, 255, 255, 0.65);
+                    backdrop-filter: blur(2px);
+                    display: grid;
+                    place-items: center;
+                    z-index: 9999;
+                }
+                .spinner {
+                    width: 44px;
+                    height: 44px;
+                    border: 4px solid rgba(0, 0, 0, 0.12);
+                    border-top-color: rgba(0, 0, 0, 0.55);
+                    border-radius: 50%;
+                    animation: spin 0.8s linear infinite;
+                }
+                @keyframes spin {
+                    to {
+                        transform: rotate(360deg);
+                    }
+                }
+            `}</style>
+        </div>
+    );
+}
+
 function MyApp({ Component, pageProps, router }) {
+    const [loading, setLoading] = useState(false);
     const layoutProps =
         typeof Component.getLayoutProps === "function"
             ? Component.getLayoutProps(pageProps)
@@ -65,8 +95,32 @@ function MyApp({ Component, pageProps, router }) {
         };
     }
 
+    useEffect(() => {
+        let t;
+        const start = () => {
+            // small delay prevents flicker on fast transitions
+            t = setTimeout(() => setLoading(true), 150);
+        };
+        const done = () => {
+            clearTimeout(t);
+            setLoading(false);
+        };
+
+        router.events.on("routeChangeStart", start);
+        router.events.on("routeChangeComplete", done);
+        router.events.on("routeChangeError", done);
+
+        return () => {
+            clearTimeout(t);
+            router.events.off("routeChangeStart", start);
+            router.events.off("routeChangeComplete", done);
+            router.events.off("routeChangeError", done);
+        };
+    }, [router.events]);
+
     return (
         <ContextProvider>
+            <PageLoader show={loading} />
             {getLayout(<Component {...pageProps} />)}
         </ContextProvider>
     );

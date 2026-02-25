@@ -35,6 +35,7 @@ const PostFormatHupkast = ({ postData }) => {
                                             backgroundColor:
                                                 link.platforma_boja,
                                         }}
+                                        key={`pltfrm-${link.platformaid}`}
                                     >
                                         <span
                                             dangerouslySetInnerHTML={{

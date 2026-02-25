@@ -13,6 +13,7 @@ import Link from "next/link";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import toast from "react-hot-toast";
 import { AgGridReact } from "ag-grid-react";
+import { dayInMonthComparator } from "../../../utils";
 
 export default function HuPkastPage() {
     const [allHupkast, setAllHupkast] = useState([]);
@@ -53,14 +54,6 @@ export default function HuPkastPage() {
             });
     };
 
-    /* data grid stuff */
-    const dayInMonthComparator = (d1, d2) => {
-        const a1 = d1 ? moment(d1, "DD.MM.YYYY") : null;
-        const a2 = d2 ? moment(d2, "DD.MM.YYYY") : null;
-
-        return a1 - a2;
-    };
-
     const onFilterTextBoxChanged = useCallback(() => {
         gridRef.current.api.setGridOption(
             "quickFilterText",
@@ -87,7 +80,8 @@ export default function HuPkastPage() {
             field: "published_at",
             headerName: "Datum objave",
             flex: 1,
-            sortComparator: dayInMonthComparator,
+            sort: "desc",
+            comparator: dayInMonthComparator,
         },
         {
             field: "edit",

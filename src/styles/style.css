@@ -8265,6 +8265,10 @@ article li {
     text-align: justify;
 }
 
+.single-text-wrapper a {
+    /* -- color: #337ab7; */
+}
+
 .post-details h3 {
     font-size: 2.4rem;
     line-height: 3.6rem;
@@ -11014,6 +11018,25 @@ address .tel i {
     }
 }
 
+.hupkast-single-title-info-wrapper .post-title-wrapper {
+    max-width: 80%;
+}
+
+.hupkast-single-title-info-wrapper .post-title-wrapper h1 {
+    font-size: 4rem;
+    font-weight: 700;
+    line-height: 5rem;
+}
+
+.hupkast-links-wrap .btn-group a {
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.hupkast-links-wrap .btn-group a span {
+    margin-right: 5px;
+}
+
 .autor-pozicija {
     color: var(--grey-dark-four);
 }
@@ -11213,7 +11236,7 @@ address .tel i {
     /* adjust lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
-    margin-bottom: 13px;
+    margin-bottom: 18px;
 }
 
 .predstava-recenzija-wrapper .media-body h3 {

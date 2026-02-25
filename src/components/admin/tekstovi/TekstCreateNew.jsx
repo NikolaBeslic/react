@@ -6,6 +6,7 @@ import axiosClient from "../../../utils/axios";
 import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
 import LoadingBackdrop from "../LoadingBackdrop";
+import { csrf, getCookieValue } from "../../../utils";
 
 const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const [loading, setLoading] = useState(false);
@@ -104,7 +105,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                         hupkast_linkovi: [],
                     });
                 }
-                debugger;
+
                 if (res) {
                     console.log(res.data);
                     setFormData({
@@ -324,7 +325,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         }
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         setLoading(true);
         setErrors({});
@@ -337,11 +338,13 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         let storeUrl = "/admin/create-tekst";
         if (addHuPkast) storeUrl = "/admin/hupkast-store";
         if (addHuPikon) storeUrl = "/admin/hupikon-store";
+        await csrf();
         if (formData.tekstid) {
             axiosClient
                 .post("/admin/update-tekst", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {
@@ -350,7 +353,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                 })
                 .catch((error) => {
                     console.error(error);
-                    setErrors(error.response.data.errors);
+                    setErrors(error.response.data?.errors);
                     console.log(error.response.data);
                 })
                 .finally(() => setLoading(false));
@@ -394,7 +397,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
 
     const handleLinkoviChange = (index, event) => {
         const newLinkovi = [...linkovi];
-        debugger;
         const platformaid = parseInt(
             event.target.getAttribute("data-platformaid"),
         );

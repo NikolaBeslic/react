@@ -1,5 +1,6 @@
 import { DateTime } from "luxon";
 import axiosClient from "./axios";
+import moment from "moment";
 
 const slugify = function (text) {
     return text
@@ -44,6 +45,13 @@ const dateFormate = function () {
     return todayDate;
 };
 
+const dayInMonthComparator = (d1, d2) => {
+    const a1 = d1 ? moment(d1, "DD.MM.YYYY") : null;
+    const a2 = d2 ? moment(d2, "DD.MM.YYYY") : null;
+
+    return a1 - a2;
+};
+
 const csrf = () =>
     axiosClient.get(process.env.NEXT_PUBLIC_CSRF_COOKIE_URL, {
         withCredentials: true,
@@ -71,4 +79,5 @@ export {
     csrf,
     getCookieValue,
     addParagraphIfNotExists,
+    dayInMonthComparator,
 };

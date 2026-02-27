@@ -193,7 +193,11 @@ const HeaderOne = () => {
     return (
         <>
             <AuthModal isOpen={isModalOpen} closeModal={closeModal} />
-            <OffcanvasMenu ofcshow={show} ofcHandleClose={handleClose} />
+            <OffcanvasMenu
+                ofcshow={show}
+                setOfcShow={setShow}
+                ofcHandleClose={handleClose}
+            />
             <header className="page-header">
                 <div className="header-top bg-grey-dark-one">
                     <div className="container">

@@ -9207,7 +9207,7 @@ ul.gallery img {
 }
 
 .side-navigation li a {
-    opacity: .5;
+    opacity: .6;
 }
 
 .side-navigation li a:hover {
@@ -9241,11 +9241,119 @@ ul.gallery img {
 .side-nav-inner {
     height: 100%;
     overflow-x: hidden;
-    padding: 4rem 1.5rem;
+    padding: 1rem 1.5rem;
 }
 
 .side-nav-content .axil-contact-info-inner {
     padding: 6.7rem 0 0;
+}
+
+@media (min-width:976px) {
+    #offCanvas-links-from-navbar {
+        display: none;
+    }
+}
+
+.offcanvasmenu-header {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 14px 14px;
+}
+
+.offcanvasmenu-header .btn-close {
+    opacity: 0.85;
+    padding: 12px;
+    margin: 0;
+}
+
+.offcanvasmenu-subheader {
+
+    margin-bottom: 10px !important;
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+#offcanvasmenu-patreon {
+    background-color: #f96854;
+    border-radius: 12px;
+}
+
+#offcanvasmenu-patreon a {
+    color: #fff;
+    opacity: 0.9;
+}
+
+main-navigation.side-navigation {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+/* Each list item spacing */
+.main-navigation.side-navigation>li {
+    margin: 2px 0;
+}
+
+/* All links in nav */
+.main-navigation.side-navigation a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-weight: 500;
+    letter-spacing: 0.4px;
+
+    padding: 12px 10px;
+    border-radius: 12px;
+
+    text-decoration: none;
+    color: var(--grey-dark-seven);
+
+    font-size: 15px;
+    line-height: 1.2;
+
+    transition: background 160ms ease, transform 160ms ease;
+}
+
+/* hover/active feel */
+.main-navigation.side-navigation a:hover {
+    background: rgba(0, 0, 0, 0.045);
+}
+
+/* tap feedback */
+.main-navigation.side-navigation a:active {
+    transform: scale(0.99);
+    background: rgba(0, 0, 0, 0.06);
+}
+
+/* The submenu wrapper */
+.offcanvas-intervju-submenu {
+    list-style: none;
+    padding: 6px 0 4px 12px;
+    margin: 0 0 8px;
+    border-left: 2px solid rgba(0, 0, 0, 0.08);
+}
+
+.offcanvasmenu-body {
+    padding: 10px 12px 16px;
+    overflow: hidden;
+}
+
+.offcanvas-intervju-submenu li {
+    list-style-type: none;
+}
+
+.scrollToTop a {
+    color: #fff;
+    font-size: 1.3rem;
+}
+
+.axil-contact-info div {
+    margin-bottom: 5px;
+}
+
+.axil-contact-info a {
+    font-size: 14px;
 }
 
 /*--Footer--*/
@@ -11339,8 +11447,8 @@ address .tel i {
 }
 
 .side-navigation {
-    padding-top: 40px !important;
-    border-top: 1px solid var(--color-blue-grey-one);
+    padding-top: 20px !important;
+    /* border-top: 1px solid var(--color-blue-grey-one); */
     margin-top: 5px;
 }
 

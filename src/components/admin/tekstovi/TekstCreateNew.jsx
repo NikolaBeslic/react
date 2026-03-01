@@ -662,8 +662,9 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                 init={{
                                     height: 200,
                                     menubar: false,
+                                    plugins: "code",
                                     toolbar:
-                                        "undo redo | bold italic underline strikethrough | removeformat",
+                                        "code |undo redo | bold italic underline strikethrough | removeformat",
                                 }}
                             />
                             {errors?.uvod && (

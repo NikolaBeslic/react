@@ -6,7 +6,7 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
     return (
         <div className={`axil-img-container ${pClass ?? "m-b-xs-30"}`}>
             <Link
-                href={`/post/${data.slug}`}
+                href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
                 className={`d-block ${videoPost === true ? "h-100" : ""}`}
                 key={`lnk-${data.slug}`}
             >

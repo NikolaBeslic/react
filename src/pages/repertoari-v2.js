@@ -4,8 +4,6 @@ import "react-calendar/dist/Calendar.css";
 import moment from "moment";
 import Izvodjenje from "../components/predstave/Izvodjenje";
 import Select from "react-select";
-import PredstaveLayout from "../components/post/layout/PredstaveLayout";
-import SectionTitle from "../components/elements/SectionTitle";
 import RepertoariHeader from "../components/post/post-format/elements/meta/RepertoariHeader";
 import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/material_green.css";
@@ -33,7 +31,7 @@ const RepertoariNewPage = () => {
                 console.log(res.data);
                 setDbEvents(res.data);
                 setDisplayEvents(res.data);
-                setDate(new Date("2019-09-10"));
+                setDate(new Date());
             })
             .catch((err) => {
                 // setLoading(false);
@@ -126,8 +124,8 @@ const RepertoariNewPage = () => {
         // const today = new ("2019-09-14 00:00:00.000") // TO DO change to today
 
         // setActive("today");
-        const todayA = new Date("2019-09-14 00:00:00.000");
-        const todayB = new Date("2019-09-14 23:59:59.000");
+        const todayA = moment().startOf("day").toDate();
+        const todayB = moment().endOf("day").toDate();
         //setDate(todatA);
         const dateArr = [todayA, todayB];
         setDate(dateArr);
@@ -139,9 +137,9 @@ const RepertoariNewPage = () => {
 
     const getWeekEvents = onPresetClick("week", () => {
         // setActive("week");
-        const weekA = new Date("2019-09-14 00:00:00.000"); // TO DO
-        const weekB = new Date("2019-09-21 23:59:59.000");
-
+        const weekA = moment().toDate(); // TO DO
+        // const weekB = new Date(weekA.getFullYear, weekA.);
+        const weekB = moment().day(7).toDate();
         const dateArr = [weekA, weekB];
         setDate(dateArr);
         setDisplayValue(formatDisplay(dateArr));
@@ -150,7 +148,7 @@ const RepertoariNewPage = () => {
 
     const getMonthEvents = onPresetClick("month", () => {
         //setActive("month");
-        const monthA = new Date("2019-09-14 00:00:00.000");
+        const monthA = new Date();
         const monthB = new Date(monthA.getFullYear(), monthA.getMonth() + 1, 0);
 
         const dateArr = [monthA, monthB];
@@ -273,8 +271,8 @@ const RepertoariNewPage = () => {
                                                 wrap: true,
                                                 dateFormat: "Y-m-d",
                                                 locale: { ...Serbian },
-                                                static: true,
                                                 position: "below",
+                                                static: true,
                                             }}
                                             onReady={(_, __, instance) => {
                                                 fpInstance.current = instance; // so we can close it from preset clicks if you want
@@ -311,9 +309,13 @@ const RepertoariNewPage = () => {
                                     </div>
                                 </div>
                                 <p>
-                                    {" "}
-                                    {datumOd?.toDateString()} -{" "}
-                                    {datumDo?.toDateString()}
+                                    {datumOd &&
+                                        moment(datumOd).format(
+                                            "DD. MMM YYYY",
+                                        )}{" "}
+                                    -{" "}
+                                    {datumDo &&
+                                        moment(datumDo).format("DD. MMM YYYY")}
                                 </p>
                             </div>
                         </div>

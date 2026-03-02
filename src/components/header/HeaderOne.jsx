@@ -302,6 +302,17 @@ const HeaderOne = () => {
                                             Recenzije
                                         </Link>
                                     </li>
+                                    <li key="106">
+                                        <Link href="/hupkast" legacyBehavior>
+                                            HuPkast
+                                        </Link>
+                                    </li>
+
+                                    <li key="111">
+                                        <Link href="/blog" legacyBehavior>
+                                            Blog
+                                        </Link>
+                                    </li>
                                     <li key="103">
                                         <Link href="/festivali" legacyBehavior>
                                             Festivali
@@ -313,21 +324,6 @@ const HeaderOne = () => {
                                             legacyBehavior
                                         >
                                             Repertoari
-                                        </Link>
-                                    </li>
-                                    <li key="106">
-                                        <Link href="/hupkast" legacyBehavior>
-                                            HuPkast
-                                        </Link>
-                                    </li>
-                                    <li key="104">
-                                        <Link href="/predstave" legacyBehavior>
-                                            Predstave
-                                        </Link>
-                                    </li>
-                                    <li key="111">
-                                        <Link href="/blog" legacyBehavior>
-                                            Blog
                                         </Link>
                                     </li>
                                 </ul>

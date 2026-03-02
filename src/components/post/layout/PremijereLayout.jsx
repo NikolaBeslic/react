@@ -30,8 +30,7 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
             </Link>
 
             <div className="media-body predstava-index-info">
-                <div className="post-cat-group premijere-naziv-pozorista">
-                    {/* {data.zanrovi?.map(zanr => (
+                {/* {data.zanrovi?.map(zanr => (
                         <a
                             href={`/category/${zanr.naziv_zanra}`}
                             className="post-cat zanr-button"
@@ -41,19 +40,20 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                         </a>
                     ))} */}
 
-                    {data.pozorista.map((poz) => (
-                        <span key={poz.pozoristeid}>
-                            {" "}
-                            {poz.naziv_pozorista}
-                        </span>
-                    ))}
-                </div>
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
                     <Link href={`/predstave/${data.predstava_slug}`}>
                         {data.naziv_predstave}
                     </Link>
                 </h3>
                 <div className="post-metas">
+                    <div className="post-cat-group premijere-naziv-pozorista">
+                        {data.pozorista.map((poz) => (
+                            <span key={poz.pozoristeid} className="text-muted">
+                                {" "}
+                                {poz.naziv_pozorista}
+                            </span>
+                        ))}
+                    </div>
                     <ul className="list-inline">
                         {data.premijera && (
                             <li className="text-muted">

@@ -11,9 +11,13 @@ import { useRouter } from "next/router";
 export const AdminLayoutInner = ({ children }) => {
     const { loading, admin } = useAdmin();
     const router = useRouter();
-
+    useEffect(() => {
+        if (!loading && !admin) {
+            router.replace("/hup-admin"); //
+        }
+    }, [loading, admin, router]);
     if (loading) return <div className="p-3">Loading admin...</div>;
-    if (!admin) return router.push("/hup-admin"); // later redirect
+    if (!admin) return <div className="p-3">Working...</div>; // later redirect
 
     return (
         <>

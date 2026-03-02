@@ -1,10 +1,11 @@
-import { useState } from "react";
-import { Container, Navbar, Nav, Button, Row, Col } from "react-bootstrap";
+import { Container, Navbar, Nav, Spinner } from "react-bootstrap";
 import Link from "next/link";
 import { useAdmin } from "../../../contexts/AdminContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faRightFromBracket } from "@fortawesome/free-solid-svg-icons";
 
 function AdminNav() {
-    const { admin } = useAdmin();
+    const { admin, adminLogout, adminLogoutLoading } = useAdmin();
 
     return (
         <>
@@ -78,7 +79,27 @@ function AdminNav() {
                         >
                             Pozorišta
                         </Nav.Link>
-                        {admin && <Nav.Link>{admin?.username}</Nav.Link>}
+                        {admin && (
+                            <Nav.Link
+                                title="Logout"
+                                onClick={adminLogout}
+                                disabled={adminLogoutLoading}
+                            >
+                                {admin?.username}{" "}
+                                {adminLogoutLoading ? (
+                                    <Spinner
+                                        animation="border"
+                                        role="status"
+                                        variant="secondary"
+                                        size="sm"
+                                    />
+                                ) : (
+                                    <FontAwesomeIcon
+                                        icon={faRightFromBracket}
+                                    />
+                                )}
+                            </Nav.Link>
+                        )}
                     </Nav>
                 </Container>
             </Navbar>

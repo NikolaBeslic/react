@@ -8,12 +8,14 @@ import {
 } from "react";
 import { useAuth } from "./StateContext";
 import axiosClient from "../utils/axios";
+import { csrf, getCookieValue } from "../utils";
+import { useRouter } from "next/router";
 
 const AdminContext = createContext(null);
 
 export function AdminProvider({ children }) {
     const { setAuth } = useAuth();
-
+    const router = useRouter();
     const [adminState, setAdminState] = useState({
         loading: true,
         admin: null,
@@ -74,6 +76,39 @@ export function AdminProvider({ children }) {
         }
     }, [setAuth]);
 
+    const [adminLogoutLoading, setAdminLogoutLoading] = useState(false);
+    const adminLogout = useCallback(async () => {
+        setAdminLogoutLoading(true);
+
+        try {
+            await csrf();
+
+            await axiosClient.post(`/adminlogout`, adminState.admin, {
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            });
+
+            setAuth({
+                status: "guest",
+                actorType: null,
+                admin: null,
+                user: null,
+            });
+
+            setAdminState({
+                loading: false,
+                admin: null,
+                error: null,
+            });
+
+            setAdminLogoutLoading(false);
+        } catch (err) {
+            console.error(err);
+            setAdminLogoutLoading(false);
+        }
+    }, [adminState.admin, router, setAuth]);
+
     useEffect(() => {
         fetchAdminUser();
     }, [fetchAdminUser]);
@@ -85,8 +120,17 @@ export function AdminProvider({ children }) {
             fetchUnapprovedCommentsCount,
             unnaprovedCommentsCount,
             setUnnapprovedCommentsCount,
+            adminLogout,
+            adminLogoutLoading,
         }),
-        [adminState, fetchAdminUser],
+        [
+            adminState,
+            fetchAdminUser,
+            fetchUnapprovedCommentsCount,
+            unnaprovedCommentsCount,
+            adminLogout,
+            adminLogoutLoading,
+        ],
     );
 
     return (

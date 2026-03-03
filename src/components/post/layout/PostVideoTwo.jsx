@@ -30,7 +30,7 @@ const PostVideoTwo = ({ data, pClass, videoIcon }) => {
 
             <div className="media-body">
                 <div className="post-cat-group">
-                    <a
+                    <Link
                         href={`/${data.kategorija?.kategorija_slug}`}
                         className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
                         style={{
@@ -38,7 +38,7 @@ const PostVideoTwo = ({ data, pClass, videoIcon }) => {
                         }}
                     >
                         {data.kategorija.naziv_kategorije}
-                    </a>
+                    </Link>
                 </div>
                 <h3 className="axil-post-title hover-line hover-line">
                     <Link

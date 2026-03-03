@@ -128,7 +128,7 @@ const HuPSliderMobile = ({ slidePost }) => {
                                                                         autor.autor_slug
                                                                     }
                                                                 >
-                                                                    <a
+                                                                    <Link
                                                                         href={`/autori/${autor.autor_slug}`}
                                                                         className="d-flex align-items-center"
                                                                     >
@@ -154,7 +154,7 @@ const HuPSliderMobile = ({ slidePost }) => {
                                                                                 autor.ime_autora
                                                                             }
                                                                         </span>
-                                                                    </a>
+                                                                    </Link>
                                                                 </li>
                                                             ),
                                                         )}

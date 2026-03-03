@@ -4,7 +4,7 @@ const PozoristaLayout = ({ pozoriste }) => {
     return (
         <div className="pozorista-layout-wrapper col-lg-3 col-md-4 col-xs-6">
             <div className="pozorista-layout-logo">
-                <a href={`/pozorista/${pozoriste.pozoriste_slug}`}>
+                <Link href={`/pozorista/${pozoriste.pozoriste_slug}`}>
                     {pozoriste.logo && (
                         <Image
                             src={pozoriste.logo}
@@ -14,12 +14,12 @@ const PozoristaLayout = ({ pozoriste }) => {
                             objectFit="contain"
                         />
                     )}
-                </a>
+                </Link>
             </div>
             <div className="pozorista-layout-info">
-                <a href={`/pozorista/${pozoriste.pozoriste_slug}`}>
+                <Link href={`/pozorista/${pozoriste.pozoriste_slug}`}>
                     {pozoriste.naziv_pozorista}
-                </a>
+                </Link>
             </div>
         </div>
     );

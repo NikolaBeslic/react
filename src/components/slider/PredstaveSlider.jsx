@@ -92,38 +92,38 @@ const PredstaveSlider = ({ slidePost }) => {
                                         <div className="post-metas home-banner-post-metas m-b-xs-20">
                                             <ul className="list-inline">
                                                 <li className="m-r-xs-20">
-                                                    <a
+                                                    <Link
                                                         href={`/zanrovi`}
                                                         className="d-flex align-items-center"
                                                     >
                                                         <span className="m-l-xs-20">
                                                             Komedija
                                                         </span>
-                                                    </a>
+                                                    </Link>
                                                 </li>
                                             </ul>
                                         </div>
                                         {/* End of .post-metas */}
                                         <h1 className="page-title m-b-xs-40 hover-line">
-                                            <a
+                                            <Link
                                                 href={`/predstave/${data.predstava_slug}`}
                                             >
                                                 {data.naziv_predstave}
-                                            </a>
+                                            </Link>
                                         </h1>
                                         <div className="btn-group">
-                                            <a
+                                            <Link
                                                 href={`/predstave/${data.predstava_slug}`}
                                                 className="btn btn-primary m-r-xs-30"
                                             >
                                                 Više informaciaja o predstavi
-                                            </a>
-                                            <a
+                                            </Link>
+                                            <Link
                                                 href={`/category/${data.predstava_slug}`}
                                                 className="btn-a"
                                             >
                                                 Sve komedije
-                                            </a>
+                                            </Link>
                                         </div>
                                     </div>
                                 ))}

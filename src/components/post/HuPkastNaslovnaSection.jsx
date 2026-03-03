@@ -1,3 +1,4 @@
+import Link from "next/link";
 import SectionTitle from "../elements/SectionTitle";
 import Image from "next/legacy/image";
 
@@ -19,7 +20,7 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                         key={hupkastData.tekstid}
                     >
                         <div className="hupkast-naslovna-photo">
-                            <a href={`/hupkast/${hupkastData.slug}`}>
+                            <Link href={`/hupkast/${hupkastData.slug}`}>
                                 <Image
                                     src={hupkastData.tekst_photo}
                                     alt="hupkast"
@@ -31,14 +32,14 @@ const HuPkastNaslovnaSection = ({ postData }) => {
                                     layout="responsive"
                                 />
                                 <span className="video-play-btn video-play-big" />
-                            </a>
+                            </Link>
                         </div>
                         <div className="hupkast-naslovna-info">
                             <div className="hupkast-naslovna-title">
                                 <h3>
-                                    <a href={`/hupkast/${hupkastData.slug}`}>
+                                    <Link href={`/hupkast/${hupkastData.slug}`}>
                                         {hupkastData.naslov}
-                                    </a>
+                                    </Link>
                                 </h3>
                             </div>
                             <div

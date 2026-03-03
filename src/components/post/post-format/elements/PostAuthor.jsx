@@ -16,7 +16,7 @@ const PostAuthor = ({ authorData }) => {
                         key={data.autor_slug}
                     >
                         <div className="media">
-                            <a href={`/autori/${data?.autor_slug}`}>
+                            <Link href={`/autori/${data?.autor_slug}`}>
                                 <Image
                                     src={data.url_slike}
                                     alt={data.autor_slug}
@@ -24,7 +24,7 @@ const PostAuthor = ({ authorData }) => {
                                     width={105}
                                     className="author-img"
                                 />
-                            </a>
+                            </Link>
                             <div className="media-body">
                                 <div className="media-body-title">
                                     <h3>

@@ -1,9 +1,10 @@
 import Image from "next/legacy/image";
+import Link from "next/link";
 
 const HupikonIndexLayout = ({ data, index }) => {
     return (
         <div className="axil-img-container m-b-xs-15 m-b-sm-30">
-            <a href={`/hupikon/${data.slug}`} className="d-block">
+            <Link href={`/hupikon/${data.slug}`} className="d-block">
                 <Image
                     src={data.tekst_photo}
                     alt={data.slug}
@@ -11,18 +12,18 @@ const HupikonIndexLayout = ({ data, index }) => {
                     height={528}
                 />
                 <div className="grad-overlay grad-overlay__transparent" />
-            </a>
+            </Link>
             <div className="media post-block grad-overlay position-absolute">
                 <div className="media-body justify-content-end">
                     <div className="post-cat-group m-b-xs-10"></div>
                     <div className="axil-media-bottom hupikon-index-title">
                         <h3 className="axil-post-title hover-line m-b-xs-0">
-                            <a
+                            <Link
                                 href={`/hupikon/${data.slug}`}
                                 title={data.naslov}
                             >
                                 {data.hupikon?.sagovornik}: {data.naslov}
-                            </a>
+                            </Link>
                         </h3>
                     </div>
                 </div>

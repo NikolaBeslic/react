@@ -4,7 +4,7 @@ import Link from "next/link";
 const TeamOne = ({ data }) => {
     return (
         <div className="axil-team-block m-b-xs-30">
-            <a
+            <Link
                 href={`/autori/${data.autor_slug}`}
                 className="d-block img-container"
                 legacybehavior
@@ -16,7 +16,7 @@ const TeamOne = ({ data }) => {
                     height={350}
                     objectFit="cover"
                 />
-            </a>
+            </Link>
             <div className="axil-team-inner-content text-center">
                 <h3 className="axil-member-title hover-line">
                     <Link href={`/autori/${data.autor_slug}`} legacyBehavior>

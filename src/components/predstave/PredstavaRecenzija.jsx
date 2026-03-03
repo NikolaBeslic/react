@@ -5,8 +5,8 @@ import moment from "moment";
 const PredstavaRecenzija = ({ data }) => {
     return (
         <div className="media post-block">
-            <a
-                href={`${data.kategorija?.kategorija_slug}/${data.slug}`}
+            <Link
+                href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
                 className="align-self-center"
             >
                 <Image
@@ -17,18 +17,18 @@ const PredstavaRecenzija = ({ data }) => {
                     placeholder="blur"
                     blurDataURL="/images/placeholder.png"
                 />
-            </a>
+            </Link>
             <div className="media-body">
                 <div className="post-cat-group m-b-xs-10">
-                    <a
-                        href={`${data.kategorija?.kategorija_slug}`}
+                    <Link
+                        href={`/${data.kategorija?.kategorija_slug}`}
                         className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
                         style={{
                             backgroundColor: data.kategorija.kategorija_boja,
                         }}
                     >
                         {data.kategorija?.naziv_kategorije}
-                    </a>
+                    </Link>
                 </div>
 
                 <Link
@@ -50,7 +50,7 @@ const PredstavaRecenzija = ({ data }) => {
                     <ul className="list-inline">
                         {data.autori?.map((autorData) => (
                             <li key={autorData.autor_slug}>
-                                <a
+                                <Link
                                     className="post-author post-author-with-img"
                                     href={`/autori/${autorData.autor_slug}`}
                                 >
@@ -63,19 +63,19 @@ const PredstavaRecenzija = ({ data }) => {
                                     <span className="author-name">
                                         {autorData.ime_autora}
                                     </span>
-                                </a>
+                                </Link>
                             </li>
                         ))}
                         <li>
                             <span>
                                 <i className="fa-regular fa-clock"></i>
                             </span>
-                            <a
+                            <Link
                                 href={`/author/${data.slug}`}
                                 className="post-author"
                             >
                                 {moment(data.created_at).fromNow()}
-                            </a>
+                            </Link>
                         </li>
                     </ul>
                 </div>

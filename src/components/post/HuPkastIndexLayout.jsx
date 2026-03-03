@@ -1,4 +1,5 @@
 import Image from "next/legacy/image";
+import Link from "next/link";
 
 const HuPkastIndexLayout = ({ hupkastData }) => {
     return (
@@ -7,7 +8,7 @@ const HuPkastIndexLayout = ({ hupkastData }) => {
             key={hupkastData.tekstid}
         >
             <div className="hupkast-naslovna-photo">
-                <a href={`hupkast/${hupkastData.slug}`}>
+                <Link href={`hupkast/${hupkastData.slug}`}>
                     <Image
                         src={hupkastData.tekst_photo}
                         alt="hupkast"
@@ -18,14 +19,14 @@ const HuPkastIndexLayout = ({ hupkastData }) => {
                         objectFit="cover"
                     />
                     <span className="video-play-btn video-play-big" />
-                </a>
+                </Link>
             </div>
             <div className="hupkast-naslovna-info">
                 <div className="hupkast-naslovna-title">
                     <h3 className="axil-post-title hover-line hover-line">
-                        <a href={`hupkast/${hupkastData.slug}`}>
+                        <Link href={`hupkast/${hupkastData.slug}`}>
                             {hupkastData.naslov}
-                        </a>
+                        </Link>
                     </h3>
                 </div>
                 <div

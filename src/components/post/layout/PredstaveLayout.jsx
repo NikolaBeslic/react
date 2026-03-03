@@ -11,7 +11,7 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                 pClass ?? "post-block__on-dark-bg m-b-xs-30"
             }`}
         >
-            <a
+            <Link
                 href={`/predstave/${data.predstava_slug}`}
                 className="align-self-center"
             >
@@ -32,12 +32,12 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                         ""
                     )}
                 </>
-            </a>
+            </Link>
 
             <div className="media-body predstava-index-info">
                 <div className="post-cat-group">
                     {data.zanrovi?.map((zanr) => (
-                        <a
+                        <Link
                             href={`/category/${zanr.naziv_zanra}`}
                             className="post-cat zanr-button"
                             style={{
@@ -47,13 +47,13 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                             key={zanr.zanrid}
                         >
                             {zanr.naziv_zanra}
-                        </a>
+                        </Link>
                     ))}
                 </div>
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                    <a href={`/predstave/${data.predstava_slug}`}>
+                    <Link href={`/predstave/${data.predstava_slug}`}>
                         {data.naziv_predstave}
-                    </a>
+                    </Link>
                 </h3>
                 <div className="post-metas">
                     <ul className="list-inline">

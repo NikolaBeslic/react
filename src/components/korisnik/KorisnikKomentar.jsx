@@ -1,17 +1,18 @@
 import moment from "moment";
+import Link from "next/link";
 
 const KorisnikKomentar = ({ data }) => {
     return (
         <div className="korisnik-komentar-wrapper">
             <div className="korisnik-komentar-header">
                 <h6>{data.predstava?.naziv_predstave}</h6>{" "}
-                <a
+                <Link
                     href={`/predstave/${data.predstava.predstava_slug}`}
                     target="_blank"
                     rel="noreferrer"
                 >
                     <i className="fa-solid fa-arrow-up-right-from-square"></i>
-                </a>
+                </Link>
             </div>
             <div className="korisnik-komentar-body">
                 <p>{data.tekst_komentara}</p>

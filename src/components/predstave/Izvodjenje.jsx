@@ -39,13 +39,13 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                 </div>
                 {showPredstava && (
                     <div className="izvodjenje-predstava">
-                        <a
+                        <Link
                             href={`/predstave/${izvodjenjeData.predstava.predstava_slug}`}
                         >
                             <strong>
                                 {izvodjenjeData.predstava.naziv_predstave}
                             </strong>
-                        </a>
+                        </Link>
                     </div>
                 )}
                 <div className="izvodjenje-pozoriste">
@@ -72,7 +72,7 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
             >
                 <div className="izvodjenje-plakat">
                     {showPredstava && (
-                        <a
+                        <Link
                             href={`/predstave/${izvodjenjeData.predstava.predstava_slug}`}
                         >
                             <Image
@@ -86,7 +86,7 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                                 objectFit="cover"
                                 quality={90}
                             />
-                        </a>
+                        </Link>
                     )}
                 </div>
             </Col>

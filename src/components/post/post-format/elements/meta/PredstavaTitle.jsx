@@ -17,6 +17,7 @@ import {
     faFileImport,
     faCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import Link from "next/link";
 
 const PredstavaTitle = ({
     metaData,
@@ -94,13 +95,13 @@ const PredstavaTitle = ({
                                                                 pozoriste.pozoristeid
                                                             }
                                                         >
-                                                            <a
+                                                            <Link
                                                                 href={`/pozorista/${pozoriste.pozoriste_slug}`}
                                                             >
                                                                 {
                                                                     pozoriste.naziv_pozorista
                                                                 }
-                                                            </a>
+                                                            </Link>
                                                         </span>
                                                     ),
                                                 )}
@@ -222,13 +223,13 @@ const PredstavaTitle = ({
                                                                             pozoriste.pozoristeid
                                                                         }
                                                                     >
-                                                                        <a
+                                                                        <Link
                                                                             href={`/pozorista/${pozoriste.pozoriste_slug}`}
                                                                         >
                                                                             {
                                                                                 pozoriste.naziv_pozorista
                                                                             }
-                                                                        </a>{" "}
+                                                                        </Link>{" "}
                                                                     </span>
                                                                 ),
                                                             )}

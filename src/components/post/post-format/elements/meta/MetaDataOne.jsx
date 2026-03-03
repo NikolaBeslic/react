@@ -2,6 +2,7 @@ import Image from "next/legacy/image";
 import moment from "moment";
 import { Badge, Stack } from "react-bootstrap";
 import Breadcrumb from "../../../../common/Breadcrumb";
+import Link from "next/link";
 
 const MetaDataOne = ({ metaData }) => {
     return (
@@ -25,7 +26,7 @@ const MetaDataOne = ({ metaData }) => {
                                 <ul className="list-inline">
                                     {metaData.autori?.map((autorData) => (
                                         <li key={autorData.autor_slug}>
-                                            <a
+                                            <Link
                                                 className="post-author post-author-with-img"
                                                 href={`/autori/${autorData.autor_slug}`}
                                             >
@@ -38,7 +39,7 @@ const MetaDataOne = ({ metaData }) => {
                                                 <span className="author-name">
                                                     {autorData.ime_autora}
                                                 </span>
-                                            </a>
+                                            </Link>
                                         </li>
                                     ))}
                                 </ul>

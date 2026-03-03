@@ -4,6 +4,7 @@ import RelatedPosts from "../RelatedPosts";
 import PostAuthor from "./elements/PostAuthor";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
+import Link from "next/link";
 
 const PostFormatStandard = ({ postData, relatedPosts }) => {
     return (
@@ -37,13 +38,13 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                                 }}
                                             ></span>{" "}
                                             {link.naziv_platforme} :{" "}
-                                            <a
+                                            <Link
                                                 href={link.pivot.hupkast_url}
                                                 target="_blank"
                                                 rel="noreferrer"
                                             >
                                                 {link.pivot.hupkast_url}
-                                            </a>{" "}
+                                            </Link>{" "}
                                         </p>
                                     ))}
                                 </div>
@@ -60,7 +61,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                         className="post-tags-stack"
                                     >
                                         {postData.tagovi.map((tag) => (
-                                            <a
+                                            <Link
                                                 href={`/tag/${tag.tag_slug}`}
                                                 key={tag.tagid}
                                             >
@@ -73,7 +74,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                                     <i className="fa-solid fa-tag"></i>{" "}
                                                     {tag.tag_naziv}
                                                 </Badge>
-                                            </a>
+                                            </Link>
                                         ))}
                                     </Stack>
                                 </>
@@ -121,7 +122,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                             className="povezano-pozoriste"
                                             key={poz.pozoristeid}
                                         >
-                                            <a
+                                            <Link
                                                 href={`/pozorista/${poz.pozoriste_slug}`}
                                             >
                                                 <Image
@@ -131,13 +132,13 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                                     width={100}
                                                     objectFit="cover"
                                                 />
-                                            </a>
+                                            </Link>
                                             <span key={poz.pozoristeid}>
-                                                <a
+                                                <Link
                                                     href={`/pozorista/${poz.pozoriste_slug}`}
                                                 >
                                                     {poz.naziv_pozorista}
-                                                </a>
+                                                </Link>
                                             </span>
                                         </div>
                                     ))}

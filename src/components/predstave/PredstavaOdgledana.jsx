@@ -27,9 +27,9 @@ const PredstavaOdgledana = ({ data }) => {
                 <div className="media-body predstava-index-info">
                     <div className="post-cat-group">Nesto</div>
                     <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                        <a href={`/predstave/${data.predstava_slug}`}>
+                        <Link href={`/predstave/${data.predstava_slug}`}>
                             {data.naziv_predstave}
-                        </a>
+                        </Link>
                     </h3>
                     <div className="post-metas">
                         <ul className="list-inline">

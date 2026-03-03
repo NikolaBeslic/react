@@ -111,123 +111,81 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                         </li>
                                     </ul>
                                     {/* End of .main-navigation */}
+                                    <div className="offcanvasmenu-hup-links">
+                                        <ul className="list-inline justify-content-between align-items-center sidemenu-horizontal-list">
+                                            <li className="sidemenu-list-item">
+                                                <Link href="/o-nama">
+                                                    O nama
+                                                </Link>
+                                            </li>
+                                            <li className="sidemenu-list-item">
+                                                <Link href="/kontakt">
+                                                    Kontakt
+                                                </Link>
+                                            </li>
+                                            <li className="sidemenu-list-item">
+                                                <Link href="/redakcija">
+                                                    Redakcija
+                                                </Link>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div className="contact-social-share m-t-xs-30">
+                                        <div className="axil-social-title h5">
+                                            Pratite nas
+                                        </div>
+                                        <ul className="social-share social-share__with-bg">
+                                            <li>
+                                                <a href={SocialLink.fb.url}>
+                                                    <i
+                                                        className={
+                                                            SocialLink.fb.icon
+                                                        }
+                                                    />
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href={
+                                                        SocialLink.instagram.url
+                                                    }
+                                                >
+                                                    <i
+                                                        className={
+                                                            SocialLink.instagram
+                                                                .icon
+                                                        }
+                                                    />
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a href={SocialLink.yt.url}>
+                                                    <i
+                                                        className={
+                                                            SocialLink.yt.icon
+                                                        }
+                                                    />
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href={
+                                                        SocialLink.spotify.url
+                                                    }
+                                                >
+                                                    <i
+                                                        className={
+                                                            SocialLink.spotify
+                                                                .icon
+                                                        }
+                                                    />
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    {/* End of .contact-shsdf */}
                                 </div>
                                 {/* End of  .col-md-6 */}
-                                <div className="col-lg-6">
-                                    <div className="axil-contact-info-inner">
-                                        <h5 className="h5 m-b-xs-10">
-                                            Impresum
-                                        </h5>
-                                        <div className="axil-contact-info">
-                                            <p>
-                                                Hoću (u) pozorište je portal
-                                                namenjen promociji svih vidova
-                                                pozorišnih delovanja, od
-                                                amaterskih pozorišta do najvećih
-                                                scena u Srbiji.
-                                            </p>
-                                            <div className="h5 m-b-xs-5">
-                                                Kontakt
-                                            </div>
-                                            <div>
-                                                <a
-                                                    className="email"
-                                                    href="mailto:kontakt@hocupozoriste.rs"
-                                                >
-                                                    <i className="fa-solid fa-envelope"></i>{" "}
-                                                    <span>
-                                                        kontakt@hocupozoriste.rs
-                                                    </span>
-                                                </a>
-                                            </div>
-                                            <div>
-                                                <a
-                                                    className="web"
-                                                    href="https://hocupozoriste.rs"
-                                                >
-                                                    <i className="fa-solid fa-globe"></i>{" "}
-                                                    <span>
-                                                        www.hocupozoriste.rs
-                                                    </span>
-                                                </a>
-                                            </div>
-
-                                            <div className="contact-social-share m-t-xs-30">
-                                                <div className="axil-social-title h5">
-                                                    Pratite nas
-                                                </div>
-                                                <ul className="social-share social-share__with-bg">
-                                                    <li>
-                                                        <a
-                                                            href={
-                                                                SocialLink.fb
-                                                                    .url
-                                                            }
-                                                        >
-                                                            <i
-                                                                className={
-                                                                    SocialLink
-                                                                        .fb.icon
-                                                                }
-                                                            />
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            href={
-                                                                SocialLink
-                                                                    .instagram
-                                                                    .url
-                                                            }
-                                                        >
-                                                            <i
-                                                                className={
-                                                                    SocialLink
-                                                                        .instagram
-                                                                        .icon
-                                                                }
-                                                            />
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            href={
-                                                                SocialLink.yt
-                                                                    .url
-                                                            }
-                                                        >
-                                                            <i
-                                                                className={
-                                                                    SocialLink
-                                                                        .yt.icon
-                                                                }
-                                                            />
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <a
-                                                            href={
-                                                                SocialLink
-                                                                    .spotify.url
-                                                            }
-                                                        >
-                                                            <i
-                                                                className={
-                                                                    SocialLink
-                                                                        .spotify
-                                                                        .icon
-                                                                }
-                                                            />
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                            {/* End of .contact-shsdf */}
-                                        </div>
-                                        {/* End of .axil-contact-info */}
-                                    </div>
-                                </div>
-                                {/* End of .axil-contact-info-inner */}
                             </div>
                             {/* End of .row */}
                         </div>

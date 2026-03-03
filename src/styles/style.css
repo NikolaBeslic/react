@@ -8907,7 +8907,7 @@ ul.gallery img {
 /*--Sidenav--*/
 .offcanvas-menu.offcanvas.offcanvas-end,
 .offcanvas-menu.offcanvas.offcanvas-start {
-    width: 60vw;
+    width: 30vw;
     height: 100vh;
     transition: all 0.8s var(--cubic-easing);
 }
@@ -8979,7 +8979,7 @@ ul.gallery img {
 }
 
 .side-nav .side-navigation li {
-    font-size: 3.6rem;
+    font-size: 2.0rem;
     line-height: 5rem;
     color: var(--grey-dark-one);
     font-weight: var(--p-semi-bold);
@@ -9284,6 +9284,36 @@ ul.gallery img {
     opacity: 0.9;
 }
 
+.offcanvasmenu-hup-links {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.offcanvasmenu-hup-links ul {
+    padding-left: 0;
+}
+
+.offcanvasmenu-hup-links a {
+    color: var(--grey-dark-seven);
+    opacity: 0.6;
+    padding: 10px;
+    border-radius: 12px;
+    transition: background 160ms ease,
+        transform 160ms ease;
+}
+
+.offcanvasmenu-hup-links a:hover {
+    background: rgba(0, 0, 0, 0.045);
+    color: rgba(18, 18, 19);
+    opacity: 1;
+}
+
+@media (max-width:720px) {
+    .offcanvasmenu-hup-links a {
+        font-size: 16px;
+    }
+}
+
 main-navigation.side-navigation {
     margin: 0;
     padding: 0;
@@ -9313,6 +9343,12 @@ main-navigation.side-navigation {
     line-height: 1.2;
 
     transition: background 160ms ease, transform 160ms ease;
+}
+
+@media (min-width: 720px) {
+    .main-navigation.side-navigation a {
+        font-size: 1.8rem;
+    }
 }
 
 /* hover/active feel */

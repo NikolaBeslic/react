@@ -9,7 +9,7 @@ const PostFormatHupikon = ({ postData, relatedPosts }) => {
         <>
             <main className="site-main">
                 <article className="post-details">
-                    <div className="single-blog-wrapper">
+                    <div className="single-blog-wrapper p-t-xs-60">
                         <div className="container">
                             <div className="single-text-wrapper">
                                 <h3 className="text-center hupikon-title">

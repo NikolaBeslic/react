@@ -70,7 +70,7 @@ const KorisnickiProfil = ({ korisnik }) => {
     return (
         <>
             <main className="site-main">
-                <div className="single-blog-wrapper">
+                <div className="single-blog-wrapper p-t-xs-60">
                     <div className="post-widget sidebar-post-widget m-b-xs-40">
                         <Tab.Container
                             id="korisnicki-profil-tabs"

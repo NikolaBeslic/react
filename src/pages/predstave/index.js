@@ -182,102 +182,104 @@ export default function PredstavePage() {
 
     return (
         <>
-            <div className="repertoar-filter-wrapper">
-                <h5>Filtriraj predstave</h5>
-                <InputGroup className="mb-5">
-                    <InputGroup.Text id="basic-addon1">
-                        <i className="fa-solid fa-magnifying-glass"></i>
-                    </InputGroup.Text>
-                    <Form.Control
-                        placeholder="Pretrazi predstave"
-                        aria-label="seacrh"
-                        aria-describedby="basic-addon1"
-                        value={searchInput}
-                        onChange={(e) => setSearchInput(e.target.value)}
-                    />
-                </InputGroup>
-                <div className="repertoar-filter-gradovi-zanrovi-wrapper">
-                    <div className="m-b-xs-20">
-                        <Select
-                            instanceId="znr"
-                            name="zanrovi"
-                            placeholder="Izaberi zanrove"
-                            isMulti={true}
-                            options={dbZanrovi}
-                            onChange={onChangeMulti("zanrovi")}
+            <div className="single-blog-wrapper p-t-xs-60">
+                <div className="repertoar-filter-wrapper">
+                    <h5>Filtriraj predstave</h5>
+                    <InputGroup className="mb-5">
+                        <InputGroup.Text id="basic-addon1">
+                            <i className="fa-solid fa-magnifying-glass"></i>
+                        </InputGroup.Text>
+                        <Form.Control
+                            placeholder="Pretrazi predstave"
+                            aria-label="seacrh"
+                            aria-describedby="basic-addon1"
+                            value={searchInput}
+                            onChange={(e) => setSearchInput(e.target.value)}
                         />
+                    </InputGroup>
+                    <div className="repertoar-filter-gradovi-zanrovi-wrapper">
+                        <div className="m-b-xs-20">
+                            <Select
+                                instanceId="znr"
+                                name="zanrovi"
+                                placeholder="Izaberi zanrove"
+                                isMulti={true}
+                                options={dbZanrovi}
+                                onChange={onChangeMulti("zanrovi")}
+                            />
+                        </div>
+
+                        <div className="m-b-xs-20">
+                            <Select
+                                instanceId="grd"
+                                name="gradovi"
+                                placeholder="Izaberi gradove"
+                                isMulti={true}
+                                options={dbGradovi}
+                                onChange={onChangeMulti("gradovi")}
+                            />
+                        </div>
                     </div>
 
                     <div className="m-b-xs-20">
+                        <Form.Label>Sortiraj po</Form.Label>
                         <Select
-                            instanceId="grd"
-                            name="gradovi"
-                            placeholder="Izaberi gradove"
-                            isMulti={true}
-                            options={dbGradovi}
-                            onChange={onChangeMulti("gradovi")}
+                            instanceId="srt"
+                            name="sortBy"
+                            placeholder="Sortiraj po"
+                            options={SORT_OPTIONS}
+                            value={selectedSort}
+                            onChange={onSortChange}
                         />
                     </div>
-                </div>
-
-                <div className="m-b-xs-20">
-                    <Form.Label>Sortiraj po</Form.Label>
-                    <Select
-                        instanceId="srt"
-                        name="sortBy"
-                        placeholder="Sortiraj po"
-                        options={SORT_OPTIONS}
-                        value={selectedSort}
-                        onChange={onSortChange}
-                    />
-                </div>
-                <Form>
-                    <Form.Check // prettier-ignore
-                        type="switch"
-                        id="recenzije-switch"
-                        label="Prikazi samo predstave koje imaju recenziju"
-                        onChange={() =>
-                            setFilters((prev) => ({
-                                ...prev,
-                                hasReviews: !prev.hasReviews,
-                                page: 1,
-                            }))
-                        }
-                    />
-                </Form>
-            </div>
-            {loading && (
-                <Spinner
-                    animation="border"
-                    role="status"
-                    className="hup-spinner"
-                />
-            )}
-            <p>
-                Prikazano {predstave?.length} od {meta?.total}
-            </p>
-            <div className="axil-content row">
-                {predstave?.map((pred) => (
-                    <div className="col-lg-12" key={pred.predstavaid}>
-                        <PredstaveLayout
-                            data={pred}
-                            pClass=""
-                            key={`pred${pred.predstavaid}`}
-                            showPozoriste={true}
+                    <Form>
+                        <Form.Check // prettier-ignore
+                            type="switch"
+                            id="recenzije-switch"
+                            label="Prikazi samo predstave koje imaju recenziju"
+                            onChange={() =>
+                                setFilters((prev) => ({
+                                    ...prev,
+                                    hasReviews: !prev.hasReviews,
+                                    page: 1,
+                                }))
+                            }
                         />
-                    </div>
-                ))}
-                {canLoadMore && (
-                    <button
-                        className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                        onClick={loadMore}
-                        disabled={loading}
-                    >
-                        {loading && filters.page > 1
-                            ? "Učitavanje…"
-                            : "Učitaj još"}
-                    </button>
+                    </Form>
+                </div>
+                {loading && (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        className="hup-spinner"
+                    />
                 )}
+                <p>
+                    Prikazano {predstave?.length} od {meta?.total}
+                </p>
+                <div className="axil-content row">
+                    {predstave?.map((pred) => (
+                        <div className="col-lg-12" key={pred.predstavaid}>
+                            <PredstaveLayout
+                                data={pred}
+                                pClass=""
+                                key={`pred${pred.predstavaid}`}
+                                showPozoriste={true}
+                            />
+                        </div>
+                    ))}
+                    {canLoadMore && (
+                        <button
+                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                            onClick={loadMore}
+                            disabled={loading}
+                        >
+                            {loading && filters.page > 1
+                                ? "Učitavanje…"
+                                : "Učitaj još"}
+                        </button>
+                    )}
+                </div>
             </div>
         </>
     );

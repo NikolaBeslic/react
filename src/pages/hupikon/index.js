@@ -46,7 +46,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     return (
         <>
             <article className="post-details">
-                <div className="axil-content">
+                <div className="axil-content p-t-xs-60">
                     <div className="row">
                         {loading && (
                             <Spinner

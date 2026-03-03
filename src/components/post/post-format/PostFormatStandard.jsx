@@ -10,7 +10,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
         <>
             <main className="site-main">
                 <article className="post-details">
-                    <div className="single-blog-wrapper">
+                    <div className="single-blog-wrapper p-t-xs-60">
                         <div className="container">
                             <div className="single-text-wrapper">
                                 {/* <SocialShareSide /> */}

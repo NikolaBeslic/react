@@ -32,7 +32,7 @@ const HuPLayoutInner = ({
                     {isNaslovna ? (
                         <>{children}</>
                     ) : (
-                        <div className="post-single-wrapper p-t-xs-60">
+                        <div className="post-single-wrapper">
                             {noSidebar ? (
                                 <div className="col-lg-12">{children}</div>
                             ) : (

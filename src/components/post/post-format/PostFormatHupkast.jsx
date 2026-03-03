@@ -4,7 +4,7 @@ const PostFormatHupkast = ({ postData }) => {
     return (
         <>
             <main className="site-main">
-                <div className="single-blog-wrapper">
+                <div className="single-blog-wrapper p-t-xs-60">
                     <div className="m-b-xs-50">
                         {postData.hupkast?.mp3_url && (
                             <>

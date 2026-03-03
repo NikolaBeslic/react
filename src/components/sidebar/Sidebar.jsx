@@ -47,7 +47,7 @@ const Sidebar = () => {
     }, []);
 
     return (
-        <div className="post-sidebar">
+        <div className="post-sidebar p-t-xs-60">
             <WidgetAd />
             <WidgetToday izvodjenja={izvodjenja} />
             {/* <RelatedPosts relatedPosts={sidePosts} /> */}

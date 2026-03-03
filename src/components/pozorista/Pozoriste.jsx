@@ -9,7 +9,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
     const izvodjenjaPredstva = data?.igranja || [];
     const visibleIzvodjenja = izvodjenjaPredstva.slice(
         0,
-        visibleCountIzvodjenja
+        visibleCountIzvodjenja,
     );
 
     const handleLoadMoreIzvodjenja = () => {
@@ -33,13 +33,13 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
     };
 
     const [omiljenoKorisnika, setOmiljenoKorisnika] = useState(
-        data.omiljenoKorisnika
+        data.omiljenoKorisnika,
     );
 
     return (
         <>
             <main className="site-main">
-                <div className="single-blog-wrapper">
+                <div className="single-blog-wrapper p-t-xs-60">
                     <div className="post-widget sidebar-post-widget m-b-xs-40">
                         <Tab.Container
                             id="pozoriste-post"

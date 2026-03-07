@@ -11601,7 +11601,7 @@ address .tel i {
 
 .predstave-listazelja-card {
     width: 200px;
-    height: 455px;
+    height: 475px;
     margin-bottom: 40px;
     --scale: calc(100vw / 1920);
     transform: scale(var(--scale));
@@ -11629,6 +11629,26 @@ address .tel i {
 .predstave-listazelja-card-text {
     font-size: 1.3rem;
     line-height: 2.2rem;
+}
+
+.card-link {
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 12px;
+}
+
+.card-loading-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: rgba(255, 255, 255, 0.7);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 10;
+    border-radius: inherit;
 }
 
 .korisnik-komentar-wrapper {

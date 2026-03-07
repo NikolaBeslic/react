@@ -69,7 +69,9 @@ const KorisnikHeader = ({ korisnik }) => {
                                     <li>
                                         <i className="fa-regular fa-star"></i>
                                         Prosecna ocena:
-                                        <strong>7.9</strong>
+                                        <strong>
+                                            {korisnik.prosecna_ocena}
+                                        </strong>
                                     </li>
                                 </ul>
                             </div>

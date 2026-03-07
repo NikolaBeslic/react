@@ -37,7 +37,9 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
             })
             .then((res) => {
                 setModalOpen(false);
-                toast.success("Uspešno ste se registrovali!");
+                toast.success(
+                    "Uspešno ste se registrovali! Proverite vaš email da biste aktivirali nalog.",
+                );
                 setFormData({
                     korisnickoIme: "",
                     email: "",
@@ -47,6 +49,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
             })
             .catch((error) => {
                 console.error(error);
+                toast.error("Neka greška se dogodila. Pokušajte ponovo.");
                 setErrors(error.response.data.errors);
             })
             .finally(() => setLoading(false));

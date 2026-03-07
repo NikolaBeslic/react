@@ -13,34 +13,10 @@ const KorisnickiProfil = ({ korisnik }) => {
         korisnik.lista_odgledanih,
     );
 
-    const handleObrisiSaListeZelja = async (predstavaid) => {
-        //setLoading(true);
-        await csrf();
-        axiosClient
-            .delete(`/obrisi-sa-liste-zelja/${predstavaid}`, {
-                withCredentials: true,
-                headers: {
-                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
-                },
-            })
-            .then((res) => {
-                setListaZelja((prev) =>
-                    prev.filter((item) => item.predstavaid !== res.data),
-                );
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => {
-                //setLoading(false);
-            });
-    };
-
     const handlePrebaciUOdgledane = async (predstavaid) => {
-        //setLoading(true);
-        await csrf();
-        axiosClient
-            .post(
+        try {
+            await csrf();
+            const res = await axiosClient.post(
                 "/predstava/dodajUOdgledane",
                 { predstavaid },
                 {
@@ -49,22 +25,41 @@ const KorisnickiProfil = ({ korisnik }) => {
                         "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 },
-            )
-            .then((res) => {
-                const predstava = res.data;
-                setListaZelja((prev) =>
-                    prev.filter(
-                        (item) => item.predstavaid !== predstava.predstavaid,
-                    ),
-                );
-                setListaOdgledanih((prev) => [...prev, predstava]);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => {
-                //setLoading(false);
-            });
+            );
+
+            const predstava = res.data;
+            setListaZelja((prev) =>
+                prev.filter(
+                    (item) => item.predstavaid !== predstava.predstavaid,
+                ),
+            );
+            setListaOdgledanih((prev) => [...prev, predstava]);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const handleObrisiSaListeZelja = async (predstavaid) => {
+        try {
+            await csrf();
+            const res = await axiosClient.delete(
+                `/obrisi-sa-liste-zelja/${predstavaid}`,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            );
+
+            setListaZelja((prev) =>
+                prev.filter(
+                    (item) => item.predstavaid !== res.data, //api returns only predstavaid
+                ),
+            );
+        } catch (err) {
+            console.error(err);
+        }
     };
 
     return (

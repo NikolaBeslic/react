@@ -1,13 +1,43 @@
 import moment from "moment";
 import Link from "next/link";
-import { Card } from "react-bootstrap";
+import { Card, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faListCheck } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
 
 function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
+    const [loading, setLoading] = useState(false);
+
+    const handlePrebaci = async () => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            await onPrebaci(data.predstavaid);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleOdgledano = async () => {
+        if (loading) return;
+        setLoading(true);
+        try {
+            await onRemove(data.predstavaid);
+        } finally {
+            setLoading(false);
+        }
+    };
+
     return (
         <Card
             key={`card-${data.predstavaid}`}
             className="predstave-listazelja-card"
         >
+            {loading && (
+                <div className="card-loading-overlay">
+                    <Spinner animation="border" />
+                </div>
+            )}
             <Link
                 href={`/predstave/${data.predstava_slug}`}
                 title={data.naziv_predstave}
@@ -64,12 +94,23 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                         </>
                     )}
                 </Card.Text>
-                <Card.Link onClick={() => onPrebaci(data.predstavaid)}>
-                    Prebaci u odgledane
-                </Card.Link>
-                <Card.Link onClick={() => onRemove(data.predstavaid)}>
-                    <i className="fa-solid fa-delete-left"></i> Obrisi sa liste
-                </Card.Link>
+
+                <div className="d-flex justify-content-between p-b-xs-10">
+                    <Card.Link
+                        onClick={() => handlePrebaci()}
+                        className="text-primary"
+                        variant="outline"
+                    >
+                        <FontAwesomeIcon icon={faListCheck} />
+                        Odgledano
+                    </Card.Link>
+                    <Card.Link
+                        onClick={() => handleOdgledano()}
+                        className="text-danger"
+                    >
+                        <i className="fa-solid fa-delete-left"></i> Ukloni
+                    </Card.Link>
+                </div>
             </Card.Body>
         </Card>
     );

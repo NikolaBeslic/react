@@ -4,6 +4,7 @@ import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
 import { Form, Button } from "react-bootstrap";
 import LoadingBackdrop from "../LoadingBackdrop";
+import { csrf, getCookieValue } from "../../../utils";
 
 const PozoristaCreateUpdate = ({ pozoristeid }) => {
     const [loading, setLoading] = useState(false);
@@ -56,11 +57,16 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
         setFormData({ ...formData, gradid: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
+        await csrf();
         if (formData.pozoristeid) {
             axiosClient
-                .put("/admin/update-pozoriste", formData)
+                .put("/admin/update-pozoriste", formData, {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     res.status == 200
@@ -73,7 +79,11 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-pozoriste", formData)
+                .post("/admin/create-pozoriste", formData, {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     setErrors({});

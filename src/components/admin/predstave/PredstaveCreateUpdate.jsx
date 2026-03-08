@@ -6,6 +6,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
 import { Button, Form } from "react-bootstrap";
 import LoadingBackdrop from "../LoadingBackdrop";
+import { csrf, getCookieValue } from "../../../utils";
 
 const PredstaveCreateUpdate = ({ predstavaid }) => {
     const [formData, setFormData] = useState({
@@ -146,14 +147,16 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
         setDbPozorista(selectedZanrovi);
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        await csrf();
         if (formData.predstavaid) {
             axiosClient
                 .post("/admin/update-predstava", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {
@@ -169,6 +172,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                 .post("/admin/create-predstava", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {

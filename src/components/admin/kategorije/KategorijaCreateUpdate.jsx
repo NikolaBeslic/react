@@ -62,12 +62,17 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
         label: kategorija.naziv_kategorije,
     }));
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        await csrf();
         if (formData.kategorijaid) {
             axiosClient
-                .put("/admin/update-kategorija", formData)
+                .put("/admin/update-kategorija", formData, {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     toast.success("Uspešno sačuvane izmene");
@@ -78,7 +83,11 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-kategorija", formData)
+                .post("/admin/create-kategorija", formData, {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     setErrors({});

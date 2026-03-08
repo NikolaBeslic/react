@@ -6,6 +6,7 @@ import moment from "moment";
 import { Form, Button, Row, Col } from "react-bootstrap";
 import { toast } from "react-hot-toast";
 import LoadingBackdrop from "../LoadingBackdrop";
+import { csrf, getCookieValue } from "../../../utils";
 
 const FestivaliCreateUpdate = ({ festivalid }) => {
     const [festivalImage, setFestivalImage] = useState(null);
@@ -112,12 +113,13 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
         editorRepertoar.content = content;
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         showLoading();
         event.preventDefault();
         formData.datumod = moment(datumod).format("YYYY-MM-DD");
         formData.datumdo = moment(datumdo).format("YYYY-MM-DD");
         console.log(formData);
+        await csrf();
         if (formData.festivalid) {
             console.log("update");
 
@@ -125,6 +127,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 .post("/admin/festival-update", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {
@@ -144,6 +147,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 .post("/admin/festival-store", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {

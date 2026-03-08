@@ -4,6 +4,7 @@ import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import toast from "react-hot-toast";
 import { Form, Button } from "react-bootstrap";
+import { csrf, getCookieValue } from "../../../utils";
 
 const ZanrCreateUpdate = ({ zanrid }) => {
     const [errors, setErrors] = useState({});
@@ -38,12 +39,17 @@ const ZanrCreateUpdate = ({ zanrid }) => {
         setFormData({ ...formData, zanr_boja: `#${e.value}` });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        await csrf();
         if (formData.zanrid) {
             axiosClient
-                .put("/admin/update-zanr", formData)
+                .put("/admin/update-zanr", formData, {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                })
                 .then((res) => console.log(res))
                 .catch((error) => {
                     console.error(error);
@@ -51,7 +57,11 @@ const ZanrCreateUpdate = ({ zanrid }) => {
                 });
         } else {
             axiosClient
-                .post("/admin/create-zanr", formData)
+                .post("/admin/create-zanr", formData, {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                })
                 .then((res) => {
                     console.log(res);
                     setErrors({});

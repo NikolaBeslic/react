@@ -4,6 +4,7 @@ import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
 import { Form, Button } from "react-bootstrap";
 import LoadingBackdrop from "../LoadingBackdrop";
+import { csrf } from "../../../utils";
 
 const AutoriCreateUpdate = ({ autorid }) => {
     const [gradovi, setGradovi] = useState([]);
@@ -77,14 +78,16 @@ const AutoriCreateUpdate = ({ autorid }) => {
         setFormData({ ...formData, gradid: event.target.value });
     };
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        await csrf();
         if (formData.autorid) {
             axiosClient
                 .post("/admin/update-autor", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {
@@ -102,6 +105,7 @@ const AutoriCreateUpdate = ({ autorid }) => {
                 .post("/admin/create-autor", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {

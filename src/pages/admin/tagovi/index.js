@@ -7,6 +7,7 @@ import { slugify } from "../../../../lib/slugify";
 import toast from "react-hot-toast";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import LoadingBackdrop from "../../../components/admin/LoadingBackdrop";
+import { csrf, getCookieValue } from "../../../utils";
 
 export default function TagoviPage() {
     const [tagovi, setTagovi] = useState([]);
@@ -61,7 +62,7 @@ export default function TagoviPage() {
         //setValidationError("");
     }
 
-    const saveTagsToDb = () => {
+    const saveTagsToDb = async () => {
         setLoading(true);
         const tagArr = new Array();
         chips.forEach((x) => {
@@ -71,8 +72,13 @@ export default function TagoviPage() {
             };
             tagArr.push(tagObj);
         });
+        await csrf();
         axiosClient
-            .post("/admin/tagovi/store", tagArr)
+            .post("/admin/tagovi/store", tagArr, {
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
             .then((res) => {
                 if (res.status == 200) {
                     setChips([]);

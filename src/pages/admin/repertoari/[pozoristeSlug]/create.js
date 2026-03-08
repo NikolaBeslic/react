@@ -36,6 +36,7 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import AdminHeader from "../../../../components/admin/layout/AdminHeader";
+import { csrf, getCookieValue } from "../../../../utils";
 
 function EditToolbar(props) {
     const { setRows, setRowModesModel } = props;
@@ -179,12 +180,17 @@ export default function RepertoarPozoristaCreatePage() {
         setFormData({ ...formData, scenaid: selectedScena.value });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         setLoading(true);
         formData.datum = moment(datum).format("YYYY-MM-DD");
         formData.vreme = moment(vreme).format("HH:mm");
+        await csrf();
         axiosClient
-            .post("/admin/igranje-store", formData)
+            .post("/admin/igranje-store", formData, {
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
             .then((res) => {
                 console.log(res.data);
                 setIgranja(res.data);
@@ -264,18 +270,26 @@ export default function RepertoarPozoristaCreatePage() {
         }
     };
 
-    const processRowUpdate = (newRow) => {
+    const processRowUpdate = async (newRow) => {
         debugger;
         const newDatum = moment(newRow.datum).format("YYYY-MM-DD");
-
+        await csrf();
         axiosClient
-            .put(`/admin/igranje-update`, {
-                seigraid: newRow.id,
-                pozoristeid: pozoriste.pozoristeid,
-                scenaid: newRow.scena,
-                datum: newDatum,
-                vreme: newRow.vreme,
-            })
+            .put(
+                `/admin/igranje-update`,
+                {
+                    seigraid: newRow.id,
+                    pozoristeid: pozoriste.pozoristeid,
+                    scenaid: newRow.scena,
+                    datum: newDatum,
+                    vreme: newRow.vreme,
+                },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            )
             .then((res) => {
                 toast.success("Uspesno sacuvano izvodjenje");
             })

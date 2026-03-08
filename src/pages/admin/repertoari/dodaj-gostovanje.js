@@ -11,6 +11,7 @@ import { TimeField } from "@mui/x-date-pickers/TimeField";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import { AgGridReact } from "ag-grid-react";
+import { csrf, getCookieValue } from "../../../utils";
 
 export default function DodajGostovanjePage() {
     const [loading, setLoading] = useState(false);
@@ -86,7 +87,7 @@ export default function DodajGostovanjePage() {
         setFormData({ ...formData, scenaid: selectedScena.value });
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         console.log(formData);
 
         setLoading(true);
@@ -94,9 +95,13 @@ export default function DodajGostovanjePage() {
         formData.vreme = moment(vreme).format("HH:mm");
 
         console.log(formData);
-
+        await csrf();
         axiosClient
-            .post("/admin/igranje-store", formData)
+            .post("/admin/igranje-store", formData, {
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
             .then((res) => {
                 debugger;
                 console.log(res.data);

@@ -3,6 +3,7 @@ import axiosClient from "../../../utils/axios";
 import toast from "react-hot-toast";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import { Button, Table, Form, Row, Col } from "react-bootstrap";
+import { csrf, getCookieValue } from "../../../utils";
 
 export default function GradoviPage() {
     const [gradovi, setGradovi] = useState([]);
@@ -16,9 +17,19 @@ export default function GradoviPage() {
             .catch((err) => console.error(err));
     }, []);
 
-    const handleGradSave = () => {
+    const handleGradSave = async () => {
+        await csrf();
         axiosClient
-            .post("/admin/store-grad", { naziv_grada: nazivGrada })
+            .post(
+                "/admin/store-grad",
+                { naziv_grada: nazivGrada },
+                {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            )
             .then((res) => {
                 console.log(res.data);
                 setGradovi(res.data);

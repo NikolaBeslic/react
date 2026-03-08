@@ -17,6 +17,7 @@ import moment from "moment";
 import { toast } from "react-hot-toast";
 import AdminHeader from "../../../../components/admin/layout/AdminHeader";
 import { useRouter } from "next/router";
+import { csrf, getCookieValue } from "../../../../utils";
 
 export default function RepertoarPozoristaScrapePage() {
     const router = useRouter();
@@ -60,7 +61,7 @@ export default function RepertoarPozoristaScrapePage() {
         );
     }
 
-    const handleSaveSingleButtonClick = (e, params) => {
+    const handleSaveSingleButtonClick = async (e, params) => {
         console.log(params);
         const igranje = {
             pozoristeid: params.row.pozoristeid,
@@ -69,9 +70,13 @@ export default function RepertoarPozoristaScrapePage() {
             datum: moment(params.row.datum, "DD.MM.YYYY").format("YYYY-MM-DD"),
             vreme: params.row.vreme,
         };
-
+        await csrf();
         axiosClient
-            .post("/admin/igranje-store", igranje)
+            .post("/admin/igranje-store", igranje, {
+                headers: {
+                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                },
+            })
             .then((res) => {
                 toast.success("Uspesno sacuvano izvodjenje");
             })
@@ -97,7 +102,7 @@ export default function RepertoarPozoristaScrapePage() {
         );
     }
 
-    const handleSaveAllButtonClick = (e, params) => {
+    const handleSaveAllButtonClick = async (e, params) => {
         if (selectionModel.length === 0) {
             toast.error("Niste izabrali nijedno izvodjenje za cuvanje");
             return;
@@ -107,8 +112,17 @@ export default function RepertoarPozoristaScrapePage() {
             row.datum = moment(row.datum, "DD.MM.YYYY").format("YYYY-MM-DD");
         });
         setLoading(true);
+        await csrf();
         axiosClient
-            .post("/admin/igranje-multi-store", { igranja: selectedRows })
+            .post(
+                "/admin/igranje-multi-store",
+                { igranja: selectedRows },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            )
             .then((res) => {
                 console.log(res.data);
                 setScrapeSaveResponse(res.data);
@@ -154,7 +168,7 @@ export default function RepertoarPozoristaScrapePage() {
             pozoristeid: igr.pozoriste?.pozoristeid,
             predstavaid: igr.predstava?.predstavaid,
             scenaid: igr.scena?.scenaid,
-        })
+        }),
     );
 
     return (
@@ -176,7 +190,7 @@ export default function RepertoarPozoristaScrapePage() {
                         size="small"
                         onClick={() =>
                             router.push(
-                                `/admin/repertoari/${pozoristeSlug}/create`
+                                `/admin/repertoari/${pozoristeSlug}/create`,
                             )
                         }
                     >

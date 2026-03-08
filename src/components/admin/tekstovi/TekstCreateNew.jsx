@@ -362,6 +362,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                 .post(storeUrl, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
                 .then((res) => {

@@ -21,6 +21,7 @@ import moment from "moment";
 import { useRouter } from "next/router";
 import { AgGridReact } from "ag-grid-react";
 import { useAdmin } from "../../../contexts/AdminContext";
+import { csrf, getCookieValue } from "../../../utils";
 
 export default function KomentariPage() {
     const [komentari, setKomentari] = useState([]);
@@ -86,12 +87,21 @@ export default function KomentariPage() {
         setSelectedRow(null);
     };
 
-    const onEditButtonClick = (event, params) => {
+    const onEditButtonClick = async (event, params) => {
         debugger;
         event.preventDefault();
         setLoading(true);
+        await csrf();
         axiosClient
-            .put(`/admin/odobri-komentar/${params.id}`)
+            .post(
+                "/admin/odobri-komentar/",
+                { komentarid: params.id },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            )
             .then((res) => {
                 const updatedKomentar = res.data.komentar;
                 setKomentari((prevKom) =>

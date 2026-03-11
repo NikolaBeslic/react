@@ -10881,7 +10881,8 @@ address .tel i {
 
 .predstava-komentar-wrapper {
 
-    background: rgba(255, 255, 255, 0.5);
+    background-color: #f2f0f0;
+    opacity: 0.9;
     border-radius: 6px;
     padding: 24px;
     margin-bottom: 10px;
@@ -12153,4 +12154,8 @@ address .tel i {
 
 .svg-inline--fa {
     margin-right: 5px;
+}
+
+.hup-toaster {
+    font-size: 14px;
 }

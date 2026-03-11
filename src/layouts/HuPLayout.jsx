@@ -53,7 +53,15 @@ const HuPLayoutInner = ({
                         </div>
                     )}
                 </main>
-                <Toaster position="top-right" reverseOrder={false} />
+                <Toaster
+                    position="bottom-center"
+                    reverseOrder={false}
+                    toastOptions={{
+                        // Define default options
+                        className: "hup-toaster",
+                        duration: 3000,
+                    }}
+                />
                 <FooterOne />
             </div>
         </>

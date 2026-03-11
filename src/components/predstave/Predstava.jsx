@@ -7,9 +7,10 @@ import { useState } from "react";
 import PredstavaRecenzija from "./PredstavaRecenzija";
 import axiosClient from "../../utils/axios";
 import { addParagraphIfNotExists, csrf, getCookieValue } from "../../utils";
-import PostLayoutFour from "../post/layout/PostLayoutFour";
 import SectionSubtitle from "../elements/SectionSubtitle";
 import { useUser } from "../../contexts/UserContext";
+import { Spinner } from "react-bootstrap";
+import { toast } from "react-hot-toast";
 
 const Predstava = ({ data, updateData }) => {
     const recenzije = data.tekstovi?.filter(
@@ -51,37 +52,47 @@ const Predstava = ({ data, updateData }) => {
         predstavaid: data.predstavaid,
         korisnikid: user?.id,
     });
+    const [komentarLoading, setKomentarLoading] = useState(false);
     const [errors, setErrors] = useState({});
+
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
-
+        setKomentarLoading(true);
         console.log("Submitting comment:", komentarFormData);
 
         if (!user) {
             alert("Ulogujte se da biste mogli da komentarišete predstavu.");
             return;
         }
-        await csrf();
-        axiosClient
-            .post("/predstava/dodaj-komentar", komentarFormData, {
-                withCredentials: true,
-                headers: {
-                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
-                    "Content-Type": "application/json",
-                },
-            })
-            .then((res) => {
-                console.log(res);
-            })
-            .catch((err) => {
-                console.error(err);
-                setErrors(
-                    err.response.data.errors || {
-                        general:
-                            "An error occurred while submitting the comment.",
+
+        try {
+            await csrf();
+            const res = await axiosClient.post(
+                "/predstava/dodaj-komentar",
+                komentarFormData,
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        "Content-Type": "application/json",
                     },
-                );
-            });
+                },
+            );
+        } catch (err) {
+            console.error(err);
+            setErrors(
+                err.response.data.errors || {
+                    general: "An error occurred while submitting the comment.",
+                },
+            );
+        }
+        setKomentarFormData({
+            tekst_komentara: "",
+            predstavaid: data.predstavaid,
+            korisnikid: user?.id,
+        });
+        setKomentarLoading(false);
+        toast.success("Uspešno dodat komentar. Biće vidljiv nakon odobrenja.");
     };
 
     return (
@@ -310,16 +321,15 @@ const Predstava = ({ data, updateData }) => {
                                 )}
                                 <div className="predstava-komentar-form-wrapper">
                                     <h3>Dodaj komentar</h3>
-                                    <form
-                                        onSubmit={(e) => {
-                                            e.preventDefault();
-                                            // Handle comment submission logic here
-                                        }}
-                                    >
+                                    <Form>
                                         <Form.Control
                                             as="textarea"
                                             rows={4}
                                             placeholder="Unesite svoj komentar"
+                                            disabled={komentarLoading}
+                                            value={
+                                                komentarFormData.tekst_komentara
+                                            }
                                             onChange={(e) =>
                                                 setKomentarFormData({
                                                     ...komentarFormData,
@@ -337,10 +347,14 @@ const Predstava = ({ data, updateData }) => {
                                             type="submit"
                                             className="btn btn-primary btn-small m-t-xs-20"
                                             onClick={handleCommentSubmit}
+                                            disabled={komentarLoading}
                                         >
                                             Pošalji komentar
+                                            {komentarLoading && (
+                                                <Spinner animation="border" />
+                                            )}
                                         </button>
-                                    </form>
+                                    </Form>
                                 </div>
                             </div>
                         </div>

@@ -2,7 +2,6 @@ import { withSSRHandler } from "../utils/withSSRHandler";
 import axiosClient from "../utils/axios";
 import KorisnickiProfil from "../components/korisnik/KorisnickiProfil";
 import KorisnikHeader from "../components/post/post-format/elements/meta/KorisnikHeader";
-import { enableCursor } from "@fullcalendar/core/internal";
 
 export default function KorisnikPage({ korisnik }) {
     return (

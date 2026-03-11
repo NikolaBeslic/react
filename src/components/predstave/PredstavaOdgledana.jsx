@@ -1,11 +1,10 @@
 import Image from "next/legacy/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStar, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import {
-    faStar,
-    faComments,
-    faPenToSquare,
-} from "@fortawesome/free-regular-svg-icons";
-import { faStarHalfStroke } from "@fortawesome/free-solid-svg-icons";
+    faStarHalfStroke,
+    faCommentNodes,
+} from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Dropdown, Spinner } from "react-bootstrap";
 import { useState } from "react";
@@ -117,10 +116,12 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
                     </div>
                     {data.komentar_korisnika ? (
                         <div className="predstava-index-komentari">
-                            <FontAwesomeIcon icon={faComments} />{" "}
-                            <span className="komentari-count">
-                                {data.komentar_korisnika}
-                            </span>
+                            <Link
+                                href={`/predstave/${data.predstava_slug}#komentari`}
+                                title="Vidi tvoj komentar"
+                            >
+                                <FontAwesomeIcon icon={faCommentNodes} />
+                            </Link>
                         </div>
                     ) : (
                         <Link

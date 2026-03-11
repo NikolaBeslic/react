@@ -31,13 +31,13 @@ const PredstavaRecenzija = ({ data }) => {
                     </Link>
                 </div>
 
-                <Link
-                    href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
-                >
-                    <h3 className="axil-post-title hover-line hover-line">
+                <h3 className="axil-post-title hover-line hover-line">
+                    <Link
+                        href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                    >
                         {data.naslov}
-                    </h3>
-                </Link>
+                    </Link>
+                </h3>
 
                 <div
                     className="mid"

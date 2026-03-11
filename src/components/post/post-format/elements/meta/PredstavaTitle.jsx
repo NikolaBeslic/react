@@ -2,16 +2,13 @@ import Image from "react-bootstrap/Image";
 import moment from "moment";
 import { useMediaQuery } from "react-responsive";
 import Rating from "react-rating";
-import axiosClient from "../../../../../utils/axios";
 import { Button, Spinner } from "react-bootstrap";
-import { useState } from "react";
 import HeadMeta from "../../../../elements/HeadMeta";
 import Breadcrumb from "../../../../common/Breadcrumb";
-import { csrf, getCookieValue } from "../../../../../utils";
 import PredstavaStickyTitle from "./PredstavaStickyTitle";
-import { useUser } from "../../../../../contexts/UserContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+    faMasksTheater,
     faFileCirclePlus,
     faCheckDouble,
     faFileImport,
@@ -80,13 +77,15 @@ const PredstavaTitle = ({
                                             </div>
                                         ))}
                                     </div>
-                                    <h1 className="m-b-xs-5 m-t-xs-10 predstava-single-title hover-line">
+                                    <h1 className="m-b-xs-15 m-t-xs-15 predstava-single-title hover-line">
                                         {metaData.naziv_predstave}
                                     </h1>
-                                    <ul className="list-inline">
+                                    <ul className="list-inline predstava-single-pozorista-list">
                                         <li>
                                             <p>
-                                                <i className="fa-solid fa-masks-theater"></i>
+                                                <FontAwesomeIcon
+                                                    icon={faMasksTheater}
+                                                />
                                                 {metaData.pozorista?.map(
                                                     (pozoriste) => (
                                                         <span
@@ -130,55 +129,138 @@ const PredstavaTitle = ({
                                         <div className="post-metas banner-post-metas m-t-xs-20">
                                             <ul className="list-inline">
                                                 <li>
-                                                    <i className="fa-solid fa-pen-fancy"></i>
-                                                    Autor: {metaData.autor}
-                                                </li>
-                                                <li>
-                                                    <i className="fa-solid fa-signs-post"></i>
-                                                    Režija: {metaData.reditelj}
+                                                    <i className="fa-light fa-calendar-day"></i>
+                                                    Premijera:{" "}
+                                                    {moment(
+                                                        metaData.premijera,
+                                                    ).format("DD. MMM YYYY.")}
                                                 </li>
                                             </ul>
                                             <ul className="list-inline">
                                                 <li>
-                                                    <i className="feather icon-share-2" />
-                                                    Premijera:{" "}
-                                                    {moment(
-                                                        metaData.premijera,
-                                                    ).format("dd.MMM.YYYY")}
+                                                    <i className="fa-solid fa-signs-post"></i>
+                                                    Režija: {metaData.reditelj}
+                                                </li>
+                                                <li>
+                                                    <i className="fa-solid fa-pen-fancy"></i>
+                                                    Autor: {metaData.autor}
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
                                     {/* TO DO Font awesome as React comp, and rating as component */}
                                     <div className="rating-wrapper">
-                                        <i className="fa-xl fa-solid fa-star"></i>
-                                        <span className="current-rating">
-                                            {metaData.prosecnaOcena}
-                                        </span>
+                                        <div className="average-rating">
+                                            <p className="average-rating-text">
+                                                Prosečna ocena
+                                            </p>
+                                            <p className="average-rating-current-rate">
+                                                <i className="fa-xl fa-solid fa-star"></i>{" "}
+                                                <span className="current-rating">
+                                                    {metaData.prosecnaOcena} /
+                                                    10
+                                                </span>{" "}
+                                                <span className="number-of-ratings">
+                                                    ({metaData.brojOcena})
+                                                </span>
+                                            </p>
+                                        </div>
+                                        <div className="user-rating">
+                                            {ratingLoading ? (
+                                                <Spinner
+                                                    animation="border"
+                                                    role="status"
+                                                    className="hup-spinner"
+                                                    size="sm"
+                                                />
+                                            ) : (
+                                                <>
+                                                    <p className="average-rating-text">
+                                                        Tvoja ocena
+                                                    </p>
+
+                                                    <Rating
+                                                        style={{
+                                                            fontSize: "16px",
+                                                        }}
+                                                        {...ratingProps}
+                                                        onChange={(value) =>
+                                                            handleRating(value)
+                                                        }
+                                                    />
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
-                                    <div className="user-rating">
-                                        {ratingLoading ? (
-                                            <Spinner
-                                                animation="border"
-                                                role="status"
-                                                className="hup-spinner"
-                                                size="sm"
-                                            />
+
+                                    <div className="predstava-actions ms-lg-auto">
+                                        {metaData.naListiZeljaKorisnika ? (
+                                            <Button
+                                                variant="primary"
+                                                className="btn btn-primary btn-small"
+                                                disabled
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={faCheck}
+                                                />
+                                                Na listi zelja
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                variant="primary"
+                                                className="btn btn-primary btn-small"
+                                                onClick={
+                                                    handleDodajNaListuZelja
+                                                }
+                                            >
+                                                {naListiZeljaLoading ? (
+                                                    <Spinner
+                                                        as="span"
+                                                        animation="border"
+                                                        role="status"
+                                                        size="sm"
+                                                    />
+                                                ) : (
+                                                    <FontAwesomeIcon
+                                                        icon={faFileCirclePlus}
+                                                    />
+                                                )}
+                                                Dodaj na listu zelja
+                                            </Button>
+                                        )}
+
+                                        <br />
+                                        {metaData.naListiOdgledanihKorisnika ? (
+                                            <Button
+                                                className="btn btn-primary btn-small btn-nofill"
+                                                disabled
+                                            >
+                                                <FontAwesomeIcon
+                                                    icon={faCheckDouble}
+                                                />
+                                                Na listi odgledanih
+                                            </Button>
                                         ) : (
                                             <>
-                                                <p className="average-rating-text">
-                                                    Tvoja ocena
-                                                </p>
-
-                                                <Rating
-                                                    style={{
-                                                        fontSize: "16px",
-                                                    }}
-                                                    {...ratingProps}
-                                                    onChange={(value) =>
-                                                        handleRating(value)
+                                                <Button
+                                                    className="btn btn-primary btn-small btn-nofill"
+                                                    onClick={
+                                                        handleDodajUOdgledane
                                                     }
-                                                />
+                                                >
+                                                    {odgledaneLoading ? (
+                                                        <Spinner
+                                                            as="span"
+                                                            animation="border"
+                                                            role="status"
+                                                        />
+                                                    ) : (
+                                                        <FontAwesomeIcon
+                                                            icon={faFileImport}
+                                                        />
+                                                    )}
+                                                    Dodaj u odgledane
+                                                </Button>
                                             </>
                                         )}
                                     </div>

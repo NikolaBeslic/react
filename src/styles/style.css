@@ -10867,6 +10867,50 @@ address .tel i {
 
 }
 
+.predstava-single-pozorista-list {
+    padding-left: 0;
+}
+
+@media screen and (max-width: 767px) {
+    .predstava-single-title {
+        font-weight: 700;
+    }
+
+    .predstava-single-plakat {
+        margin: 20px auto 30px;
+    }
+
+    .banner__default {
+        padding: 3rem 0;
+    }
+
+    .user-rating {
+        margin-top: 10px;
+        margin-bottom: 40px;
+        display: block;
+        width: 100%;
+    }
+
+    .user-rating span {
+        font-size: 18px;
+        margin-right: 1px !important;
+    }
+
+    .predstava-actions {
+        width: 50%;
+        margin: auto;
+    }
+
+    .rating-wrapper {
+        display: block !important;
+        width: 100% !important;
+        margin-top: 24px !important;
+        padding-top: 16px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+    }
+
+}
+
 .predstava-title-wrapper h1 {
     margin-top: 0;
     font-size: 42px;
@@ -10933,29 +10977,37 @@ address .tel i {
 }
 
 .current-rating {
-    font-size: 18px;
+    font-size: 22px;
+    font-weight: 500;
     margin-left: 5px;
 }
 
 .number-of-ratings {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
 }
 
 .rating-wrapper {
-    width: 55%;
+    width: 70%;
     display: inline-flex;
     margin-top: 20px;
     font-size: 13px;
 
 }
 
-.average-rating {
+.average-rating,
+.user-rating {
     flex: 1;
+}
+
+.average-rating p,
+.user-rating p {
+    font-family: var(--primary-font);
 
 }
 
-.user-rating {
-    flex: 1;
+.user-rating span {
+    font-size: 18px;
+    margin-right: 0.5px;
 }
 
 .list-inline {
@@ -12107,6 +12159,7 @@ address .tel i {
 .category-index-post-block h3 {
     font-size: 2.1rem;
     font-weight: 700;
+    text-align: left;
 }
 
 .intervju-navbar-li {

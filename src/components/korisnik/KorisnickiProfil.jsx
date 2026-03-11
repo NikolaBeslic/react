@@ -6,6 +6,7 @@ import OmiljenoPozoriste from "./OmiljenoPozoriste";
 import { useState } from "react";
 import axiosClient from "../../utils/axios";
 import { csrf, getCookieValue } from "../../utils";
+import PredstaveLayout from "../post/layout/PredstaveLayout";
 
 const KorisnickiProfil = ({ korisnik }) => {
     const [listaZelja, setListaZelja] = useState(korisnik.lista_zelja);
@@ -57,6 +58,35 @@ const KorisnickiProfil = ({ korisnik }) => {
                     (item) => item.predstavaid !== res.data, //api returns only predstavaid
                 ),
             );
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    const oceniOdgledanuPredstavu = async (predstavaid, ocena) => {
+        try {
+            await csrf();
+            const res = await axiosClient.post(
+                "/predstava/oceni",
+                {
+                    ocena: ocena,
+                    user: korisnik,
+                    predstavaid: predstavaid,
+                },
+                {
+                    withCredentials: true,
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        "Content-Type": "application/json",
+                    },
+                },
+            );
+            debugger;
+            let predstava = listaOdgledanih.find(
+                (item) => item.predstavaid == predstavaid,
+            );
+            predstava.ocena_korisnika = { ocena: res.data.ocenaKorisnika };
+            setListaOdgledanih((prev) => [...prev, predstava]);
         } catch (err) {
             console.error(err);
         }
@@ -121,8 +151,10 @@ const KorisnickiProfil = ({ korisnik }) => {
                                 <Tab.Pane eventKey="odgledane">
                                     {listaOdgledanih?.map((odg) => (
                                         <PredstavaOdgledana
-                                            key={`odg-${odg.predstavaid}`}
                                             data={odg}
+                                            handleRate={oceniOdgledanuPredstavu}
+                                            pClass=""
+                                            key={`pred${odg.predstavaid}`}
                                         />
                                     ))}
                                 </Tab.Pane>

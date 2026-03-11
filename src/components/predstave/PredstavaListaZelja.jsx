@@ -73,16 +73,22 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                     key={`ctxt-${data.predstavaid}`}
                     className="predstave-listazelja-card-text"
                 >
-                    <i className="fa-solid fa-building-columns"></i>{" "}
-                    {data.pozorista?.map((poz) => (
-                        <span key={poz.pozoristeid}>{poz.naziv_pozorista}</span>
-                    ))}{" "}
+                    {data.pozorista.length > 0 && (
+                        <>
+                            <i className="fa-solid fa-building-columns"></i>{" "}
+                            {data.pozorista?.map((poz) => (
+                                <span key={poz.pozoristeid}>
+                                    {poz.naziv_pozorista}
+                                </span>
+                            ))}
+                        </>
+                    )}
                     <br />
                     {data.naredno_igranje && (
                         <>
                             <i
                                 className="fa-regular fa-calendar-days"
-                                title="Sledece igranje"
+                                title="Naredno igranje"
                             ></i>{" "}
                             {moment(data.naredno_igranje.datum).format(
                                 "DD.MMM yyyy.",

@@ -11262,6 +11262,14 @@ address .tel i {
     color: var()
 }
 
+#korisnicki-profil-tabs-tabpane-odgledane .media .media-body {
+    padding-right: 25px;
+}
+
+.predstava-index-title {
+    text-align: left;
+}
+
 .predstava-index-wrapper {
     align-items: center;
     margin-bottom: 30px;
@@ -11275,7 +11283,7 @@ address .tel i {
 }
 
 .predstava-index-ocena-recenzija-wrapper {
-    width: 150px;
+    width: 170px;
     /* adjust to taste */
     display: flex;
     flex-direction: column;
@@ -11293,6 +11301,41 @@ address .tel i {
     gap: 10px;
     align-items: center;
     justify-content: flex-end;
+}
+
+.predstava-index-ocena-komentari .rating-wrapper {
+    text-align: center;
+}
+
+.predstava-index-ocena-komentari .btn-link {
+    border: none;
+    text-decoration: underline;
+    text-transform: none;
+    font-family: var(--bs-body-font-family);
+    font-weight: 500;
+    padding: 0;
+}
+
+.predstava-index-ocena-komentari .btn-link::before {
+    content: none;
+}
+
+.predstava-index-ocena-komentari .btn-link::after {
+    content: none;
+}
+
+.predstava-index-ocena-komentari .dropdown-menu {
+    position: absolute;
+    z-index: 99999;
+}
+
+.predstava-index-ocena-komentari .dropdown-item {
+    font-size: 14px;
+}
+
+.predstava-index-ocena-komentari .dropdown-item:hover {
+    background-color: var(--primary-color);
+    color: #fff;
 }
 
 
@@ -11320,6 +11363,8 @@ address .tel i {
     font-weight: 600;
     margin-left: 5px;
 }
+
+
 
 .predstava-index-title a {
     font-size: 2.1rem;
@@ -11629,12 +11674,17 @@ address .tel i {
 .predstave-listazelja-card-text {
     font-size: 1.3rem;
     line-height: 2.2rem;
+    text-align: left;
 }
 
 .card-link {
     cursor: pointer;
     text-decoration: underline;
     font-size: 12px;
+    color: #2f60cc;
+    font-family: var(--bs-body-font-family);
+    font-weight: 500;
+    text-align: right;
 }
 
 .card-loading-overlay {
@@ -11649,6 +11699,16 @@ address .tel i {
 
     z-index: 10;
     border-radius: inherit;
+}
+
+.odgledana-predstava-wrapper {
+    border-radius: 12px;
+}
+
+.odgledana-predstava-wrapper:hover {
+    transform: none;
+    box-shadow: soft;
+    z-index: 20;
 }
 
 .korisnik-komentar-wrapper {

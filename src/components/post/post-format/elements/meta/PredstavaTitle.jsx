@@ -156,6 +156,32 @@ const PredstavaTitle = ({
                                             {metaData.prosecnaOcena}
                                         </span>
                                     </div>
+                                    <div className="user-rating">
+                                        {ratingLoading ? (
+                                            <Spinner
+                                                animation="border"
+                                                role="status"
+                                                className="hup-spinner"
+                                                size="sm"
+                                            />
+                                        ) : (
+                                            <>
+                                                <p className="average-rating-text">
+                                                    Tvoja ocena
+                                                </p>
+
+                                                <Rating
+                                                    style={{
+                                                        fontSize: "16px",
+                                                    }}
+                                                    {...ratingProps}
+                                                    onChange={(value) =>
+                                                        handleRating(value)
+                                                    }
+                                                />
+                                            </>
+                                        )}
+                                    </div>
                                 </div>
                             </>
                         ) : (

@@ -10909,6 +10909,29 @@ address .tel i {
         border-top: 1px solid rgba(0, 0, 0, 0.06);
     }
 
+    .predstava-single-section-wrapper {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+
+    #komentari .row {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+
+    .section-title h2 {
+        font-size: 2.5rem;
+    }
+
+    .section-title h4 {
+        font-size: 2.0rem;
+    }
+
+    .predstava-komentar-wrapper {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
 }
 
 .predstava-title-wrapper h1 {

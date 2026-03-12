@@ -1,10 +1,12 @@
 import Image from "next/legacy/image";
 import Link from "next/link";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 const PredstavaRecenzija = ({ data }) => {
     return (
-        <div className="media post-block">
+        <div className="category-index-post media post-block post-block__mid">
             <Link
                 href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
                 className="align-self-center"
@@ -67,15 +69,8 @@ const PredstavaRecenzija = ({ data }) => {
                             </li>
                         ))}
                         <li>
-                            <span>
-                                <i className="fa-regular fa-clock"></i>
-                            </span>
-                            <Link
-                                href={`/author/${data.slug}`}
-                                className="post-author"
-                            >
-                                {moment(data.created_at).fromNow()}
-                            </Link>
+                            <FontAwesomeIcon icon={faClock} />
+                            {moment(data.created_at).fromNow()}
                         </li>
                     </ul>
                 </div>

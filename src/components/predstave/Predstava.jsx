@@ -247,7 +247,7 @@ const Predstava = ({ data, updateData }) => {
                                     ? data.komentari?.map((komentar) => (
                                           <>
                                               <div
-                                                  className="predstava-komentar-wrapper m-b-xs-20"
+                                                  className="predstava-komentar-wrapper m-b-xs-40"
                                                   key={`allkom-${komentar.komentarid}`}
                                               >
                                                   <div className="predstava-komentar-info">
@@ -280,7 +280,7 @@ const Predstava = ({ data, updateData }) => {
                                           .map((komentar) => (
                                               <>
                                                   <div
-                                                      className="predstava-komentar-wrapper m-b-xs-30"
+                                                      className="predstava-komentar-wrapper m-b-xs-40"
                                                       key={komentar.komentarid}
                                                   >
                                                       <div className="predstava-komentar-info">
@@ -325,7 +325,7 @@ const Predstava = ({ data, updateData }) => {
                                         <Form.Control
                                             as="textarea"
                                             rows={4}
-                                            placeholder="Unesite svoj komentar"
+                                            placeholder="Unesite vaš komentar"
                                             disabled={komentarLoading}
                                             value={
                                                 komentarFormData.tekst_komentara

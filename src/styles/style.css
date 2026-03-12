@@ -8299,8 +8299,8 @@ article li {
 }
 
 @media (max-width: 767px) {
-    .axil-post-title {
-        font-size: 2.4rem;
+    .post-title-wrapper .axil-post-title {
+        font-size: 2.7rem;
         text-align: center;
     }
 
@@ -8308,9 +8308,19 @@ article li {
         margin: 5px auto;
     }
 
+    .post-metas ul li {
+        text-align: left;
+    }
+
     .banner-post-metas {
         text-align: center;
     }
+
+    .banner-post-metas ul li {
+        text-align: center;
+    }
+
+
 
     .post-metas ul li .post-author {
         justify-content: center;
@@ -11510,6 +11520,19 @@ address .tel i {
     margin-bottom: 50px;
     padding: 20px;
     border-radius: 10px;
+}
+
+.festival-single-wrap {
+    align-items: center;
+}
+
+.festival-single-plakat {
+    margin: 20px auto;
+}
+
+.festival-single-title h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
 }
 
 .festival-index-info h3 {

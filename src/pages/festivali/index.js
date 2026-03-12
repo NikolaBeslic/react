@@ -33,7 +33,7 @@ export default function FestivaliPage({ initialFestivali }) {
 
     return (
         <>
-            <div className="container p-t-xs-60">
+            <div className="p-t-xs-60">
                 {loading && (
                     <Spinner
                         animation="border"

@@ -38,7 +38,7 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
 
     return (
         <>
-            <div className="container p-t-xs-60">
+            <div className="category-index-wraper p-t-xs-60">
                 {loading && (
                     <Spinner
                         animation="border"

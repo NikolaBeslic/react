@@ -11,7 +11,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
         <>
             <main className="site-main">
                 <article className="post-details">
-                    <div className="single-blog-wrapper p-t-xs-60">
+                    <div className="single-blog-wrapper p-t-xs-40 p-t-md-60">
                         <div className="container">
                             <div className="single-text-wrapper">
                                 {/* <SocialShareSide /> */}
@@ -133,13 +133,13 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                                     objectFit="cover"
                                                 />
                                             </Link>
-                                            <span key={poz.pozoristeid}>
-                                                <Link
-                                                    href={`/pozorista/${poz.pozoriste_slug}`}
-                                                >
-                                                    {poz.naziv_pozorista}
-                                                </Link>
-                                            </span>
+
+                                            <Link
+                                                href={`/pozorista/${poz.pozoriste_slug}`}
+                                                key={`povpoz-${poz.pozoristeid}`}
+                                            >
+                                                <h3>{poz.naziv_pozorista}</h3>
+                                            </Link>
                                         </div>
                                     ))}
                                 </>

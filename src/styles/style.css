@@ -8301,6 +8301,20 @@ article li {
 @media (max-width: 767px) {
     .axil-post-title {
         font-size: 2.4rem;
+        text-align: center;
+    }
+
+    .banner__single-post .post-cat {
+        margin: 5px auto;
+    }
+
+    .banner-post-metas {
+        text-align: center;
+    }
+
+    .post-metas ul li .post-author {
+        justify-content: center;
+        margin-bottom: 10px;
     }
 }
 
@@ -10932,6 +10946,24 @@ address .tel i {
         margin-left: 10px;
         margin-right: 10px;
     }
+
+    .single-text-wrapper {
+        width: 100%;
+    }
+
+    .banner__standard {
+        padding-top: 0 !important;
+        padding-bottom: 30px;
+    }
+
+    .post-main-thumbnail {
+        margin-bottom: 30px;
+    }
+
+    .container {
+        padding-left: 30px;
+        padding-right: 30px;
+    }
 }
 
 .predstava-title-wrapper h1 {
@@ -12133,7 +12165,7 @@ address .tel i {
 }
 
 .single-text-wrapper {
-    width: 720px;
+    max-width: 720px;
     margin: auto;
 }
 

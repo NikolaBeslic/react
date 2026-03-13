@@ -11694,6 +11694,59 @@ address .tel i {
 
 }
 
+.modal-content {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.authmodal-footer a:hover {
+    text-decoration: underline;
+}
+
+.authmodal-footer p {
+    margin-bottom: 10px;
+}
+
+.authmodal-action-buttons-wrapper {
+    display: flex;
+    gap: 30px;
+    flex-direction: row;
+}
+
+.authmodal-action-buttons-wrapper button {
+    flex: 1;
+
+}
+
+.login-password-wrapper .svg-inline--fa {
+    margin-right: 0;
+}
+
+.forgot-password-link {
+    font-size: 14px;
+    text-align: right;
+}
+
+.authmodal-registration-form .text-danger,
+.authmodal-login-form .text-danger {
+    font-size: 14px;
+}
+
+@media screen and (max-width:776px) {
+
+    .authmodal-action-buttons-wrapper {
+        display: flex;
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .authmodal-action-buttons-wrapper button {
+        display: block;
+        width: 100%;
+
+    }
+}
+
 .btn-load-more {
     width: 160px;
     text-transform: uppercase;

@@ -24,8 +24,11 @@ const Login = ({ handleGoogleLogin }) => {
     const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (event) => {
-        setLoading(true);
         event.preventDefault();
+
+        if (!validateForm()) return;
+
+        setLoading(true);
         console.log(formData);
         await csrf();
         axiosClient
@@ -41,7 +44,7 @@ const Login = ({ handleGoogleLogin }) => {
             })
             .catch((err) => {
                 console.error(err);
-                setErrors(err?.response?.data);
+                setErrors({ server_error: err?.response?.data });
             })
             .finally(() => setLoading(false));
     };
@@ -58,7 +61,29 @@ const Login = ({ handleGoogleLogin }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
     };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.login_field.trim()) {
+            newErrors.login_field = "Unesite korisničko ime ili email.";
+        }
+
+        if (!formData.password.trim()) {
+            newErrors.password = "Lozinka je obavezna.";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
+    };
+
     return (
         <>
             {loading && (
@@ -68,15 +93,18 @@ const Login = ({ handleGoogleLogin }) => {
                     className="hup-spinner"
                 />
             )}
-            <Form>
-                <Form.Group className="form-group mb-3">
+            <Form className="m-t-xs-10 authmodal-login-form">
+                <Form.Group className="form-group m-b-xs-15">
                     <Form.Control
                         name="login_field"
                         type="email"
                         placeholder="Korisničko ime ili email"
                         value={formData.login_field}
                         onChange={handleChange}
-                    ></Form.Control>
+                        className={
+                            errors.login_field ? "border-danger" : "input"
+                        }
+                    />
                     {errors?.login_field && (
                         <span className="text-danger">
                             {errors.login_field}
@@ -84,8 +112,8 @@ const Login = ({ handleGoogleLogin }) => {
                     )}
                 </Form.Group>
 
-                <Form.Group className="mb-3">
-                    <InputGroup className="flex-nowrap">
+                <Form.Group className="m-b-xs-15 login-password-wrapper">
+                    <InputGroup className="flex-nowrap m-b-xs-10">
                         <Form.Control
                             name="password"
                             type={showPassword ? "text" : "password"}
@@ -93,6 +121,9 @@ const Login = ({ handleGoogleLogin }) => {
                             value={formData.password}
                             onChange={handleChange}
                             aria-describedby="basic-addon2"
+                            className={
+                                errors.password ? "border-danger" : "input"
+                            }
                         />
 
                         <InputGroup.Text
@@ -118,19 +149,25 @@ const Login = ({ handleGoogleLogin }) => {
                         <span className="text-danger">{errors.password}</span>
                     )}
                 </Form.Group>
-
-                <Button type="submit" variant="primary" onClick={handleSubmit}>
-                    LOGIN
-                </Button>
-                <Button
-                    variant="secondary"
-                    type="button"
-                    onClick={handleGoogleLogin}
-                >
-                    <FontAwesomeIcon icon={faGoogle} /> Prijavite se putem
-                    Google naloga
-                </Button>
-                <span className="text-danger">{errors}</span>
+                <div className="authmodal-action-buttons-wrapper m-b-xs-10">
+                    <Button
+                        type="submit"
+                        variant="primary"
+                        onClick={handleSubmit}
+                    >
+                        LOGIN
+                    </Button>
+                    <Button
+                        className="btn btn-nofill"
+                        type="button"
+                        onClick={handleGoogleLogin}
+                    >
+                        <FontAwesomeIcon icon={faGoogle} /> Google prijava
+                    </Button>
+                </div>
+                {errors.server_error && (
+                    <span className="text-danger">{errors.server_error}</span>
+                )}
             </Form>
         </>
     );

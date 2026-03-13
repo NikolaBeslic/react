@@ -53,7 +53,7 @@ const AuthModal = ({ closeModal }) => {
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        {showLogin ? "Ulogujte se" : "Registrujte se"}
+                        {showLogin ? "Uloguj se" : "Registruj se"}
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
@@ -65,31 +65,29 @@ const AuthModal = ({ closeModal }) => {
                         />
                     )}
                 </Modal.Body>
-                <Modal.Footer>
+                <Modal.Footer className="authmodal-footer">
                     <p>
                         {showLogin ? (
                             <>
-                                Nemate nalog na našem sajtu? Kliknite{" "}
+                                Nemaš nalog na našem sajtu?{" "}
                                 <a
                                     href="#"
                                     onClick={toggleForm}
                                     className="text-primary"
                                 >
-                                    ovde
+                                    Registruj se
                                 </a>
-                                .
                             </>
                         ) : (
                             <>
-                                Već imate nalog? Ulogujte se{" "}
+                                Već imaš nalog?{" "}
                                 <a
                                     href="#"
                                     onClick={toggleForm}
                                     className="text-primary"
                                 >
-                                    ovde
+                                    Uloguj se
                                 </a>
-                                .
                             </>
                         )}
                     </p>

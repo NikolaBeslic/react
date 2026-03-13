@@ -26,6 +26,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!validateForm()) return;
         setLoading(true);
         console.log(formData);
         await csrf();
@@ -58,10 +59,50 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
+
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
+    };
+
+    const validateForm = () => {
+        const newErrors = {};
+
+        if (!formData.korisnickoIme.trim()) {
+            newErrors.korisnickoIme = "Korisničko ime je obavezno.";
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = "Email je obavezan.";
+        }
+
+        if (!formData.password.trim()) {
+            newErrors.password = "Lozinka je obavezna.";
+        }
+
+        if (!formData.password_confirmation.trim()) {
+            newErrors.password_confirmation = "Potvrda lozinke je obavezna.";
+        }
+
+        if (
+            formData.password &&
+            formData.password_confirmation &&
+            formData.password !== formData.password_confirmation
+        ) {
+            newErrors.password_confirmation = "Lozinke se ne poklapaju.";
+        }
+
+        setErrors(newErrors);
+
+        return Object.keys(newErrors).length === 0;
     };
 
     return (
-        <Form onSubmit={handleSubmit}>
+        <Form
+            className="m-t-xs-10 authmodal-registration-form"
+            onSubmit={handleSubmit}
+        >
             {loading && (
                 <Spinner
                     animation="border"
@@ -69,31 +110,33 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     className="hup-spinner"
                 />
             )}
-            <Form.Group className="form-group mb-3">
+            <Form.Group className="form-group m-b-xs-15">
                 <Form.Control
                     name="korisnickoIme"
                     type="text"
                     placeholder="Korisnicko ime"
                     value={formData.korisnickoIme}
                     onChange={handleChange}
+                    className={errors.korisnickoIme ? "border-danger" : "input"}
                 ></Form.Control>
                 {errors?.korisnickoIme && (
                     <span className="text-danger">{errors.korisnickoIme}</span>
                 )}
             </Form.Group>
-            <Form.Group className="form-group mb-3">
+            <Form.Group className="form-group m-b-xs-15">
                 <Form.Control
                     name="email"
                     type="email"
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleChange}
+                    className={errors.email ? "border-danger" : "input"}
                 ></Form.Control>
                 {errors?.email && (
                     <span className="text-danger">{errors.email}</span>
                 )}
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group className="form-group m-b-xs-15">
                 <InputGroup className="flex-nowrap">
                     <Form.Control
                         name="password"
@@ -101,6 +144,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                         placeholder="Lozinka"
                         value={formData.password}
                         onChange={handleChange}
+                        className={errors.password ? "border-danger" : "input"}
                     ></Form.Control>
                     <InputGroup.Text
                         role="button"
@@ -111,6 +155,11 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                         }
                         aria-pressed={showPassword}
                         id="basic-addon2"
+                        className={
+                            errors.password_confirmation
+                                ? "border-danger"
+                                : "input"
+                        }
                     >
                         {showPassword ? (
                             <FontAwesomeIcon icon={faEyeSlash} />
@@ -120,7 +169,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     </InputGroup.Text>
                 </InputGroup>
             </Form.Group>
-            <Form.Group className="mb-3">
+            <Form.Group className="form-group m-b-xs-15">
                 <InputGroup className="flex-nowrap">
                     <Form.Control
                         name="password_confirmation"
@@ -133,18 +182,18 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     <span className="text-danger">{errors.password}</span>
                 )}
             </Form.Group>
-            <div className="justify-content-center">
+            <div className="authmodal-action-buttons-wrapper m-b-xs-10">
                 <Button type="submit" variant="primary">
                     SAČUVAJ
                 </Button>
                 <Button
-                    variant="secondary"
+                    className="btn btn-nofill"
                     type="button"
                     onClick={handleGoogleLogin}
                     align="right"
                 >
                     <FontAwesomeIcon icon={faGoogle} />
-                    Prijavite se koristeci Google
+                    Google prijava
                 </Button>
             </div>
         </Form>

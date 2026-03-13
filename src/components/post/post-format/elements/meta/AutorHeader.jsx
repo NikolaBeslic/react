@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLocationDot, faUserPen } from "@fortawesome/free-solid-svg-icons";
 
 const AutorHeader = ({ autor }) => {
     return (
@@ -32,7 +34,7 @@ const AutorHeader = ({ autor }) => {
                                             <i className="fa-regular fa-circle-user"></i>{" "}
                                             {autor.pozicija}
                                         </p>
-                                        <div className="mid">
+                                        <div className="mid autor-biografija">
                                             <div
                                                 dangerouslySetInnerHTML={{
                                                     __html: autor.biografija,
@@ -42,15 +44,17 @@ const AutorHeader = ({ autor }) => {
                                         <div className="post-metas">
                                             <ul className="list-inline">
                                                 <li>
-                                                    <i className="fa-light fa-location-dot"></i>
+                                                    <FontAwesomeIcon
+                                                        icon={faLocationDot}
+                                                    />
                                                     {autor.grad?.naziv_grada}
                                                 </li>
                                                 <li>
-                                                    <a href="#">
-                                                        <i className="fal fa-user-edit" />
-                                                        Ukupno tekstova (
-                                                        {autor.tekstovi?.total})
-                                                    </a>
+                                                    <FontAwesomeIcon
+                                                        icon={faUserPen}
+                                                    />
+                                                    Ukupno tekstova (
+                                                    {autor.tekstovi?.total})
                                                 </li>
                                             </ul>
                                         </div>

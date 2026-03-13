@@ -11310,6 +11310,11 @@ address .tel i {
     color: var(--grey-dark-four);
 }
 
+.autor-biografija p {
+    line-clamp: none;
+    -webkit-line-clamp: none !important;
+}
+
 .izvodjenje-wrapper {
     height: auto;
     padding-top: 5px;
@@ -11571,6 +11576,7 @@ address .tel i {
     margin-top: 20px;
     margin-bottom: 15px;
     line-height: 38px;
+    text-align: left;
 }
 
 .predstava-povezani-tekst-single-wrapper {

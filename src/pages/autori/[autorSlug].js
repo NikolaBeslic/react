@@ -31,32 +31,30 @@ export default function PostAuthor({ autor }) {
     return (
         <>
             <div className="random-posts section-gap">
-                <div className="container">
-                    {loading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
+                {loading && (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        className="hup-spinner"
+                    />
+                )}
+                <div className="axil-content">
+                    <h2 className="h3 m-b-xs-40">Tekstovi autorke</h2>
+                    {autorPosts.map((data) => (
+                        <PostLayoutTwo
+                            data={data}
+                            postSizeMd={true}
+                            key={data.slug}
                         />
+                    ))}
+                    {!loading && currentPage < totalPages && (
+                        <button
+                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                            onClick={loadMore}
+                        >
+                            Učitaj još
+                        </button>
                     )}
-                    <div className="axil-content">
-                        <h2 className="h3 m-b-xs-40">Tekstovi autorke</h2>
-                        {autorPosts.map((data) => (
-                            <PostLayoutTwo
-                                data={data}
-                                postSizeMd={true}
-                                key={data.slug}
-                            />
-                        ))}
-                        {!loading && currentPage < totalPages && (
-                            <button
-                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                                onClick={loadMore}
-                            >
-                                Učitaj još
-                            </button>
-                        )}
-                    </div>
                 </div>
             </div>
         </>

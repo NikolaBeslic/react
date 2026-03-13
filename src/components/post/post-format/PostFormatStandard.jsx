@@ -5,6 +5,7 @@ import PostAuthor from "./elements/PostAuthor";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import Link from "next/link";
+import FestivaliLayout from "../layout/FestivaliLayout";
 
 const PostFormatStandard = ({ postData, relatedPosts }) => {
     return (
@@ -94,6 +95,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                             pClass=""
                                             key={pred.predstavaid}
                                             showPozoriste={true}
+                                            showRatingsAndComments={false}
                                         />
                                     ))}
                                 </>
@@ -107,9 +109,11 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                         <h3>Povezani festival</h3>
                                     </div>
 
-                                    <span>
-                                        {postData.festival.naziv_festivala}
-                                    </span>
+                                    <FestivaliLayout
+                                        data={postData.festival}
+                                        pClass=""
+                                        videoIcon={false}
+                                    />
                                 </>
                             )}
                             {postData.pozorista?.length > 0 && (
@@ -119,7 +123,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                     </div>
                                     {postData.pozorista.map((poz) => (
                                         <div
-                                            className="povezano-pozoriste"
+                                            className="povezano-pozoriste bg-grey-light-three"
                                             key={poz.pozoristeid}
                                         >
                                             <Link
@@ -128,7 +132,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                                 <Image
                                                     src={poz.url_logo}
                                                     alt={poz.pozoriste_slug}
-                                                    height={80}
+                                                    height={100}
                                                     width={100}
                                                     objectFit="cover"
                                                 />
@@ -138,7 +142,7 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                                 href={`/pozorista/${poz.pozoriste_slug}`}
                                                 key={`povpoz-${poz.pozoristeid}`}
                                             >
-                                                <h3>{poz.naziv_pozorista}</h3>
+                                                <h4>{poz.naziv_pozorista}</h4>
                                             </Link>
                                         </div>
                                     ))}

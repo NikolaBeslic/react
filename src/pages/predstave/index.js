@@ -265,6 +265,7 @@ export default function PredstavePage() {
                                 pClass=""
                                 key={`pred${pred.predstavaid}`}
                                 showPozoriste={true}
+                                showRatingsAndComments={true}
                             />
                         </div>
                     ))}

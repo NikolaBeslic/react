@@ -4,7 +4,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faComments } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
 
-const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
+const PredstaveLayout = ({
+    data,
+    pClass,
+    videoIcon,
+    showPozoriste,
+    showRatingsAndComments = true,
+}) => {
     return (
         <div
             className={`media post-block post-block__small bg-grey-light-three predstava-index-wrapper ${
@@ -76,36 +82,38 @@ const PredstaveLayout = ({ data, pClass, videoIcon, showPozoriste }) => {
                     </ul>
                 </div>
             </div>
-            <div className="predstava-index-ocena-recenzija-wrapper">
-                <div className="predstava-index-ocena-komentari">
-                    {data.prosecna_ocena && (
-                        <div className="rating-wrapper">
-                            <FontAwesomeIcon icon={faStar} />{" "}
-                            <span className="current-rating">
-                                {" "}
-                                {data.prosecna_ocena}
-                            </span>
-                        </div>
-                    )}
-                    {data.broj_komentara > 0 && (
-                        <div className="predstava-index-komentari">
-                            <FontAwesomeIcon icon={faComments} />{" "}
-                            <span className="komentari-count">
-                                {data.broj_komentara}
-                            </span>
+            {showRatingsAndComments && (
+                <div className="predstava-index-ocena-recenzija-wrapper">
+                    <div className="predstava-index-ocena-komentari">
+                        {data.prosecna_ocena && (
+                            <div className="rating-wrapper">
+                                <FontAwesomeIcon icon={faStar} />{" "}
+                                <span className="current-rating">
+                                    {" "}
+                                    {data.prosecna_ocena}
+                                </span>
+                            </div>
+                        )}
+                        {data.broj_komentara > 0 && (
+                            <div className="predstava-index-komentari">
+                                <FontAwesomeIcon icon={faComments} />{" "}
+                                <span className="komentari-count">
+                                    {data.broj_komentara}
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                    {data.review_slug && (
+                        <div className="predstava-index-recenzija">
+                            <Link
+                                href={`/predstave/${data.predstava_slug}#tekstovi`}
+                            >
+                                Pročitaj recenziju
+                            </Link>
                         </div>
                     )}
                 </div>
-                {data.review_slug && (
-                    <div className="predstava-index-recenzija">
-                        <Link
-                            href={`/predstave/${data.predstava_slug}#tekstovi`}
-                        >
-                            Pročitaj recenziju
-                        </Link>
-                    </div>
-                )}
-            </div>
+            )}
         </div>
     );
 };

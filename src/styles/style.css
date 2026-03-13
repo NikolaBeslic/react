@@ -8287,11 +8287,18 @@ article li {
 .povezano-pozoriste {
     display: flex;
     align-items: center;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .povezano-pozoriste span {
     margin-left: 10px;
     font-size: 1.2em;
+}
+
+.povezano-pozoriste h4 {
+    margin-bottom: 0;
+    margin-left: 20px;
 }
 
 .axil-post-title {

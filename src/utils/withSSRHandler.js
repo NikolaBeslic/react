@@ -4,7 +4,7 @@ export function withSSRHandler(ssrFn) {
             return await ssrFn(context);
         } catch (error) {
             console.error(error);
-
+            debugger;
             if (error.response) {
                 const status = error.response.status;
                 console.error(error.response);
@@ -18,7 +18,7 @@ export function withSSRHandler(ssrFn) {
                 if (status === 401 || status === 403) {
                     return {
                         redirect: {
-                            destination: "/login",
+                            destination: "/",
                             permanent: false,
                         },
                     };

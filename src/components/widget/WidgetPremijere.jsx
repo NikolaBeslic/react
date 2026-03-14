@@ -7,13 +7,17 @@ const WidgetPremijere = ({ premijere }) => {
                 <h3>Predstojeće premijere</h3>
             </div>
             <div className="widget-body">
-                {premijere.map((pred) => (
-                    <PremijereLayout
-                        data={pred}
-                        pClass=""
-                        key={`pred${pred.predstavaid}`}
-                    />
-                ))}
+                {!premijere || premijere.length == 0 ? (
+                    <p>Nema najavljenih premijera</p>
+                ) : (
+                    premijere.map((pred) => (
+                        <PremijereLayout
+                            data={pred}
+                            pClass=""
+                            key={`pred${pred.predstavaid}`}
+                        />
+                    ))
+                )}
             </div>
         </div>
     );

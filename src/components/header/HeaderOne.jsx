@@ -128,21 +128,25 @@ const HeaderOne = () => {
 
     const handleLogout = async () => {
         setLogoutLoading(true);
-        await csrf();
-        axiosClient
-            .post("/logout", user, {
+        try {
+            await csrf();
+            const res = await axiosClient.post("/logout", user, {
                 withCredentials: true,
                 headers: {
                     "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                 },
-            })
-            .then((res) => {
-                console.log(res.data);
-                refreshUser();
-                toast.success("Uspešno ste se izlogovali");
-                setLogoutLoading(false);
-            })
-            .catch((err) => console.error(err));
+            });
+
+            console.log(res.data);
+            toast.success("Uspešno ste se izlogovali");
+            router.push("/");
+            await refreshUser();
+        } catch (err) {
+            console.error(err);
+            toast.error("Greška prilikom logout-а");
+        } finally {
+            setLogoutLoading(false);
+        }
     };
 
     const AvatarToggle = forwardRef(({ children, onClick }, ref) => (

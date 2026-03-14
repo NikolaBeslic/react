@@ -11725,6 +11725,20 @@ address .tel i {
 .forgot-password-link {
     font-size: 14px;
     text-align: right;
+    cursor: pointer;
+}
+
+.forgot-password-link a {
+
+    color: #777 !important;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.forgot-password-link a:hover {
+    color: #6c0101 !important;
+    text-decoration: underline;
 }
 
 .authmodal-registration-form .text-danger,

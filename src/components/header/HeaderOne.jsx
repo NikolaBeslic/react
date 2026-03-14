@@ -13,6 +13,7 @@ import { csrf, getCookieValue } from "../../utils";
 import UserAvatar from "../common/UserAvatar";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-regular-svg-icons";
+import { useRouter } from "next/router";
 
 const HeaderOne = () => {
     // Main Menu Toggle
@@ -117,6 +118,12 @@ const HeaderOne = () => {
         setModalOpen(false);
     };
 
+    const router = useRouter();
+    const handleForgotPasswordClick = () => {
+        closeModal();
+        router.push("/zaboravljena-lozinka");
+    };
+
     const [logoutLoading, setLogoutLoading] = useState(false);
 
     const handleLogout = async () => {
@@ -192,7 +199,11 @@ const HeaderOne = () => {
 
     return (
         <>
-            <AuthModal isOpen={isModalOpen} closeModal={closeModal} />
+            <AuthModal
+                isOpen={isModalOpen}
+                closeModal={closeModal}
+                handleForgotPasswordClick={handleForgotPasswordClick}
+            />
             <OffcanvasMenu
                 ofcshow={show}
                 setOfcShow={setShow}

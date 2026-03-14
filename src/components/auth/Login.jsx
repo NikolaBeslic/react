@@ -3,15 +3,16 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useUser } from "../../contexts/UserContext";
 import { InputGroup, Spinner } from "react-bootstrap";
-import { useRouter } from "next/router";
+import Link from "next/link";
 import { csrf, getCookieValue } from "../../utils";
 import axiosClient from "../../utils/axios";
 import toast from "react-hot-toast";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { useRouter } from "next/router";
 
-const Login = ({ handleGoogleLogin }) => {
+const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
     const [formData, setFormData] = useState({
         login_field: "",
         password: "",
@@ -22,6 +23,7 @@ const Login = ({ handleGoogleLogin }) => {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
+    const { router } = useRouter();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -148,6 +150,14 @@ const Login = ({ handleGoogleLogin }) => {
                     {errors?.password && (
                         <span className="text-danger">{errors.password}</span>
                     )}
+                    <p className="forgot-password-link">
+                        <a
+                            className="text-primary"
+                            onClick={handleForgotPasswordClick}
+                        >
+                            Zaboravili ste lozinku?
+                        </a>
+                    </p>
                 </Form.Group>
                 <div className="authmodal-action-buttons-wrapper m-b-xs-10">
                     <Button

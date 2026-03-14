@@ -4,7 +4,7 @@ import Login from "./Login";
 import RegistrationForm from "./RegistrationForm";
 import { useUser } from "../../contexts/UserContext";
 
-const AuthModal = ({ closeModal }) => {
+const AuthModal = ({ closeModal, handleForgotPasswordClick }) => {
     const { isModalOpen } = useUser();
 
     const [showLogin, setShowLogin] = useState(true);
@@ -58,7 +58,12 @@ const AuthModal = ({ closeModal }) => {
                 </Modal.Header>
                 <Modal.Body>
                     {showLogin ? (
-                        <Login handleGoogleLogin={handleGoogleLogin} />
+                        <Login
+                            handleGoogleLogin={handleGoogleLogin}
+                            handleForgotPasswordClick={
+                                handleForgotPasswordClick
+                            }
+                        />
                     ) : (
                         <RegistrationForm
                             handleGoogleLogin={handleGoogleLogin}

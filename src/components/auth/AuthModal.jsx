@@ -36,12 +36,7 @@ const AuthModal = ({ closeModal, handleForgotPasswordClick }) => {
         e.preventDefault();
         console.log("google");
         const redirectUrl = window.location.href; // Capture the current page URL;
-        window.location.href =
-            "http://localhost:8000/auth/google?redirect_url=" +
-            encodeURIComponent(window.location.href);
-        // window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
-        //     redirectUrl,
-        // )}`;
+        window.location.href = `${process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL}?redirect_url=${encodeURIComponent(redirectUrl)}`;
     };
 
     return (

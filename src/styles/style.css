@@ -11392,7 +11392,19 @@ address .tel i {
     color: var()
 }
 
-#korisnicki-profil-tabs-tabpane-odgledane .media .media-body {
+@media screen and (max-width: 776px) {
+    .korisnicki-profil-tab-nav {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .korisnicki-profil-tab-nav .nav-item a {
+        height: 100%;
+        align-content: center;
+    }
+}
+
+#korisnicki-profil-tabs #korisnicki-profil-tabs-tabpane-odgledane .media .media-body {
     padding-right: 25px;
 }
 
@@ -11871,47 +11883,127 @@ address .tel i {
     margin-bottom: 10px;
 }
 
-.predstave-listazelja-card {
-    width: 200px;
-    height: 475px;
-    margin-bottom: 40px;
-    --scale: calc(100vw / 1920);
-    transform: scale(var(--scale));
-    transform-origin: top;
+@media screen and (min-width: 768px) {
+
+    .predstave-listazelja-card {
+        width: 200px;
+        height: 475px;
+        margin-bottom: 40px;
+        --scale: calc(100vw / 1920);
+        transform: scale(var(--scale));
+        transform-origin: top;
+        border: 1px solid #e6e6e6;
+
+    }
+
+    .predstave-listazelja-card:hover {
+        transform: translateY(-1px);
+        transition: all 0.2s ease;
+    }
+
+    .predstave-listazelja-card-img img {
+        height: 277px !important;
+        width: 100%;
+        object-fit: cover;
+    }
+
+    .predstave-listazelja-card-title {
+        margin-bottom: 8px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 54px;
+    }
+
+    .predstave-listazelja-card-title h5 {
+        font-size: 1.7rem;
+        margin-bottom: 8px;
+    }
+
+    .predstave-listazelja-card-text {
+        font-size: 1.3rem;
+        line-height: 2.2rem;
+        text-align: left;
+    }
 }
 
-.predstave-listazelja-card-img {
-    height: 277px !important;
-    width: 100%;
-    object-fit: cover;
+/** MOBILE **/
+@media screen and (max-width:767px) {
+    .predstave-listazelja-card {
+        display: flex;
+        flex-direction: row;
+        gap: 14px;
+        align-items: flex-start;
+        padding: 10px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+        border-radius: 5px;
+        margin-bottom: 25px;
+    }
+
+    .predstave-listazelja-card-img {
+        width: 96px;
+        flex-shrink: 0;
+    }
+
+    .predstave-listazelja-card-img img {
+        width: 100%;
+        aspect-ratio: 2 / 3;
+        object-fit: cover;
+        display: block;
+        border-radius: 5px;
+    }
+
+    .predstave-listazelja-card-body {
+        text-align: left;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .predstave-listazelja-card-title h5 {
+        font-size: 22px;
+        line-height: 1.25;
+        margin: 0 0 8px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+
+    .predstave-listazelja-card-title {
+        margin-bottom: 10px !important;
+    }
+
+
+    .predstave-listazelja-card-text {
+        font-size: 14px;
+        color: #555;
+        margin-bottom: 6px;
+    }
+
+    .predstave-listazelja-card-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px 14px;
+        font-size: 14px;
+    }
 }
 
-.predstave-listazelja-card-title {
-    margin-bottom: 8px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    height: 54px;
+.btn-prebaci {
+    color: #4385d1 !important;
 }
 
-.predstave-listazelja-card-title h5 {
-    font-size: 1.7rem;
-    margin-bottom: 8px;
-}
-
-.predstave-listazelja-card-text {
-    font-size: 1.3rem;
-    line-height: 2.2rem;
-    text-align: left;
+.btn-ukloni {
+    color: #b34a4a !important;
 }
 
 .card-link {
     cursor: pointer;
     text-decoration: underline;
-    font-size: 12px;
+    font-size: 13px;
     color: #2f60cc;
     font-family: var(--bs-body-font-family);
     font-weight: 500;
     text-align: right;
+    padding: 6px 0;
 }
 
 .card-loading-overlay {

@@ -2,7 +2,11 @@ import moment from "moment";
 import Link from "next/link";
 import { Card, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faListCheck } from "@fortawesome/free-solid-svg-icons";
+import {
+    faListCheck,
+    faBuildingColumns,
+    faCalendarDay,
+} from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 
 function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
@@ -18,7 +22,7 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
         }
     };
 
-    const handleOdgledano = async () => {
+    const handleUkloni = async () => {
         if (loading) return;
         setLoading(true);
         try {
@@ -42,9 +46,9 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                 href={`/predstave/${data.predstava_slug}`}
                 title={data.naziv_predstave}
                 key={`lnk-${data.predstavaid}`}
+                className="predstave-listazelja-card-img"
             >
                 <Card.Img
-                    className="predstave-listazelja-card-img"
                     variant="cover"
                     src={data.plakat || "/slike/vizitke-cover.jpg"}
                     alt={data.naziv_predstave}
@@ -75,17 +79,18 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                 >
                     {data.pozorista.length > 0 && (
                         <>
-                            <i className="fa-solid fa-building-columns"></i>{" "}
+                            <FontAwesomeIcon icon={faBuildingColumns} />
                             {data.pozorista?.map((poz) => (
                                 <span key={poz.pozoristeid}>
-                                    {poz.naziv_pozorista}
+                                    {poz.skraceni_naziv}
                                 </span>
                             ))}
                         </>
                     )}
-                    <br />
+
                     {data.naredno_igranje && (
                         <>
+                            <br />
                             <i
                                 className="fa-regular fa-calendar-days"
                                 title="Naredno igranje"
@@ -101,18 +106,18 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                     )}
                 </Card.Text>
 
-                <div className="d-flex justify-content-between p-b-xs-10">
+                <div className="d-flex justify-content-between p-b-xs-10 predstave-listazelja-card-actions">
                     <Card.Link
                         onClick={() => handlePrebaci()}
-                        className="text-primary"
+                        className="text-primary btn-prebaci"
                         variant="outline"
                     >
                         <FontAwesomeIcon icon={faListCheck} />
                         Odgledano
                     </Card.Link>
                     <Card.Link
-                        onClick={() => handleOdgledano()}
-                        className="text-danger"
+                        onClick={() => handleUkloni()}
+                        className="text-danger btn-ukloni"
                     >
                         <i className="fa-solid fa-delete-left"></i> Ukloni
                     </Card.Link>

@@ -95,13 +95,16 @@ const KorisnickiProfil = ({ korisnik }) => {
     return (
         <>
             <main className="site-main">
-                <div className="single-blog-wrapper p-t-xs-60">
+                <div className="single-blog-wrapper p-t-xs-30 p-t-md-60">
                     <div className="post-widget sidebar-post-widget m-b-xs-40">
                         <Tab.Container
                             id="korisnicki-profil-tabs"
                             defaultActiveKey="zelje"
                         >
-                            <Nav variant="pills" className="row no-gutters">
+                            <Nav
+                                variant="pills"
+                                className="row no-gutters korisnicki-profil-tab-nav"
+                            >
                                 <Nav.Item className="col">
                                     <Nav.Link eventKey="zelje">
                                         LISTA ŽELJA

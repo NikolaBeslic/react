@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import axiosClient from "../utils/axios";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -6,11 +6,12 @@ import Izvodjenje from "../components/predstave/Izvodjenje";
 import Select from "react-select";
 import RepertoariHeader from "../components/post/post-format/elements/meta/RepertoariHeader";
 import Flatpickr from "react-flatpickr";
-import "flatpickr/dist/themes/material_green.css";
+import "flatpickr/dist/themes/light.css";
 import { Serbian } from "flatpickr/dist/l10n/sr.js";
+import { useMediaQuery } from "react-responsive";
 
 const RepertoariNewPage = () => {
-    const [date, setDate] = useState([new Date(), new Date()]);
+    const [date, setDate] = useState([]);
     const [datumOd, setDatumOd] = useState(new Date());
     const [datumDo, setDatumDo] = useState(new Date());
     const [dbEvents, setDbEvents] = useState([]);
@@ -23,6 +24,20 @@ const RepertoariNewPage = () => {
     const [predstave, setPredstave] = useState([]);
     const fpInstance = useRef(null);
     const [active, setActive] = useState("today");
+    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+
+    const flatpickrOptions = useMemo(
+        () => ({
+            mode: "range",
+            closeOnSelect: false,
+            wrap: true,
+            dateFormat: "Y-m-d",
+            locale: { ...Serbian },
+            position: isTabletOrMobile ? "auto center" : "auto left",
+            static: true,
+        }),
+        [],
+    );
 
     useEffect(() => {
         axiosClient
@@ -98,10 +113,15 @@ const RepertoariNewPage = () => {
 
     const handleDateClick = (dates, str, instance) => {
         //setActive("custom");
+        console.log(dates);
         setDatumOd(dates[0]);
         if (dates.length > 1) setDatumDo(dates[1]);
         setDate(dates);
         setDisplayValue(formatDisplay(dates));
+
+        if (dates.length === 2 && fpInstance.current) {
+            fpInstance.current.close();
+        }
     };
 
     const openCalendar = () => {
@@ -122,7 +142,6 @@ const RepertoariNewPage = () => {
 
     const getTodaysEvents = onPresetClick("today", () => {
         // const today = new ("2019-09-14 00:00:00.000") // TO DO change to today
-
         // setActive("today");
         const todayA = moment().startOf("day").toDate();
         const todayB = moment().endOf("day").toDate();
@@ -209,7 +228,7 @@ const RepertoariNewPage = () => {
 
     return (
         <>
-            <div className="container p-t-xs-60">
+            <div className="p-t-md-60 p-t-xs-30">
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="repertoar-filter-wrapper">
@@ -263,17 +282,8 @@ const RepertoariNewPage = () => {
                                         </button>
 
                                         <Flatpickr
-                                            value={date}
                                             onChange={handleDateClick}
-                                            options={{
-                                                mode: "range",
-                                                closeOnSelect: false,
-                                                wrap: true,
-                                                dateFormat: "Y-m-d",
-                                                locale: { ...Serbian },
-                                                position: "below",
-                                                static: true,
-                                            }}
+                                            options={flatpickrOptions}
                                             onReady={(_, __, instance) => {
                                                 fpInstance.current = instance; // so we can close it from preset clicks if you want
                                             }}
@@ -322,7 +332,7 @@ const RepertoariNewPage = () => {
                     </div>
                     <div className="col-lg-12">
                         <p>Ukupno: {displayEvents.length} izvodjenja</p>
-                        <div className="repertoari-wrapper">
+                        <div className="repertoari-wrapper axil-content">
                             {displayEvents.slice(0, visibleCount).map((e) => {
                                 return (
                                     <>

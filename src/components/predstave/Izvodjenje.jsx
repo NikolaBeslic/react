@@ -1,36 +1,26 @@
 import Image from "next/legacy/image";
 import Link from "next/link";
 import moment from "moment";
-import { Col } from "react-bootstrap";
 
 const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
     return (
-        <div className="izvodjenje-wrapper row m-b-xs-20">
-            <Col
-                xs={3}
-                lg={3}
-                key={`izvodjenje-col1-${izvodjenjeData.seigraid}`}
-            >
-                <div className="izvodjenje-date">
-                    <span className="izvodjenje-dan">
-                        {moment(izvodjenjeData.datum).format("ddd")}{" "}
-                    </span>
-                    <br />
-                    <span className="izvodjenje-datum">
-                        {moment(izvodjenjeData.datum).format("DD.")}{" "}
-                    </span>{" "}
-                    <br />
-                    <span className="izvodjenje-mesec">
-                        {moment(izvodjenjeData.datum).format("MMM")}{" "}
-                    </span>{" "}
-                    <br />
-                </div>
-            </Col>
-            <Col
-                xs={6}
-                lg={6}
-                key={`izvodjenje-col2-${izvodjenjeData.seigraid}`}
-            >
+        <div className="media post-block post-block__small izvodjenje-wrapper m-b-xs-20">
+            <div className="izvodjenje-date">
+                <span className="izvodjenje-dan">
+                    {moment(izvodjenjeData.datum).format("ddd")}{" "}
+                </span>
+                <br />
+                <span className="izvodjenje-datum">
+                    {moment(izvodjenjeData.datum).format("DD.")}{" "}
+                </span>{" "}
+                <br />
+                <span className="izvodjenje-mesec">
+                    {moment(izvodjenjeData.datum).format("MMM")}{" "}
+                </span>{" "}
+                <br />
+            </div>
+
+            <div className="izvodjenje-vreme-predstava-pozoriste-wrapper">
                 <div className="izvodjenje-vreme">
                     <i className="fa-regular fa-clock"></i>{" "}
                     {moment(`1970-01-01 ${izvodjenjeData.vreme}`).format(
@@ -50,7 +40,14 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                 )}
                 <div className="izvodjenje-pozoriste">
                     {showPozoriste && showPredstava && (
-                        <span> {izvodjenjeData.pozoriste.naziv_pozorista}</span>
+                        <>
+                            <span className="pozoriste-desktop-name">
+                                {izvodjenjeData.pozoriste.naziv_pozorista}
+                            </span>
+                            <span className="pozoriste-mobile-name">
+                                {izvodjenjeData.pozoriste.skraceni_naziv}
+                            </span>
+                        </>
                     )}
                     {showPozoriste && !showPredstava && (
                         <strong>
@@ -58,38 +55,33 @@ const Izvodjenje = ({ izvodjenjeData, showPredstava, showPozoriste }) => {
                         </strong>
                     )}
                     {izvodjenjeData.scena && (
-                        <span className="izvodjenje-scena">
+                        <span className="izvodjenje-scena text-muted">
                             {" "}
                             | {izvodjenjeData.scena.naziv_scene}
                         </span>
                     )}
                 </div>
-            </Col>
-            <Col
-                xs={3}
-                lg={3}
-                key={`izvodjenje-col3-${izvodjenjeData.seigraid}`}
-            >
-                <div className="izvodjenje-plakat">
-                    {showPredstava && (
-                        <Link
-                            href={`/predstave/${izvodjenjeData.predstava.predstava_slug}`}
-                        >
-                            <Image
-                                src={
-                                    izvodjenjeData?.predstava.plakat ||
-                                    "/slike/vizitke-cover.jpg"
-                                }
-                                alt={izvodjenjeData?.predstava.predstava_slug}
-                                height={90}
-                                width={60}
-                                objectFit="cover"
-                                quality={90}
-                            />
-                        </Link>
-                    )}
-                </div>
-            </Col>
+            </div>
+
+            <div className="izvodjenje-plakat">
+                {showPredstava && (
+                    <Link
+                        href={`/predstave/${izvodjenjeData.predstava.predstava_slug}`}
+                    >
+                        <Image
+                            src={
+                                izvodjenjeData?.predstava.plakat ||
+                                "/slike/vizitke-cover.jpg"
+                            }
+                            alt={izvodjenjeData?.predstava.predstava_slug}
+                            height={90}
+                            width={60}
+                            objectFit="cover"
+                            quality={90}
+                        />
+                    </Link>
+                )}
+            </div>
         </div>
     );
 };

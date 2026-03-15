@@ -11328,8 +11328,6 @@ address .tel i {
     align-items: center;
     background-color: var(--grey-light-three);
     border-radius: 5%;
-    margin-left: 5px;
-    margin-right: 5px;
     font-size: 14px;
     transition: all 0.2s ease;
 }
@@ -11344,7 +11342,7 @@ address .tel i {
     min-width: 70px;
     text-align: center;
     border-right: 1px solid #ddd;
-    padding-right: 16px;
+    /* padding-right: 16px; */
 }
 
 .izvodjenje-datum {
@@ -11354,18 +11352,6 @@ address .tel i {
 
 .izvodjenje-mesec {
     font-size: 2.0rem;
-}
-
-@media (max-width: 767px) {
-    .izvodjenje-datum {
-        font-size: 2.6rem;
-        line-height: 1.3;
-    }
-
-    .izvodjenje-predstava {
-        font-size: 1.1em;
-        text-align: left;
-    }
 }
 
 .izvodjenje-predstava {
@@ -11381,7 +11367,7 @@ address .tel i {
 .izvodjenje-plakat {
     display: grid;
     justify-content: right;
-
+    padding-right: 15px;
 }
 
 .izvodjenje-plakat img {
@@ -11394,6 +11380,35 @@ address .tel i {
 
 .izvodjenje-scena {
     color: var()
+}
+
+.izvodjenje-vreme-predstava-pozoriste-wrapper {
+    webkit-box-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    margin-left: 10px;
+}
+
+@media screen and (max-width: 767px) {
+    .izvodjenje-datum {
+        font-size: 2.6rem;
+        line-height: 1.3;
+    }
+
+    .izvodjenje-predstava {
+        font-size: 18px;
+        text-align: left;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        line-clamp: 2 !important;
+        -webkit-line-clamp: 2 !important;
+        -webkit-box-orient: vertical;
+    }
+
+    .izvodjenje-plakat {
+        padding-right: 10px;
+    }
 }
 
 @media screen and (max-width: 776px) {
@@ -12164,6 +12179,30 @@ address .tel i {
     margin-bottom: 0;
 }
 
+@media screen and (max-width:767px) {
+    .repertoar-filter-gradovi-zanrovi-wrapper {
+        display: block;
+    }
+
+    .repertoar-filter-gradovi-zanrovi-wrapper .css-b62m3t-container {
+        margin-bottom: 15px;
+    }
+
+    .repertoar-filter-date-wrapper .btn-group {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        margin: auto;
+    }
+
+    .repertoar-filter-date-wrapper .btn-group button {
+        margin-bottom: 10px;
+    }
+
+    .flatpickr-calendar {
+        right: -55px;
+    }
+}
+
 .repertoar-filter-wrapper .flatpickr .input-group {
     flex-wrap: initial;
 }
@@ -12189,9 +12228,9 @@ address .tel i {
 }
 
 .date-filter-btn.active {
-    background: rgba(0, 0, 0, .92);
+    background: var(--primary-color);
     color: #fff;
-    border-color: rgba(0, 0, 0, .92);
+    border-color: var(--primary-color);
 }
 
 .repertoar-toolbar {

@@ -182,7 +182,7 @@ export default function PredstavePage() {
 
     return (
         <>
-            <div className="single-blog-wrapper p-t-xs-60">
+            <div className="single-blog-wrapper p-t-md-60 p-t-xs-30">
                 <div className="repertoar-filter-wrapper">
                     <h5>Filtriraj predstave</h5>
                     <InputGroup className="mb-5">
@@ -190,7 +190,7 @@ export default function PredstavePage() {
                             <i className="fa-solid fa-magnifying-glass"></i>
                         </InputGroup.Text>
                         <Form.Control
-                            placeholder="Pretrazi predstave"
+                            placeholder="Pretraži predstave"
                             aria-label="seacrh"
                             aria-describedby="basic-addon1"
                             value={searchInput}
@@ -198,11 +198,11 @@ export default function PredstavePage() {
                         />
                     </InputGroup>
                     <div className="repertoar-filter-gradovi-zanrovi-wrapper">
-                        <div className="m-b-xs-20">
+                        <div className="m-b-xs-25">
                             <Select
                                 instanceId="znr"
                                 name="zanrovi"
-                                placeholder="Izaberi zanrove"
+                                placeholder="Izaberi žanrove"
                                 isMulti={true}
                                 options={dbZanrovi}
                                 onChange={onChangeMulti("zanrovi")}
@@ -236,7 +236,7 @@ export default function PredstavePage() {
                         <Form.Check // prettier-ignore
                             type="switch"
                             id="recenzije-switch"
-                            label="Prikazi samo predstave koje imaju recenziju"
+                            label="Prikaži samo predstave koje imaju recenziju"
                             onChange={() =>
                                 setFilters((prev) => ({
                                     ...prev,
@@ -244,6 +244,7 @@ export default function PredstavePage() {
                                     page: 1,
                                 }))
                             }
+                            className="predstave-index-filter-checkbox"
                         />
                     </Form>
                 </div>

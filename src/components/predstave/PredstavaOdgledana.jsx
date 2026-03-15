@@ -52,7 +52,7 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
             </Link>
 
             <div className="media-body predstava-index-info">
-                {data.zanrovi.length > 0 && (
+                {data.zanrovi?.length > 0 && (
                     <div className="post-cat-group">
                         {!isTabletOrMobile && (
                             <>
@@ -79,7 +79,7 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
                     </Link>
                 </h3>
                 <div className="post-metas">
-                    {data.pozorista.length > 0 && (
+                    {data.pozorista?.length > 0 && (
                         <ul className="list-inline">
                             <FontAwesomeIcon icon={faBuildingColumns} />
                             {data.pozorista?.map((poz) => (

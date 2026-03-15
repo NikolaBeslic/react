@@ -3,6 +3,7 @@ import moment from "moment";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStar, faComments } from "@fortawesome/free-regular-svg-icons";
 import Link from "next/link";
+import { useMediaQuery } from "react-responsive";
 
 const PredstaveLayout = ({
     data,
@@ -11,50 +12,74 @@ const PredstaveLayout = ({
     showPozoriste,
     showRatingsAndComments = true,
 }) => {
+    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     return (
         <div
             className={`media post-block post-block__small bg-grey-light-three predstava-index-wrapper ${
                 pClass ?? "post-block__on-dark-bg m-b-xs-30"
             }`}
         >
-            <Link
-                href={`/predstave/${data.predstava_slug}`}
-                className="align-self-center"
-            >
-                <>
+            <div className="predstava-index-image-wrapper">
+                <Link
+                    href={`/predstave/${data.predstava_slug}`}
+                    className="align-self-center"
+                >
                     <Image
                         src={data.plakat || "/slike/vizitke-cover.jpg"}
                         alt={data.predstava_slug}
                         width={80}
                         height={120}
-                        objectFit="cover"
-                        onErrorCapture={(e) => {
-                            e.currentTarget.src = "/slike/vizitke-cover.jpg";
-                        }}
+                        quality={90}
                     />
                     {videoIcon === true ? (
                         <span className="video-play-btn video-play-btn__small" />
                     ) : (
                         ""
                     )}
-                </>
-            </Link>
+                </Link>
+            </div>
 
             <div className="media-body predstava-index-info">
                 <div className="post-cat-group">
-                    {data.zanrovi?.map((zanr) => (
-                        <Link
-                            href={`/category/${zanr.naziv_zanra}`}
-                            className="post-cat zanr-button"
-                            style={{
-                                color: zanr.zanr_boja,
-                                borderColor: zanr.zanr_boja,
-                            }}
-                            key={zanr.zanrid}
-                        >
-                            {zanr.naziv_zanra}
-                        </Link>
-                    ))}
+                    {data.zanrovi?.length > 0 && (
+                        <>
+                            {isTabletOrMobile && data.zanrovi.length > 1 ? (
+                                <>
+                                    <Link
+                                        href={`/category/${data.zanrovi[0].naziv_zanra}`}
+                                        className="post-cat zanr-button"
+                                        style={{
+                                            color: data.zanrovi[0].zanr_boja,
+                                            borderColor:
+                                                data.zanrovi[0].zanr_boja,
+                                        }}
+                                        key={data.zanrovi[0].zanrid}
+                                    >
+                                        {data.zanrovi[0].naziv_zanra}
+                                    </Link>
+                                    <span className="more-zanrovi">
+                                        + {data.zanrovi.length - 1}
+                                    </span>
+                                </>
+                            ) : (
+                                <>
+                                    {data.zanrovi?.map((zanr) => (
+                                        <Link
+                                            href={`/category/${zanr.naziv_zanra}`}
+                                            className="post-cat zanr-button"
+                                            style={{
+                                                color: zanr.zanr_boja,
+                                                borderColor: zanr.zanr_boja,
+                                            }}
+                                            key={zanr.zanrid}
+                                        >
+                                            {zanr.naziv_zanra}
+                                        </Link>
+                                    ))}
+                                </>
+                            )}
+                        </>
+                    )}
                 </div>
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
                     <Link href={`/predstave/${data.predstava_slug}`}>
@@ -66,7 +91,12 @@ const PredstaveLayout = ({
                         {showPozoriste
                             ? data.pozorista.map((poz) => (
                                   <li key={poz.pozoristeid}>
-                                      {poz.naziv_pozorista}
+                                      <span className="pozoriste-desktop-name">
+                                          {poz.naziv_pozorista}
+                                      </span>
+                                      <span className="pozoriste-mobile-name">
+                                          {poz.skraceni_naziv}
+                                      </span>
                                   </li>
                               ))
                             : data.premijera && (
@@ -107,6 +137,7 @@ const PredstaveLayout = ({
                         <div className="predstava-index-recenzija">
                             <Link
                                 href={`/predstave/${data.predstava_slug}#tekstovi`}
+                                className="text-primary"
                             >
                                 Pročitaj recenziju
                             </Link>

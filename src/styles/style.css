@@ -11386,7 +11386,8 @@ address .tel i {
     webkit-box-flex: 1;
     -ms-flex: 1;
     flex: 1;
-    margin-left: 10px;
+    margin-left: 15px;
+    padding-right: 20px;
 }
 
 @media screen and (max-width: 767px) {
@@ -11441,6 +11442,16 @@ address .tel i {
 .predstava-index-wrapper:hover {
     transform: translateY(-2px);
     box-shadow: soft;
+}
+
+.predstava-index-image-wrapper {
+    height: 120px;
+    width: 80px;
+    margin-right: 15px;
+}
+
+.predstava-index-image-wrapper img {
+    border-radius: 10px;
 }
 
 .predstava-index-ocena-recenzija-wrapper {
@@ -11525,7 +11536,15 @@ address .tel i {
     margin-left: 5px;
 }
 
-
+.more-zanrovi {
+    border: 1px var(--grey-mid) solid;
+    border-radius: 10px;
+    padding: 3px 8px;
+    margin-bottom: 1rem;
+    font-size: 11px;
+    opacity: 0.6;
+    line-height: 14px;
+}
 
 .predstava-index-title a {
     font-size: 2.1rem;
@@ -11539,15 +11558,24 @@ address .tel i {
 
 .predstava-index-recenzija {
     align-self: flex-end;
+    margin-bottom: 5px;
+    text-align: right;
 }
 
 .predstava-index-recenzija a {
     font-size: 14px;
+    font-weight: 500;
+}
+
+.predstava-index-recenzija a:hover {
+    text-decoration: underline;
+
 }
 
 @media screen and (max-width: 767px) {
     .predstava-index-ocena-komentari {
         flex-direction: column;
+        align-items: end;
     }
 
     .predstava-index-info {
@@ -11561,6 +11589,16 @@ address .tel i {
     .predstava-index-ocena-recenzija-wrapper .rating-wrapper {
         border: none;
         text-align: right;
+        margin-top: 0 !important;
+        padding-top: 0;
+    }
+
+    .predstava-index-ocena-recenzija-wrapper .rating-wrapper .current-rating {
+        margin-left: 0;
+    }
+
+    .predstava-index-recenzija {
+        width: 100px;
     }
 }
 
@@ -11636,6 +11674,8 @@ address .tel i {
 .predstava-povezani-tekst-single-wrapper .post-block {
     background: rgba(255, 255, 255, 0.6);
 }
+
+
 
 .premijere-naziv-pozorista,
 .repertoar-naslovna-vreme {
@@ -12167,6 +12207,15 @@ address .tel i {
 .repertoar-filter-wrapper input {
 
     font-size: 14px;
+}
+
+.repertoar-filter-wrapper .form-switch,
+.repertoar-filter-wrapper .form-check {
+    padding-left: 0;
+}
+
+.predstave-index-filter-checkbox label {
+    padding-left: 20px !important;
 }
 
 .repertoar-filter-gradovi-zanrovi-wrapper {

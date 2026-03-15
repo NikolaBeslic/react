@@ -126,7 +126,7 @@ const PredstavaTitle = ({
                                         </div>
                                     </div>
                                     <div className="col-sm-12 col-xs-12">
-                                        <div className="post-metas banner-post-metas m-t-xs-20">
+                                        <div className="post-metas banner-post-metas m-t-xs-20 predstava-single-metas">
                                             <ul className="list-inline">
                                                 <li>
                                                     <i className="fa-light fa-calendar-day"></i>

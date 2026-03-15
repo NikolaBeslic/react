@@ -4,10 +4,12 @@ import { faStar, faPenToSquare } from "@fortawesome/free-regular-svg-icons";
 import {
     faStarHalfStroke,
     faCommentNodes,
+    faBuildingColumns,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
 import { Dropdown, Spinner } from "react-bootstrap";
 import { useState } from "react";
+import { useMediaQuery } from "react-responsive";
 
 const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
     const [loading, setLoading] = useState(false);
@@ -17,6 +19,8 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
         await handleRate(data.predstavaid, value);
         setLoading(false);
     };
+
+    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
     return (
         <div
@@ -48,32 +52,48 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
             </Link>
 
             <div className="media-body predstava-index-info">
-                <div className="post-cat-group">
-                    {data.zanrovi?.map((zanr) => (
-                        <Link
-                            href={`/category/${zanr.naziv_zanra}`}
-                            className="post-cat zanr-button"
-                            style={{
-                                color: zanr.zanr_boja,
-                                borderColor: zanr.zanr_boja,
-                            }}
-                            key={zanr.zanrid}
-                        >
-                            {zanr.naziv_zanra}
-                        </Link>
-                    ))}
-                </div>
+                {data.zanrovi.length > 0 && (
+                    <div className="post-cat-group">
+                        {!isTabletOrMobile && (
+                            <>
+                                {data.zanrovi?.map((zanr) => (
+                                    <Link
+                                        href={`/category/${zanr.naziv_zanra}`}
+                                        className="post-cat zanr-button"
+                                        style={{
+                                            color: zanr.zanr_boja,
+                                            borderColor: zanr.zanr_boja,
+                                        }}
+                                        key={zanr.zanrid}
+                                    >
+                                        {zanr.naziv_zanra}
+                                    </Link>
+                                ))}
+                            </>
+                        )}
+                    </div>
+                )}
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
                     <Link href={`/predstave/${data.predstava_slug}`}>
                         {data.naziv_predstave}
                     </Link>
                 </h3>
                 <div className="post-metas">
-                    <ul className="list-inline">
-                        {data.pozorista?.map((poz) => (
-                            <li key={poz.pozoristeid}>{poz.naziv_pozorista}</li>
-                        ))}
-                    </ul>
+                    {data.pozorista.length > 0 && (
+                        <ul className="list-inline">
+                            <FontAwesomeIcon icon={faBuildingColumns} />
+                            {data.pozorista?.map((poz) => (
+                                <li key={poz.pozoristeid}>
+                                    <span className="pozoriste-desktop-name">
+                                        {poz.naziv_pozorista}
+                                    </span>
+                                    <span className="pozoriste-mobile-name">
+                                        {poz.skraceni_naziv}
+                                    </span>
+                                </li>
+                            ))}
+                        </ul>
+                    )}
                 </div>
             </div>
             <div className="predstava-index-ocena-recenzija-wrapper">

@@ -10911,6 +10911,10 @@ address .tel i {
         margin: 20px auto 30px;
     }
 
+    .predstava-single-metas {
+        text-align: left;
+    }
+
     .banner__default {
         padding: 3rem 0;
     }
@@ -11526,6 +11530,25 @@ address .tel i {
     font-size: 14px;
 }
 
+@media screen and (max-width: 767px) {
+    .predstava-index-ocena-komentari {
+        flex-direction: column;
+    }
+
+    .predstava-index-info {
+        flex: 2;
+    }
+
+    .predstava-index-ocena-recenzija-wrapper {
+        flex: 1;
+    }
+
+    .predstava-index-ocena-recenzija-wrapper .rating-wrapper {
+        border: none;
+        text-align: right;
+    }
+}
+
 .pozorista-layout-wrapper {
     max-width: 150px;
     margin: 10px;
@@ -12029,6 +12052,28 @@ address .tel i {
     box-shadow: soft;
     z-index: 20;
 }
+
+@media screen and (max-width:767px) {
+    .pozoriste-desktop-name {
+        display: none;
+    }
+
+    .pozoriste-mobile-name {
+        display: inline;
+    }
+}
+
+@media screen and (min-width:768px) {
+    .pozoriste-desktop-name {
+        display: inline;
+    }
+
+    .pozoriste-mobile-name {
+        display: none;
+    }
+}
+
+
 
 .korisnik-komentar-wrapper {
     margin-bottom: 20px;

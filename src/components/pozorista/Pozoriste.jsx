@@ -84,7 +84,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                             className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                             onClick={handleLoadMoreIzvodjenja}
                                         >
-                                            Load More
+                                            Učitaj još
                                         </button>
                                     )}
                                 </Tab.Pane>
@@ -101,7 +101,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                             className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                             onClick={handleLoadMore}
                                         >
-                                            Load More
+                                            Učitaj još
                                         </button>
                                     )}
                                 </Tab.Pane>
@@ -119,7 +119,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                             className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
                                             onClick={handleLoadMorePredstave}
                                         >
-                                            Load More
+                                            Učitaj još
                                         </button>
                                     )}
                                 </Tab.Pane>

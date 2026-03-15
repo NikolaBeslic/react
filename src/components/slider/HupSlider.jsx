@@ -155,7 +155,7 @@ const HuPSlider = ({ slidePost }) => {
                                                         href={`${data.kategorija.kategorija_slug}/${data.slug}`}
                                                         className="btn btn-primary m-r-xs-30"
                                                     >
-                                                        READ MORE
+                                                        PROČITAJ VIŠE
                                                     </Link>
                                                     <Link
                                                         href={`/${data.kategorija.kategorija_slug}`}

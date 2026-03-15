@@ -23,6 +23,7 @@ import {
     faPenToSquare,
     faClone,
 } from "@fortawesome/free-solid-svg-icons";
+import { csrf, getCookieValue } from "../../utils";
 
 export default function AdminHomePage() {
     const [tekstovi, setTekstovi] = useState([]);
@@ -66,46 +67,60 @@ export default function AdminHomePage() {
         //     .finally(() => setLoading(false));
     }, []);
 
-    const handleRemoveFromSlider = (tekstid) => {
-        setLoading(true);
-        axiosClient
-            .put("/admin/tekstovi/ukloni-sa-slajdera", { tekstid })
-            .then((res) => {
-                setTekstovi((prevTekstovi) =>
-                    prevTekstovi.map((tekst) =>
-                        tekst.tekstid === tekstid
-                            ? { ...tekst, na_slajderu: 0 }
-                            : tekst,
-                    ),
-                );
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const handleRemoveFromSlider = async (tekstid) => {
+        try {
+            setLoading(true);
+            await csrf();
+            const res = await axiosClient.post(
+                "/admin/tekstovi/ukloni-sa-slajdera",
+                { tekstid },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            );
+            setTekstovi((prevTekstovi) =>
+                prevTekstovi.map((tekst) =>
+                    tekst.tekstid === tekstid
+                        ? { ...tekst, na_slajderu: 0 }
+                        : tekst,
+                ),
+            );
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    const handleIstakni = (tekstid) => {
-        setLoading(true);
-        axiosClient
-            .put("/admin/tekstovi/istakni", { tekstid })
-            .then((res) => {
-                setTekstovi((prevTekstovi) =>
-                    prevTekstovi.map((tekst) =>
-                        tekst.tekstid === tekstid
-                            ? { ...tekst, na_slajderu: 1 }
-                            : tekst,
-                    ),
-                );
-            })
-            .catch((err) => {
-                console.error(err);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+    const handleIstakni = async (tekstid) => {
+        try {
+            setLoading(true);
+            await csrf();
+
+            const res = await axiosClient.put(
+                "/admin/tekstovi/istakni",
+                { tekstid },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            );
+
+            setTekstovi((prevTekstovi) =>
+                prevTekstovi.map((tekst) =>
+                    tekst.tekstid === tekstid
+                        ? { ...tekst, na_slajderu: 1 }
+                        : tekst,
+                ),
+            );
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const handleCreateClick = (kategorijaid) => {

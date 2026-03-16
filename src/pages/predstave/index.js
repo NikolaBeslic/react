@@ -198,7 +198,7 @@ export default function PredstavePage() {
                         />
                     </InputGroup>
                     <div className="repertoar-filter-gradovi-zanrovi-wrapper">
-                        <div className="m-b-xs-25">
+                        <div className="m-b-xs-25 m-b-lg-0">
                             <Select
                                 instanceId="znr"
                                 name="zanrovi"
@@ -206,10 +206,11 @@ export default function PredstavePage() {
                                 isMulti={true}
                                 options={dbZanrovi}
                                 onChange={onChangeMulti("zanrovi")}
+                                className="repertoari-filter-select"
                             />
                         </div>
 
-                        <div className="m-b-xs-20">
+                        <div className="m-b-xs-20 m-b-lg-0">
                             <Select
                                 instanceId="grd"
                                 name="gradovi"
@@ -217,6 +218,7 @@ export default function PredstavePage() {
                                 isMulti={true}
                                 options={dbGradovi}
                                 onChange={onChangeMulti("gradovi")}
+                                className="repertoari-filter-select"
                             />
                         </div>
                     </div>
@@ -230,6 +232,7 @@ export default function PredstavePage() {
                             options={SORT_OPTIONS}
                             value={selectedSort}
                             onChange={onSortChange}
+                            className="predstave-filter-select-sort"
                         />
                     </div>
                     <Form>

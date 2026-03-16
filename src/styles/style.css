@@ -9326,6 +9326,7 @@ ul.gallery img {
 
 .offcanvasmenu-hup-links a {
     color: var(--grey-dark-seven);
+    font-size: 16px;
     opacity: 0.6;
     padding: 10px;
     border-radius: 12px;
@@ -11339,7 +11340,7 @@ address .tel i {
 
 .izvodjenje-date {
 
-    min-width: 70px;
+    min-width: 100px;
     text-align: center;
     border-right: 1px solid #ddd;
     /* padding-right: 16px; */
@@ -11391,6 +11392,11 @@ address .tel i {
 }
 
 @media screen and (max-width: 767px) {
+    .izvodjenje-date {
+
+        min-width: 80px;
+    }
+
     .izvodjenje-datum {
         font-size: 2.6rem;
         line-height: 1.3;
@@ -12205,8 +12211,11 @@ address .tel i {
 }
 
 .repertoar-filter-wrapper input {
-
     font-size: 14px;
+}
+
+.predstave-filter-select-sort {
+    width: 100%;
 }
 
 .repertoar-filter-wrapper .form-switch,
@@ -12221,11 +12230,17 @@ address .tel i {
 .repertoar-filter-gradovi-zanrovi-wrapper {
     margin-bottom: 20px;
     display: inline-flex;
-    gap: 20px;
+    gap: 30px;
 }
 
 .repertoar-filter-date-wrapper .btn-group button {
     margin-bottom: 0;
+}
+
+.repertoari-filter-select {
+    flex: 1;
+    min-width: 240px;
+    /* max-width: 320px; */
 }
 
 @media screen and (max-width:767px) {
@@ -12244,11 +12259,15 @@ address .tel i {
     }
 
     .repertoar-filter-date-wrapper .btn-group button {
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
 
     .flatpickr-calendar {
         right: -55px;
+    }
+
+    .predstave-filter-select-sort {
+        width: 100%;
     }
 }
 
@@ -12269,6 +12288,7 @@ address .tel i {
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s ease;
+    margin-right: 15px !important;
 }
 
 .date-filter-btn:hover {

@@ -287,6 +287,7 @@ const RepertoariNewPage = () => {
                                     onChange={onChangeMulti("gradovi")}
                                     key="grd2"
                                     disabled={loading}
+                                    className="repertoari-filter-select"
                                 />
 
                                 <Select
@@ -298,6 +299,7 @@ const RepertoariNewPage = () => {
                                     isMulti={true}
                                     onChange={onChangeMulti("zanrovi")}
                                     disabled={loading}
+                                    className="repertoari-filter-select"
                                 />
                             </div>
                             <div className="repertoar-filter-date-wrapper">

@@ -255,9 +255,12 @@ export default function PredstavePage() {
                         className="hup-spinner"
                     />
                 )}
-                <p>
-                    Prikazano {predstave?.length} od {meta?.total}
-                </p>
+
+                {!loading && (
+                    <p>
+                        Prikazano {predstave?.length} od {meta?.total}
+                    </p>
+                )}
                 <div className="axil-content row">
                     {predstave?.map((pred) => (
                         <div className="col-lg-12" key={pred.predstavaid}>

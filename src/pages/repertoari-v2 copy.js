@@ -9,24 +9,19 @@ import Flatpickr from "react-flatpickr";
 import "flatpickr/dist/themes/light.css";
 import { Serbian } from "flatpickr/dist/l10n/sr.js";
 import { useMediaQuery } from "react-responsive";
-import { Spinner } from "react-bootstrap";
 
 const RepertoariNewPage = () => {
     const [date, setDate] = useState([]);
     const [datumOd, setDatumOd] = useState(new Date());
     const [datumDo, setDatumDo] = useState(new Date());
-    const [izvodjenja, setIzvodjenja] = useState([]);
+    const [dbEvents, setDbEvents] = useState([]);
+    const [displayEvents, setDisplayEvents] = useState([]);
+    const [visibleCount, setVisibleCount] = useState(20);
     const [displayValue, setDisplayValue] = useState("");
     const [dbGradovi, setDbGradovi] = useState([]);
-    const [dbZanrovi, setDbZanrovi] = useState([]);
+    const [selectedGradovi, setSelectedGradovi] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [meta, setMeta] = useState(null);
-    const [filters, setFilters] = useState({
-        zanrovi: [],
-        gradovi: [],
-        datumi: [moment().format("YYYY-MM-DD"), moment().format("YYYY-MM-DD")],
-        page: 1,
-    });
+    const [predstave, setPredstave] = useState([]);
     const fpInstance = useRef(null);
     const [active, setActive] = useState("today");
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
@@ -45,126 +40,93 @@ const RepertoariNewPage = () => {
     );
 
     useEffect(() => {
-        let isMounted = true;
-
-        const fetchData = async () => {
-            setLoading(true);
-
-            try {
-                const requests = [
-                    axiosClient.get("/get-gradovi"),
-                    axiosClient.get("/get-zanrovi"),
-                ];
-
-                const [gRes, zRes] = await Promise.all(requests);
-
-                if (!isMounted) return;
-
-                setDbZanrovi(
-                    zRes.data.map((zanr) => ({
-                        value: zanr.zanrid,
-                        label: zanr.naziv_zanra,
-                    })) || [],
-                );
+        axiosClient
+            .get(`/get-repertoari`)
+            .then((res) => {
+                console.log(res.data);
+                setDbEvents(res.data);
+                setDisplayEvents(res.data);
+                setDate(new Date());
+            })
+            .catch((err) => {
+                // setLoading(false);
+                console.error(err.message);
+            });
+        axiosClient
+            .get("/get-gradovi")
+            .then((res) => {
+                console.log(res.data);
                 setDbGradovi(
-                    gRes.data.map((grad) => ({
+                    res.data.map((grad) => ({
                         value: grad.gradid,
                         label: grad.naziv_grada,
-                    })) || [],
+                    })),
                 );
-            } catch (error) {
-                console.error(error);
-            } finally {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            }
-        };
-
-        fetchData();
-
-        return () => {
-            isMounted = false;
-        };
+            })
+            .catch((error) => console.error(error));
+        // axiosClient
+        //     .get("/get-predstave-with-texts")
+        //     .then((res) => {
+        //         console.log(res.data);
+        //         setPredstave(res.data);
+        //     })
+        //     .catch((error) => console.error(error));
     }, []);
 
-    const lastFetchKeyRef = useRef("");
     useEffect(() => {
-        console.log(filters);
-        const ctrl = new AbortController();
+        // filterEventsByDate(datumOd, datumDo);
 
-        const params = {
-            zanrovi: filters.zanrovi.length
-                ? filters.zanrovi.join(",")
-                : undefined,
-            gradovi: filters.gradovi.length
-                ? filters.gradovi.join(",")
-                : undefined,
-            datumi: filters.datumi ?? undefined,
-            page: filters.page,
-        };
+        const mDatumOd = new moment(datumOd);
+        const mDatumDo = new moment(datumDo);
+        console.log("mDates in filter metod");
+        let filteredEvents = dbEvents;
+        console.log(mDatumOd);
+        console.log(mDatumDo);
+        if (datumDo) {
+            filteredEvents = dbEvents.filter(
+                (dbe) =>
+                    new moment(dbe.datum).isSameOrAfter(mDatumOd) &&
+                    new moment(dbe.datum).isBefore(mDatumDo),
+            );
+        } else {
+            filteredEvents = dbEvents.filter((dbe) =>
+                new moment(dbe.datum).isSame(mDatumOd),
+            );
+        }
+        console.log("After filter");
 
-        console.log("[DEFAULT+FILTERS]", filters);
-        console.log("[API PARAMS]", params);
+        console.log(filteredEvents);
 
-        const key = JSON.stringify(params);
-        if (key === lastFetchKeyRef.current) return;
-        lastFetchKeyRef.current = key;
-
-        (async () => {
-            setLoading(true);
-
-            try {
-                const res = await axiosClient.get("/get-repertoari-filtered", {
-                    params,
-                    signal: ctrl.signal,
-                });
-                console.log("FROM API: ");
-                console.log(res);
-
-                const incoming = res.data?.data || [];
-                setIzvodjenja((prev) =>
-                    filters.page > 1 ? [...prev, ...incoming] : incoming,
-                );
-
-                setMeta({
-                    currentPage: res.data.current_page,
-                    lastPage: res.data.last_page,
-                    total: res.data.total,
-                });
-            } catch (e) {
-                if (e.name !== "CanceledError" && e.name !== "AbortError")
-                    console.error(e);
-            } finally {
-                setLoading(false);
-            }
-        })();
-
-        return () => ctrl.abort();
-    }, [filters]);
+        if (selectedGradovi.length > 0) {
+            console.log("Filter by grad");
+            console.log(selectedGradovi);
+            // filteredEvents = displayEvents;
+            filteredEvents = filteredEvents.filter(
+                (igranje) =>
+                    selectedGradovi.includes(igranje.pozoriste.grad.gradid),
+                //igranje.pozoriste.grad.gradid.includes(selectedGradovi)
+                //predstava.pozorista.some(poz => selectedGradovi.includes(poz.grad.gradid))
+            );
+        }
+        setDisplayEvents(filteredEvents);
+    }, [datumOd, datumDo, selectedGradovi]);
 
     const handleDateClick = (dates, str, instance) => {
         //setActive("custom");
         console.log(dates);
         setDatumOd(dates[0]);
-        if (dates.length > 1) {
-            setDatumDo(dates[1]);
-            setFilters((prev) => ({
-                ...prev,
-                datumi: [
-                    moment(dates[0]).format("YYYY-MM-DD"),
-                    moment(dates[1]).format("YYYY-MM-DD"),
-                ],
-                page: 1,
-            }));
-        }
+        if (dates.length > 1) setDatumDo(dates[1]);
         setDate(dates);
-
         setDisplayValue(formatDisplay(dates));
 
         if (dates.length === 2 && fpInstance.current) {
             fpInstance.current.close();
         }
+    };
+
+    const openCalendar = () => {
+        setActive("custom");
+        fpRef.current?.flatpickr?.open();
     };
 
     const onPresetClick = (key, fn) => () => {
@@ -255,20 +217,14 @@ const RepertoariNewPage = () => {
         btn.classList.add("active");
     };
 
-    const onChangeMulti = (key) => (items) => {
-        const ids = (items || []).map((x) => x.value);
-        setFilters((prev) => ({ ...prev, [key]: ids, page: 1 }));
+    const handleLoadMoreIzvodjenja = () => {
+        setVisibleCount(visibleCount + 10);
     };
 
-    const canLoadMore = useMemo(() => {
-        if (!meta) return false;
-        return meta.currentPage < meta.lastPage;
-    }, [meta]);
-
-    const loadMore = () => {
-        if (!canLoadMore) return;
-        setFilters((prev) => ({ ...prev, page: prev.page + 1 }));
-    };
+    const handleGradoviChange = useCallback((e) => {
+        const sg = e.map((obj) => obj.value);
+        setSelectedGradovi(sg);
+    });
 
     return (
         <>
@@ -284,20 +240,15 @@ const RepertoariNewPage = () => {
                                     placeholder="Izaberi gradove"
                                     options={dbGradovi}
                                     isMulti={true}
-                                    onChange={onChangeMulti("gradovi")}
+                                    onChange={(e) => handleGradoviChange(e)}
                                     key="grd2"
-                                    disabled={loading}
                                 />
 
                                 <Select
                                     instanceId="zanrovi1"
-                                    name="zanrovi"
-                                    placeholder="Izaberi žanrove"
-                                    options={dbZanrovi}
+                                    name="zanrove"
+                                    placeholder="Izaberi zanrove"
                                     key="znr2"
-                                    isMulti={true}
-                                    onChange={onChangeMulti("zanrovi")}
-                                    disabled={loading}
                                 />
                             </div>
                             <div className="repertoar-filter-date-wrapper">
@@ -308,7 +259,6 @@ const RepertoariNewPage = () => {
                                             data-date-btn="today"
                                             className={`date-filter-btn ${active === "today" ? "active" : ""}`}
                                             key="btn-rep-today"
-                                            disabled={loading}
                                         >
                                             Danas
                                         </button>
@@ -318,7 +268,6 @@ const RepertoariNewPage = () => {
                                             data-date-btn="week"
                                             className={`date-filter-btn ${active === "week" ? "active" : ""}`}
                                             key="btn-rep-week"
-                                            disabled={loading}
                                         >
                                             Ove nedelje
                                         </button>
@@ -328,7 +277,6 @@ const RepertoariNewPage = () => {
                                             data-date-btn="month"
                                             className={`date-filter-btn ${active === "month" ? "active" : ""}`}
                                             key="btn-rep-month"
-                                            disabled={loading}
                                         >
                                             Ovog meseca
                                         </button>
@@ -346,7 +294,6 @@ const RepertoariNewPage = () => {
                                                 <button
                                                     type="button"
                                                     key="btn-rep-custom"
-                                                    disabled={loading}
                                                     data-toggle
                                                     data-date-btn="custom"
                                                     className={`date-filter-btn ${
@@ -384,20 +331,9 @@ const RepertoariNewPage = () => {
                         </div>
                     </div>
                     <div className="col-lg-12">
-                        {!loading && (
-                            <p>
-                                Prikazano {izvodjenja?.length} od {meta?.total}
-                            </p>
-                        )}
+                        <p>Ukupno: {displayEvents.length} izvodjenja</p>
                         <div className="repertoari-wrapper axil-content">
-                            {loading && (
-                                <Spinner
-                                    animation="border"
-                                    role="status"
-                                    className="hup-spinner"
-                                />
-                            )}
-                            {izvodjenja.map((e) => {
+                            {displayEvents.slice(0, visibleCount).map((e) => {
                                 return (
                                     <>
                                         <Izvodjenje
@@ -410,18 +346,25 @@ const RepertoariNewPage = () => {
                                 );
                             })}
                         </div>
-
-                        {canLoadMore && (
+                        {visibleCount < displayEvents?.length && (
                             <button
                                 className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                                onClick={loadMore}
-                                disabled={loading}
+                                onClick={handleLoadMoreIzvodjenja}
                             >
-                                {loading && filters.page > 1
-                                    ? "Učitavanje…"
-                                    : "Učitaj još"}
+                                Učitaj još
                             </button>
                         )}
+                    </div>
+                    <div className="col-lg-12">
+                        {/* <SectionTitle title="Predstave o kojima smo pisali" />
+                            {predstave.map((pred) => (
+                                <PredstaveLayout
+                                    data={pred}
+                                    pClass=""
+                                    showPozoriste={false}
+                                    key={pred.predstavaid}
+                                />
+                            ))} */}
                     </div>
                 </div>
             </div>

@@ -1,11 +1,13 @@
+import { useMediaQuery } from "react-responsive";
 import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
 
 const RepertoariHeader = () => {
+    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     return (
         <>
             <HeadMeta metaTitle="Repertoari" />
-            <Breadcrumb aPage="Repertoari" />
+            {!isTabletOrMobile && <Breadcrumb aPage="Repertoari" />}
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

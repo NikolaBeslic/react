@@ -306,7 +306,7 @@ const HeaderOne = () => {
                                                 </Link>
                                             </li>
                                             <li key={1012}>
-                                                <Link href="/na-kafi">
+                                                <Link href="/na-kafi-sa">
                                                     Na kafi sa
                                                 </Link>
                                             </li>

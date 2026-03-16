@@ -2,13 +2,10 @@ import moment from "moment";
 import { toast } from "react-hot-toast";
 import { useCallback, useEffect, useRef, useState } from "react";
 import axiosClient from "../../../utils/axios";
-import { Autocomplete, Box, Grid2, Paper, TextField } from "@mui/material";
-import { Col, Form, Row, Spinner, Button, FormLabel } from "react-bootstrap";
+import { Box } from "@mui/material";
+import { Col, Form, Row, Button } from "react-bootstrap";
 import Select from "react-select";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimeField } from "@mui/x-date-pickers/TimeField";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import LoadingBackdrop from "../../../components/admin/LoadingBackdrop";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import { AgGridReact } from "ag-grid-react";
 import { csrf, getCookieValue } from "../../../utils";
@@ -31,8 +28,8 @@ export default function DodajGostovanjePage() {
 
     const [sceneZaDropdown, setSceneZaDropdown] = useState(dbScene);
 
-    const [datum, setDatum] = useState(null);
-    const [vreme, setVreme] = useState(null);
+    const [datum, setDatum] = useState("");
+    const [vreme, setVreme] = useState("");
 
     const [igranja, setIgranja] = useState([]);
     const gridRef = useRef(null);
@@ -68,60 +65,75 @@ export default function DodajGostovanjePage() {
             .finally(() => setLoading(false));
     }, []);
 
-    const handlePredstavaChange = (event, selectedPredstava) => {
-        setFormData({ ...formData, predstavaid: selectedPredstava?.value });
+    const handlePredstavaChange = (event) => {
+        setFormData({ ...formData, predstavaid: event.value });
     };
 
-    const handlePozoristeChange = (event, selectedPozoriste) => {
-        debugger;
-        setFormData({ ...formData, pozoristeid: selectedPozoriste?.value });
+    const handlePozoristeChange = (event) => {
+        setFormData({ ...formData, pozoristeid: event.value, scenaid: null });
         setSceneZaDropdown(
-            dbScene.filter(
-                (scen) => scen.pozoristeid == selectedPozoriste?.value,
-            ),
+            dbScene.filter((scen) => scen.pozoristeid == event.value),
         );
     };
 
-    const handleScenaChange = (event, selectedScena) => {
-        debugger;
-        setFormData({ ...formData, scenaid: selectedScena.value });
+    const handleScenaChange = (event) => {
+        setFormData({ ...formData, scenaid: event.value });
     };
 
-    const handleSubmit = async () => {
+    const handleVremeChange = (event) => {
+        console.log(event);
+        setVreme(event.target.value);
+        setFormData({ ...formData, vreme: event.target.value });
+    };
+
+    const handleDatumChange = (event) => {
+        console.log(event);
+        setDatum(event.target.value);
+        setFormData({
+            ...formData,
+            datum: moment(event.target.value).format("YYYY-MM-DD"),
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         console.log(formData);
 
         setLoading(true);
-        formData.datum = moment(datum).format("YYYY-MM-DD");
-        formData.vreme = moment(vreme).format("HH:mm");
 
         console.log(formData);
-        await csrf();
-        axiosClient
-            .post("/admin/igranje-store", formData, {
-                headers: {
-                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+        try {
+            await csrf();
+            const res = await axiosClient.post(
+                "/admin/igranje-store",
+                formData,
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
                 },
-            })
-            .then((res) => {
-                debugger;
-                console.log(res.data);
+            );
 
-                setFormData({
-                    pozoristeid: null,
-                    predstavaid: null,
-                    scenadid: null,
-                    datum: null,
-                    vreme: null,
-                }); // TO DO reset form values
-                setIgranja(res.data);
-                toast.success("Uspesno dodato izvodjenje");
-            })
-            .catch((err) => {
-                console.error(err);
-                toast.error(err.response.data);
-                setErrors(err.response.data.errors);
-            })
-            .finally(() => setLoading(false));
+            console.log(res.data);
+
+            setFormData({
+                pozoristeid: null,
+                predstavaid: null,
+                scenadid: null,
+                datum: "",
+                vreme: "",
+            });
+            setDatum("");
+            setVreme(""); // TO DO reset form values
+            setIgranja(res.data);
+            toast.success("Uspesno dodato izvodjenje");
+        } catch (err) {
+            console.error(err);
+            //toast.error(err.response.data);
+            setErrors(err.response.data.errors);
+        } finally {
+            setLoading(false);
+        }
     };
 
     const columns = [
@@ -152,7 +164,7 @@ export default function DodajGostovanjePage() {
             naziv_predstave: igranje.predstava.naziv_predstave,
             scena: igranje.scena?.naziv_scene,
             datum: moment(igranje.datum).format("DD. MMM YYYY. dddd"),
-            vreme: igranje.vreme, // TO DO fix this
+            vreme: moment("1970.01.01 " + igranje.vreme).format("HH:mm"), // TO DO fix this
         }),
     );
 
@@ -168,26 +180,11 @@ export default function DodajGostovanjePage() {
             <AdminHeader metaTitle="Dodaj gostovanje" />
             <h1>Dodaj gostovanje</h1>
             <div className="container">
+                <LoadingBackdrop show={loading} text="Working..." />
                 <Box sx={{ flexGrow: 1, my: 3 }}>
-                    {loading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
-                        />
-                    )}
                     <Row>
                         <Col md={6}>
                             <Form>
-                                <Form.Group className="mb-3">
-                                    <Form.Label>Pozorišta</Form.Label>
-                                    <Select
-                                        name="pozorista"
-                                        options={dbPozorista}
-                                        isSearchable
-                                        onChange={handlePozoristeChange}
-                                    />
-                                </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Predstava</Form.Label>
                                     <Select
@@ -195,46 +192,82 @@ export default function DodajGostovanjePage() {
                                         options={dbPredstave}
                                         isSearchable
                                         onChange={handlePredstavaChange}
+                                        value={
+                                            dbPredstave.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    formData.predstavaid,
+                                            ) || null
+                                        }
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3">
-                                    <Form.Label>Scene</Form.Label>
+                                    <Form.Label>Pozorište</Form.Label>
                                     <Select
-                                        name="scene"
+                                        name="pozorista"
+                                        options={dbPozorista}
+                                        isSearchable
+                                        onChange={handlePozoristeChange}
+                                        value={
+                                            dbPozorista.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    formData.pozoristeid,
+                                            ) || null
+                                        }
+                                        menuPortalTarget={document.body}
+                                        menuPosition="fixed"
+                                        styles={{
+                                            menuPortal: (base) => ({
+                                                ...base,
+                                                zIndex: 9999,
+                                            }),
+                                            menu: (base) => ({
+                                                ...base,
+                                                zIndex: 9999,
+                                                fontSize: 14,
+                                            }),
+                                        }}
+                                    />
+                                </Form.Group>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Scena</Form.Label>
+                                    <Select
+                                        name="scena"
                                         options={sceneZaDropdown}
                                         isSearchable
                                         onChange={handleScenaChange}
+                                        value={
+                                            dbScene.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    formData.scenaid,
+                                            ) || null
+                                        }
                                     />
                                 </Form.Group>
 
-                                <LocalizationProvider
-                                    dateAdapter={AdapterMoment}
-                                >
-                                    <Row className="align-items-end g-2">
-                                        <Col xs="auto">
-                                            <Form.Label>Datum</Form.Label>
-                                            <Form.Control
-                                                type="date"
-                                                name="datum"
-                                                value={datum}
-                                                onChange={(value) =>
-                                                    setDatum(value)
-                                                }
-                                            />
-                                        </Col>
-                                        <Col xs="auto">
-                                            <Form.Label>Vreme</Form.Label>
-                                            <Form.Control
-                                                type="time"
-                                                name="vreme"
-                                                value={vreme}
-                                                onChange={(value) =>
-                                                    setVreme(value)
-                                                }
-                                            />
-                                        </Col>
-                                    </Row>
-                                </LocalizationProvider>
+                                <Row className="align-items-end g-2">
+                                    <Col xs="auto">
+                                        <Form.Label>Datum</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            name="datum"
+                                            value={datum}
+                                            onChange={handleDatumChange}
+                                        />
+                                    </Col>
+                                    <Col xs="auto">
+                                        <Form.Label>Vreme</Form.Label>
+                                        <Form.Control
+                                            type="time"
+                                            name="vreme"
+                                            value={vreme}
+                                            onChange={handleVremeChange}
+                                        />
+                                    </Col>
+                                </Row>
+
                                 <Button
                                     size="large"
                                     type="submit"

@@ -163,7 +163,7 @@ export default function DodajGostovanjePage() {
             id: igranje.seigraid,
             naziv_predstave: igranje.predstava.naziv_predstave,
             scena: igranje.scena?.naziv_scene,
-            datum: moment(igranje.datum).format("DD. MMM YYYY. dddd"),
+            datum: moment(igranje.datum).format("DD. MMM YYYY."),
             vreme: moment("1970.01.01 " + igranje.vreme).format("HH:mm"), // TO DO fix this
         }),
     );

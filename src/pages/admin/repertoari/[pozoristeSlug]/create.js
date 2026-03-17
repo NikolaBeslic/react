@@ -1,81 +1,119 @@
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import axiosClient from "../../../../utils/axios";
 import {
-    Autocomplete,
     Box,
-    Button,
-    Grid2,
-    Paper,
-    TextField,
-    Toolbar,
-    Tooltip,
     Dialog,
     DialogTitle,
     DialogContent,
     DialogActions,
     CircularProgress,
 } from "@mui/material";
-import { DatePicker } from "@mui/x-date-pickers/DatePicker";
-import { TimeField } from "@mui/x-date-pickers/TimeField";
-import { TimePicker } from "@mui/x-date-pickers/TimePicker";
-import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+
 import moment from "moment";
 import { toast } from "react-hot-toast";
-import { Row, Spinner } from "react-bootstrap";
-import {
-    DataGrid,
-    GridRowModes,
-    GridRowEditStopReasons,
-    GridActionsCellItem,
-    GridDeleteIcon,
-} from "@mui/x-data-grid";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import SaveIcon from "@mui/icons-material/Save";
-import CancelIcon from "@mui/icons-material/Close";
+import { Col, Form, Row, Button } from "react-bootstrap";
+import { GridRowModes, GridRowEditStopReasons } from "@mui/x-data-grid";
+import Select from "react-select";
+
 import AdminHeader from "../../../../components/admin/layout/AdminHeader";
 import { csrf, getCookieValue } from "../../../../utils";
+import { AgGridReact } from "ag-grid-react";
+import LoadingBackdrop from "../../../../components/admin/LoadingBackdrop";
+import { CLIENT_STATIC_FILES_RUNTIME_REACT_REFRESH } from "next/dist/shared/lib/constants";
 
-function EditToolbar(props) {
-    const { setRows, setRowModesModel } = props;
+/**
+ * Custom select editor for "scena"
+ */
+const ScenaSelectEditor = ({ value, onValueChange, values = [] }) => {
+    return (
+        <select
+            autoFocus
+            value={value != null ? String(value) : ""}
+            onChange={(e) =>
+                onValueChange(
+                    e.target.value === "" ? null : Number(e.target.value),
+                )
+            }
+            className="form-control"
+            style={{ width: "100%", height: "100%", border: "none" }}
+        >
+            {values.map((scena) => (
+                <option key={scena.value} value={String(scena.value)}>
+                    {scena.label}
+                </option>
+            ))}
+        </select>
+    );
+};
+
+const DateEditor = ({ value, onValueChange }) => {
+    return (
+        <input
+            type="date"
+            autoFocus
+            value={value || ""}
+            onChange={(e) => onValueChange(e.target.value || null)}
+            className="form-control"
+            style={{ width: "100%", height: "100%", border: "none" }}
+        />
+    );
+};
+
+/**
+ * Custom time editor
+ */
+const TimeEditor = ({ value, onValueChange }) => {
+    return (
+        <input
+            type="time"
+            autoFocus
+            value={value || ""}
+            onChange={(e) => onValueChange(e.target.value || null)}
+            className="form-control"
+            style={{ width: "100%", height: "100%", border: "none" }}
+        />
+    );
+};
+
+/**
+ * Action buttons renderer
+ */
+const ActionCellRenderer = (props) => {
+    const { data, context } = props;
+    const isEditing = context.editingRowId === data.id;
 
     return (
-        <Toolbar>
-            <Tooltip title="Add record">
-                {/* <ToolbarButton onClick={handleClick}>
-                    <AddIcon fontSize="small" />
-                </ToolbarButton> */}
-            </Tooltip>
-        </Toolbar>
+        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+            {!isEditing ? (
+                <button
+                    type="button"
+                    onClick={() => context.handleEditRow(data.id)}
+                    className="btn btn-primary"
+                >
+                    Edit
+                </button>
+            ) : (
+                <>
+                    <button
+                        type="button"
+                        onClick={() => context.handleSaveRow(data.id)}
+                        className="btn btn-success"
+                    >
+                        Save
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => context.handleCancelRow(data.id)}
+                        className="btn btn-secondary"
+                    >
+                        Cancel
+                    </button>
+                </>
+            )}
+        </div>
     );
-}
-
-function TimeEditInputCell(props) {
-    const { id, value, field, api } = props;
-
-    const handleChange = (newValue) => {
-        console.log(newValue);
-        api.setEditCellValue({
-            id,
-            field,
-            value: newValue.format("HH:mm"),
-        });
-    };
-
-    return (
-        <LocalizationProvider dateAdapter={AdapterMoment}>
-            <TimePicker
-                value={moment("1970.01.01 " + value)} // 👈 ensure value is moment, not string
-                onChange={handleChange}
-                slotProps={{
-                    textField: { size: "small", variant: "standard" },
-                }}
-            />
-        </LocalizationProvider>
-    );
-}
+};
 
 export default function RepertoarPozoristaCreatePage() {
     const router = useRouter();
@@ -85,20 +123,21 @@ export default function RepertoarPozoristaCreatePage() {
     const [loading, setLoading] = useState(false);
     const [pozoriste, setPozoriste] = useState([]);
     const [igranja, setIgranja] = useState([]);
-
+    const gridRef = useRef(null);
     const [dbPredstave, setDbPredstave] = useState([]);
     const [dbScene, setDbScene] = useState([]);
 
     const [datum, setDatum] = useState(null);
     const [vreme, setVreme] = useState(null);
 
-    let [rows, setRows] = useState([]);
-    const [rowModesModel, setRowModesModel] = useState({});
+    const [rows, setRows] = useState([]);
+    const [editingRowId, setEditingRowId] = useState(null);
+    const [originalRow, setOriginalRow] = useState(null);
 
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
-        scenadid: null,
+        scenaid: null,
         datum: null,
         vreme: null,
     });
@@ -172,44 +211,75 @@ export default function RepertoarPozoristaCreatePage() {
         }
     }, [pozoristeSlug]);
 
-    const handlePredstavaChange = (event, selectedPredstava) => {
-        setFormData({ ...formData, predstavaid: selectedPredstava.value });
+    const handlePredstavaChange = (event) => {
+        setFormData({ ...formData, predstavaid: event.value });
     };
 
-    const handleScenaChange = (event, selectedScena) => {
-        setFormData({ ...formData, scenaid: selectedScena.value });
+    const handleScenaChange = (event) => {
+        setFormData({ ...formData, scenaid: event.value });
     };
 
-    const handleSubmit = async () => {
+    const handleVremeChange = (event) => {
+        console.log(event);
+        setVreme(event.target.value);
+        setFormData({ ...formData, vreme: event.target.value });
+    };
+
+    const handleDatumChange = (event) => {
+        console.log(event);
+        setDatum(event.target.value);
+        setFormData({
+            ...formData,
+            datum: moment(event.target.value).format("YYYY-MM-DD"),
+        });
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
         setLoading(true);
-        formData.datum = moment(datum).format("YYYY-MM-DD");
-        formData.vreme = moment(vreme).format("HH:mm");
-        await csrf();
-        axiosClient
-            .post("/admin/igranje-store", formData, {
-                headers: {
-                    "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+        console.log(formData);
+        try {
+            await csrf();
+            const res = await axiosClient.post(
+                "/admin/igranje-store",
+                formData,
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
                 },
-            })
-            .then((res) => {
-                console.log(res.data);
-                setIgranja(res.data);
-                setFormData({
-                    pozoristeid: null,
-                    predstavaid: null,
-                    scenadid: null,
-                    datum: null,
-                    vreme: null,
-                }); // TO DO reset form values
-                setLoading(false);
-                toast.success("Uspesno dodato izvodjenje");
-            })
-            .catch((err) => {
-                console.error(err);
-                toast.error(err.response.data);
-                setErrors(err.response.data.errors);
-                setLoading(false);
+            );
+            console.log("REs");
+
+            console.log(res);
+
+            console.log(res.data);
+            setRows(res.data);
+            setFormData({
+                ...formData,
+                predstavaid: null,
+                scenadid: null,
+                datum: null,
+                vreme: null,
             });
+            setDatum("");
+            setVreme("");
+            const fetchedIgranja = res.data?.map((igranje) => ({
+                id: igranje.seigraid,
+                naziv_predstave: igranje.predstava.naziv_predstave,
+                scenaid: igranje.scena?.scenaid,
+                datum: igranje.datum,
+                vreme: moment("1970.01.01 " + igranje.vreme).format("HH:mm"),
+            }));
+            setRows(fetchedIgranja);
+            toast.success("Uspesno dodato izvodjenje");
+        } catch (err) {
+            console.error(err);
+            toast.error(err.response.data);
+            setErrors(err.response.data.errors);
+        } finally {
+            setLoading(false);
+        }
 
         console.log(formData);
     };
@@ -219,56 +289,148 @@ export default function RepertoarPozoristaCreatePage() {
         axiosClient
             .get(`/admin/get-igranja-pozorista/${pozoristeid}`)
             .then((res) => {
-                setIgranja(res.data);
-                setRows(
-                    res.data?.map((igranje) => ({
-                        id: igranje.seigraid,
-                        naziv_predstave: igranje.predstava.naziv_predstave,
-                        scena: igranje.scena?.scenaid,
-                        datum: new Date(igranje.datum),
-                        vreme: moment("1970.01.01 " + igranje.vreme).format(
-                            "HH:mm",
-                        ),
-                    })),
-                );
+                const fetchedIgranja = res.data?.map((igranje) => ({
+                    id: igranje.seigraid,
+                    naziv_predstave: igranje.predstava.naziv_predstave,
+                    scenaid: igranje.scena?.scenaid,
+                    datum: igranje.datum,
+                    vreme: moment("1970.01.01 " + igranje.vreme).format(
+                        "HH:mm",
+                    ),
+                }));
+                setRows(fetchedIgranja);
             })
             .catch((err) => console.error(err))
             .finally(() => setLoading(false));
     };
 
-    /* МAKING GRID EDITABLE */
-    const handleRowEditStop = (params, event) => {
-        if (params.reason === GridRowEditStopReasons.rowFocusOut) {
-            event.defaultMuiPrevented = true;
-        }
-    };
+    const handleEditRow = useCallback(
+        (rowId) => {
+            if (editingRowId !== null) return;
 
-    const handleEditClick = (id) => () => {
-        setRowModesModel({
-            ...rowModesModel,
-            [id]: { mode: GridRowModes.Edit },
-        });
-    };
+            const rowToEdit = rows.find((row) => row.id === rowId);
+            if (!rowToEdit) return;
 
-    const handleSaveClick = (id) => () => {
-        console.log(id);
-        setRowModesModel({
-            ...rowModesModel,
-            [id]: { mode: GridRowModes.View },
-        });
-    };
+            setOriginalRow({ ...rowToEdit });
+            setEditingRowId(rowId);
 
-    const handleCancelClick = (id) => () => {
-        setRowModesModel({
-            ...rowModesModel,
-            [id]: { mode: GridRowModes.View, ignoreModifications: true },
-        });
+            requestAnimationFrame(() => {
+                const api = gridRef.current?.api;
+                if (!api) return;
 
-        const editedRow = rows.find((row) => row.id === id);
-        if (editedRow.isNew) {
-            setRows(rows.filter((row) => row.id !== id));
-        }
-    };
+                const rowIndex = rows.findIndex((row) => row.id === rowId);
+
+                api.startEditingCell({
+                    rowIndex,
+                    colKey: "scenaid",
+                });
+            });
+        },
+        [editingRowId, rows],
+    );
+
+    const handleSaveRow = useCallback(async (rowId) => {
+        const api = gridRef.current?.api;
+        if (!api) return;
+
+        api.stopEditing(false); // commit changes
+    }, []);
+
+    const onRowValueChanged = useCallback(
+        async (params) => {
+            const updatedRow = params.data;
+            setLoading(true);
+            try {
+                await csrf();
+
+                await axiosClient.put(
+                    "/admin/igranje-update",
+                    {
+                        seigraid: updatedRow.id,
+                        pozoristeid: pozoriste.pozoristeid,
+                        scenaid: updatedRow.scenaid,
+                        datum: updatedRow.datum,
+                        vreme: updatedRow.vreme,
+                    },
+                    {
+                        headers: {
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
+                    },
+                );
+
+                setRows((prev) =>
+                    prev.map((row) =>
+                        row.id === updatedRow.id ? { ...updatedRow } : row,
+                    ),
+                );
+
+                setEditingRowId(null);
+                setOriginalRow(null);
+                toast.success("Uspesno sacuvano izvodjenje");
+            } catch (err) {
+                console.error(err);
+                toast.error("Greska prilikom cuvanja izvodjenja");
+
+                if (originalRow) {
+                    setRows((prev) =>
+                        prev.map((row) =>
+                            row.id === updatedRow.id ? { ...originalRow } : row,
+                        ),
+                    );
+                }
+
+                setEditingRowId(null);
+                setOriginalRow(null);
+            } finally {
+                setLoading(false);
+            }
+        },
+        [pozoriste, originalRow],
+    );
+
+    const handleCancelRow = useCallback(
+        (rowId) => {
+            const api = gridRef.current?.api;
+            if (!api) return;
+
+            api.stopEditing(true); // cancel changes
+
+            if (originalRow) {
+                setRows((prev) =>
+                    prev.map((row) => (row.id === rowId ? originalRow : row)),
+                );
+            }
+
+            setEditingRowId(null);
+            setOriginalRow(null);
+        },
+        [originalRow],
+    );
+
+    const handleCellClicked = useCallback(
+        (params) => {
+            if (!editingRowId) return;
+
+            // allow clicks inside the row currently being edited
+            if (params.data?.id === editingRowId) return;
+
+            // keep focus in the current edited row
+            const api = gridRef.current?.api;
+            if (!api) return;
+
+            const rowIndex = rows.findIndex((row) => row.id === editingRowId);
+            if (rowIndex >= 0) {
+                requestAnimationFrame(() => {
+                    api.startEditingCell({
+                        rowIndex,
+                        colKey: "scenaid",
+                    });
+                });
+            }
+        },
+        [editingRowId, rows],
+    );
 
     const processRowUpdate = async (newRow) => {
         debugger;
@@ -303,108 +465,71 @@ export default function RepertoarPozoristaCreatePage() {
         return updatedRow;
     };
 
-    const handleRowModesModelChange = (newRowModesModel) => {
-        setRowModesModel(newRowModesModel);
-    };
-
     const handleScrapeButtonClick = () => {
         router.push(`/admin/repertoari/${pozoristeSlug}/scrape`);
     };
 
-    const columns = [
-        { field: "id", headerName: "Id", flex: 0.5 },
-        {
-            field: "naziv_predstave",
-            headerName: "Naziv predstave",
-            flex: 3,
-        },
-        {
-            field: "scena",
-            headerName: "Scena",
-            flex: 1,
-            type: "singleSelect",
-            editable: true,
-            valueOptions: dbScene,
-        },
-        {
-            field: "datum",
-            headerName: "Datum",
-            flex: 1,
-            type: "date",
-            valueFormatter: (value) => {
-                // value is the raw date
-                return moment(value).format("DD. MMM YYYY.");
+    const columns = useMemo(
+        () => [
+            { field: "id", headerName: "Id", flex: 0.5 },
+            {
+                field: "naziv_predstave",
+                headerName: "Naziv predstave",
+                flex: 2,
+                editable: false,
             },
-            editable: true,
-        },
-        {
-            field: "vreme",
-            headerName: "Vreme",
-            flex: 1,
-            type: "time",
-            editable: true,
-
-            valueFormatter: (value) => {
-                // value is the raw time
-                return moment("1970.01.01 " + value).format("HH:mm");
+            {
+                field: "scenaid",
+                headerName: "Scena",
+                flex: 1,
+                type: "singleSelect",
+                editable: (params) => params.data.id === editingRowId,
+                cellEditor: ScenaSelectEditor,
+                cellEditorParams: {
+                    values: dbScene,
+                },
+                valueFormatter: (params) => {
+                    const found = dbScene.find(
+                        (opt) => String(opt.value) === String(params.value),
+                    );
+                    return found ? found.label : "";
+                },
             },
-            renderEditCell: (params) => <TimeEditInputCell {...params} />,
-        },
-
-        {
-            field: "actions",
-            type: "actions",
-            headerName: "Actions",
-            flex: 1,
-            cellClassName: "actions",
-            getActions: ({ id }) => {
-                const isInEditMode =
-                    rowModesModel[id]?.mode === GridRowModes.Edit;
-
-                if (isInEditMode) {
-                    return [
-                        <GridActionsCellItem
-                            key={"save"}
-                            icon={<SaveIcon />}
-                            label="Save"
-                            material={{
-                                sx: {
-                                    color: "primary.main",
-                                },
-                            }}
-                            onClick={handleSaveClick(id)}
-                        />,
-                        <GridActionsCellItem
-                            key={"Cancel"}
-                            icon={<CancelIcon />}
-                            label="Cancel"
-                            className="textPrimary"
-                            onClick={handleCancelClick(id)}
-                            color="inherit"
-                        />,
-                    ];
-                }
-
-                return [
-                    <GridActionsCellItem
-                        key={"edit"}
-                        icon={<EditIcon />}
-                        label="Edit"
-                        className="textPrimary"
-                        onClick={handleEditClick(id)}
-                        color="inherit"
-                    />,
-                    <GridActionsCellItem
-                        key={"delete"}
-                        icon={<GridDeleteIcon />}
-                        label="Delete"
-                        onClick={() => handleDeleteClick(id)}
-                        color="inherit"
-                    />,
-                ];
+            {
+                field: "datum",
+                headerName: "Datum",
+                flex: 1,
+                editable: (params) => params.data.id === editingRowId,
+                cellEditor: DateEditor,
+                valueFormatter: (params) =>
+                    params.value
+                        ? moment(params.value).format("DD. MMM YYYY")
+                        : "",
             },
-        },
-    ];
+            {
+                field: "vreme",
+                headerName: "Vreme",
+                flex: 1,
+                editable: (params) => params.data.id === editingRowId,
+                cellEditor: TimeEditor,
+            },
+            {
+                field: "actions",
+                headerName: "Actions",
+                flex: 1,
+                editable: false,
+                cellRenderer: ActionCellRenderer,
+            },
+        ],
+        [editingRowId, dbScene],
+    );
+
+    const onFilterTextBoxChanged = useCallback(() => {
+        gridRef.current.api.setGridOption(
+            "quickFilterText",
+            document.getElementById("filter-text-box").value,
+        );
+    }, []);
 
     return (
         <>
@@ -413,128 +538,140 @@ export default function RepertoarPozoristaCreatePage() {
             />
             <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
             <div className="container">
+                <LoadingBackdrop show={loading} text="Working..." />
                 <Box sx={{ flexGrow: 1, my: 3 }}>
-                    {loading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
-                        />
-                    )}
-                    <Grid2 container spacing={2} sx={{ mb: 2 }}>
-                        <Grid2
-                            size={6}
-                            direction="column"
-                            container
-                            alignItems="flex-start"
-                        >
-                            <Autocomplete
-                                name="predstave"
-                                options={dbPredstave}
-                                onChange={handlePredstavaChange}
-                                sx={{ mb: 2 }}
-                                aria-required
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Izaberi predstavu"
-                                        style={{
-                                            fontSize: "1.2rem",
-                                            width: "400px",
+                    <Row>
+                        <Col md={6}>
+                            <Form>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Predstava</Form.Label>
+                                    <Select
+                                        name="predstava"
+                                        options={dbPredstave}
+                                        isSearchable
+                                        onChange={handlePredstavaChange}
+                                        value={
+                                            dbPredstave.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    formData.predstavaid,
+                                            ) || null
+                                        }
+                                        menuPortalTarget={document.body}
+                                        menuPosition="fixed"
+                                        styles={{
+                                            menuPortal: (base) => ({
+                                                ...base,
+                                                zIndex: 9999,
+                                            }),
+                                            menu: (base) => ({
+                                                ...base,
+                                                zIndex: 9999,
+                                                fontSize: 14,
+                                            }),
                                         }}
                                     />
-                                )}
-                            />
-                            <Autocomplete
-                                name="scena"
-                                options={dbScene}
-                                onChange={handleScenaChange}
-                                sx={{ mb: 2 }}
-                                aria-required
-                                renderInput={(params) => (
-                                    <TextField
-                                        {...params}
-                                        variant="standard"
-                                        label="Izaberi scenu"
-                                        style={{
-                                            fontSize: "1.2rem",
-                                            width: "400px",
-                                        }}
-                                    />
-                                )}
-                            />
-                            <LocalizationProvider
-                                dateAdapter={AdapterMoment}
-                                sx={{ w: "50%" }}
-                            >
-                                <DatePicker
-                                    label="Datum"
-                                    name="datum"
-                                    value={datum}
-                                    onChange={(value) => setDatum(value)}
-                                />
-                                <TimeField
-                                    label="Vreme"
-                                    name="vreme"
-                                    format="HH:mm"
-                                    value={vreme}
-                                    onChange={(value) => setVreme(value)}
-                                />
-                            </LocalizationProvider>
+                                </Form.Group>
 
-                            <Button
-                                size="large"
-                                type="submit"
-                                variant="contained"
-                                onClick={handleSubmit}
-                            >
-                                Submit
-                            </Button>
-                        </Grid2>
-                        <Grid2 size={6}>
+                                <Form.Group className="mb-3">
+                                    <Form.Label>Scena</Form.Label>
+                                    <Select
+                                        name="scena"
+                                        options={dbScene}
+                                        isSearchable
+                                        onChange={handleScenaChange}
+                                        value={
+                                            dbScene.find(
+                                                (option) =>
+                                                    option.value ===
+                                                    formData.scenaid,
+                                            ) || null
+                                        }
+                                    />
+                                </Form.Group>
+
+                                <Row className="align-items-end g-2">
+                                    <Col xs="auto">
+                                        <Form.Label>Datum</Form.Label>
+                                        <Form.Control
+                                            type="date"
+                                            name="datum"
+                                            value={datum}
+                                            onChange={handleDatumChange}
+                                        />
+                                    </Col>
+                                    <Col xs="auto">
+                                        <Form.Label>Vreme</Form.Label>
+                                        <Form.Control
+                                            type="time"
+                                            name="vreme"
+                                            value={vreme}
+                                            onChange={handleVremeChange}
+                                        />
+                                    </Col>
+                                </Row>
+
+                                <Button
+                                    size="large"
+                                    type="submit"
+                                    variant="primary"
+                                    onClick={handleSubmit}
+                                    className="mt-4"
+                                >
+                                    Submit
+                                </Button>
+                            </Form>
+                        </Col>
+                        <Col md={6}>
                             <Button
                                 onClick={handleScrapeButtonClick}
-                                variant="outlined"
+                                variant="primary"
                                 className="mb-3"
                             >
                                 Scrape
                             </Button>
-                        </Grid2>
-                    </Grid2>
-                    <Paper sx={{ height: 800, width: "100%" }}>
-                        <DataGrid
-                            rows={rows}
-                            columns={columns}
-                            sx={{ border: 0 }}
-                            autoPageSize
+                        </Col>
+                    </Row>
+
+                    <div
+                        style={{
+                            width: "100%",
+                            height: "600px",
+                            marginTop: "25px",
+                            marginBottom: "30px",
+                        }}
+                    >
+                        <div className="example-header mb-3">
+                            <input
+                                type="text"
+                                id="filter-text-box"
+                                placeholder="Pretraga..."
+                                onInput={onFilterTextBoxChanged}
+                                className="form-control"
+                                style={{ width: "300px" }}
+                            />
+                        </div>
+                        <AgGridReact
+                            ref={gridRef}
+                            rowData={rows}
+                            columnDefs={columns}
+                            pagination={true}
+                            paginationAutoPageSize={true}
                             loading={loading}
-                            showToolbar
-                            slots={{ toolbar: EditToolbar }}
-                            slotProps={{
-                                toolbar: { setRows, setRowModesModel },
+                            editType="fullRow"
+                            context={{
+                                editingRowId,
+                                handleEditRow,
+                                handleSaveRow,
+                                handleCancelRow,
                             }}
-                            editMode="row"
-                            rowModesModel={rowModesModel}
-                            onRowModesModelChange={handleRowModesModelChange}
-                            onRowEditStop={handleRowEditStop}
-                            processRowUpdate={processRowUpdate}
-                            experimentalFeatures={{ newEditingApi: true }} // if using v5/v6
-                            onProcessRowUpdateError={(error) =>
-                                console.error(error)
-                            }
-                            initialState={{
-                                sorting: {
-                                    sortModel: [
-                                        {
-                                            field: "id",
-                                            sort: "desc",
-                                        },
-                                    ],
-                                },
-                            }}
+                            getRowId={(params) => String(params.data.id)}
+                            stopEditingWhenCellsLoseFocus={false}
+                            onRowValueChanged={onRowValueChanged}
+                            suppressClickEdit={true}
+                            onCellClicked={handleCellClicked}
                         />
-                    </Paper>
+                    </div>
                 </Box>
                 {/* Confirmation Dialog */}
                 <Dialog open={openDialog} onClose={handleCancel}>

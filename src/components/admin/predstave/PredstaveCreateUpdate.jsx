@@ -19,6 +19,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
         uloge: "",
         plakat: "",
         pozorista: [],
+        zanrovi: [],
         slika: null,
     });
 
@@ -142,9 +143,9 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
     const handleZanroviChange = (selectedZanrovi) => {
         setFormData({
             ...formData,
-            pozorista: selectedZanrovi.map((option) => option.value),
+            zanrovi: selectedZanrovi.map((option) => option.value),
         });
-        setDbPozorista(selectedZanrovi);
+        setDbZanrovi(selectedZanrovi);
     };
 
     const handleSubmit = async (event) => {
@@ -210,6 +211,16 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                         isMulti
                         value={dbPozorista}
                         onChange={handlePozoristaChange}
+                    />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                    <Form.Label>Žanrovi</Form.Label>
+                    <Select
+                        name="zanrovi"
+                        options={optionsZanrovi}
+                        isMulti
+                        value={dbZanrovi}
+                        onChange={handleZanroviChange}
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
@@ -325,16 +336,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                         }}
                     />
                 </Form.Group>
-                <Form.Group className="mb-3">
-                    <Form.Label>Žanrovi</Form.Label>
-                    <Select
-                        name="zanrovi"
-                        options={optionsZanrovi}
-                        isMulti
-                        value={dbZanrovi}
-                        onChange={handleZanroviChange}
-                    />
-                </Form.Group>
+
                 <Button
                     size="large"
                     type="submit"

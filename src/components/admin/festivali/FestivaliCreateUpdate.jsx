@@ -83,6 +83,14 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
             const slug = slugify(value);
             formData.festival_slug = slug;
         }
+
+        if (name == "datumod" || "datumdo") {
+            setFormData({
+                ...formData,
+                [name]: moment(value).format("YYYY-MM-DD"),
+            });
+            return;
+        }
         setFormData({ ...formData, [name]: value });
     };
 
@@ -114,54 +122,58 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
     };
 
     const handleSubmit = async (event) => {
-        showLoading();
+        setLoading(true);
         event.preventDefault();
-        formData.datumod = moment(datumod).format("YYYY-MM-DD");
-        formData.datumdo = moment(datumdo).format("YYYY-MM-DD");
         console.log(formData);
+
         await csrf();
         if (formData.festivalid) {
             console.log("update");
+            try {
+                const res = await axiosClient.post(
+                    "/admin/festival-update",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
+                    },
+                );
 
-            axiosClient
-                .post("/admin/festival-update", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
-                    },
-                })
-                .then((res) => {
-                    console.log(res);
-                    setErrors({});
-                    hideLoading();
-                    toast.success("Uspešno sačuvane izmene");
-                })
-                .catch((err) => {
-                    console.error(err);
-                    console.log(err.response.data.errors);
-                    setErrors(err.response.data.errors);
-                    hideLoading();
-                });
+                console.log(res);
+                setErrors({});
+                toast.success("Uspešno sačuvane izmene");
+            } catch (err) {
+                console.error(err);
+                console.log(err.response.data.errors);
+                setErrors(err.response.data.errors);
+            } finally {
+                setLoading(false);
+            }
         } else {
-            axiosClient
-                .post("/admin/festival-store", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+            try {
+                const res = await axiosClient.post(
+                    "/admin/festival-store",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
                     },
-                })
-                .then((res) => {
-                    console.log(res);
-                    setErrors({});
-                    hideLoading();
-                    toast.success("Uspešno dodat festival");
-                })
-                .catch((err) => {
-                    console.error(err);
-                    console.log(err.response.data.errors);
-                    setErrors(err.response.data.errors);
-                    hideLoading();
-                });
+                );
+
+                console.log(res);
+                setErrors({});
+                toast.success("Uspešno dodat festival");
+            } catch (err) {
+                console.error(err);
+                console.log(err.response.data.errors);
+                setErrors(err.response.data.errors);
+            } finally {
+                setLoading(false);
+            }
         }
     };
 

@@ -3,7 +3,7 @@ import { toast } from "react-hot-toast";
 import { useCallback, useEffect, useRef, useState } from "react";
 import axiosClient from "../../../utils/axios";
 import { Box } from "@mui/material";
-import { Col, Form, Row, Button } from "react-bootstrap";
+import { Col, Form, Row, Button, Spinner } from "react-bootstrap";
 import Select from "react-select";
 import LoadingBackdrop from "../../../components/admin/LoadingBackdrop";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
@@ -13,7 +13,7 @@ import { csrf, getCookieValue } from "../../../utils";
 export default function DodajGostovanjePage() {
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
-
+    const [formaLoading, setFormaLoading] = useState(false);
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
@@ -67,6 +67,7 @@ export default function DodajGostovanjePage() {
 
     const handlePredstavaChange = (event) => {
         setFormData({ ...formData, predstavaid: event.value });
+        setErrors({ ...errors, predstavaid: null });
     };
 
     const handlePozoristeChange = (event) => {
@@ -74,6 +75,7 @@ export default function DodajGostovanjePage() {
         setSceneZaDropdown(
             dbScene.filter((scen) => scen.pozoristeid == event.value),
         );
+        setErrors({ ...errors, pozoristeid: null });
     };
 
     const handleScenaChange = (event) => {
@@ -84,6 +86,7 @@ export default function DodajGostovanjePage() {
         console.log(event);
         setVreme(event.target.value);
         setFormData({ ...formData, vreme: event.target.value });
+        setErrors({ ...errors, vreme: null });
     };
 
     const handleDatumChange = (event) => {
@@ -93,13 +96,16 @@ export default function DodajGostovanjePage() {
             ...formData,
             datum: moment(event.target.value).format("YYYY-MM-DD"),
         });
+        setErrors({ ...errors, datum: null });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
 
-        setLoading(true);
+        if (!validateIgranjeStore()) return;
+
+        setFormaLoading(true);
 
         console.log(formData);
         try {
@@ -126,14 +132,44 @@ export default function DodajGostovanjePage() {
             setDatum("");
             setVreme(""); // TO DO reset form values
             setIgranja(res.data);
-            toast.success("Uspesno dodato izvodjenje");
+            toast.success("Uspešno dodato izvođenje");
         } catch (err) {
-            console.error(err);
-            //toast.error(err.response.data);
-            setErrors(err.response.data.errors);
+            const status = err?.response?.status;
+            const data = err?.response?.data;
+
+            if (status === 422 && data?.errors) {
+                console.log(data.errors);
+                setErrors(data.errors);
+                toast.error("Proverite uneta polja.");
+            } else {
+                toast.error(data?.message || "Došlo je do greške.");
+            }
         } finally {
-            setLoading(false);
+            setFormaLoading(false);
         }
+    };
+
+    const validateIgranjeStore = () => {
+        const newErrors = {};
+
+        if (!formData.predstavaid) {
+            newErrors.predstavaid = "Obavezno izaberi predstavu.";
+        }
+
+        if (!formData.pozoristeid) {
+            newErrors.pozoristeid = "Obavezno izaberi pozorište.";
+        }
+
+        if (!formData.datum) {
+            newErrors.datum = "Datum je obavezan.";
+        }
+
+        if (!formData.vreme) {
+            newErrors.vreme = "Vreme je obavezno.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const columns = [
@@ -180,7 +216,6 @@ export default function DodajGostovanjePage() {
             <AdminHeader metaTitle="Dodaj gostovanje" />
             <h1>Dodaj gostovanje</h1>
             <div className="container">
-                <LoadingBackdrop show={loading} text="Working..." />
                 <Box sx={{ flexGrow: 1, my: 3 }}>
                     <Row>
                         <Col md={6}>
@@ -191,6 +226,7 @@ export default function DodajGostovanjePage() {
                                         name="predstava"
                                         options={dbPredstave}
                                         isSearchable
+                                        isDisabled={formaLoading}
                                         onChange={handlePredstavaChange}
                                         value={
                                             dbPredstave.find(
@@ -200,6 +236,11 @@ export default function DodajGostovanjePage() {
                                             ) || null
                                         }
                                     />
+                                    {errors?.predstavaid && (
+                                        <span className="text-danger">
+                                            {errors.predstavaid}
+                                        </span>
+                                    )}
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Pozorište</Form.Label>
@@ -207,6 +248,7 @@ export default function DodajGostovanjePage() {
                                         name="pozorista"
                                         options={dbPozorista}
                                         isSearchable
+                                        isDisabled={formaLoading}
                                         onChange={handlePozoristeChange}
                                         value={
                                             dbPozorista.find(
@@ -229,6 +271,11 @@ export default function DodajGostovanjePage() {
                                             }),
                                         }}
                                     />
+                                    {errors?.pozoristeid && (
+                                        <span className="text-danger">
+                                            {errors.pozoristeid}
+                                        </span>
+                                    )}
                                 </Form.Group>
                                 <Form.Group className="mb-3">
                                     <Form.Label>Scena</Form.Label>
@@ -236,6 +283,7 @@ export default function DodajGostovanjePage() {
                                         name="scena"
                                         options={sceneZaDropdown}
                                         isSearchable
+                                        isDisabled={formaLoading}
                                         onChange={handleScenaChange}
                                         value={
                                             dbScene.find(
@@ -255,7 +303,13 @@ export default function DodajGostovanjePage() {
                                             name="datum"
                                             value={datum}
                                             onChange={handleDatumChange}
+                                            disabled={formaLoading}
                                         />
+                                        {errors?.datum && (
+                                            <span className="text-danger">
+                                                {errors.datum}
+                                            </span>
+                                        )}
                                     </Col>
                                     <Col xs="auto">
                                         <Form.Label>Vreme</Form.Label>
@@ -264,7 +318,13 @@ export default function DodajGostovanjePage() {
                                             name="vreme"
                                             value={vreme}
                                             onChange={handleVremeChange}
+                                            disabled={formaLoading}
                                         />
+                                        {errors?.vreme && (
+                                            <span className="text-danger">
+                                                {errors.vreme}
+                                            </span>
+                                        )}
                                     </Col>
                                 </Row>
 
@@ -273,10 +333,14 @@ export default function DodajGostovanjePage() {
                                     type="submit"
                                     variant="primary"
                                     onClick={handleSubmit}
+                                    disabled={formaLoading}
                                     className="mt-4"
                                 >
                                     Submit
                                 </Button>
+                                {formaLoading && (
+                                    <Spinner animation="border" role="status" />
+                                )}
                             </Form>
                         </Col>
                     </Row>

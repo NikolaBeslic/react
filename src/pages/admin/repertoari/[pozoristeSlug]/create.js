@@ -12,15 +12,13 @@ import {
 
 import moment from "moment";
 import { toast } from "react-hot-toast";
-import { Col, Form, Row, Button } from "react-bootstrap";
-import { GridRowModes, GridRowEditStopReasons } from "@mui/x-data-grid";
+import { Col, Form, Row, Button, Spinner } from "react-bootstrap";
 import Select from "react-select";
 
 import AdminHeader from "../../../../components/admin/layout/AdminHeader";
 import { csrf, getCookieValue } from "../../../../utils";
 import { AgGridReact } from "ag-grid-react";
 import LoadingBackdrop from "../../../../components/admin/LoadingBackdrop";
-import { CLIENT_STATIC_FILES_RUNTIME_REACT_REFRESH } from "next/dist/shared/lib/constants";
 
 /**
  * Custom select editor for "scena"
@@ -118,7 +116,6 @@ const ActionCellRenderer = (props) => {
 export default function RepertoarPozoristaCreatePage() {
     const router = useRouter();
     const { pozoristeSlug } = router.query;
-    const { state } = useRouter();
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [pozoriste, setPozoriste] = useState([]);
@@ -133,7 +130,7 @@ export default function RepertoarPozoristaCreatePage() {
     const [rows, setRows] = useState([]);
     const [editingRowId, setEditingRowId] = useState(null);
     const [originalRow, setOriginalRow] = useState(null);
-
+    const [formaLoading, setFormaLoading] = useState(false);
     let [formData, setFormData] = useState({
         pozoristeid: null,
         predstavaid: null,
@@ -213,6 +210,7 @@ export default function RepertoarPozoristaCreatePage() {
 
     const handlePredstavaChange = (event) => {
         setFormData({ ...formData, predstavaid: event.value });
+        setErrors({ ...errors, predstavaid: null });
     };
 
     const handleScenaChange = (event) => {
@@ -223,6 +221,7 @@ export default function RepertoarPozoristaCreatePage() {
         console.log(event);
         setVreme(event.target.value);
         setFormData({ ...formData, vreme: event.target.value });
+        setErrors({ ...errors, vreme: null });
     };
 
     const handleDatumChange = (event) => {
@@ -232,12 +231,17 @@ export default function RepertoarPozoristaCreatePage() {
             ...formData,
             datum: moment(event.target.value).format("YYYY-MM-DD"),
         });
+        setErrors({ ...errors, datum: null });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        setLoading(true);
         console.log(formData);
+
+        if (!validateIgranjeStore()) return;
+
+        setFormaLoading(true);
+
         try {
             await csrf();
             const res = await axiosClient.post(
@@ -249,16 +253,12 @@ export default function RepertoarPozoristaCreatePage() {
                     },
                 },
             );
-            console.log("REs");
 
-            console.log(res);
-
-            console.log(res.data);
             setRows(res.data);
             setFormData({
                 ...formData,
                 predstavaid: null,
-                scenadid: null,
+                scenaid: null,
                 datum: null,
                 vreme: null,
             });
@@ -274,11 +274,18 @@ export default function RepertoarPozoristaCreatePage() {
             setRows(fetchedIgranja);
             toast.success("Uspesno dodato izvodjenje");
         } catch (err) {
-            console.error(err);
-            toast.error(err.response.data);
-            setErrors(err.response.data.errors);
+            const status = err?.response?.status;
+            const data = err?.response?.data;
+
+            if (status === 422 && data?.errors) {
+                console.log(data.errors);
+                setErrors(data.errors);
+                toast.error("Proverite uneta polja.");
+            } else {
+                toast.error(data?.message || "Došlo je do greške.");
+            }
         } finally {
-            setLoading(false);
+            setFormaLoading(false);
         }
 
         console.log(formData);
@@ -302,6 +309,25 @@ export default function RepertoarPozoristaCreatePage() {
             })
             .catch((err) => console.error(err))
             .finally(() => setLoading(false));
+    };
+
+    const validateIgranjeStore = () => {
+        const newErrors = {};
+
+        if (!formData.predstavaid) {
+            newErrors.predstavaid = "Obavezno izaberi predstavu.";
+        }
+
+        if (!formData.datum) {
+            newErrors.datum = "Datum je obavezan.";
+        }
+
+        if (!formData.vreme) {
+            newErrors.vreme = "Vreme je obavezno.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const handleEditRow = useCallback(
@@ -538,7 +564,6 @@ export default function RepertoarPozoristaCreatePage() {
             />
             <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
             <div className="container">
-                <LoadingBackdrop show={loading} text="Working..." />
                 <Box sx={{ flexGrow: 1, my: 3 }}>
                     <Row>
                         <Col md={6}>
@@ -549,6 +574,7 @@ export default function RepertoarPozoristaCreatePage() {
                                         name="predstava"
                                         options={dbPredstave}
                                         isSearchable
+                                        isDisabled={formaLoading}
                                         onChange={handlePredstavaChange}
                                         value={
                                             dbPredstave.find(
@@ -571,6 +597,11 @@ export default function RepertoarPozoristaCreatePage() {
                                             }),
                                         }}
                                     />
+                                    {errors?.predstavaid && (
+                                        <span className="text-danger">
+                                            {errors.predstavaid}
+                                        </span>
+                                    )}
                                 </Form.Group>
 
                                 <Form.Group className="mb-3">
@@ -579,6 +610,7 @@ export default function RepertoarPozoristaCreatePage() {
                                         name="scena"
                                         options={dbScene}
                                         isSearchable
+                                        isDisabled={formaLoading}
                                         onChange={handleScenaChange}
                                         value={
                                             dbScene.find(
@@ -598,7 +630,13 @@ export default function RepertoarPozoristaCreatePage() {
                                             name="datum"
                                             value={datum}
                                             onChange={handleDatumChange}
+                                            disabled={formaLoading}
                                         />
+                                        {errors?.datum && (
+                                            <span className="text-danger">
+                                                {errors.datum}
+                                            </span>
+                                        )}
                                     </Col>
                                     <Col xs="auto">
                                         <Form.Label>Vreme</Form.Label>
@@ -607,7 +645,13 @@ export default function RepertoarPozoristaCreatePage() {
                                             name="vreme"
                                             value={vreme}
                                             onChange={handleVremeChange}
+                                            disabled={formaLoading}
                                         />
+                                        {errors?.vreme && (
+                                            <span className="text-danger">
+                                                {errors.vreme}
+                                            </span>
+                                        )}
                                     </Col>
                                 </Row>
 
@@ -616,10 +660,14 @@ export default function RepertoarPozoristaCreatePage() {
                                     type="submit"
                                     variant="primary"
                                     onClick={handleSubmit}
+                                    disabled={formaLoading}
                                     className="mt-4"
                                 >
                                     Submit
                                 </Button>
+                                {formaLoading && (
+                                    <Spinner animation="border" role="status" />
+                                )}
                             </Form>
                         </Col>
                         <Col md={6}>

@@ -7,6 +7,7 @@ import { Editor } from "@tinymce/tinymce-react";
 import { toast } from "react-hot-toast";
 import LoadingBackdrop from "../LoadingBackdrop";
 import { csrf, getCookieValue } from "../../../utils";
+import moment from "moment";
 
 const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     const [loading, setLoading] = useState(false);
@@ -29,7 +30,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     });
 
     const [previewTekstPhoto, setPreviewTekstPhoto] = useState(null);
-
+    const fileInputRef = useRef(null);
     const [sviAutori, setSviAutori] = useState([]);
     const [dbAutori, setDbAutori] = useState([]);
 
@@ -226,9 +227,15 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
+
         if (name == "naslov") {
             const slug = slugify(value);
             formData.slug = slug;
+            setErrors({ ...errors, naslov: null, slug: null });
         }
         setFormData({ ...formData, [name]: value });
     };
@@ -240,18 +247,21 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         } else {
             setFormData({ ...formData, slika: event.target.files[0] });
             setPreviewTekstPhoto(URL.createObjectURL(event.target.files[0]));
+            setErrors({ ...errors, slika: null });
         }
     };
 
     const editorUvod = useRef(null);
     const handleEditorUvodChange = (content, editorId) => {
         setFormData({ ...formData, uvod: content });
+        setErrors({ ...errors, uvod: null });
         editorUvod.content = content;
     };
 
     const editorSadrzaj = useRef(null);
     const handleEditorSadrzajChange = (content) => {
         setFormData({ ...formData, sadrzaj: content });
+        setErrors({ ...errors, sadrzaj: null });
         editorSadrzaj.content = content;
     };
 
@@ -327,6 +337,8 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        if (!validate()) return;
+
         setLoading(true);
         setErrors({});
         linkovi.forEach((value, index) => {
@@ -338,45 +350,123 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         let storeUrl = "/admin/create-tekst";
         if (addHuPkast) storeUrl = "/admin/hupkast-store";
         if (addHuPikon) storeUrl = "/admin/hupikon-store";
+
         await csrf();
         if (formData.tekstid) {
-            axiosClient
-                .post("/admin/update-tekst", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+            try {
+                const res = await axiosClient.post(
+                    "/admin/update-tekst",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
                     },
-                })
-                .then((res) => {
-                    console.log(res);
-                    toast.success("Uspesno izmenjen tekst");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    setErrors(error.response.data?.errors);
-                    console.log(error.response.data);
-                })
-                .finally(() => setLoading(false));
+                );
+                console.log(res);
+                toast.success("Uspesno izmenjen tekst");
+            } catch (error) {
+                const status = error?.response?.status;
+                const data = error?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
+            } finally {
+                setLoading(false);
+            }
         } else {
-            axiosClient
-                .post(storeUrl, formData, {
+            try {
+                const res = await axiosClient.post(storeUrl, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
-                })
-                .then((res) => {
-                    setErrors({});
-                    console.log(res);
-                    toast.success("Uspesno dodat tekst");
-                })
-                .catch((error) => {
-                    console.error(error.response.data.errors);
-                    setErrors(error.response.data.errors);
-                    console.error(error);
-                })
-                .finally(() => setLoading(false));
+                });
+
+                setErrors({});
+                console.log(res);
+                setFormData({
+                    naslov: "",
+                    slug: "",
+                    uvod: "",
+                    sadrzaj: "",
+                    autori: [],
+                    predstave: [],
+                    pozorista: [],
+                    tagovi: [],
+                    festivalid: null,
+                    tekst_photo: "",
+                    slika: null,
+                    naslov_hupikona: "", // To DO move this somewhere
+                    sagovornik: "",
+                    zanimanje_sagovornika: "",
+                    mesto_stanovanja: "",
+                    biografija: "",
+                    sezona: 1, // TO DO and this
+                    epizoda: 1,
+                    mp3_url: "",
+                    hupkast_linkovi: [],
+                });
+                setPreviewTekstPhoto(null);
+                editorSadrzaj.content = "";
+                editorUvod.content = "";
+                fileInputRef.current.value = "";
+                toast.success("Uspesno dodat tekst");
+            } catch (error) {
+                const status = error?.response?.status;
+                const data = error?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
+            } finally {
+                setLoading(false);
+            }
         }
+    };
+
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.naslov) {
+            newErrors.naslov = "Naslov je obavezan.";
+        }
+
+        if (!formData.slug) {
+            newErrors.slug = "Slug je obavezan.";
+        }
+
+        if (!formData.uvod) {
+            newErrors.uvod = "Uvod je obavezan.";
+        }
+
+        if (!formData.sadrzaj) {
+            newErrors.sadrzaj = "Tekst ne moze biti prazan.";
+        }
+        if (!tekstid) {
+            if (!formData.slika) {
+                newErrors.slika = "Slika je obavezna.";
+            }
+        }
+
+        if (kategorijaid <= 0) {
+            newErrors.kategorija =
+                "Nešto nije u redu. Nije izabrana kategorija teksta. Učitaj stranicu ponovo";
+        }
+
+        setErrors(newErrors);
+        setLoading(false);
+        return Object.keys(newErrors).length === 0;
     };
 
     editorSadrzaj.activeEditor?.getFlmngr((Flmngr) => {
@@ -631,6 +721,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                 type="file"
                                 accept="image/*"
                                 onChange={handleTekstPhoto}
+                                ref={fileInputRef}
                             />
                             {errors?.slika && (
                                 <span className="text-danger">
@@ -701,6 +792,11 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                                     images_upload_handler: handleImageUpload,
                                 }}
                             />
+                            {errors?.sadrzaj && (
+                                <span className="text-danger">
+                                    {errors.sadrzaj}
+                                </span>
+                            )}
                         </Form.Group>
                         <Form.Group className="mb-3">
                             <Form.Label>Festival</Form.Label>

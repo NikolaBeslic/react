@@ -15,7 +15,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
     const [loading, setLoading] = useState(false);
     const [datumod, setDatumod] = useState(null);
     const [datumdo, setDatumdo] = useState(null);
-
+    const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
         gradid: null,
         naziv_festivala: "",
@@ -79,12 +79,23 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
+
         if (name == "naziv_festivala") {
             const slug = slugify(value);
-            formData.festival_slug = slug;
+            setFormData({
+                ...formData,
+                naziv_festivala: value,
+                festival_slug: slug,
+            });
+            setErrors({ ...errors, festival_slug: null });
+            return;
         }
 
-        if (name == "datumod" || "datumdo") {
+        if (name == "datumod" || name == "datumdo") {
             setFormData({
                 ...formData,
                 [name]: moment(value).format("YYYY-MM-DD"),
@@ -96,6 +107,7 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
 
     const handleGradSelectChange = (event) => {
         console.log(event.target.value);
+        setErrors({ ...errors, gradid: null });
         setFormData({ ...formData, gradid: event.target.value });
     };
 
@@ -122,8 +134,11 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
     };
 
     const handleSubmit = async (event) => {
-        setLoading(true);
         event.preventDefault();
+
+        if (!validate()) return;
+        setLoading(true);
+
         console.log(formData);
 
         await csrf();
@@ -145,9 +160,16 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 setErrors({});
                 toast.success("Uspešno sačuvane izmene");
             } catch (err) {
-                console.error(err);
-                console.log(err.response.data.errors);
-                setErrors(err.response.data.errors);
+                const status = err?.response?.status;
+                const data = err?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
             } finally {
                 setLoading(false);
             }
@@ -166,11 +188,34 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
 
                 console.log(res);
                 setErrors({});
+                setFormData({
+                    gradid: null,
+                    naziv_festivala: "",
+                    festival_slug: "",
+                    tekst_festivala: "",
+                    repertoar: "",
+                    festival_slika: null,
+                    datumod: "",
+                    datumdo: "",
+                });
+                setDatumod(null);
+                setDatumdo(null);
+                setFestivalImage(null);
+                fileInputRef.current.value = "";
+                editorTekst.content = "";
+                editorRepertoar.content = "";
                 toast.success("Uspešno dodat festival");
             } catch (err) {
-                console.error(err);
-                console.log(err.response.data.errors);
-                setErrors(err.response.data.errors);
+                const status = err?.response?.status;
+                const data = err?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
             } finally {
                 setLoading(false);
             }
@@ -204,6 +249,47 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
             throw new Error("Unable to upload image 2");
         }
     };
+
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.gradid) {
+            newErrors.gradid = "Obavezno izaberi grad.";
+        }
+
+        if (!formData.datumod) {
+            newErrors.datumod = "Datum od je obavezan.";
+        }
+
+        if (!formData.datumdo) {
+            newErrors.datumdo = "Datum do je obavezan.";
+        }
+
+        if (
+            formData.datumod &&
+            formData.datumdo &&
+            moment(formData.datumdo).isBefore(moment(formData.datumod))
+        ) {
+            newErrors.datumi = "Datum do mora biti posle ili isti kao datum od";
+        }
+
+        if (!formData.naziv_festivala) {
+            newErrors.naziv_festivala = "Naziv festivala je obavezan.";
+        }
+
+        if (!formData.festival_slug) {
+            newErrors.festival_slug = "Festival slug je obavezan.";
+        }
+
+        if (!formData.festival_slika) {
+            newErrors.festival_slika = "Slika je obavezna.";
+        }
+
+        setErrors(newErrors);
+        setLoading(false);
+        return Object.keys(newErrors).length === 0;
+    };
+
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -225,13 +311,20 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     <Form.Select
                         onChange={handleGradSelectChange}
                         value={formData.gradid ?? ""}
+                        name="gradid"
                     >
+                        <option value="" disabled>
+                            Izaberi grad
+                        </option>
                         {gradovi.map((grad) => (
                             <option key={grad.gradid} value={grad.gradid}>
                                 {grad.naziv_grada}
                             </option>
                         ))}
                     </Form.Select>
+                    {errors?.gradid && (
+                        <span className="text-danger">{errors.gradid}</span>
+                    )}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Row>
@@ -243,6 +336,11 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                                 value={formData.datumod}
                                 onChange={handleChange}
                             />
+                            {errors?.datumod && (
+                                <span className="text-danger">
+                                    {errors.datumod}
+                                </span>
+                            )}
                         </Col>
                         <Col xs={12} sm={6}>
                             <Form.Label>Do</Form.Label>
@@ -252,7 +350,15 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                                 value={formData.datumdo}
                                 onChange={handleChange}
                             />
+                            {errors?.datumdo && (
+                                <span className="text-danger">
+                                    {errors.datumdo}
+                                </span>
+                            )}
                         </Col>
+                        {errors?.datumi && (
+                            <span className="text-danger">{errors.datumi}</span>
+                        )}
                     </Row>
                 </Form.Group>
 
@@ -298,7 +404,16 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                             />
                         </div>
                     )}
-                    <Form.Control type="file" onChange={handleFestivalFoto} />
+                    <Form.Control
+                        type="file"
+                        onChange={handleFestivalFoto}
+                        ref={fileInputRef}
+                    />
+                    {errors?.festival_slika && (
+                        <span className="text-danger">
+                            {errors.festival_slika}
+                        </span>
+                    )}
                 </Form.Group>
                 <Form.Group className="mb-3">
                     <Form.Label>Tekst</Form.Label>

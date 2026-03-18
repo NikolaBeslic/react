@@ -91,7 +91,11 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 naziv_festivala: value,
                 festival_slug: slug,
             });
-            setErrors({ ...errors, festival_slug: null });
+            setErrors({
+                ...errors,
+                naziv_festivala: null,
+                festival_slug: null,
+            });
             return;
         }
 

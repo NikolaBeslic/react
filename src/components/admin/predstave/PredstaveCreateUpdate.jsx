@@ -7,6 +7,7 @@ import { toast } from "react-hot-toast";
 import { Button, Form } from "react-bootstrap";
 import LoadingBackdrop from "../LoadingBackdrop";
 import { csrf, getCookieValue } from "../../../utils";
+import moment from "moment";
 
 const PredstaveCreateUpdate = ({ predstavaid }) => {
     const [formData, setFormData] = useState({
@@ -42,7 +43,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [predstavaImage, setPredstavaImage] = useState(null);
-
+    const fileInputRef = useRef(null);
     useEffect(() => {
         let isMounted = true;
 
@@ -111,11 +112,23 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        setFormData({ ...formData, [name]: value });
+        setErrors({ ...errors, [name]: null });
+
         if (name == "naziv_predstave") {
             const slug = slugify(value);
-            formData.predstava_slug = slug;
+            setFormData({
+                ...formData,
+                naziv_predstave: value,
+                predstava_slug: slug,
+            });
+            setErrors({
+                ...errors,
+                naziv_predstave: null,
+                predstava_slug: null,
+            });
         }
-        setFormData({ ...formData, [name]: value });
     };
 
     const editorOpis = useRef(null);
@@ -151,41 +164,87 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+
+        if (!validate()) return;
+        setLoading(true);
         await csrf();
         if (formData.predstavaid) {
-            axiosClient
-                .post("/admin/update-predstava", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+            try {
+                const res = await axiosClient.post(
+                    "/admin/update-predstava",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
                     },
-                })
-                .then((res) => {
-                    console.log(res);
-                    toast.success("Predstava uspesno izmenjena");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    console.log(error.response.data.errors);
-                });
+                );
+
+                console.log(res);
+                toast.success("Predstava uspesno izmenjena");
+            } catch (error) {
+                const status = error?.response?.status;
+                const data = error?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
+            } finally {
+                setLoading(false);
+            }
         } else {
-            axiosClient
-                .post("/admin/create-predstava", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+            try {
+                const res = axiosClient.post(
+                    "/admin/create-predstava",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
                     },
-                })
-                .then((res) => {
-                    console.log(res);
-                    setErrors({});
-                    toast.success("Predstava uspesno dodata");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    console.log(error.response.data.errors);
-                    setErrors(error.response.data.errors);
+                );
+
+                console.log(res);
+                setFormData({
+                    naziv_predstave: "",
+                    predstava_slug: "",
+                    premijera: "",
+                    autor: "",
+                    reditelj: "",
+                    opis: "",
+                    uloge: "",
+                    plakat: "",
+                    pozorista: [],
+                    zanrovi: [],
+                    slika: null,
                 });
+                setPredstavaImage(null);
+                setDbPozorista([]);
+                setDbZanrovi([]);
+                editorOpis.content = "";
+                editorUloge.content = "";
+                fileInputRef.current.value = "";
+                toast.success("Predstava uspesno dodata");
+            } catch (error) {
+                const status = error?.response?.status;
+                const data = error?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -197,6 +256,21 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
             setFormData({ ...formData, slika: event.target.files[0] });
             setPredstavaImage(URL.createObjectURL(event.target.files[0]));
         }
+    };
+
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.naziv_predstave) {
+            newErrors.naziv_predstave = "Naziv predstave je obavezan.";
+        }
+
+        if (!formData.predstava_slug) {
+            newErrors.predstava_slug = "Predstava slug je obavezan.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     return (
@@ -224,7 +298,9 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">
-                    <Form.Label>Naziv predstave</Form.Label>
+                    <Form.Label>
+                        <strong>Naziv predstave</strong>
+                    </Form.Label>
                     <Form.Control
                         type="text"
                         name="naziv_predstave"
@@ -298,6 +374,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                         type="file"
                         onChange={handlePredstavaImageChange}
                         accept="image/png, image/gif, image/jpeg"
+                        ref={fileInputRef}
                     />
                 </Form.Group>
                 <Form.Group className="mb-3">

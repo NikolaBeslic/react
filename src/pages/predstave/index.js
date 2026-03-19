@@ -3,20 +3,24 @@ import axiosClient from "../../utils/axios";
 import { Form, InputGroup, Spinner } from "react-bootstrap";
 import PredstaveLayout from "../../components/post/layout/PredstaveLayout";
 import Select from "react-select";
-
 import PredstaveHeader from "../../components/post/post-format/elements/meta/PredstaveHeader";
 import { withSSRHandler } from "../../utils/withSSRHandler";
+import { useRouter } from "next/router";
+import { toIntArray } from "../../utils";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
     const [dbGradovi, setDbGradovi] = useState([]);
     const [dbZanrovi, setDbZanrovi] = useState([]);
     const [loading, setLoading] = useState([]);
-
+    const [optionsLoading, setOptionsLoading] = useState(false);
+    const [routerReadyFilters, setRouterReadyFilters] = useState(false);
+    const router = useRouter();
     const SORT_OPTIONS = [
         { value: "name_asc", label: "Naziv (A-Z)" },
         { value: "rating_desc", label: "Ocena (najviše)" },
         { value: "premijera", label: "Premijera (najnovije)" },
+        { value: "komentari", label: "Broju komentara (opadajuće)" },
     ];
     const searchDebounceRef = useRef(null);
     const [meta, setMeta] = useState(null);
@@ -28,6 +32,12 @@ export default function PredstavePage() {
         page: 1,
         hasReviews: false,
     });
+    const selectedZanrovi = dbZanrovi.filter((z) =>
+        filters.zanrovi.includes(z.value),
+    );
+    const selectedGradovi = dbGradovi.filter((g) =>
+        filters.gradovi.includes(g.value),
+    );
     const [searchInput, setSearchInput] = useState(filters.search);
 
     // initial fetching gradovi, and zanrovi
@@ -35,7 +45,7 @@ export default function PredstavePage() {
         let isMounted = true;
 
         const fetchData = async () => {
-            setLoading(true);
+            setOptionsLoading(true);
 
             try {
                 const requests = [
@@ -63,7 +73,7 @@ export default function PredstavePage() {
                 console.error(error);
             } finally {
                 if (isMounted) {
-                    setLoading(false);
+                    setOptionsLoading(false);
                 }
             }
         };
@@ -75,10 +85,32 @@ export default function PredstavePage() {
         };
     }, []);
 
+    // getting filter data from url
+    useEffect(() => {
+        if (!router.isReady) return;
+
+        setFilters((prev) => ({
+            ...prev,
+            gradovi: toIntArray(router.query.gradovi),
+            zanrovi: toIntArray(router.query.zanrovi),
+            hasReviews: router.query.hasReviews,
+            sort: router.query.sort,
+            page: 1,
+        }));
+        setRouterReadyFilters(true);
+    }, [
+        router.isReady,
+        router.query.hasReviews,
+        router.query.sort,
+        router.query.zanrovi,
+        router.query.gradovi,
+    ]);
+
     // Fetch predstave whenever filters change
     const lastFetchKeyRef = useRef("");
     useEffect(() => {
         const ctrl = new AbortController();
+        if (!routerReadyFilters) return;
 
         const params = {
             search: filters.search ? filters.search : undefined,
@@ -185,6 +217,7 @@ export default function PredstavePage() {
             <div className="single-blog-wrapper p-t-md-60 p-t-xs-30">
                 <div className="repertoar-filter-wrapper">
                     <h5>Filtriraj predstave</h5>
+                    {optionsLoading && <Spinner />}
                     <InputGroup className="mb-5">
                         <InputGroup.Text id="basic-addon1">
                             <i className="fa-solid fa-magnifying-glass"></i>
@@ -205,6 +238,7 @@ export default function PredstavePage() {
                                 placeholder="Izaberi žanrove"
                                 isMulti={true}
                                 options={dbZanrovi}
+                                value={selectedZanrovi}
                                 onChange={onChangeMulti("zanrovi")}
                                 className="repertoari-filter-select"
                             />
@@ -217,6 +251,7 @@ export default function PredstavePage() {
                                 placeholder="Izaberi gradove"
                                 isMulti={true}
                                 options={dbGradovi}
+                                value={selectedGradovi}
                                 onChange={onChangeMulti("gradovi")}
                                 className="repertoari-filter-select"
                             />
@@ -240,6 +275,7 @@ export default function PredstavePage() {
                             type="switch"
                             id="recenzije-switch"
                             label="Prikaži samo predstave koje imaju recenziju"
+                            checked={filters.hasReviews}
                             onChange={() =>
                                 setFilters((prev) => ({
                                     ...prev,

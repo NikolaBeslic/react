@@ -101,7 +101,7 @@ const WidgetToday = ({ izvodjenja }) => {
                     </div>
                     <div className="repertoar-naslovna-show-all">
                         <Link
-                            href="/repertoari-v2"
+                            href="/repertoari"
                             className="btn btn-small btn-primary btn-nofill "
                         >
                             Pogledaj sve

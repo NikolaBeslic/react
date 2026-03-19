@@ -90,7 +90,7 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                             Pozorišni vodič
                                         </li>
                                         <li key="off-109">
-                                            <Link href="/repertoari-v2">
+                                            <Link href="/repertoari">
                                                 Repertoari
                                             </Link>
                                         </li>
@@ -136,7 +136,12 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                         </div>
                                         <ul className="social-share social-share__with-bg">
                                             <li>
-                                                <a href={SocialLink.fb.url}>
+                                                <a
+                                                    href={SocialLink.fb.url}
+                                                    title="Hoću u pozorište na Facebooku"
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
                                                     <i
                                                         className={
                                                             SocialLink.fb.icon
@@ -149,6 +154,9 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                                     href={
                                                         SocialLink.instagram.url
                                                     }
+                                                    title="hocupozoriste na Instagramu"
+                                                    target="_blank"
+                                                    rel="noreferrer"
                                                 >
                                                     <i
                                                         className={
@@ -159,7 +167,12 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href={SocialLink.yt.url}>
+                                                <a
+                                                    href={SocialLink.yt.url}
+                                                    title="YouTube kanal Hoću u pozorište"
+                                                    target="_blank"
+                                                    rel="noreferrer"
+                                                >
                                                     <i
                                                         className={
                                                             SocialLink.yt.icon
@@ -172,6 +185,9 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                                     href={
                                                         SocialLink.spotify.url
                                                     }
+                                                    title="HuPkast na Spotify-u"
+                                                    target="_blank"
+                                                    rel="noreferrer"
                                                 >
                                                     <i
                                                         className={

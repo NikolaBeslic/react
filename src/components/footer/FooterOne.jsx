@@ -15,65 +15,23 @@ const FooterOne = () => {
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link
-                                            href={{
-                                                pathname: "/predstave",
-                                                query: { zanr: "komedija" },
-                                            }}
-                                        >
-                                            Komedije
+                                        <Link href="/predstave?sort=komentari">
+                                            Predstave sa najviše komentara
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            href={{
-                                                pathname: "/predstave",
-                                                query: { zanr: "drama" },
-                                            }}
-                                        >
-                                            Drame
+                                        <Link href="/predstave?hasReviews=1">
+                                            Predstave o kojima smo pisali
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            href={{
-                                                pathname: "/predstave",
-                                                query: {
-                                                    zanr: "predstava za decu",
-                                                },
-                                            }}
-                                        >
-                                            Predstave za decu
+                                        <Link href="/predstave?sort=rating_desc">
+                                            Najbolje ocenjene
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link
-                                            href={{
-                                                pathname: "/predstave",
-                                                query: { zanr: "opera" },
-                                            }}
-                                        >
-                                            Opere
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            href={{
-                                                pathname: "/predstave",
-                                                query: { zanr: "balet" },
-                                            }}
-                                        >
-                                            Baleti
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link
-                                            href={{
-                                                pathname: "/predstave",
-                                                query: { zanr: "mjuzikl" },
-                                            }}
-                                        >
-                                            Mjuzikli
+                                        <Link href="/predstave?gradovi=1&zanrovi=3">
+                                            Opere u Beogradu
                                         </Link>
                                     </li>
                                 </ul>
@@ -85,65 +43,28 @@ const FooterOne = () => {
                         <div className="col-lg-3 col-md-4 col-6">
                             <div className="footer-widget">
                                 <h2 className="footer-widget-title">
-                                    Repertoari
+                                    Na repertoaru
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link href="/">
-                                            Nove predstave Beograd
+                                        <Link href="/repertoari?zanrovi=2&datumi=today">
+                                            Komedije danas
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/">
-                                            Najbolje ocenjene predstave
+                                        <Link href="/repertoari?zanrovi=6&datumi=week">
+                                            Predstave za decu ove nedelje
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/">Najviše komentara</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">
-                                            Najpopularnije predstave
+                                        <Link href="/repertoari?zanrovi=1&datumi=today">
+                                            Drame večeras
                                         </Link>
                                     </li>
-                                </ul>
-                                {/* End of .footer-nav */}
-                            </div>
-                            {/* End of .footer-widget */}
-                        </div>
-                        {/* End of .col-lg-2 */}
-                        <div className="col-lg-3 col-md-4 col-6">
-                            <div className="footer-widget">
-                                <h2 className="footer-widget-title">
-                                    Pozorišta
-                                </h2>
-                                <ul className="footer-nav">
+
                                     <li>
-                                        <Link href="/">
-                                            Dečija pozorišta Niš
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">
-                                            Studentska pozorišta
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">
-                                            Pozorišta u Subotici
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">
-                                            Nezavisna pozorišta Beograd
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">Opera Novi Sad</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/">
-                                            Pozorišta Zrenjanin
+                                        <Link href="/repertoari?zanrovi=5&datumi=month">
+                                            Mjuzikli ovog meseca
                                         </Link>
                                     </li>
                                 </ul>
@@ -159,23 +80,55 @@ const FooterOne = () => {
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link href="/">Sterijino pozorje</Link>
+                                        <Link href="/festivali/70-sterijino-pozorje">
+                                            Sterijino pozorje
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="/">Bitef</Link>
+                                        <Link href="/festivali/ne-bitef-2025">
+                                            Bitef
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="/">
+                                        <Link href="/festivali/33-pozorisni-maraton">
                                             Pozorišni maraton Sombor
                                         </Link>
                                     </li>
+
                                     <li>
-                                        <Link href="/">
-                                            Borini pozorišni dani
+                                        <Link href="/festivali/21-urban-fest">
+                                            Urban fest Niš
+                                        </Link>
+                                    </li>
+                                </ul>
+                                {/* End of .footer-nav */}
+                            </div>
+                            {/* End of .footer-widget */}
+                        </div>
+                        {/* End of .col-lg-2 */}
+                        <div className="col-lg-3 col-md-4 col-6">
+                            <div className="footer-widget">
+                                <h2 className="footer-widget-title">
+                                    Hoću u pozorište
+                                </h2>
+                                <ul className="footer-nav">
+                                    <li>
+                                        <Link
+                                            href="https://www.patreon.com/hocupozoriste"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            Podržite nas na Patreonu
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/">Joakim Interfest</Link>
+                                        <Link href="/o-nama">O nama</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/redakcija">Redakcija</Link>
+                                    </li>
+                                    <li>
+                                        <Link href="/kontakt">Kontakt</Link>
                                     </li>
                                 </ul>
                                 {/* End of .footer-nav */}
@@ -208,11 +161,16 @@ const FooterOne = () => {
                             <div className="footer-social-share-wrapper">
                                 <div className="footer-social-share">
                                     <div className="axil-social-title">
-                                        Find us here
+                                        Pratite nas
                                     </div>
                                     <ul className="social-share social-share__with-bg">
                                         <li>
-                                            <a href={SocialLink.fb.url}>
+                                            <a
+                                                href={SocialLink.fb.url}
+                                                title="Hoću u pozorište na Facebooku"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
                                                 <i
                                                     className={
                                                         SocialLink.fb.icon
@@ -221,16 +179,27 @@ const FooterOne = () => {
                                             </a>
                                         </li>
                                         <li>
-                                            <a href={SocialLink.twitter.url}>
+                                            <a
+                                                href={SocialLink.instagram.url}
+                                                title="hocupozoriste na Instagramu"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
                                                 <i
                                                     className={
-                                                        SocialLink.twitter.icon
+                                                        SocialLink.instagram
+                                                            .icon
                                                     }
                                                 />
                                             </a>
                                         </li>
                                         <li>
-                                            <a href={SocialLink.yt.url}>
+                                            <a
+                                                href={SocialLink.yt.url}
+                                                title="YouTube kanal Hoću u pozorište"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
                                                 <i
                                                     className={
                                                         SocialLink.yt.icon
@@ -239,20 +208,15 @@ const FooterOne = () => {
                                             </a>
                                         </li>
                                         <li>
-                                            <a href={SocialLink.linked.url}>
+                                            <a
+                                                href={SocialLink.spotify.url}
+                                                title="HuPkast na Spotify-u"
+                                                target="_blank"
+                                                rel="noreferrer"
+                                            >
                                                 <i
                                                     className={
-                                                        SocialLink.linked.icon
-                                                    }
-                                                />
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href={SocialLink.pinterest.url}>
-                                                <i
-                                                    className={
-                                                        SocialLink.pinterest
-                                                            .icon
+                                                        SocialLink.spotify.icon
                                                     }
                                                 />
                                             </a>
@@ -284,8 +248,8 @@ const FooterOne = () => {
                     </ul>
                     {/* End of .footer-bottom-links */}
                     <p className="axil-copyright-txt">
-                        © {new Date().getFullYear()}. Sva prava zadržava Hoću u
-                        pozorište.
+                        © 2017 - {new Date().getFullYear()}. Sva prava zadržava
+                        Hoću u pozorište.
                     </p>
                 </div>
                 {/* End of .footer-bottom */}

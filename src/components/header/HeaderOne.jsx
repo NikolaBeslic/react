@@ -233,21 +233,22 @@ const HeaderOne = () => {
                             <div className="col-md-auto">
                                 <ul className="ml-auto social-share header-top__social-share">
                                     <li>
-                                        <a href={SocialLink.fb.url}>
+                                        <a
+                                            href={SocialLink.fb.url}
+                                            title="Hoću u pozorište na Facebooku"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
                                             <i className={SocialLink.fb.icon} />
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={SocialLink.twitter.url}>
-                                            <i
-                                                className={
-                                                    SocialLink.twitter.icon
-                                                }
-                                            />
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href={SocialLink.instagram.url}>
+                                        <a
+                                            href={SocialLink.instagram.url}
+                                            title="hocupozoriste na Instagramu"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
                                             <i
                                                 className={
                                                     SocialLink.instagram.icon
@@ -256,10 +257,25 @@ const HeaderOne = () => {
                                         </a>
                                     </li>
                                     <li>
-                                        <a href={SocialLink.linked.url}>
+                                        <a
+                                            href={SocialLink.yt.url}
+                                            title="YouTube kanal Hoću u pozorište"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+                                            <i className={SocialLink.yt.icon} />
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a
+                                            href={SocialLink.spotify.url}
+                                            title="HuPkast na Spotify-u"
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
                                             <i
                                                 className={
-                                                    SocialLink.linked.icon
+                                                    SocialLink.spotify.icon
                                                 }
                                             />
                                         </a>
@@ -334,10 +350,7 @@ const HeaderOne = () => {
                                         </Link>
                                     </li>
                                     <li key="109">
-                                        <Link
-                                            href="/repertoari-v2"
-                                            legacyBehavior
-                                        >
+                                        <Link href="/repertoari" legacyBehavior>
                                             Repertoari
                                         </Link>
                                     </li>

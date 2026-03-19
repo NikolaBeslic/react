@@ -71,6 +71,18 @@ const addParagraphIfNotExists = (text) => {
     return text;
 };
 
+const toIntArray = (value) => {
+    if (!value) return [];
+    if (Array.isArray(value)) {
+        return value.map((x) => parseInt(x, 10)).filter(Boolean);
+    }
+
+    return String(value)
+        .split(",")
+        .map((x) => parseInt(x, 10))
+        .filter(Boolean);
+};
+
 export {
     slugify,
     removeDuplicates,
@@ -80,4 +92,5 @@ export {
     getCookieValue,
     addParagraphIfNotExists,
     dayInMonthComparator,
+    toIntArray,
 };

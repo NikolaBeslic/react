@@ -9,7 +9,7 @@ import { useMediaQuery } from "react-responsive";
 import HuPSliderMobile from "../slider/HuPSliderMobile";
 import HeadMeta from "../elements/HeadMeta";
 
-const HupHome = ({ posts, predstave }) => {
+const HupHome = ({ posts, predstave, homeLoading }) => {
     const najnovijePredstave = predstave.najnovije;
     const najpopularnijePredstave = predstave.najpopularnije;
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
@@ -22,18 +22,22 @@ const HupHome = ({ posts, predstave }) => {
             ) : (
                 <HuPSlider slidePost={posts} />
             )}
-            <PostSectionThree postData={posts} />
-            <HuPkastNaslovnaSection postData={posts} />
-            <NajnovijePredstaveSection
-                sectionTitle="Najpopularnije predstave"
-                predstaveData={najpopularnijePredstave}
-            />
-            <PostSectionTwo postData={posts} />
-            <NajnovijePredstaveSection
-                sectionTitle="Najnovije predstave"
-                predstaveData={najnovijePredstave}
-            />
-            <PostSectionSix postData={posts} />
+            {!homeLoading && (
+                <>
+                    <PostSectionThree postData={posts} />
+                    <HuPkastNaslovnaSection postData={posts} />
+                    <NajnovijePredstaveSection
+                        sectionTitle="Najpopularnije predstave"
+                        predstaveData={najpopularnijePredstave}
+                    />
+                    <PostSectionTwo postData={posts} />
+                    <NajnovijePredstaveSection
+                        sectionTitle="Najnovije predstave"
+                        predstaveData={najnovijePredstave}
+                    />
+                    <PostSectionSix postData={posts} />
+                </>
+            )}
         </>
     );
 };

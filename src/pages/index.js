@@ -32,7 +32,11 @@ export default function HomeSix() {
                     className="hup-spinner"
                 />
             )}
-            <HupHome posts={posts} predstave={predstave} />
+            <HupHome
+                posts={posts}
+                predstave={predstave}
+                homeLoading={loading}
+            />
         </>
     );
 }

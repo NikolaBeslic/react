@@ -1,21 +1,23 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { slugify } from "../../../../lib/slugify";
 import axiosClient from "../../../utils/axios";
 import { toast } from "react-hot-toast";
 import { Form, Button } from "react-bootstrap";
 import LoadingBackdrop from "../LoadingBackdrop";
-import { csrf } from "../../../utils";
+import { csrf, getCookieValue } from "../../../utils";
+import moment from "moment";
 
 const AutoriCreateUpdate = ({ autorid }) => {
     const [gradovi, setGradovi] = useState([]);
     const [autorImage, setAutorImage] = useState(null);
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState({});
+    const fileInputRef = useRef(null);
     const [formData, setFormData] = useState({
         ime_autora: "",
         autor_slug: "",
         pozicija: "",
-        url_slike: "t",
+        url_slike: "",
         biografija: "",
         gradid: "",
         slika: null,
@@ -66,58 +68,113 @@ const AutoriCreateUpdate = ({ autorid }) => {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+        setErrors((prev) => ({
+            ...prev,
+            [name]: "",
+        }));
+        setFormData({ ...formData, [name]: value });
         if (name == "ime_autora") {
             const slug = slugify(value);
-            formData.autor_slug = slug;
+            setFormData({
+                ...formData,
+                ime_autora: value,
+                autor_slug: slug,
+            });
+            setErrors({
+                ...errors,
+                ime_autora: null,
+                autor_slug: null,
+            });
         }
-        setFormData({ ...formData, [name]: value });
     };
 
     const handleGradSelectChange = (event) => {
         console.log(event.target.value);
         setFormData({ ...formData, gradid: event.target.value });
+        setErrors({ ...errors, gradid: null });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(formData);
+        if (!validate()) return;
+        setLoading(true);
+
         await csrf();
-        if (formData.autorid) {
-            axiosClient
-                .post("/admin/update-autor", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+        if (autorid) {
+            try {
+                const res = await axiosClient.post(
+                    "/admin/update-autor",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
                     },
-                })
-                .then((res) => {
-                    console.log(res);
-                    setErrors({});
-                    toast.success("Uspešno sačuvane izmene");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    console.log(error.response.data.errors);
-                    setErrors(error.response.data.errors);
-                });
+                );
+
+                console.log(res);
+                setErrors({});
+                toast.success("Uspešno sačuvane izmene");
+            } catch (error) {
+                const status = err?.response?.status;
+                const data = err?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
+            } finally {
+                setLoading(false);
+            }
         } else {
-            axiosClient
-                .post("/admin/create-autor", formData, {
-                    headers: {
-                        "Content-Type": "multipart/form-data",
-                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+            try {
+                debugger;
+                const res = await axiosClient.post(
+                    "/admin/create-autor",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                            "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                        },
                     },
-                })
-                .then((res) => {
-                    console.log(res);
-                    setErrors({});
-                    toast.success("Uspesno dodat novi autor");
-                })
-                .catch((error) => {
-                    console.error(error);
-                    console.log(error.response.data.errors);
-                    setErrors(error.response.data.errors);
+                );
+
+                console.log(res);
+                setErrors({});
+                setFormData({
+                    ime_autora: "",
+                    autor_slug: "",
+                    pozicija: "",
+                    url_slike: "t",
+                    biografija: "",
+                    gradid: "",
+                    slika: null,
                 });
+                setAutorImage(null);
+                fileInputRef.current.value = "";
+                toast.success("Uspesno dodat novi autor");
+            } catch (err) {
+                const status = err?.response?.status;
+                const data = err?.response?.data;
+
+                if (status === 422 && data?.errors) {
+                    console.log(data.errors);
+                    setErrors(data.errors);
+                    toast.error("Proverite uneta polja.");
+                } else {
+                    console.log(data);
+
+                    toast.error(data?.message || "Došlo je do greške.");
+                }
+            } finally {
+                setLoading(false);
+            }
         }
     };
 
@@ -129,6 +186,33 @@ const AutoriCreateUpdate = ({ autorid }) => {
             setFormData({ ...formData, slika: event.target.files[0] });
             setAutorImage(URL.createObjectURL(event.target.files[0]));
         }
+    };
+
+    const validate = () => {
+        const newErrors = {};
+
+        if (!formData.gradid) {
+            newErrors.gradid = "Obavezno izaberi grad.";
+        }
+
+        if (!formData.ime_autora) {
+            newErrors.ime_autora = "Ime autora_ke je obavezno.";
+        }
+
+        if (!formData.autor_slug) {
+            newErrors.autor_slug = "Autor slug je obavezan.";
+        }
+
+        if (!formData.pozicija) {
+            newErrors.pozicija = "Pozicija je obavezna.";
+        }
+
+        if (!formData.pozicija) {
+            newErrors.pozicija = "Pozicija je obavezna.";
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
     const ITEM_HEIGHT = 48;
@@ -147,7 +231,9 @@ const AutoriCreateUpdate = ({ autorid }) => {
             <LoadingBackdrop show={loading} text="Working..." />
             <Form onSubmit={handleSubmit} className="w-50 m-auto">
                 <Form.Group className="mb-3">
-                    <Form.Label>Ime autora</Form.Label>
+                    <Form.Label>
+                        <strong>Ime autora_ke</strong>
+                    </Form.Label>
                     <Form.Control
                         type="text"
                         name="ime_autora"
@@ -199,12 +285,18 @@ const AutoriCreateUpdate = ({ autorid }) => {
                         onChange={handleGradSelectChange}
                         value={formData.gradid}
                     >
+                        <option value="" disabled>
+                            Izaberi grad
+                        </option>
                         {gradovi.map((grad) => (
                             <option key={grad.gradid} value={grad.gradid}>
                                 {grad.naziv_grada}
                             </option>
                         ))}
                     </Form.Select>
+                    {errors?.gradid && (
+                        <span className="text-danger">{errors.gradid}</span>
+                    )}
                 </Form.Group>
                 <Form.Group controlId="formFile" className="mb-3">
                     <Form.Label>Fotka</Form.Label>
@@ -223,6 +315,7 @@ const AutoriCreateUpdate = ({ autorid }) => {
                     <Form.Control
                         type="file"
                         onChange={handleAutorImageChange}
+                        ref={fileInputRef}
                     />
                 </Form.Group>
                 <Button variant="primary" type="submit">

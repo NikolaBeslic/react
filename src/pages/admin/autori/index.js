@@ -33,7 +33,11 @@ export default function AutoriPage() {
                         <h1>Autori na sajtu </h1>
                     </Col>
                     <Col lg={4} md={6} sm={12}>
-                        <Button href="/admin/autori/create" variant="primary">
+                        <Button
+                            as={Link}
+                            href="/admin/autori/create"
+                            variant="primary"
+                        >
                             <FontAwesomeIcon icon={faUserPlus} /> Dodaj autora
                         </Button>
                     </Col>

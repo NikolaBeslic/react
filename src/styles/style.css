@@ -6823,6 +6823,19 @@ input[type="radio"]+label::after {
     margin-left: 4px;
 }
 
+@media screen and (max-width:767px) {
+    .post-cat {
+        font-size: 1rem;
+        line-height: 1rem;
+        margin-bottom: 0;
+        letter-spacing: 0.05em;
+    }
+
+    .category-index-post-block .media-body {
+        padding-right: 0;
+    }
+}
+
 @media (max-width: 991px) {
     .post-metas ul {
         font-size: 1.2rem;
@@ -12601,6 +12614,24 @@ address .tel i {
     font-size: 2.1rem;
     font-weight: 700;
     text-align: left;
+}
+
+.category-index-post-image-wrapper {
+    width: 150px !important;
+    height: 150px !important;
+    margin-right: 20px;
+}
+
+.category-index-post-image-wrapper img {
+    border-radius: 8px;
+}
+
+@media screen and (max-width: 767px) {
+    .category-index-post-image-wrapper {
+        width: 100px !important;
+        height: 100px !important;
+        margin-right: 20px;
+    }
 }
 
 .intervju-navbar-li {

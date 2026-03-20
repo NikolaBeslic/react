@@ -105,7 +105,7 @@ const PredstaveLayout = ({
                                       <i className="fa-light fa-calendar-day"></i>
                                       Premijera:{" "}
                                       {moment(data.premijera).format(
-                                          "DD.MMM.YYYY.",
+                                          "DD. MMM YYYY.",
                                       )}
                                   </li>
                               )}

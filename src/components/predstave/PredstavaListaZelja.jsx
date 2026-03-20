@@ -96,7 +96,7 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                                 title="Naredno igranje"
                             ></i>{" "}
                             {moment(data.naredno_igranje.datum).format(
-                                "DD.MMM yyyy.",
+                                "DD. MMM yyyy.",
                             )}{" "}
                             u{" "}
                             {moment(

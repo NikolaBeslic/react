@@ -72,7 +72,7 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                             <li className="text-muted">
                                 <i className="fa-light fa-calendar-day"></i>
                                 Premijera:{" "}
-                                {moment(data.premijera).format("DD.MMM.YYYY.")}
+                                {moment(data.premijera).format("DD. MMM YYYY.")}
                             </li>
                         )}
                     </ul>

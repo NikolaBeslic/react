@@ -29,7 +29,7 @@ const KorisnikHeader = ({ korisnik }) => {
                                         <i className="fa-regular fa-calendar-day"></i>
                                         Na hocupozoriste od:{" "}
                                         {moment(korisnik.created_at).format(
-                                            "DD.MMM.yyyy",
+                                            "DD. MMM yyyy",
                                         )}
                                     </li>
                                 </ul>

@@ -8452,11 +8452,11 @@ blockquote p,
 .blockquote p {
     position: relative;
     padding: 0;
-    margin: 0;
+    margin: 0 0 1rem 0;
 }
 
-blockquote p::before,
-.blockquote p::before {
+blockquote p:first-child::before,
+.blockquote p:first-child::before {
     content: '"';
     position: absolute;
     top: -0.2rem;

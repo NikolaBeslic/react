@@ -7,14 +7,16 @@ import { Navigation, Pagination } from "swiper/modules";
 import { Card } from "react-bootstrap";
 import moment from "moment";
 import Link from "next/link";
+import { useMediaQuery } from "react-responsive";
 
 function PredstaveTwoSlider({ predstaveData }) {
+    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     return (
         <div className="container">
             <Swiper
                 spaceBetween={28}
                 slidesPerView={"auto"}
-                slidesPerGroupAuto={true}
+                centeredSlides={isTabletOrMobile}
                 grabCursor={true}
                 navigation={true}
                 modules={[Navigation, Pagination]}

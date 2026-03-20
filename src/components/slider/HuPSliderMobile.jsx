@@ -32,8 +32,12 @@ const HuPSliderMobile = ({ slidePost }) => {
         arrows: false,
         dots: false,
         autoplay: true,
-        autoplaySpeed: 4000,
-        cssEase: "linear",
+        autoplaySpeed: 5000,
+        speed: 600,
+        cssEase: "ease-in-out",
+        pauseOnHover: true,
+        pauseOnFocus: true,
+        pauseOnDotsHover: true,
     };
 
     const slideSettingsImage = {
@@ -42,17 +46,12 @@ const HuPSliderMobile = ({ slidePost }) => {
         slidesToScroll: 1,
         arrows: false,
         dots: false,
-        autoplaySpeed: 4000,
-        cssEase: "linear",
-    };
-
-    const slideSettingsShare = {
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        dots: false,
-        vertical: true,
+        autoplaySpeed: 5000,
+        speed: 600,
+        cssEase: "ease-in-out",
+        pauseOnHover: true,
+        pauseOnFocus: true,
+        pauseOnDotsHover: true,
     };
 
     const slider1 = useRef(null);
@@ -60,12 +59,6 @@ const HuPSliderMobile = ({ slidePost }) => {
 
     const [nav1, setNav1] = useState();
     const [nav2, setNav2] = useState();
-
-    // Social Share Toggle
-    const ShareToggler = (e) => {
-        const targeElm = e.target.nextElementSibling;
-        targeElm.classList.toggle("show-shares");
-    };
 
     useEffect(() => {
         setNav1(slider1.current);

@@ -1,18 +1,9 @@
 import Image from "next/legacy/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
-import { useMediaQuery } from "react-responsive";
 
 const HuPSlider = ({ slidePost }) => {
-    const isDesktopOrLaptop = useMediaQuery({
-        query: "(min-width: 1224px)",
-    });
-    const isBigScreen = useMediaQuery({ query: "(min-width: 1824px)" });
-    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-    const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
-    const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
-
     function SlickNextArrow(props) {
         const { className, onClick } = props;
         return (
@@ -38,8 +29,12 @@ const HuPSlider = ({ slidePost }) => {
         arrows: false,
         dots: false,
         autoplay: true,
-        autoplaySpeed: 4000,
-        cssEase: "linear",
+        autoplaySpeed: 5000,
+        speed: 600,
+        cssEase: "ease-in-out",
+        pauseOnHover: true,
+        pauseOnFocus: true,
+        pauseOnDotsHover: true,
     };
 
     const slideSettingsImage = {
@@ -48,30 +43,26 @@ const HuPSlider = ({ slidePost }) => {
         slidesToScroll: 1,
         arrows: true,
         dots: false,
-        autoplaySpeed: 4000,
-        cssEase: "linear",
+        autoplaySpeed: 5000,
+        speed: 600,
+        cssEase: "ease-in-out",
+        pauseOnHover: true,
+        pauseOnFocus: true,
+        pauseOnDotsHover: true,
         nextArrow: <SlickNextArrow />,
         prevArrow: <SlickPrevArrow />,
     };
 
-    const slideSettingsShare = {
-        infinite: true,
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: false,
-        dots: false,
-        vertical: true,
-    };
+    const slider1 = useRef(null);
+    const slider2 = useRef(null);
 
     const [nav1, setNav1] = useState();
     const [nav2, setNav2] = useState();
-    const [nav3, setNav3] = useState();
 
-    // Social Share Toggle
-    const ShareToggler = (e) => {
-        const targeElm = e.target.nextElementSibling;
-        targeElm.classList.toggle("show-shares");
-    };
+    useEffect(() => {
+        setNav1(slider1.current);
+        setNav2(slider2.current);
+    }, []);
 
     return (
         <div className="banner banner__home-with-slider banner__home-with-slider-one section-gap-bottom">
@@ -83,8 +74,8 @@ const HuPSlider = ({ slidePost }) => {
                         <div className="col-xl-5">
                             <div className="banner-slider-container">
                                 <Slider
+                                    ref={slider1}
                                     asNavFor={nav2}
-                                    ref={(slider1) => setNav1(slider1)}
                                     initialSlide={2}
                                     {...slideSettingsContent}
                                     className="slick-slider-for slick-synced"
@@ -175,8 +166,8 @@ const HuPSlider = ({ slidePost }) => {
                     </div>
                     <div className="banner-slider-container-synced">
                         <Slider
-                            asNavFor={nav3}
-                            ref={(slider2) => setNav2(slider2)}
+                            ref={slider2}
+                            asNavFor={nav1}
                             {...slideSettingsImage}
                             className="slick-slider-nav slick-synced"
                         >
@@ -194,54 +185,6 @@ const HuPSlider = ({ slidePost }) => {
                                     </div>
                                 ))}
                         </Slider>
-                        <div className="banner-share-slider-container">
-                            <Slider
-                                asNavFor={nav1}
-                                ref={(slider3) => setNav3(slider3)}
-                                {...slideSettingsShare}
-                                className="banner-share-slider"
-                            >
-                                {slidePost
-                                    .filter((item) => item.na_slajderu == 1)
-                                    .slice(0, 3)
-                                    .map((data) => (
-                                        <div className="item" key={data.slug}>
-                                            <div className="banner-shares slick-banner-shares">
-                                                <div
-                                                    className="toggle-shares"
-                                                    onClick={ShareToggler}
-                                                >
-                                                    Shares <span>+</span>
-                                                </div>
-                                                <div className="social-share-wrapper">
-                                                    <ul className="social-share social-share__with-bg">
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fab fa-facebook-f" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fa-brands fa-x-twitter" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fab fa-behance" />
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="#">
-                                                                <i className="fab fa-linkedin-in" />
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                            </Slider>
-                        </div>
                     </div>
                 </>
             </div>

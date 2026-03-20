@@ -7577,7 +7577,7 @@ input[type="radio"]+label::after {
 
 @media (max-width: 1199px) {
     .banner__home-with-slider {
-        padding: 3rem 0;
+        padding: 0 0;
     }
 }
 
@@ -7804,7 +7804,7 @@ input[type="radio"]+label::after {
     .banner-slider-container-synced {
         position: static;
         width: 100%;
-        margin: 0 auto 4.8rem;
+        margin: 0 auto 3.8rem;
     }
 
     .banner-slider-container-synced .item img {

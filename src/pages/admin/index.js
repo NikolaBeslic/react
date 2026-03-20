@@ -71,7 +71,7 @@ export default function AdminHomePage() {
         try {
             setLoading(true);
             await csrf();
-            const res = await axiosClient.post(
+            const res = await axiosClient.put(
                 "/admin/tekstovi/ukloni-sa-slajdera",
                 { tekstid },
                 {

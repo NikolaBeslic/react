@@ -1,34 +1,27 @@
 import Image from "next/legacy/image";
 import Link from "next/link";
 import moment from "moment";
-import { useMediaQuery } from "react-responsive";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClock } from "@fortawesome/free-regular-svg-icons";
 
 const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
-    const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     return (
         <div
-            className={`category-index-post-block media post-block m-b-xs-40 m-b-md-50 bg-grey-light-three ${
+            className={`category-index-post-block media post-block m-b-xs-60 bg-grey-light-three ${
                 postSizeMd === true ? "post-block__mid" : ""
             } ${postBgDark === true ? "post-block__on-dark-bg" : ""}`}
         >
-            <div className="category-index-post-image-wrapper">
-                <Link
-                    href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
-                    title={data.naslov}
-                >
-                    <Image
-                        src={data?.tekst_photo}
-                        alt={data.naslov}
-                        width={isTabletOrMobile ? 100 : 150}
-                        height={isTabletOrMobile ? 100 : 150}
-                        objectFit="cover"
-                        placeholder="blur"
-                        blurDataURL="/images/placeholder.png"
-                    />
-                </Link>
-            </div>
+            <Link
+                href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
+                title={data.naslov}
+            >
+                <Image
+                    src={data?.tekst_photo}
+                    alt={data.naslov}
+                    width={postSizeMd === true ? 250 : 150}
+                    height={postSizeMd === true ? 250 : 150}
+                    placeholder="blur"
+                    blurDataURL="/images/placeholder.png"
+                />
+            </Link>
             <div className="media-body">
                 <div className="post-cat-group m-b-xs-10">
                     <Link
@@ -64,7 +57,10 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                 <div className="post-metas">
                     <ul className="list-inline">
                         <li>
-                            <FontAwesomeIcon icon={faClock} />
+                            <span>
+                                <i className="fa-regular fa-clock"></i>
+                            </span>
+
                             {moment(data.published_at).fromNow()}
                         </li>
                     </ul>

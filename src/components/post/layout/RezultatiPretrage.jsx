@@ -54,14 +54,16 @@ const RezultatiPretrage = ({ data, postSizeMd, postBgDark }) => {
                 ) : (
                     ""
                 )}
-                <div className="post-metas">
-                    <ul className="list-inline">
-                        <li>
-                            <i className="fa-regular fa-clock"></i>
-                            {moment(data.datum).fromNow()}
-                        </li>
-                    </ul>
-                </div>
+                {data.datum && (
+                    <div className="post-metas">
+                        <ul className="list-inline">
+                            <li>
+                                <i className="fa-regular fa-clock"></i>
+                                {moment(data.datum).fromNow()}
+                            </li>
+                        </ul>
+                    </div>
+                )}
             </div>
         </div>
     );

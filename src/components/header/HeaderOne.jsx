@@ -18,25 +18,30 @@ import { useRouter } from "next/router";
 const HeaderOne = () => {
     // Main Menu Toggle
     var menuRef = useRef();
+    const searchWrapperRef = useRef(null);
+    const searchInputRef = useRef(null);
     const [searchResults, setSearchResults] = useState([]);
     const [searchLoading, setSearchLoading] = useState(false);
     const [searchResultsActive, setSearchResultsActive] = useState(false);
     let timer,
-        timeoutVal = 750;
+        timeoutVal = 500;
 
     const toggleDropdownMenu = () => {
-        const dropdownSelect = menuRef.current.childNodes;
+        const dropdownSelect = menuRef.current?.childNodes;
         let dropdownList = [];
+        let handlers = [];
+
+        if (!dropdownSelect) return () => {};
 
         for (let i = 0; i < dropdownSelect.length; i++) {
             const element = dropdownSelect[i];
-            if (element.classList.contains("has-dropdown")) {
+            if (element.classList?.contains("has-dropdown")) {
                 dropdownList.push(element);
             }
         }
 
         dropdownList.forEach((element) => {
-            element.children[0].addEventListener("click", () => {
+            const handler = () => {
                 if (element.classList.contains("active")) {
                     element.classList.remove("active");
                     element.childNodes[1].classList.remove("opened");
@@ -51,19 +56,31 @@ const HeaderOne = () => {
                         }
                     });
                 }
+            };
+
+            element.children[0].addEventListener("click", handler);
+            handlers.push({
+                target: element.children[0],
+                handler,
             });
         });
+
+        return () => {
+            handlers.forEach(({ target, handler }) => {
+                target.removeEventListener("click", handler);
+            });
+        };
     };
 
     useEffect(() => {
-        toggleDropdownMenu();
+        const cleanup = toggleDropdownMenu();
+        return cleanup;
     }, []);
 
     // Offcanvas Menu
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const searchInputRef = useRef(null);
 
     // Header Search
     const [searchshow, setSearchShow] = useState(false);
@@ -78,6 +95,50 @@ const HeaderOne = () => {
         setSearchShow(false);
         setSearchResultsActive(false);
         searchInputRef.current.value = "";
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (
+                searchWrapperRef.current &&
+                !searchWrapperRef.current.contains(event.target)
+            ) {
+                setSearchResultsActive(false);
+                headerSearchClose?.();
+            }
+        };
+
+        const handleKeyDown = (event) => {
+            if (event.key === "Escape") {
+                setSearchResultsActive(false);
+                headerSearchClose?.();
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, [headerSearchClose]);
+
+    const handleSearchNavigate = () => {
+        headerSearchClose?.();
+    };
+
+    const handleInputKeyDown = (e) => {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            const query = searchInputRef.current?.value?.trim();
+
+            if (!query) return;
+
+            headerSearchClose?.();
+            router.push(`/pretraga?query=${encodeURIComponent(query)}`);
+        }
     };
 
     // Mobile Menu Toggle
@@ -184,8 +245,8 @@ const HeaderOne = () => {
         // TO DO: Fix loading layout
         // setSearchLoading(true);
         console.log(searchInput);
-        if (searchInput.length > 3) {
-            //setSearchLoading(true);
+        if (searchInput.length >= 3) {
+            setSearchLoading(true);
             axiosClient
                 .get("/search", { params: { inputSearch: searchInput } })
                 .then((res) => {
@@ -198,6 +259,11 @@ const HeaderOne = () => {
                     console.error(err);
                     setSearchLoading(false);
                 });
+        } else {
+            if (searchInput.length < 2) {
+                setSearchLoading(false);
+                return;
+            }
         }
     };
 
@@ -362,15 +428,16 @@ const HeaderOne = () => {
                                     className={`navbar-search ${
                                         searchshow ? "show-nav-search" : ""
                                     }`}
+                                    ref={searchWrapperRef}
                                 >
                                     <div className="search-field">
                                         <input
                                             type="text"
                                             className="navbar-search-field"
-                                            placeholder="Search Here..."
+                                            placeholder="Unesi pojam za pretragu..."
                                             ref={searchInputRef}
                                             onKeyUp={handleKeyUp}
-                                            onKeyDownCapture={handleKeyPress}
+                                            onKeyDown={handleInputKeyDown}
                                         />
                                         {searchLoading && (
                                             <Spinner
@@ -385,6 +452,53 @@ const HeaderOne = () => {
                                         >
                                             <i className="fal fa-search" />
                                         </button>
+                                        <div
+                                            className={`search-navbar-result${
+                                                searchResultsActive
+                                                    ? "-active"
+                                                    : ""
+                                            }`}
+                                        >
+                                            {searchResults && (
+                                                <>
+                                                    <ul className="ul">
+                                                        {searchResults
+                                                            .slice(0, 4)
+                                                            .map((item) => (
+                                                                <SearchResult
+                                                                    data={item}
+                                                                    onNavigate={
+                                                                        handleSearchNavigate
+                                                                    }
+                                                                    key={
+                                                                        item.id
+                                                                    }
+                                                                />
+                                                            ))}
+                                                    </ul>
+                                                    <Link
+                                                        href={`/pretraga?query=${encodeURIComponent(searchInput)}`}
+                                                        onClick={
+                                                            headerSearchClose
+                                                        }
+                                                    >
+                                                        <div className="search-results-footer">
+                                                            <span className="search-results-footer-text">
+                                                                Prikaži sve
+                                                                rezultate za:{" "}
+                                                                <strong>
+                                                                    „
+                                                                    {
+                                                                        searchInput
+                                                                    }
+                                                                    ”
+                                                                </strong>
+                                                            </span>
+                                                        </div>
+                                                    </Link>
+                                                </>
+                                            )}
+                                        </div>
                                     </div>
                                     <span
                                         className="navbar-search-close"
@@ -474,24 +588,6 @@ const HeaderOne = () => {
                     </div>
                 </nav>
             </header>
-            <div
-                className={`search-navbar-result${
-                    searchResultsActive ? "-active" : ""
-                }`}
-            >
-                {searchResults && (
-                    <>
-                        <ul className="ul">
-                            {searchResults.slice(0, 5).map((item) => (
-                                <SearchResult data={item} key={item.id} />
-                            ))}
-                        </ul>
-                        <Link href={`/search?query=${searchInput}`}>
-                            See more results
-                        </Link>
-                    </>
-                )}
-            </div>
         </>
     );
 };

@@ -146,25 +146,27 @@ const Predstava = ({ data, updateData }) => {
                                 key="predsingl000002"
                                 id="tekstovi"
                             >
-                                <div className="container">
-                                    <div className="row" key="predrow0002">
-                                        <SectionTitle
-                                            title="Iz našeg ugla"
-                                            key="pred-iz-naseg-ugla"
-                                        />
-                                        {recenzije.map((tekst) => (
-                                            <div
-                                                className="predstava-recenzija-wrapper"
-                                                key={`recdiv-${tekst.tekstid}`}
-                                            >
-                                                <PredstavaRecenzija
-                                                    data={tekst}
-                                                    key={`rec-${tekst.tekstid}`}
-                                                />
-                                            </div>
-                                        ))}
+                                {recenzije.length > 0 && (
+                                    <div className="container">
+                                        <div className="row" key="predrow0002">
+                                            <SectionTitle
+                                                title="Iz našeg ugla"
+                                                key="pred-iz-naseg-ugla"
+                                            />
+                                            {recenzije.map((tekst) => (
+                                                <div
+                                                    className="predstava-recenzija-wrapper"
+                                                    key={`recdiv-${tekst.tekstid}`}
+                                                >
+                                                    <PredstavaRecenzija
+                                                        data={tekst}
+                                                        key={`rec-${tekst.tekstid}`}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
+                                )}
 
                                 {!showAllComments &&
                                     povezaniTekstovi?.length > 0 && (
@@ -176,11 +178,19 @@ const Predstava = ({ data, updateData }) => {
                                                 {povezaniTekstovi?.length > 0 &&
                                                     !showAllComments && (
                                                         <>
-                                                            <SectionSubtitle
-                                                                title="Povezani tekstovi"
-                                                                btnText="Svi tekstovi"
-                                                                key="pred-povezani-tekstovi"
-                                                            />
+                                                            {recenzije.length >
+                                                            0 ? (
+                                                                <SectionSubtitle
+                                                                    title="Povezani tekstovi"
+                                                                    btnText="Svi tekstovi"
+                                                                    key="pred-povezani-tekstovi"
+                                                                />
+                                                            ) : (
+                                                                <SectionTitle
+                                                                    title="Povezani tekstovi"
+                                                                    key="pred-ipovezani-tekstovi2"
+                                                                />
+                                                            )}
                                                             {povezaniTekstovi.map(
                                                                 (tekst) => (
                                                                     <div

@@ -7,6 +7,7 @@ import PredstaveHeader from "../../components/post/post-format/elements/meta/Pre
 import { withSSRHandler } from "../../utils/withSSRHandler";
 import { useRouter } from "next/router";
 import { toIntArray } from "../../utils";
+import toast from "react-hot-toast";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
@@ -154,8 +155,12 @@ export default function PredstavePage() {
                     total: res.data.total,
                 });
             } catch (e) {
-                if (e.name !== "CanceledError" && e.name !== "AbortError")
+                if (e.name !== "CanceledError" && e.name !== "AbortError") {
                     console.error(e);
+                    toast.error(
+                        "Desila se greška prilikom učitavanja. Refrešujte stranicu.",
+                    );
+                }
             } finally {
                 setLoading(false);
             }

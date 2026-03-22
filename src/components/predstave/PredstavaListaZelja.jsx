@@ -1,13 +1,13 @@
 import moment from "moment";
 import Link from "next/link";
+import { useState } from "react";
 import { Card, Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import {
     faListCheck,
     faBuildingColumns,
-    faCalendarDay,
 } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
 
 function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
     const [loading, setLoading] = useState(false);
@@ -91,10 +91,11 @@ function PredstavaListaZelja({ data, onPrebaci, onRemove }) {
                     {data.naredno_igranje && (
                         <>
                             <br />
-                            <i
-                                className="fa-regular fa-calendar-days"
+                            <FontAwesomeIcon
+                                icon={faCalendarDays}
                                 title="Naredno igranje"
-                            ></i>{" "}
+                                aria-label="Naredno igranje"
+                            />
                             {moment(data.naredno_igranje.datum).format(
                                 "DD. MMM yyyy.",
                             )}{" "}

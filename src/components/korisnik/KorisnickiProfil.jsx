@@ -1,18 +1,116 @@
-import { Tab, Nav, Stack, Container, Row } from "react-bootstrap";
+import { Tab, Nav, Row, Spinner, Button } from "react-bootstrap";
 import PredstavaListaZelja from "../predstave/PredstavaListaZelja";
 import PredstavaOdgledana from "../predstave/PredstavaOdgledana";
 import KorisnikKomentar from "./KorisnikKomentar";
-import OmiljenoPozoriste from "./OmiljenoPozoriste";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import axiosClient from "../../utils/axios";
 import { csrf, getCookieValue } from "../../utils";
-import PredstaveLayout from "../post/layout/PredstaveLayout";
 import EmptyState from "../predstave/EmptyState";
 
-const KorisnickiProfil = ({ korisnik }) => {
-    const [listaZelja, setListaZelja] = useState(korisnik.lista_zelja);
-    const [listaOdgledanih, setListaOdgledanih] = useState(
-        korisnik.lista_odgledanih,
+const endpointMap = {
+    zelja: "/korisnik/lista-zelja",
+    odgledane: "/korisnik/lista-odgledanih",
+    komentari: "/korisnik/komentari",
+};
+
+export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
+    const [korisnik, setKorisnik] = useState(initialKorisnik);
+
+    const [activeTab, setActiveTab] = useState("zelja");
+    const [tabsData, setTabsData] = useState({
+        zelja: {
+            items: [],
+            currentPage: 0,
+            hasMore: true,
+            loading: false,
+            loaded: false,
+        },
+        odgledane: {
+            items: [],
+            currentPage: 0,
+            hasMore: true,
+            loading: false,
+            loaded: false,
+        },
+        komentari: {
+            items: [],
+            currentPage: 0,
+            hasMore: true,
+            loading: false,
+            loaded: false,
+        },
+    });
+
+    const fetchTabData = async (tabKey, page = 1, append = false) => {
+        if (tabsData[tabKey].loading) return;
+
+        setTabsData((prev) => ({
+            ...prev,
+            [tabKey]: {
+                ...prev[tabKey],
+                loading: true,
+            },
+        }));
+
+        try {
+            const res = await axiosClient.get(endpointMap[tabKey], {
+                params: {
+                    page,
+                    per_page: 6,
+                },
+            });
+
+            const payload = res.data;
+
+            setTabsData((prev) => ({
+                ...prev,
+                [tabKey]: {
+                    ...prev[tabKey],
+                    items: append
+                        ? [...prev[tabKey].items, ...payload.data]
+                        : payload.data,
+                    currentPage: payload.current_page,
+                    hasMore: payload.current_page < payload.last_page,
+                    loading: false,
+                    loaded: true,
+                },
+            }));
+        } catch (error) {
+            console.error(error);
+
+            setTabsData((prev) => ({
+                ...prev,
+                [tabKey]: {
+                    ...prev[tabKey],
+                    loading: false,
+                },
+            }));
+        }
+    };
+
+    useEffect(() => {
+        fetchTabData("zelja");
+    }, []);
+
+    const handleTabChange = async (tabKey) => {
+        setActiveTab(tabKey);
+
+        if (!tabsData[tabKey].loaded) {
+            await fetchTabData(tabKey);
+        }
+    };
+
+    const handleLoadMore = async () => {
+        const current = tabsData[activeTab];
+
+        if (!current.hasMore || current.loading) return;
+
+        await fetchTabData(activeTab, current.currentPage + 1, true);
+    };
+
+    const currentTab = useMemo(
+        () => tabsData[activeTab],
+        [tabsData, activeTab],
     );
 
     const handlePrebaciUOdgledane = async (predstavaid) => {
@@ -29,15 +127,39 @@ const KorisnickiProfil = ({ korisnik }) => {
                 },
             );
 
-            const predstava = listaZelja.find(
-                (lz) => lz.predstavaid === predstavaid,
-            );
-            setListaZelja((prev) =>
-                prev.filter(
-                    (item) => item.predstavaid !== predstava.predstavaid,
-                ),
-            );
-            setListaOdgledanih((prev) => [...prev, predstava]);
+            setTabsData((prev) => {
+                const predstava = prev.zelja.items.find(
+                    (item) => item.predstavaid === predstavaid,
+                );
+
+                return {
+                    ...prev,
+                    zelja: {
+                        ...prev.zelja,
+                        items: prev.zelja.items.filter(
+                            (item) => item.predstavaid !== predstavaid,
+                        ),
+                    },
+                    odgledane: {
+                        ...prev.odgledane,
+                        items: predstava
+                            ? [
+                                  predstava,
+                                  ...prev.odgledane.items.filter(
+                                      (item) =>
+                                          item.predstavaid !== predstavaid,
+                                  ),
+                              ]
+                            : prev.odgledane.items,
+                    },
+                };
+            });
+
+            setKorisnik((prev) => ({
+                ...prev,
+                broj_liste_zelja: Math.max((prev.broj_liste_zelja || 0) - 1, 0),
+                broj_odgledanih: (prev.broj_odgledanih || 0) + 1,
+            }));
         } catch (err) {
             console.error(err);
         }
@@ -56,11 +178,20 @@ const KorisnickiProfil = ({ korisnik }) => {
                 },
             );
 
-            setListaZelja((prev) =>
-                prev.filter(
-                    (item) => item.predstavaid !== res.data, //api returns only predstavaid
-                ),
-            );
+            setTabsData((prev) => ({
+                ...prev,
+                zelja: {
+                    ...prev.zelja,
+                    items: prev.zelja.items.filter(
+                        (item) => item.predstavaid !== predstavaid,
+                    ),
+                },
+            }));
+
+            setKorisnik((prev) => ({
+                ...prev,
+                broj_liste_zelja: Math.max((prev.broj_liste_zelja || 0) - 1, 0),
+            }));
         } catch (err) {
             console.error(err);
         }
@@ -84,12 +215,23 @@ const KorisnickiProfil = ({ korisnik }) => {
                     },
                 },
             );
-            debugger;
-            let predstava = listaOdgledanih.find(
-                (item) => item.predstavaid == predstavaid,
-            );
-            predstava.ocena_korisnika = { ocena: res.data.ocenaKorisnika };
-            setListaOdgledanih((prev) => [...prev, predstava]);
+            setTabsData((prev) => ({
+                ...prev,
+                odgledane: {
+                    ...prev.odgledane,
+                    items: prev.odgledane.items.map((item) =>
+                        item.predstavaid === predstavaid
+                            ? {
+                                  ...item,
+                                  ocena_korisnika: {
+                                      ...(item.ocena_korisnika || {}),
+                                      ocena: res.data.ocenaKorisnika,
+                                  },
+                              }
+                            : item,
+                    ),
+                },
+            }));
         } catch (err) {
             console.error(err);
         }
@@ -103,13 +245,15 @@ const KorisnickiProfil = ({ korisnik }) => {
                         <Tab.Container
                             id="korisnicki-profil-tabs"
                             defaultActiveKey="zelje"
+                            activeKey={activeTab}
+                            onSelect={handleTabChange}
                         >
                             <Nav
                                 variant="pills"
                                 className="row no-gutters korisnicki-profil-tab-nav"
                             >
                                 <Nav.Item className="col">
-                                    <Nav.Link eventKey="zelje">
+                                    <Nav.Link eventKey="zelja">
                                         LISTA ŽELJA
                                     </Nav.Link>
                                 </Nav.Item>
@@ -123,119 +267,129 @@ const KorisnickiProfil = ({ korisnik }) => {
                                         KOMENTARI
                                     </Nav.Link>
                                 </Nav.Item>
-                                <Nav.Item className="col">
-                                    <Nav.Link eventKey="pozorista">
-                                        OMILJENA POZORIŠTA
-                                    </Nav.Link>
-                                </Nav.Item>
                             </Nav>
 
                             <Tab.Content>
-                                <Tab.Pane eventKey="zelje">
-                                    <div className="axil-team-grid-wrapper p-t-xs-10">
-                                        <Row>
-                                            {listaZelja?.length > 0 ? (
-                                                <>
-                                                    {listaZelja?.map((lz) => (
-                                                        <div
-                                                            className="col-lg-4 col-md-4 col-sm-6"
-                                                            key={`lzdiv-${lz.predstavaid}`}
-                                                        >
-                                                            <PredstavaListaZelja
-                                                                key={`lz-${lz.predstavaid}`}
-                                                                data={lz}
-                                                                onPrebaci={
-                                                                    handlePrebaciUOdgledane
-                                                                }
-                                                                onRemove={
-                                                                    handleObrisiSaListeZelja
-                                                                }
-                                                            />
-                                                        </div>
-                                                    ))}
-                                                </>
-                                            ) : (
-                                                <EmptyState
-                                                    icon="heart"
-                                                    title="Još nemate predstava u listi želja"
-                                                    text="Sačuvajte predstave koje želite da pogledate i pronađite ih kasnije na jednom mestu."
-                                                    buttonText="Istraži repertoar"
-                                                    href="/repertoar"
-                                                />
-                                            )}
-                                        </Row>
-                                    </div>
+                                <Tab.Pane eventKey="zelja">
+                                    {renderTabContent("zelja", currentTab)}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="odgledane">
-                                    {listaOdgledanih?.length > 0 ? (
-                                        <>
-                                            {listaOdgledanih?.map((odg) => (
-                                                <PredstavaOdgledana
-                                                    data={odg}
-                                                    handleRate={
-                                                        oceniOdgledanuPredstavu
-                                                    }
-                                                    pClass=""
-                                                    key={`pred${odg.predstavaid}`}
-                                                />
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <EmptyState
-                                            icon="eye"
-                                            title="Još nemate odgledanih predstava"
-                                            text="Dodajte predstave koje ste pogledali i vodite svoju ličnu evidenciju."
-                                            buttonText="Pregledaj predstave"
-                                            href="/predstave"
-                                        />
-                                    )}
+                                    {renderTabContent("odgledane", currentTab)}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="komentari">
-                                    {korisnik.komentari?.length > 0 ? (
-                                        <>
-                                            {korisnik.komentari?.map((kom) => (
-                                                <KorisnikKomentar
-                                                    key={`kk-${kom.komentarid}`}
-                                                    data={kom}
-                                                />
-                                            ))}
-                                        </>
-                                    ) : (
-                                        <EmptyState
-                                            icon="comment"
-                                            title="Još niste ostavili nijedan komentar"
-                                            text="Vaši utisci o predstavama i tekstovima pojaviće se ovde."
-                                            buttonText="Pregledaj sadržaj"
-                                            href="/predstave"
-                                        />
-                                    )}
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="pozorista">
-                                    <div className="axil-team-grid-wrapper p-t-xs-10">
-                                        <Row>
-                                            {korisnik.omiljena_pozorista?.map(
-                                                (poz) => (
-                                                    <div
-                                                        className="col-lg-4 col-md-4 col-sm-6"
-                                                        key={`opdiv-${poz.pozoristeid}`}
-                                                    >
-                                                        <OmiljenoPozoriste
-                                                            data={poz}
-                                                            key={`op-${poz.pozoristeid}`}
-                                                        />
-                                                    </div>
-                                                ),
-                                            )}
-                                        </Row>
-                                    </div>
+                                    {renderTabContent("komentari", currentTab)}
                                 </Tab.Pane>
                             </Tab.Content>
+                            {currentTab.loaded && currentTab.hasMore && (
+                                <div className="text-center mt-4">
+                                    <Button
+                                        variant="primary"
+                                        onClick={handleLoadMore}
+                                        disabled={currentTab.loading}
+                                    >
+                                        {currentTab.loading
+                                            ? "Učitavanje..."
+                                            : "Učitaj još"}
+                                    </Button>
+                                </div>
+                            )}
                         </Tab.Container>
                     </div>
                 </div>
             </main>
         </>
     );
-};
 
-export default KorisnickiProfil;
+    function renderTabContent(tabKey, tabData) {
+        if (activeTab !== tabKey) return null;
+
+        if (tabData.loading && tabData.items.length === 0) {
+            return (
+                <div className="text-center py-5">
+                    <Spinner animation="border" />
+                </div>
+            );
+        }
+
+        if (!tabData.loading && tabData.items.length === 0) {
+            if (tabKey === "zelja") {
+                return (
+                    <EmptyState
+                        icon="heart"
+                        title="Još nemate predstava na listi želja"
+                        text="Sačuvajte predstave koje želite da pogledate i pronađite ih kasnije na jednom mestu."
+                        buttonText="Istraži repertoare"
+                        href="/repertoar"
+                    />
+                );
+            }
+
+            if (tabKey === "odgledane") {
+                return (
+                    <EmptyState
+                        icon="eye"
+                        title="Još nemate odgledanih predstava"
+                        text="Dodajte predstave koje ste pogledali i vodite svoju ličnu evidenciju."
+                        buttonText="Pregledaj predstave"
+                        href="/predstave"
+                    />
+                );
+            }
+
+            return (
+                <EmptyState
+                    icon="comment"
+                    title="Još niste ostavili nijedan komentar"
+                    text="Vaši utisci o predstavama i tekstovima pojaviće se ovde."
+                    buttonText="Pročitaj naše utske"
+                    href="/recenzije"
+                />
+            );
+        }
+
+        if (tabKey === "zelja") {
+            return (
+                <div className="axil-team-grid-wrapper p-t-xs-10">
+                    <Row>
+                        {tabData.items?.map((lz) => (
+                            <div
+                                className="col-lg-4 col-md-4 col-sm-6"
+                                key={`lzdiv-${lz.predstavaid}`}
+                            >
+                                <PredstavaListaZelja
+                                    key={`lz-${lz.predstavaid}`}
+                                    data={lz}
+                                    onPrebaci={handlePrebaciUOdgledane}
+                                    onRemove={handleObrisiSaListeZelja}
+                                />
+                            </div>
+                        ))}
+                    </Row>
+                </div>
+            );
+        }
+
+        if (tabKey === "odgledane") {
+            return (
+                <div>
+                    {tabData.items?.map((odg) => (
+                        <PredstavaOdgledana
+                            data={odg}
+                            handleRate={oceniOdgledanuPredstavu}
+                            pClass=""
+                            key={`pred${odg.predstavaid}`}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        return (
+            <div>
+                {tabData.items?.map((kom) => (
+                    <KorisnikKomentar key={`kk-${kom.komentarid}`} data={kom} />
+                ))}
+            </div>
+        );
+    }
+}

@@ -48,14 +48,14 @@ const KorisnikHeader = ({ korisnik }) => {
                                         <FontAwesomeIcon icon={faSquareCheck} />
                                         <span>Odgledanih predstava: </span>
                                         <strong>
-                                            {korisnik.lista_odgledanih?.length}
+                                            {korisnik.broj_odgledanih}
                                         </strong>
                                     </li>
                                     <li className="korisnik-meta-item">
                                         <FontAwesomeIcon icon={faComments} />
                                         <span>Komentara: </span>
                                         <strong>
-                                            {korisnik.komentari?.length}
+                                            {korisnik.broj_komentara}
                                         </strong>
                                     </li>
 
@@ -63,7 +63,7 @@ const KorisnikHeader = ({ korisnik }) => {
                                         <FontAwesomeIcon icon={faListCheck} />
                                         <span>Na listi želja: </span>
                                         <strong>
-                                            {korisnik.lista_zelja?.length}
+                                            {korisnik.broj_liste_zelja}
                                         </strong>
                                     </li>
                                     {/* <li>

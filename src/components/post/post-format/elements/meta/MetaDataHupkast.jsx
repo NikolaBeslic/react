@@ -1,22 +1,8 @@
 import Image from "next/legacy/image";
-import Link from "next/link";
-import { slugify } from "../../../../../utils";
 import moment from "moment";
 import Breadcrumb from "../../../../common/Breadcrumb";
 
 const MetaDataHupkast = ({ metaData }) => {
-    const formatDateRange = (date1, date2) => {
-        const d1 = moment(date1);
-        const d2 = moment(date2);
-        if (d1.isSame(d2, "month") && d1.isSame(d2, "year")) {
-            return `${d1.format("DD")} - ${d2.format("DD")}. ${d1.format(
-                "MMMM YYYY",
-            )}`;
-        } else {
-            return `${d1.format("DD. MM")} - ${d2.format("DD. MM. YYYY")}`;
-        }
-    };
-
     return (
         <>
             <Breadcrumb bCat="HuPkast" aPage={metaData.naslov} />

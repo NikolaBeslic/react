@@ -257,12 +257,12 @@ const RepertoariNewPage = () => {
         if (!dates || dates.length === 0) return "";
 
         if (dates.length === 1) {
-            return moment(dates[0]).format("DD.MM.YYYY");
+            return moment(dates[0]).format("DD.MM.YYYY.");
         }
 
-        return `${moment(dates[0]).format("DD.MM.YYYY")} - ${moment(
+        return `${moment(dates[0]).format("DD.MM.YYYY.")} - ${moment(
             dates[1],
-        ).format("DD.MM.YYYY")}`;
+        ).format("DD.MM.YYYY.")}`;
     };
 
     const rootEl = () => document.getElementById("date-filter");
@@ -417,11 +417,11 @@ const RepertoariNewPage = () => {
                                 <p>
                                     {datumOd &&
                                         moment(datumOd).format(
-                                            "DD. MMM YYYY",
+                                            "DD. MMM YYYY.",
                                         )}{" "}
                                     -{" "}
                                     {datumDo &&
-                                        moment(datumDo).format("DD. MMM YYYY")}
+                                        moment(datumDo).format("DD. MMM YYYY.")}
                                 </p>
                             </div>
                         </div>

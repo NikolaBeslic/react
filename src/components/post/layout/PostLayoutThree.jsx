@@ -59,7 +59,7 @@ const PostLayoutThree = ({ data, postSizeLg, pClass, videoPost }) => {
                                         <li>
                                             <i className="fa-regular fa-calendar"></i>{" "}
                                             {moment(data.published_at).format(
-                                                "DD. MM. YYYY",
+                                                "DD. MM. YYYY.",
                                             )}
                                         </li>
                                     </>

@@ -12,10 +12,10 @@ const MetaDataFestival = ({ metaData }) => {
         const d2 = moment(date2);
         if (d1.isSame(d2, "month") && d1.isSame(d2, "year")) {
             return `${d1.format("DD")} - ${d2.format("DD")}. ${d1.format(
-                "MMMM YYYY",
+                "MMMM YYYY.",
             )}`;
         } else {
-            return `${d1.format("DD. MM")} - ${d2.format("DD. MM. YYYY")}`;
+            return `${d1.format("DD. MM")} - ${d2.format("DD. MM. YYYY.")}`;
         }
     };
 

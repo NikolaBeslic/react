@@ -8,7 +8,7 @@ const SocialShareBottom = ({ url, title }) => {
                         href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
                         className="btn bg-color-facebook"
                         target="_blank"
-                        rel="nofollow noopener"
+                        rel="nofollow noopener noreferrer"
                     >
                         <i className="fab fa-facebook-f" />
                     </a>
@@ -18,7 +18,7 @@ const SocialShareBottom = ({ url, title }) => {
                         href={`https://wa.me/?text=${title}%20${url}`}
                         className="btn bg-color-whatsapp"
                         target="_blank"
-                        rel="nofollow noopener"
+                        rel="nofollow noopener noreferrer"
                     >
                         <i className="fab fa-whatsapp" />
                     </a>
@@ -28,7 +28,7 @@ const SocialShareBottom = ({ url, title }) => {
                         href={`viber://forward?text=${url} `}
                         className="btn bg-color-viber"
                         target="_blank"
-                        rel="nofollow noopener"
+                        rel="nofollow noopener noreferrer"
                     >
                         <i className="fab fa-viber" />
                     </a>
@@ -37,8 +37,8 @@ const SocialShareBottom = ({ url, title }) => {
                     <a
                         href={`https://twitter.com/intent/tweet?url=${url}&text=${title}&via=`}
                         target="_blank"
-                        rel="nofollow noopener"
-                        className="btn bg-color-twitter"
+                        rel="nofollow noopener noreferrer"
+                        className="btn bg-color-twitter "
                     >
                         <i className="fa-brands fa-x-twitter" />
                     </a>
@@ -48,10 +48,10 @@ const SocialShareBottom = ({ url, title }) => {
                     <a
                         href={`mailto:?subject=${title}&body=${url}`}
                         target="_blank"
-                        rel="nofollow noopener"
+                        rel="nofollow noopener noreferrer"
                         className="btn bg-color-email"
                     >
-                        <i class="fa-regular fa-envelope"></i>
+                        <i className="fa-regular fa-envelope"></i>
                     </a>
                 </li>
             </ul>

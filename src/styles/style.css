@@ -8684,14 +8684,10 @@ blockquote p:first-child::before,
     margin: 0 3rem 1rem 0;
 }
 
-@media (max-width: 767px) {
-    .post-shares .title {
-        margin-right: 3rem;
-    }
-}
+
 
 .post-shares li {
-    margin: 0 1rem 1rem 0;
+    margin: 0 1.5rem 1rem 0;
 }
 
 .post-shares li a {
@@ -8703,14 +8699,14 @@ blockquote p:first-child::before,
     line-height: 2.1rem;
     font-weight: var(--p-bold);
     letter-spacing: 0.1rem;
-    color: #FFFFFF;
-    padding: 1.4rem 4rem 1.3rem;
-    border-width: 0.2rem;
+    color: var(--primary-color);
+    padding: 0.8rem 3rem 0.7rem !important;
+    border-width: 2px;
     border-style: solid;
-    border-radius: 0;
+    border-radius: 10px;
+    border-color: rgba(108, 1, 1, 0.9);
     z-index: 1;
     font-size: 1.4rem;
-    color: #fff;
     padding: 0.8rem 4rem 0.7rem;
 }
 
@@ -8786,12 +8782,33 @@ blockquote p:first-child::before,
 }
 
 @media (max-width: 767px) {
+
+    .post-shares .title {
+        margin-right: 3rem;
+    }
+
+    .post-shares {
+        display: block;
+    }
+
+    .post-shares ul {
+        display: flex;
+        width: 100%;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .post-shares li {
+        margin-right: 0;
+    }
+
     .post-shares li a {
-        padding: 0.5rem 2rem 0.4rem;
+        padding: 0.5rem 2rem 0.4rem !important;
     }
 
     .post-shares li a i {
-        font-size: 1.4rem;
+        font-size: 1.6rem;
     }
 }
 
@@ -11247,7 +11264,7 @@ address .tel i {
     margin-bottom: 5px;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
 }
 
@@ -13172,6 +13189,34 @@ address .tel i {
     margin-left: 2px;
 }
 
+.social-share .social-share__rectangular li a {
+    color: var(--primary-color);
+    background-color: transparent;
+    border-style: 1px solid;
+    border-radius: 10px;
+    border-color: var(--primary-color);
+}
+
 .social-share__rectangular li a i {
     margin-right: 0;
+}
+
+/* Links inside tekst */
+.post-details .single-text-wrapper p a {
+    /* color: var(--grey-dark-one); */
+    color: #7a2a2a;
+    text-decoration: underline;
+    /* text-decoration-color: rgba(122, 42, 42, 0.35); */
+    text-underline-offset: 2px;
+    transition: color 0.2s ease,
+        text-decoration-color 0.2s ease;
+}
+
+.post-details .single-text-wrapper a:hover {
+    color: #6c0101;
+    text-decoration-color: #6c0101;
+}
+
+.post-details .single-text-wrapper a:visited {
+    color: inherit;
 }

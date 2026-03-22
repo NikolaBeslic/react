@@ -72,6 +72,9 @@ export default function PredstavePage() {
                 );
             } catch (error) {
                 console.error(error);
+                toast.error(
+                    "Greška prilikom učitavanja podataka. Pokušajte ponovo.",
+                );
             } finally {
                 if (isMounted) {
                     setOptionsLoading(false);

@@ -47,7 +47,7 @@ const PretragaPage = () => {
                 });
             } catch (error) {
                 console.error("Failed to search", error);
-                toast.error("Neka greška se dogodila");
+                toast.error("Greška učitavanja podataka. Pokušajte ponovo");
             } finally {
                 setLoading(false);
             }

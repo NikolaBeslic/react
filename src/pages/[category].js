@@ -4,6 +4,7 @@ import { withSSRHandler } from "../utils/withSSRHandler";
 import { Spinner } from "react-bootstrap";
 import PostLayoutTwo from "../components/post/layout/PostLayoutTwo";
 import CategoryHeader from "../components/post/post-format/elements/meta/CategoryHeader";
+import { toast } from "react-hot-toast";
 
 export default function Page({ categoryData, initialPosts, initTotalPages }) {
     const [currentPage, setCurrentPage] = useState(1);
@@ -32,6 +33,9 @@ export default function Page({ categoryData, initialPosts, initTotalPages }) {
             setCurrentPage(nextPage);
         } catch (err) {
             console.error("Failed to load more posts", err);
+            toast.error(
+                "Greška prilikom učitavanja podataka. Pokušajte ponovo.",
+            );
         }
         setLoading(false);
     };

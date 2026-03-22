@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { InputGroup, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import { csrf, getCookieValue } from "../utils";
 import toast from "react-hot-toast";
 import axiosClient from "../utils/axios";
 import ForgotPasswordHeader from "../components/post/post-format/elements/meta/ForgotPasswordHeader";
+import { toast } from "react-hot-toast";
 
 const ZaboravljenaLozinkaPage = () => {
     const [email, setEmail] = useState("");
@@ -49,6 +50,7 @@ const ZaboravljenaLozinkaPage = () => {
             if (err.response?.status === 422) {
                 setErrors(err.response.data.errors || {});
             }
+            toast.error("Greška prilikom slanja podataka. Pokušajte ponovo.");
         } finally {
             setLoading(false);
         }

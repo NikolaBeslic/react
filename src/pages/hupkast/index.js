@@ -5,6 +5,7 @@ import { Spinner } from "react-bootstrap";
 import HuPkastIndexLayout from "../../components/post/HuPkastIndexLayout";
 import CategoryHeader from "../../components/post/post-format/elements/meta/CategoryHeader";
 import { withSSRHandler } from "../../utils/withSSRHandler";
+import { toast } from "react-hot-toast";
 
 export default function HuPkast({ initialHuPkast, initTotalPages }) {
     const [loading, setLoading] = useState(false);
@@ -36,8 +37,12 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
             setCurrentPage(nextPage);
         } catch (err) {
             console.error("Failed to load more posts", err);
+            toast.error(
+                "Greška prilikom učitavanja podataka. Pokušajte ponovo.",
+            );
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
     return (
         <>

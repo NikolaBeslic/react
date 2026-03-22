@@ -102,6 +102,9 @@ const Predstava = ({ data, updateData }) => {
                     general: "An error occurred while submitting the comment.",
                 },
             );
+            toast.error(
+                "Greška prilikom ubacivanja komentara. Pokušajte ponovo.",
+            );
         } finally {
             setKomentarFormData({
                 tekst_komentara: "",

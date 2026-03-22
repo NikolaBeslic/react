@@ -6,6 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import axiosClient from "../../utils/axios";
 import { csrf, getCookieValue } from "../../utils";
 import EmptyState from "../predstave/EmptyState";
+import { toast } from "react-hot-toast";
 
 const endpointMap = {
     zelja: "/korisnik/lista-zelja",
@@ -77,7 +78,9 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             }));
         } catch (error) {
             console.error(error);
-
+            toast.error(
+                "Greška prilikom učitavanja podataka. Pokušajte ponovo.",
+            );
             setTabsData((prev) => ({
                 ...prev,
                 [tabKey]: {
@@ -162,6 +165,9 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             }));
         } catch (err) {
             console.error(err);
+            toast.error(
+                "Greška prilikom prebacivanja predstave. Pokušajte ponovo.",
+            );
         }
     };
 
@@ -194,6 +200,9 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             }));
         } catch (err) {
             console.error(err);
+            toast.error(
+                "Greška prilikom brisanja predstave. Pokušajte ponovo.",
+            );
         }
     };
 
@@ -234,6 +243,7 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             }));
         } catch (err) {
             console.error(err);
+            toast.error("Greška prilikom ocenjivanja. Pokušajte ponovo.");
         }
     };
 

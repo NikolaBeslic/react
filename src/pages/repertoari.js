@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import axiosClient from "../utils/axios";
 import "react-calendar/dist/Calendar.css";
 import moment from "moment";
@@ -12,6 +12,7 @@ import { useMediaQuery } from "react-responsive";
 import { Spinner } from "react-bootstrap";
 import { useRouter } from "next/router";
 import { toIntArray } from "../utils";
+import { toast } from "react-hot-toast";
 
 const RepertoariNewPage = () => {
     const [date, setDate] = useState([]);
@@ -82,6 +83,9 @@ const RepertoariNewPage = () => {
                 );
             } catch (error) {
                 console.error(error);
+                toast.error(
+                    "Greška prilikom učitavanja podataka. Pokušajte ponovo.",
+                );
             } finally {
                 if (isMounted) {
                     setOptionsLoading(false);

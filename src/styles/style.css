@@ -276,6 +276,9 @@ Date Created: Oct 14, 2022
     --color-instagram: #C231A1;
     --color-vimeo: #00ADEF;
     --color-twitch: #6441A3;
+    --color-whatsapp: #25D366;
+    --color-viber: #7360f2;
+    --color-email: #6c757d;
     --color-green-one: #4CD965;
     --color-green-two: #3CD289;
     --color-green-three: #008079;
@@ -4515,6 +4518,18 @@ figure {
     background-color: var(--color-twitch);
 }
 
+.bg-color-whatsapp {
+    background-color: var(--color-whatsapp);
+}
+
+.bg-color-viber {
+    background-color: var(--color-viber);
+}
+
+.bg-color-email {
+    background-color: var(--color-email);
+}
+
 .bg-color-green-one {
     background-color: var(--color-green-one);
 }
@@ -8664,7 +8679,7 @@ blockquote p:first-child::before,
 .post-shares .title {
     font-size: 1.8rem;
     line-height: 2.2rem;
-    color: var(--grey-dark-one);
+    color: var(--grey-dark-two);
     font-weight: var(--p-bold);
     margin: 0 3rem 1rem 0;
 }
@@ -13135,4 +13150,8 @@ address .tel i {
 .korisnik-meta-item strong {
     font-weight: 600;
     margin-left: 2px;
+}
+
+.social-share__rectangular li a i {
+    margin-right: 0;
 }

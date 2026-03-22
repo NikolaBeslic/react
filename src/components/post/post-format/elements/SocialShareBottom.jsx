@@ -1,35 +1,62 @@
-const SocialShareBottom = () => {
-  return (
-    <div className="post-shares m-t-xs-60">
-      <div className="title">SHARE:</div>
-      <ul className="social-share social-share__rectangular">
-        <li>
-          <a href="#" className="btn bg-color-twitch">
-            <i className="fab fa-twitch" />
-            1K+
-          </a>
-        </li>
-        <li>
-          <a href="#" className="btn bg-color-facebook">
-            <i className="fab fa-facebook-f" />
-            1K+
-          </a>
-        </li>
-        <li>
-          <a href="#" className="btn bg-color-twitter">
-            <i className="fa-brands fa-x-twitter" />
-            1000+
-          </a>
-        </li>
-        <li>
-          <a href="#" className="btn bg-color-linkedin">
-            <i className="fab fa-linkedin-in" />
-            1M+
-          </a>
-        </li>
-      </ul>
-    </div>
-  );
+const SocialShareBottom = ({ url, title }) => {
+    return (
+        <div className="post-shares m-t-xs-60">
+            <div className="title">Podeli:</div>
+            <ul className="social-share social-share__rectangular">
+                <li>
+                    <a
+                        href={`https://www.facebook.com/sharer/sharer.php?u=${url}`}
+                        className="btn bg-color-facebook"
+                        target="_blank"
+                        rel="nofollow noopener"
+                    >
+                        <i className="fab fa-facebook-f" />
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href={`https://wa.me/?text=${title}%20${url}`}
+                        className="btn bg-color-whatsapp"
+                        target="_blank"
+                        rel="nofollow noopener"
+                    >
+                        <i className="fab fa-whatsapp" />
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href={`viber://forward?text=${url} `}
+                        className="btn bg-color-viber"
+                        target="_blank"
+                        rel="nofollow noopener"
+                    >
+                        <i className="fab fa-viber" />
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href={`https://twitter.com/intent/tweet?url=${url}&text=${title}&via=`}
+                        target="_blank"
+                        rel="nofollow noopener"
+                        className="btn bg-color-twitter"
+                    >
+                        <i className="fa-brands fa-x-twitter" />
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href={`mailto:?subject=${title}&body=${url}`}
+                        target="_blank"
+                        rel="nofollow noopener"
+                        className="btn bg-color-email"
+                    >
+                        <i class="fa-regular fa-envelope"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    );
 };
 
 export default SocialShareBottom;

@@ -1,6 +1,14 @@
+import { useEffect, useState } from "react";
 import RelatedPosts from "../RelatedPosts";
+import SocialShareBottom from "./elements/SocialShareBottom";
 
 const PostFormatHupkast = ({ postData }) => {
+    const [shareUrl, setShareUrl] = useState("");
+
+    useEffect(() => {
+        setShareUrl(encodeURIComponent(window.location.href));
+    }, []);
+
     return (
         <>
             <main className="site-main">
@@ -53,6 +61,12 @@ const PostFormatHupkast = ({ postData }) => {
                         className="m-b-xs-50"
                         dangerouslySetInnerHTML={{ __html: postData.sadrzaj }}
                     ></div>
+                    <div className="m-b-xs-50">
+                        <SocialShareBottom
+                            url={shareUrl}
+                            title={postData.naslov}
+                        />
+                    </div>
                     {postData.relatedHupkasts?.length > 0 && (
                         <RelatedPosts relatedPosts={postData.relatedHupkasts} />
                     )}

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Image from "next/legacy/image";
 import PredstaveLayout from "../layout/PredstaveLayout";
 import RelatedPosts from "../RelatedPosts";
@@ -6,8 +7,15 @@ import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import Link from "next/link";
 import FestivaliLayout from "../layout/FestivaliLayout";
+import SocialShareBottom from "./elements/SocialShareBottom";
 
 const PostFormatStandard = ({ postData, relatedPosts }) => {
+    const [shareUrl, setShareUrl] = useState("");
+
+    useEffect(() => {
+        setShareUrl(encodeURIComponent(window.location.href));
+    }, []);
+
     return (
         <>
             <main className="site-main">
@@ -21,6 +29,10 @@ const PostFormatStandard = ({ postData, relatedPosts }) => {
                                         __html: postData.sadrzaj,
                                     }}
                                 ></div>
+                                <SocialShareBottom
+                                    url={shareUrl}
+                                    title={postData.naslov}
+                                />
                             </div>
                         </div>
                     </div>

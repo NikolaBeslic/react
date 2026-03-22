@@ -1,10 +1,18 @@
+import { useEffect, useState } from "react";
 import PredstaveLayout from "../layout/PredstaveLayout";
 import RelatedPosts from "../RelatedPosts";
 import PostAuthor from "./elements/PostAuthor";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
+import SocialShareBottom from "./elements/SocialShareBottom";
 
 const PostFormatHupikon = ({ postData, relatedPosts }) => {
+    const [shareUrl, setShareUrl] = useState("");
+
+    useEffect(() => {
+        setShareUrl(encodeURIComponent(window.location.href));
+    }, []);
+
     return (
         <>
             <main className="site-main">
@@ -28,11 +36,14 @@ const PostFormatHupikon = ({ postData, relatedPosts }) => {
                                         __html: postData.sadrzaj,
                                     }}
                                 ></div>
+                                <SocialShareBottom
+                                    url={shareUrl}
+                                    title={postData.naslov}
+                                />
                             </div>
                         </div>
                     </div>
                 </article>
-                {/* <SocialShareBottom /> */}
                 <div className="single-blog-wrapper">
                     <div className="container">
                         <div className="single-text-wrapper">

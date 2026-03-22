@@ -5,6 +5,7 @@ import PredstavaTitle from "../../components/post/post-format/elements/meta/Pred
 import { withSSRHandler } from "../../utils/withSSRHandler";
 import { useUser } from "../../contexts/UserContext";
 import { csrf, getCookieValue } from "../../utils";
+import toast from "react-hot-toast";
 
 export default function PredstavaPage(pageProps) {
     const [predstava, setPredstava] = useState(pageProps.predstavaData);
@@ -48,11 +49,25 @@ export default function PredstavaPage(pageProps) {
                     brojOcena: res.data.brojOcena,
                     ocenaKorisnika: res.data.ocenaKorisnika,
                     prosecnaOcena: res.data.prosecnaOcena,
+                    naListiZeljaKorisnika: res.data.moved_to_watched
+                        ? true
+                        : prev.naListiOdgledanihKorisnika,
+                    naListiOdgledanihKorisnika: res.data.moved_to_watched
+                        ? true
+                        : prev.naListiOdgledanihKorisnika,
                 }));
-                setRatingLoading(false);
+
+                if (res.data.moved_to_watched) {
+                    toast.success(
+                        "Ocena je sačuvana i predstava je prebačena u odgledane",
+                    );
+                }
             })
             .catch((err) => {
                 console.error(err);
+            })
+            .finally(() => {
+                setRatingLoading(false);
             });
     };
 

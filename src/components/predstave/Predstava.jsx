@@ -78,6 +78,23 @@ const Predstava = ({ data, updateData }) => {
                     },
                 },
             );
+            let toastText =
+                "Uspešno dodat komentar. Biće vidljiv nakon odobrenja.";
+
+            if (res.data.moved_to_watched) {
+                toastText += " Predstava je prebačena u odgledane.";
+                updateData((prev) => ({
+                    ...prev,
+                    naListiZeljaKorisnika: res.data.moved_to_watched
+                        ? true
+                        : prev.naListiOdgledanihKorisnika,
+                    naListiOdgledanihKorisnika: res.data.moved_to_watched
+                        ? true
+                        : prev.naListiOdgledanihKorisnika,
+                }));
+            }
+
+            toast.success(toastText);
         } catch (err) {
             console.error(err);
             setErrors(
@@ -85,14 +102,14 @@ const Predstava = ({ data, updateData }) => {
                     general: "An error occurred while submitting the comment.",
                 },
             );
+        } finally {
+            setKomentarFormData({
+                tekst_komentara: "",
+                predstavaid: data.predstavaid,
+                korisnikid: user?.id,
+            });
+            setKomentarLoading(false);
         }
-        setKomentarFormData({
-            tekst_komentara: "",
-            predstavaid: data.predstavaid,
-            korisnikid: user?.id,
-        });
-        setKomentarLoading(false);
-        toast.success("Uspešno dodat komentar. Biće vidljiv nakon odobrenja.");
     };
 
     return (
@@ -253,6 +270,13 @@ const Predstava = ({ data, updateData }) => {
                                     title={`Komentari (${data.komentari?.length})`}
                                     key="pred-komentari"
                                 />
+                                {data.komentari.length == 0 && (
+                                    <p>
+                                        Još nema komentara za ovu predstavu.
+                                        Budite prvi koji će podeliti svoj
+                                        utisak.
+                                    </p>
+                                )}
                                 {showAllComments
                                     ? data.komentari?.map((komentar) => (
                                           <>
@@ -330,7 +354,7 @@ const Predstava = ({ data, updateData }) => {
                                     </button>
                                 )}
                                 <div className="predstava-komentar-form-wrapper">
-                                    <h3>Dodaj komentar</h3>
+                                    <h4>Dodaj komentar</h4>
                                     <Form>
                                         <Form.Control
                                             as="textarea"

@@ -43,32 +43,30 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
         <>
             <HeadMeta metaTitle="HuPkast" />
 
-            <div className="random-posts section-gap">
-                <div className="container">
-                    {loading && (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            className="hup-spinner"
-                        />
-                    )}
+            <div className="category-index-wraper p-t-xs-60">
+                {loading && (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        className="hup-spinner"
+                    />
+                )}
 
-                    <div className="axil-content">
-                        {hupkast.map((hup) => (
-                            <HuPkastIndexLayout
-                                hupkastData={hup}
-                                key={hup.tekstid}
-                            />
-                        ))}
-                        {!loading && currentPage < totalPages && (
-                            <button
-                                className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
-                                onClick={loadMore}
-                            >
-                                Učitaj još
-                            </button>
-                        )}
-                    </div>
+                <div className="axil-content">
+                    {hupkast.map((hup) => (
+                        <HuPkastIndexLayout
+                            hupkastData={hup}
+                            key={hup.tekstid}
+                        />
+                    ))}
+                    {!loading && currentPage < totalPages && (
+                        <button
+                            className="btn btn-primary btn-small btn-load-more d-block mx-auto mt-4"
+                            onClick={loadMore}
+                        >
+                            Učitaj još
+                        </button>
+                    )}
                 </div>
             </div>
         </>

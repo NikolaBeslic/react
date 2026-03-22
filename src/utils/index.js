@@ -83,6 +83,18 @@ const toIntArray = (value) => {
         .filter(Boolean);
 };
 
+const formatDuration = (time) => {
+    if (!time) return "";
+
+    let [hours, minutes, seconds] = time.split(":").map(Number);
+
+    if (hours > 0) {
+        return `${hours} sat ${minutes} min`;
+    }
+
+    return `${minutes} min`;
+};
+
 export {
     slugify,
     removeDuplicates,
@@ -93,4 +105,5 @@ export {
     addParagraphIfNotExists,
     dayInMonthComparator,
     toIntArray,
+    formatDuration,
 };

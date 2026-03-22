@@ -7,6 +7,7 @@ import { useState } from "react";
 import axiosClient from "../../utils/axios";
 import { csrf, getCookieValue } from "../../utils";
 import PredstaveLayout from "../post/layout/PredstaveLayout";
+import EmptyState from "../predstave/EmptyState";
 
 const KorisnickiProfil = ({ korisnik }) => {
     const [listaZelja, setListaZelja] = useState(korisnik.lista_zelja);
@@ -131,43 +132,81 @@ const KorisnickiProfil = ({ korisnik }) => {
                                 <Tab.Pane eventKey="zelje">
                                     <div className="axil-team-grid-wrapper p-t-xs-10">
                                         <Row>
-                                            {listaZelja?.map((lz) => (
-                                                <div
-                                                    className="col-lg-4 col-md-4 col-sm-6"
-                                                    key={`lzdiv-${lz.predstavaid}`}
-                                                >
-                                                    <PredstavaListaZelja
-                                                        key={`lz-${lz.predstavaid}`}
-                                                        data={lz}
-                                                        onPrebaci={
-                                                            handlePrebaciUOdgledane
-                                                        }
-                                                        onRemove={
-                                                            handleObrisiSaListeZelja
-                                                        }
-                                                    />
-                                                </div>
-                                            ))}
+                                            {listaZelja?.length > 0 ? (
+                                                <>
+                                                    {listaZelja?.map((lz) => (
+                                                        <div
+                                                            className="col-lg-4 col-md-4 col-sm-6"
+                                                            key={`lzdiv-${lz.predstavaid}`}
+                                                        >
+                                                            <PredstavaListaZelja
+                                                                key={`lz-${lz.predstavaid}`}
+                                                                data={lz}
+                                                                onPrebaci={
+                                                                    handlePrebaciUOdgledane
+                                                                }
+                                                                onRemove={
+                                                                    handleObrisiSaListeZelja
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ))}
+                                                </>
+                                            ) : (
+                                                <EmptyState
+                                                    icon="heart"
+                                                    title="Još nemate predstava u listi želja"
+                                                    text="Sačuvajte predstave koje želite da pogledate i pronađite ih kasnije na jednom mestu."
+                                                    buttonText="Istraži repertoar"
+                                                    href="/repertoar"
+                                                />
+                                            )}
                                         </Row>
                                     </div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="odgledane">
-                                    {listaOdgledanih?.map((odg) => (
-                                        <PredstavaOdgledana
-                                            data={odg}
-                                            handleRate={oceniOdgledanuPredstavu}
-                                            pClass=""
-                                            key={`pred${odg.predstavaid}`}
+                                    {listaOdgledanih?.length > 0 ? (
+                                        <>
+                                            {listaOdgledanih?.map((odg) => (
+                                                <PredstavaOdgledana
+                                                    data={odg}
+                                                    handleRate={
+                                                        oceniOdgledanuPredstavu
+                                                    }
+                                                    pClass=""
+                                                    key={`pred${odg.predstavaid}`}
+                                                />
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <EmptyState
+                                            icon="eye"
+                                            title="Još nemate odgledanih predstava"
+                                            text="Dodajte predstave koje ste pogledali i vodite svoju ličnu evidenciju."
+                                            buttonText="Pregledaj predstave"
+                                            href="/predstave"
                                         />
-                                    ))}
+                                    )}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="komentari">
-                                    {korisnik.komentari?.map((kom) => (
-                                        <KorisnikKomentar
-                                            key={`kk-${kom.komentarid}`}
-                                            data={kom}
+                                    {korisnik.komentari?.length > 0 ? (
+                                        <>
+                                            {korisnik.komentari?.map((kom) => (
+                                                <KorisnikKomentar
+                                                    key={`kk-${kom.komentarid}`}
+                                                    data={kom}
+                                                />
+                                            ))}
+                                        </>
+                                    ) : (
+                                        <EmptyState
+                                            icon="comment"
+                                            title="Još niste ostavili nijedan komentar"
+                                            text="Vaši utisci o predstavama i tekstovima pojaviće se ovde."
+                                            buttonText="Pregledaj sadržaj"
+                                            href="/predstave"
                                         />
-                                    ))}
+                                    )}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="pozorista">
                                     <div className="axil-team-grid-wrapper p-t-xs-10">

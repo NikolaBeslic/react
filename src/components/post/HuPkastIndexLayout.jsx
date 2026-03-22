@@ -7,12 +7,12 @@ import { faHourglassStart } from "@fortawesome/free-solid-svg-icons";
 import { formatDuration } from "../../utils";
 import { useMediaQuery } from "react-responsive";
 
-const HuPkastIndexLayout = ({ hupkastData }) => {
+const HuPkastIndexLayout = ({ hupkastData, isNaslovna = false }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
 
     return (
         <div
-            className="hupkast-index-wrapper post-block__mid bg-grey-light-three"
+            className={`hupkast-index-wrapper post-block__mid ${!isNaslovna ? "bg-grey-light-three" : "hupkast-naslovna-wrapper"}`}
             key={hupkastData.tekstid}
         >
             <div className="hupkast-index-photo">

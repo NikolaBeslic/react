@@ -2,9 +2,7 @@ import SectionTitle from "../elements/SectionTitle";
 import PostLayoutThree from "./layout/PostLayoutThree";
 
 const PostSectionTwo = ({ postData }) => {
-    const storyPost = postData.filter(
-        (post) => post.kategorija?.naziv_kategorije == "recenzija"
-    );
+    const storyPost = postData.recenzije;
 
     return (
         <div className="section-gap section-gap-top__with-text top-stories bg-grey-light-three">
@@ -17,7 +15,7 @@ const PostSectionTwo = ({ postData }) => {
                 />
                 <div className="row">
                     <div className="col-lg-8">
-                        {storyPost.slice(0, 1).map((data) => (
+                        {storyPost?.slice(0, 1).map((data) => (
                             <PostLayoutThree
                                 data={data}
                                 postSizeLg={true}
@@ -26,7 +24,7 @@ const PostSectionTwo = ({ postData }) => {
                         ))}
                     </div>
                     <div className="col-lg-4">
-                        {storyPost.slice(1, 3).map((data) => (
+                        {storyPost?.slice(1, 3).map((data) => (
                             <PostLayoutThree
                                 data={data}
                                 key={`rec2-${data.tekstid}`}

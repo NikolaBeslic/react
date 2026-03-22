@@ -10,10 +10,16 @@ export default function HomeSix() {
 
     useEffect(() => {
         setLoading(true);
-        axiosClient.get("/get-posts").then((res) => {
-            setPosts(res.data);
-            setLoading(false);
-        });
+        axiosClient
+            .get("/get-posts")
+            .then((res) => {
+                console.log("posts");
+                console.log(res.data);
+                setPosts(res.data);
+
+                setLoading(false);
+            })
+            .catch((error) => console.error(error));
         axiosClient
             .get("/get-predstave-naslovna")
             .then((res) => {

@@ -11241,7 +11241,7 @@ address .tel i {
     /* vertically centers the content */
     gap: 16px;
     /* space between image and text */
-    max-width: 800px;
+    max-width: 950px;
     margin: 4rem 0;
     background-color: #fff;
     padding: 20px;

@@ -24,6 +24,7 @@ const HupHome = ({ posts, predstave, homeLoading }) => {
             )}
             {!homeLoading && (
                 <>
+                    {/* Najnoviji tekstovi */}
                     <PostSectionThree postData={posts} />
                     <HuPkastNaslovnaSection postData={posts} />
                     <NajnovijePredstaveSection

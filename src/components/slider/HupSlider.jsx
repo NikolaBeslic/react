@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 
 const HuPSlider = ({ slidePost }) => {
+    const sliderPosts = slidePost.na_slajderu;
+
     function SlickNextArrow(props) {
         const { className, onClick } = props;
         return (
@@ -80,86 +82,79 @@ const HuPSlider = ({ slidePost }) => {
                                     {...slideSettingsContent}
                                     className="slick-slider-for slick-synced"
                                 >
-                                    {slidePost
-                                        .filter((item) => item.na_slajderu == 1)
-                                        .slice(0, 3)
-                                        .map((data) => (
-                                            <div
-                                                className="item"
-                                                key={data.slug}
-                                            >
-                                                <div className="post-metas home-banner-post-metas m-b-xs-20">
-                                                    <ul className="list-inline">
-                                                        {data.autori.length >
-                                                            0 &&
-                                                            data.autori.map(
-                                                                (autor) => (
-                                                                    <li
-                                                                        className="m-r-xs-20"
-                                                                        key={
-                                                                            autor.autor_slug
-                                                                        }
+                                    {sliderPosts?.map((data) => (
+                                        <div className="item" key={data.slug}>
+                                            <div className="post-metas home-banner-post-metas m-b-xs-20">
+                                                <ul className="list-inline">
+                                                    {data.autori.length > 0 &&
+                                                        data.autori.map(
+                                                            (autor) => (
+                                                                <li
+                                                                    className="m-r-xs-20"
+                                                                    key={
+                                                                        autor.autor_slug
+                                                                    }
+                                                                >
+                                                                    <Link
+                                                                        href={`/autori/${autor.autor_slug}`}
+                                                                        className="d-flex align-items-center"
                                                                     >
-                                                                        <Link
-                                                                            href={`/autori/${autor.autor_slug}`}
-                                                                            className="d-flex align-items-center"
-                                                                        >
-                                                                            <Image
-                                                                                src={
-                                                                                    autor.url_slike
-                                                                                }
-                                                                                alt={
-                                                                                    autor.autor_slug
-                                                                                }
-                                                                                width={
-                                                                                    50
-                                                                                }
-                                                                                height={
-                                                                                    50
-                                                                                }
-                                                                                key={
-                                                                                    autor.autorid
-                                                                                }
-                                                                            />
-                                                                            <span className="m-l-xs-20">
-                                                                                {
-                                                                                    autor.ime_autora
-                                                                                }
-                                                                            </span>
-                                                                        </Link>
-                                                                    </li>
-                                                                ),
-                                                            )}
-                                                    </ul>
-                                                </div>
-                                                {/* End of .post-metas */}
-                                                <h1 className="page-title m-b-xs-40 hover-line">
-                                                    <Link
-                                                        href={`${data.kategorija.kategorija_slug}/${data.slug}`}
-                                                        legacyBehavior
-                                                    >
-                                                        {data.naslov}
-                                                    </Link>
-                                                </h1>
-                                                <div className="btn-group">
-                                                    <Link
-                                                        href={`${data.kategorija.kategorija_slug}/${data.slug}`}
-                                                        className="btn btn-primary m-r-xs-30"
-                                                    >
-                                                        PROČITAJ VIŠE
-                                                    </Link>
-                                                    <Link
-                                                        href={`/${data.kategorija.kategorija_slug}`}
-                                                        className="btn-link"
-                                                    >
-                                                        {
-                                                            data.kategorija
-                                                                .naziv_kategorije
-                                                        }
-                                                    </Link>
-                                                </div>
+                                                                        <Image
+                                                                            src={
+                                                                                autor.url_slike
+                                                                            }
+                                                                            alt={
+                                                                                autor.autor_slug
+                                                                            }
+                                                                            width={
+                                                                                50
+                                                                            }
+                                                                            height={
+                                                                                50
+                                                                            }
+                                                                            key={
+                                                                                autor.autorid
+                                                                            }
+                                                                        />
+                                                                        <span className="m-l-xs-20">
+                                                                            {
+                                                                                autor.ime_autora
+                                                                            }
+                                                                        </span>
+                                                                    </Link>
+                                                                </li>
+                                                            ),
+                                                        )}
+                                                </ul>
                                             </div>
-                                        ))}
+                                            {/* End of .post-metas */}
+                                            <h1 className="page-title m-b-xs-40 hover-line">
+                                                <Link
+                                                    href={`${data.kategorija.kategorija_slug}/${data.slug}`}
+                                                    legacyBehavior
+                                                >
+                                                    {data.naslov}
+                                                </Link>
+                                            </h1>
+                                            <div className="btn-group">
+                                                <Link
+                                                    href={`${data.kategorija.kategorija_slug}/${data.slug}`}
+                                                    className="btn btn-primary m-r-xs-30"
+                                                >
+                                                    PROČITAJ VIŠE
+                                                </Link>
+                                                <Link
+                                                    href={`/${data.kategorija.kategorija_slug}`}
+                                                    className="btn-link"
+                                                >
+                                                    {
+                                                        data.kategorija
+                                                            .naziv_kategorije
+                                                    }
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </Slider>
                             </div>
                         </div>
@@ -171,19 +166,16 @@ const HuPSlider = ({ slidePost }) => {
                             {...slideSettingsImage}
                             className="slick-slider-nav slick-synced"
                         >
-                            {slidePost
-                                .filter((item) => item.na_slajderu == 1)
-                                .slice(0, 3)
-                                .map((data) => (
-                                    <div className="item" key={data.slug}>
-                                        <Image
-                                            src={data.tekst_photo}
-                                            alt={data.slug}
-                                            width={960}
-                                            height={600}
-                                        />
-                                    </div>
-                                ))}
+                            {sliderPosts?.map((data) => (
+                                <div className="item" key={data.slug}>
+                                    <Image
+                                        src={data.tekst_photo}
+                                        alt={data.slug}
+                                        width={960}
+                                        height={600}
+                                    />
+                                </div>
+                            ))}
                         </Slider>
                     </div>
                 </>

@@ -6,7 +6,7 @@ import { useMediaQuery } from "react-responsive";
 
 const HuPSliderMobile = ({ slidePost }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
-
+    const sliderPosts = slidePost.na_slajderu;
     function SlickNextArrow(props) {
         const { className, onClick } = props;
         return (
@@ -80,22 +80,16 @@ const HuPSliderMobile = ({ slidePost }) => {
                                     {...slideSettingsImage}
                                     className="slick-slider-nav slick-synced"
                                 >
-                                    {slidePost
-                                        .filter((item) => item.na_slajderu == 1)
-                                        .slice(0, 3)
-                                        .map((data) => (
-                                            <div
-                                                className="item"
-                                                key={data.slug}
-                                            >
-                                                <Image
-                                                    src={data.tekst_photo}
-                                                    alt={data.slug}
-                                                    width={960}
-                                                    height={600}
-                                                />
-                                            </div>
-                                        ))}
+                                    {sliderPosts.map((data) => (
+                                        <div className="item" key={data.slug}>
+                                            <Image
+                                                src={data.tekst_photo}
+                                                alt={data.slug}
+                                                width={960}
+                                                height={600}
+                                            />
+                                        </div>
+                                    ))}
                                 </Slider>
                             </div>
                             <div className="container">
@@ -106,32 +100,26 @@ const HuPSliderMobile = ({ slidePost }) => {
                                     {...slideSettingsContent}
                                     className="slick-slider-for slick-synced"
                                 >
-                                    {slidePost
-                                        .filter((item) => item.na_slajderu == 1)
-                                        .slice(0, 3)
-                                        .map((data) => (
-                                            <div
-                                                className="item"
-                                                key={data.slug}
-                                            >
-                                                <h1 className="page-title m-b-xs-40 hover-line">
-                                                    <Link
-                                                        href={`${data.kategorija.kategorija_slug}/${data.slug}`}
-                                                        legacyBehavior
-                                                    >
-                                                        {data.naslov}
-                                                    </Link>
-                                                </h1>
-                                                <div className="btn-group">
-                                                    <Link
-                                                        href={`${data.kategorija.kategorija_slug}/${data.slug}`}
-                                                        className="btn btn-primary m-r-xs-30"
-                                                    >
-                                                        PROČITAJ VIŠE
-                                                    </Link>
-                                                </div>
+                                    {sliderPosts.map((data) => (
+                                        <div className="item" key={data.slug}>
+                                            <h1 className="page-title m-b-xs-40 hover-line">
+                                                <Link
+                                                    href={`${data.kategorija.kategorija_slug}/${data.slug}`}
+                                                    legacyBehavior
+                                                >
+                                                    {data.naslov}
+                                                </Link>
+                                            </h1>
+                                            <div className="btn-group">
+                                                <Link
+                                                    href={`${data.kategorija.kategorija_slug}/${data.slug}`}
+                                                    className="btn btn-primary m-r-xs-30"
+                                                >
+                                                    PROČITAJ VIŠE
+                                                </Link>
                                             </div>
-                                        ))}
+                                        </div>
+                                    ))}
                                 </Slider>
                             </div>
                         </div>

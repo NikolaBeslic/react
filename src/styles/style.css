@@ -11037,6 +11037,18 @@ address .tel i {
     list-style-type: none;
 }
 
+.predstava-meta-info-list a {
+    color: var(--primary-color);
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s ease;
+}
+
+.predstava-meta-info-list a:hover {
+    border-bottom-color: #6c0101 !important;
+}
+
 .predstava-komentar-wrapper {
 
     background-color: #f2f0f0;
@@ -11229,6 +11241,14 @@ address .tel i {
 .predstave-naslovna-card-text {
     font-size: 1.3rem;
     line-height: 2.2rem;
+}
+
+.predstave-naslovna-card-pozorista {
+    margin-bottom: 5px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 .hupkast-naslovna-wrapper {

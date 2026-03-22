@@ -1,6 +1,14 @@
 import moment from "moment";
 import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSquareCheck, faComments } from "@fortawesome/free-regular-svg-icons";
+import {
+    faAt,
+    faCalendarDay,
+    faListCheck,
+    faStarHalfStroke,
+} from "@fortawesome/free-solid-svg-icons";
 
 const KorisnikHeader = ({ korisnik }) => {
     return (
@@ -15,48 +23,50 @@ const KorisnikHeader = ({ korisnik }) => {
                             <h1 className="m-b-xs-0 axil-post-title hover-line">
                                 {korisnik.korisnicko_ime}
                             </h1>
-                            <div className="post-metas banner-post-metas m-t-xs-20">
-                                <ul className="list-inline">
-                                    <li>
+                            <div className="post-metas korisnik-meta banner-post-metas m-t-xs-20">
+                                <ul className="korisnik-meta-list">
+                                    {/* <li>
                                         <i className="fa-regular fa-location-dot"></i>
                                         Grad
-                                    </li>
-                                    <li>
-                                        <i className="fa-regular fa-at"></i>
+                                    </li> */}
+                                    <li className="korisnik-meta-item">
+                                        <FontAwesomeIcon icon={faAt} />
                                         {korisnik.email}
                                     </li>
-                                    <li>
-                                        <i className="fa-regular fa-calendar-day"></i>
-                                        Na hocupozoriste od:{" "}
-                                        {moment(korisnik.created_at).format(
-                                            "DD. MMM yyyy",
-                                        )}
+                                    <li className="korisnik-meta-item">
+                                        <FontAwesomeIcon icon={faCalendarDay} />
+                                        <span>Na hocupozoriste od: </span>
+                                        <strong>
+                                            {moment(korisnik.created_at).format(
+                                                "DD. MMM yyyy.",
+                                            )}
+                                        </strong>
                                     </li>
                                 </ul>
-                                <ul className="list-inline">
-                                    <li>
-                                        <i className="fa-regular fa-square-check"></i>
-                                        Odgledanih predstava:{" "}
+                                <ul className="korisnik-meta-list">
+                                    <li className="korisnik-meta-item">
+                                        <FontAwesomeIcon icon={faSquareCheck} />
+                                        <span>Odgledanih predstava: </span>
                                         <strong>
                                             {korisnik.lista_odgledanih?.length}
                                         </strong>
                                     </li>
-                                    <li>
-                                        <i className="fa-regular fa-comments"></i>
-                                        Komentara:{" "}
+                                    <li className="korisnik-meta-item">
+                                        <FontAwesomeIcon icon={faComments} />
+                                        <span>Komentara: </span>
                                         <strong>
                                             {korisnik.komentari?.length}
                                         </strong>
                                     </li>
 
-                                    <li>
-                                        <i className="fa-solid fa-list-check"></i>
-                                        Na listi želja:{" "}
+                                    <li className="korisnik-meta-item">
+                                        <FontAwesomeIcon icon={faListCheck} />
+                                        <span>Na listi želja: </span>
                                         <strong>
                                             {korisnik.lista_zelja?.length}
                                         </strong>
                                     </li>
-                                    <li>
+                                    {/* <li>
                                         <i className="fa-regular fa-heart"></i>{" "}
                                         Omiljena pozorista:{" "}
                                         <strong>
@@ -65,12 +75,14 @@ const KorisnikHeader = ({ korisnik }) => {
                                                     ?.length
                                             }
                                         </strong>
-                                    </li>
-                                    <li>
-                                        <i className="fa-regular fa-star"></i>
-                                        Prosecna ocena:
+                                    </li> */}
+                                    <li className="korisnik-meta-item">
+                                        <FontAwesomeIcon
+                                            icon={faStarHalfStroke}
+                                        />
+                                        <span>Prosecna ocena: </span>
                                         <strong>
-                                            {korisnik.prosecna_ocena}
+                                            {korisnik.prosecna_ocena ?? 0}
                                         </strong>
                                     </li>
                                 </ul>

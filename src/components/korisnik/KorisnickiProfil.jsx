@@ -29,7 +29,9 @@ const KorisnickiProfil = ({ korisnik }) => {
                 },
             );
 
-            const predstava = res.data;
+            const predstava = listaZelja.find(
+                (lz) => lz.predstavaid === predstavaid,
+            );
             setListaZelja((prev) =>
                 prev.filter(
                     (item) => item.predstavaid !== predstava.predstavaid,

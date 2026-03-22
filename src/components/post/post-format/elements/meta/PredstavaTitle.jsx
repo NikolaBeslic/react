@@ -80,33 +80,6 @@ const PredstavaTitle = ({
                                     <h1 className="m-b-xs-15 m-t-xs-15 predstava-single-title hover-line">
                                         {metaData.naziv_predstave}
                                     </h1>
-                                    <ul className="list-inline predstava-single-pozorista-list">
-                                        <li>
-                                            <p>
-                                                <FontAwesomeIcon
-                                                    icon={faMasksTheater}
-                                                />
-                                                {metaData.pozorista?.map(
-                                                    (pozoriste) => (
-                                                        <span
-                                                            className="author-name text-muted"
-                                                            key={
-                                                                pozoriste.pozoristeid
-                                                            }
-                                                        >
-                                                            <Link
-                                                                href={`/pozorista/${pozoriste.pozoriste_slug}`}
-                                                            >
-                                                                {
-                                                                    pozoriste.naziv_pozorista
-                                                                }
-                                                            </Link>
-                                                        </span>
-                                                    ),
-                                                )}
-                                            </p>
-                                        </li>
-                                    </ul>
                                     <div className="col-sm-12 col-xs-12">
                                         <div
                                             className="predstava-single-plakat"
@@ -127,7 +100,34 @@ const PredstavaTitle = ({
                                     </div>
                                     <div className="col-sm-12 col-xs-12">
                                         <div className="post-metas banner-post-metas m-t-xs-20 predstava-single-metas">
-                                            <ul className="list-inline">
+                                            <ul className="list-inline predstava-meta-info-list">
+                                                <li>
+                                                    <i className="fa-regular fa-building-columns"></i>
+                                                    {metaData.pozorista?.map(
+                                                        (pozoriste, index) => (
+                                                            <span
+                                                                className="author-name text-muted"
+                                                                key={
+                                                                    pozoriste.pozoristeid
+                                                                }
+                                                            >
+                                                                <Link
+                                                                    href={`/pozorista/${pozoriste.pozoriste_slug}`}
+                                                                >
+                                                                    {
+                                                                        pozoriste.naziv_pozorista
+                                                                    }
+                                                                </Link>
+                                                                {index <
+                                                                    metaData
+                                                                        .pozorista
+                                                                        .length -
+                                                                        1 &&
+                                                                    " · "}
+                                                            </span>
+                                                        ),
+                                                    )}
+                                                </li>
                                                 <li>
                                                     <i className="fa-light fa-calendar-day"></i>
                                                     Premijera:{" "}
@@ -322,9 +322,12 @@ const PredstavaTitle = ({
                                                 <div className="post-metas banner-post-metas m-t-xs-20">
                                                     <ul className="predstava-meta-info-list">
                                                         <li>
-                                                            <i className="fa-solid fa-masks-theater"></i>
+                                                            <i className="fa-regular fa-building-columns"></i>
                                                             {metaData.pozorista?.map(
-                                                                (pozoriste) => (
+                                                                (
+                                                                    pozoriste,
+                                                                    index,
+                                                                ) => (
                                                                     <span
                                                                         className="author-name text-muted"
                                                                         key={
@@ -337,7 +340,13 @@ const PredstavaTitle = ({
                                                                             {
                                                                                 pozoriste.naziv_pozorista
                                                                             }
-                                                                        </Link>{" "}
+                                                                        </Link>
+                                                                        {index <
+                                                                            metaData
+                                                                                .pozorista
+                                                                                .length -
+                                                                                1 &&
+                                                                            " · "}
                                                                     </span>
                                                                 ),
                                                             )}

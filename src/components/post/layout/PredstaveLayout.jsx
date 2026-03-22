@@ -93,13 +93,17 @@ const PredstaveLayout = ({
                 <div className="post-metas">
                     <ul className="list-inline">
                         {showPozoriste
-                            ? data.pozorista.map((poz) => (
+                            ? data.pozorista.map((poz, index) => (
                                   <li key={poz.pozoristeid}>
                                       <span className="pozoriste-desktop-name">
                                           {poz.naziv_pozorista}
+                                          {index < data.pozorista.length - 1 &&
+                                              ", "}
                                       </span>
                                       <span className="pozoriste-mobile-name">
                                           {poz.skraceni_naziv}
+                                          {index < data.pozorista.length - 1 &&
+                                              ", "}
                                       </span>
                                   </li>
                               ))

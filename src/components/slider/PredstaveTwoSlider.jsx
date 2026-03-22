@@ -1,5 +1,4 @@
 import { Swiper, SwiperSlide } from "swiper/react";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -8,6 +7,8 @@ import { Card } from "react-bootstrap";
 import moment from "moment";
 import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBuildingColumns } from "@fortawesome/free-solid-svg-icons";
 
 function PredstaveTwoSlider({ predstaveData }) {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
@@ -64,13 +65,27 @@ function PredstaveTwoSlider({ predstaveData }) {
                                             key={`ctxt-${data.predstavaid}`}
                                             className="predstave-naslovna-card-text"
                                         >
-                                            <i className="fa-solid fa-building-columns"></i>{" "}
-                                            {data.pozorista.map((poz) => (
-                                                <span key={poz.pozoristeid}>
-                                                    {poz.naziv_pozorista}
-                                                </span>
-                                            ))}{" "}
-                                            <br />
+                                            <span className="predstave-naslovna-card-pozorista">
+                                                <i className="fa-regular fa-building-columns"></i>{" "}
+                                                {data.pozorista.map(
+                                                    (poz, index) => (
+                                                        <>
+                                                            <span>
+                                                                {
+                                                                    poz.naziv_pozorista
+                                                                }
+                                                                {index <
+                                                                    data
+                                                                        .pozorista
+                                                                        .length -
+                                                                        1 &&
+                                                                    ", "}
+                                                            </span>
+                                                        </>
+                                                    ),
+                                                )}{" "}
+                                            </span>
+
                                             {data.prosecna_ocena ? (
                                                 <>
                                                     <i className="fa-solid fa-star"></i>{" "}

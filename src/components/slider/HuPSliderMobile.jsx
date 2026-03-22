@@ -7,23 +7,6 @@ import { useMediaQuery } from "react-responsive";
 const HuPSliderMobile = ({ slidePost }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     const sliderPosts = slidePost.na_slajderu;
-    function SlickNextArrow(props) {
-        const { className, onClick } = props;
-        return (
-            <button className={className} onClick={onClick}>
-                <i className="feather icon-chevron-right"></i>
-            </button>
-        );
-    }
-
-    function SlickPrevArrow(props) {
-        const { className, onClick } = props;
-        return (
-            <button className={className} onClick={onClick}>
-                <i className="feather icon-chevron-left"></i>
-            </button>
-        );
-    }
 
     const slideSettingsContent = {
         infinite: true,
@@ -80,7 +63,7 @@ const HuPSliderMobile = ({ slidePost }) => {
                                     {...slideSettingsImage}
                                     className="slick-slider-nav slick-synced"
                                 >
-                                    {sliderPosts.map((data) => (
+                                    {sliderPosts?.map((data) => (
                                         <div className="item" key={data.slug}>
                                             <Image
                                                 src={data.tekst_photo}
@@ -100,7 +83,7 @@ const HuPSliderMobile = ({ slidePost }) => {
                                     {...slideSettingsContent}
                                     className="slick-slider-for slick-synced"
                                 >
-                                    {sliderPosts.map((data) => (
+                                    {sliderPosts?.map((data) => (
                                         <div className="item" key={data.slug}>
                                             <h1 className="page-title m-b-xs-40 hover-line">
                                                 <Link

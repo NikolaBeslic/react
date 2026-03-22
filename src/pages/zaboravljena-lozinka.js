@@ -6,7 +6,6 @@ import { csrf, getCookieValue } from "../utils";
 import toast from "react-hot-toast";
 import axiosClient from "../utils/axios";
 import ForgotPasswordHeader from "../components/post/post-format/elements/meta/ForgotPasswordHeader";
-import { toast } from "react-hot-toast";
 
 const ZaboravljenaLozinkaPage = () => {
     const [email, setEmail] = useState("");

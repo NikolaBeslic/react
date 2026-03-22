@@ -82,7 +82,11 @@ const PredstaveLayout = ({
                     )}
                 </div>
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                    <Link href={`/predstave/${data.predstava_slug}`}>
+                    <Link
+                        href={`/predstave/${data.predstava_slug}`}
+                        aria-label={data.naziv_predstave}
+                        title={data.naziv_predstave}
+                    >
                         {data.naziv_predstave}
                     </Link>
                 </h3>

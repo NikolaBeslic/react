@@ -44,7 +44,11 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                     ))} */}
 
                 <h4 className="axil-post-title hover-line hover-line">
-                    <Link href={`/predstave/${data.predstava_slug}`}>
+                    <Link
+                        href={`/predstave/${data.predstava_slug}`}
+                        aria-label={data.naziv_predstave}
+                        title={data.naziv_predstave}
+                    >
                         {data.naziv_predstave}
                     </Link>
                 </h4>

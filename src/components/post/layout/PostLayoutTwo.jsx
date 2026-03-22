@@ -38,6 +38,7 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                     <Link
                         href={`/${data.kategorija?.kategorija_slug}/${data.slug}`}
                         title={data.naslov}
+                        aria-label={data.naslov}
                     >
                         {data.naslov}
                     </Link>

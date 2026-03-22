@@ -43,7 +43,11 @@ const FestivaliLayout = ({ data, pClass, videoIcon }) => {
 
             <div className="media-body festival-index-info">
                 <h3 className="axil-post-title hover-line hover-line predstava-index-title">
-                    <Link href={`/festivali/${data.festival_slug}`}>
+                    <Link
+                        href={`/festivali/${data.festival_slug}`}
+                        aria-label={data.naziv_festivala}
+                        title={data.naziv_festivala}
+                    >
                         {data.naziv_festivala}
                     </Link>
                 </h3>

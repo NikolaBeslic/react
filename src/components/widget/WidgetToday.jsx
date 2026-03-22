@@ -78,6 +78,14 @@ const WidgetToday = ({ izvodjenja }) => {
                                         <h6 className="hover-line hover-line predstava-index-title">
                                             <Link
                                                 href={`/predstave/${izv.predstava.predstava_slug}`}
+                                                title={
+                                                    izv.predstava
+                                                        .naziv_predstave
+                                                }
+                                                aria-label={
+                                                    izv.predstava
+                                                        .naziv_predstave
+                                                }
                                             >
                                                 {izv.predstava.naziv_predstave}
                                             </Link>

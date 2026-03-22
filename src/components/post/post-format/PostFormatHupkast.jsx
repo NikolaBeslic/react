@@ -4,8 +4,8 @@ const PostFormatHupkast = ({ postData }) => {
     return (
         <>
             <main className="site-main">
-                <div className="single-blog-wrapper p-t-xs-60">
-                    <div className="m-b-xs-50">
+                <div className="single-blog-wrapper p-t-xs-40 p-t-md-60">
+                    <div className="m-b-xs-30">
                         {postData.hupkast?.mp3_url && (
                             <>
                                 <p>Slušajte ovde:</p>
@@ -21,9 +21,9 @@ const PostFormatHupkast = ({ postData }) => {
                         )}
                     </div>
 
-                    <div className="m-b-xs-30 row">
+                    <div className="m-b-xs-30">
+                        <p className="hupkast-links-text">Ili na:</p>
                         <div className="hupkast-links-wrap">
-                            <p>Ili na:</p>
                             <div className="btn-group">
                                 {postData.hupkast?.linkovi.map((link) => (
                                     <a

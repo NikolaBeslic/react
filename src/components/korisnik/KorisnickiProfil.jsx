@@ -315,7 +315,7 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             if (tabKey === "zelja") {
                 return (
                     <EmptyState
-                        icon="heart"
+                        icon="listCheck"
                         title="Još nemate predstava na listi želja"
                         text="Sačuvajte predstave koje želite da pogledate i pronađite ih kasnije na jednom mestu."
                         buttonText="Istraži repertoare"

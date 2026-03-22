@@ -2,14 +2,14 @@ import Link from "next/link";
 import { Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faHeart,
     faEye,
     faCommentDots,
     faInbox,
 } from "@fortawesome/free-regular-svg-icons";
+import { faListCheck } from "@fortawesome/free-solid-svg-icons";
 
 const iconMap = {
-    heart: faHeart,
+    listCheck: faListCheck,
     eye: faEye,
     comment: faCommentDots,
     inbox: faInbox,

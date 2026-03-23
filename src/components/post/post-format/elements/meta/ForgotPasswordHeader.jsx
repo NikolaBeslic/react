@@ -5,7 +5,6 @@ const ForgotPasswordHeader = () => {
     return (
         <>
             <HeadMeta metaTitle="Zaboravljena lozinka" />
-            <Breadcrumb aPage="Zaboravljena lozinka" />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

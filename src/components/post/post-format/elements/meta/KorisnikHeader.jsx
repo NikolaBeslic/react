@@ -14,7 +14,6 @@ const KorisnikHeader = ({ korisnik }) => {
     return (
         <>
             <HeadMeta metaTitle="Korisnicki profil" />
-            <Breadcrumb aPage="Korisnicki profil" />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

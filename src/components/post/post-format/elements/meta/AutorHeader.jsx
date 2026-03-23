@@ -8,7 +8,6 @@ const AutorHeader = ({ autor }) => {
     return (
         <>
             <HeadMeta metaTitle={autor.ime_autora} />
-            <Breadcrumb bCat="Redakcija" aPage={autor.ime_autora} />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

@@ -62,10 +62,6 @@ const MetaDataFestival = ({ metaData }) => {
                 </div>
             ) : (
                 <>
-                    <Breadcrumb
-                        bCat="Festivali"
-                        aPage={metaData.naziv_festivala}
-                    />
                     <div className="banner banner__default bg-grey-light-three">
                         <div className="container">
                             <div className="row festival-single-wrap">

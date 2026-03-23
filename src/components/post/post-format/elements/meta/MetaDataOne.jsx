@@ -1,7 +1,5 @@
 import Image from "next/legacy/image";
 import moment from "moment";
-import { Badge, Stack } from "react-bootstrap";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import Link from "next/link";
 import { useMediaQuery } from "react-responsive";
 
@@ -87,10 +85,6 @@ const MetaDataOne = ({ metaData }) => {
             ) : (
                 // Desktop start
                 <>
-                    <Breadcrumb
-                        bCat={metaData.kategorija?.kategorija_slug}
-                        aPage={metaData.naslov}
-                    />
                     <div className="banner banner__single-post banner__standard">
                         <div className="container">
                             <div className="row align-items-center">

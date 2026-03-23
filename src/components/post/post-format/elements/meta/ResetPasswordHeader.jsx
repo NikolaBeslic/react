@@ -1,11 +1,9 @@
-import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
 
 const ResetPasswordHeader = () => {
     return (
         <>
             <HeadMeta metaTitle="Resetuj lozinku" />
-            <Breadcrumb aPage="Resetuj lozinku" />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

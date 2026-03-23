@@ -1,5 +1,4 @@
 import HeadMeta from "../../../../elements/HeadMeta";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import { Button, Spinner } from "react-bootstrap";
 import { useState } from "react";
 import axiosClient from "../../../../../utils/axios";
@@ -40,7 +39,6 @@ const PozoristeSingleHeader = ({ data }) => {
     return (
         <>
             <HeadMeta metaTitle={data.naziv_pozorista} />
-            <Breadcrumb bCat="Pozorista" aPage={data.naziv_pozorista} />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

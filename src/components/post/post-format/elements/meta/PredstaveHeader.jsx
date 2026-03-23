@@ -1,5 +1,4 @@
 import { useMediaQuery } from "react-responsive";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
 
 const PredstaveHeader = () => {
@@ -7,7 +6,6 @@ const PredstaveHeader = () => {
     return (
         <>
             <HeadMeta metaTitle="Predstave" />
-            {!isTabletOrMobile && <Breadcrumb aPage="Predstave" />}
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

@@ -1,6 +1,5 @@
 import Image from "next/legacy/image";
 import moment from "moment";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { faHourglassStart } from "@fortawesome/free-solid-svg-icons";
@@ -58,8 +57,6 @@ const MetaDataHupkast = ({ metaData }) => {
                 </div>
             ) : (
                 <>
-                    <Breadcrumb bCat="HuPkast" aPage={metaData.naslov} />
-
                     <div className="banner banner__single-post banner__standard">
                         <div className="container">
                             <div className="row align-items-center">

@@ -2,11 +2,10 @@ import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import axiosClient from "../../utils/axios";
 import WidgetAd from "../../components/widget/WidgetAd";
-import WidgetPost from "../../components/widget/WidgetPost";
 import WidgetSocialShare from "../../components/widget/WidgetSocialShare";
-import WidgetPremijere from "../../components/widget/WidgetPremijere";
+
 import PostLayoutTwo from "../../components/post/layout/PostLayoutTwo";
-import { Breadcrumb, Spinner } from "react-bootstrap";
+import { Spinner } from "react-bootstrap";
 import HeadMeta from "../../components/elements/HeadMeta";
 
 export default function Page() {
@@ -36,7 +35,6 @@ export default function Page() {
     return (
         <>
             <HeadMeta metaTitle={tag.tag_naziv} />
-            <Breadcrumb aPage={tag.tag_naziv} bCat="Tagovi" />
             {/* Banner Start here  */}
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">

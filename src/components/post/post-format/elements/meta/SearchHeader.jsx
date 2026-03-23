@@ -1,11 +1,10 @@
-import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
 
 const SearchHeader = () => {
     return (
         <>
             <HeadMeta metaTitle="Pretraga" />
-            <Breadcrumb aPage="Pretraga" />
+
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

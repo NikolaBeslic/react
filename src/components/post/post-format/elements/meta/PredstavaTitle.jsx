@@ -4,11 +4,9 @@ import { useMediaQuery } from "react-responsive";
 import Rating from "react-rating";
 import { Button, Spinner } from "react-bootstrap";
 import HeadMeta from "../../../../elements/HeadMeta";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import PredstavaStickyTitle from "./PredstavaStickyTitle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faMasksTheater,
     faFileCirclePlus,
     faCheckDouble,
     faFileImport,
@@ -47,7 +45,6 @@ const PredstavaTitle = ({
     return (
         <>
             <HeadMeta metaTitle={metaData.naziv_predstave} />
-            <Breadcrumb bCat="Predstave" aPage={metaData.naziv_predstave} />
             <PredstavaStickyTitle
                 posterUrl={metaData.plakat}
                 title={metaData.naziv_predstave}

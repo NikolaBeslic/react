@@ -44,7 +44,12 @@ const PredstavaTitle = ({
 
     return (
         <>
-            <HeadMeta metaTitle={metaData.naziv_predstave} />
+            <HeadMeta
+                metaTitle={metaData.seo_title}
+                metaDescription={metaData.seo_description}
+                metaUrl={metaData.seo_url}
+                metaImage={metaData.seo_image}
+            />
             <PredstavaStickyTitle
                 posterUrl={metaData.plakat}
                 title={metaData.naziv_predstave}

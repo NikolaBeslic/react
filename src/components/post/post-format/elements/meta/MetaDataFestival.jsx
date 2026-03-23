@@ -1,7 +1,6 @@
 import Image from "next/image";
 import moment from "moment";
 import HeadMeta from "../../../../elements/HeadMeta";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin, faCalendarDays } from "@fortawesome/free-solid-svg-icons";
 import { useMediaQuery } from "react-responsive";
@@ -23,7 +22,12 @@ const MetaDataFestival = ({ metaData }) => {
 
     return (
         <>
-            <HeadMeta metaTitle={metaData.naziv_festivala} />
+            <HeadMeta
+                metaTitle={metaData.seo_title}
+                metaDescription={metaData.seo_description}
+                metaUrl={metaData.seo_url}
+                metaImage={metaData.seo_image}
+            />
             {isTabletOrMobile ? (
                 <div className="banner banner__default bg-grey-light-three">
                     <div className="container">

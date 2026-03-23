@@ -38,7 +38,12 @@ const PozoristeSingleHeader = ({ data }) => {
 
     return (
         <>
-            <HeadMeta metaTitle={data.naziv_pozorista} />
+            <HeadMeta
+                metaTitle={data.seo_title}
+                metaDescription={data.seo_description}
+                metaUrl={data.seo_url}
+                metaImage={data.seo_image}
+            />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

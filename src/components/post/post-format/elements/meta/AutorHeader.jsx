@@ -7,7 +7,12 @@ import { faLocationDot, faUserPen } from "@fortawesome/free-solid-svg-icons";
 const AutorHeader = ({ autor }) => {
     return (
         <>
-            <HeadMeta metaTitle={autor.ime_autora} />
+            <HeadMeta
+                metaTitle={autor.seo_title}
+                metaDescription={autor.seo_description}
+                metaUrl={autor.seo_url}
+                metaImage={autor.seo_image}
+            />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

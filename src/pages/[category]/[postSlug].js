@@ -8,7 +8,12 @@ import MetaDataOne from "../../components/post/post-format/elements/meta/MetaDat
 export default function Page({ post, relatedPosts }) {
     return (
         <>
-            <HeadMeta metaTitle={post.naslov} />
+            <HeadMeta
+                metaTitle={post.seo_title}
+                metaDescription={post.seo_description}
+                metaUrl={post.seo_url}
+                metaImage={post.seo_image}
+            />
 
             {post.kategorijaid == 5 ? (
                 <PostFormatHupikon

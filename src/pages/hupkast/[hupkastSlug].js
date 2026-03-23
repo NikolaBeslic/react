@@ -1,4 +1,3 @@
-import HeadMeta from "../../components/elements/HeadMeta";
 import axiosClient from "../../utils/axios";
 import PostFormatHupkast from "../../components/post/post-format/PostFormatHupkast";
 import MetaDataHupkast from "../../components/post/post-format/elements/meta/MetaDataHupkast";
@@ -7,7 +6,6 @@ import { withSSRHandler } from "../../utils/withSSRHandler";
 export default function SingleHupkast({ hupkast, relatedPosts }) {
     return (
         <>
-            <HeadMeta metaTitle={hupkast.naslov} />
             <PostFormatHupkast postData={hupkast} />
         </>
     );

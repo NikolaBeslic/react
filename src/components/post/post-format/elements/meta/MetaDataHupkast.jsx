@@ -1,5 +1,6 @@
 import Image from "next/legacy/image";
 import moment from "moment";
+import HeadMeta from "../../../../elements/HeadMeta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDays } from "@fortawesome/free-regular-svg-icons";
 import { faHourglassStart } from "@fortawesome/free-solid-svg-icons";
@@ -10,6 +11,12 @@ const MetaDataHupkast = ({ metaData }) => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     return (
         <>
+            <HeadMeta
+                metaTitle={metaData.seo_title}
+                metaDescription={metaData.seo_description}
+                metaUrl={metaData.seo_url}
+                metaImage={metaData.seo_image}
+            />
             {isTabletOrMobile ? (
                 <div className="banner banner__single-post banner__standard bg-grey-light-three">
                     <div className="perfect-square col-md-auto hupkast-single-photo">

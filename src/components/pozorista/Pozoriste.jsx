@@ -39,7 +39,7 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
     return (
         <>
             <main className="site-main">
-                <div className="single-blog-wrapper p-t-xs-60">
+                <div className="single-blog-wrapper p-t-xs-40 p-t-md-60">
                     <div className="post-widget sidebar-post-widget m-b-xs-40">
                         <Tab.Container
                             id="pozoriste-post"
@@ -127,11 +127,11 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                     )}
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="istorijat">
-                                    <div
+                                    <p
                                         dangerouslySetInnerHTML={{
                                             __html: data.istorija_pozorista,
                                         }}
-                                    ></div>
+                                    ></p>
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>

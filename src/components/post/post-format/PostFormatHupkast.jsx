@@ -58,7 +58,7 @@ const PostFormatHupkast = ({ postData }) => {
                     </div>
 
                     <div
-                        className="m-b-xs-50"
+                        className="m-b-xs-50 hupkast-text-wrapper"
                         dangerouslySetInnerHTML={{ __html: postData.sadrzaj }}
                     ></div>
                     <div className="m-b-xs-50">

@@ -13202,9 +13202,13 @@ address .tel i {
 }
 
 /* Links inside tekst */
-.post-details .single-text-wrapper p a {
+.post-details .single-text-wrapper p a,
+.hupkast-text-wrapper p a,
+.info-tekst-festivala p a,
+.program-festivala p a {
     /* color: var(--grey-dark-one); */
     color: #7a2a2a;
+    font-weight: 500;
     text-decoration: underline;
     /* text-decoration-color: rgba(122, 42, 42, 0.35); */
     text-underline-offset: 2px;
@@ -13212,12 +13216,18 @@ address .tel i {
         text-decoration-color 0.2s ease;
 }
 
-.post-details .single-text-wrapper a:hover {
+.post-details .single-text-wrapper a:hover,
+.hupkast-text-wrapper a:hover,
+.info-tekst-festivala a:hover,
+.program-festivala a:hover {
     color: #6c0101;
     text-decoration-color: #6c0101;
 }
 
-.post-details .single-text-wrapper a:visited {
+.post-details .single-text-wrapper a:visited,
+.hupkast-text-wrapper a:visited,
+.info-tekst-festivala a:visited,
+.program-festivala a:visited {
     color: inherit;
 }
 

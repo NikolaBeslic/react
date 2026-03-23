@@ -33,6 +33,7 @@ const PostFormatFestival = ({ postData }) => {
                                         dangerouslySetInnerHTML={{
                                             __html: postData.tekst_festivala,
                                         }}
+                                        className="info-tekst-festivala"
                                     ></div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="program">
@@ -40,6 +41,7 @@ const PostFormatFestival = ({ postData }) => {
                                         dangerouslySetInnerHTML={{
                                             __html: postData.repertoar,
                                         }}
+                                        className="program-festivala"
                                     ></div>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="tekstovi">

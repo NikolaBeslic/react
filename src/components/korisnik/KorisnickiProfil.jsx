@@ -57,7 +57,6 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             const res = await axiosClient.get(endpointMap[tabKey], {
                 params: {
                     page,
-                    per_page: 6,
                 },
             });
 

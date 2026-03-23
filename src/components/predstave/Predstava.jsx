@@ -1,5 +1,5 @@
 import SectionTitle from "../elements/SectionTitle";
-import PostLayoutTwo from "../post/layout/PostLayoutTwo";
+import PovezaniTekstLayout from "../post/layout/PovezaniTekstLayout";
 import Izvodjenje from "./Izvodjenje";
 import Form from "react-bootstrap/Form";
 import moment from "moment";
@@ -218,12 +218,9 @@ const Predstava = ({ data, updateData }) => {
                                                                         key={`pred-pt-
                                                                             ${tekst.tekstid}`}
                                                                     >
-                                                                        <PostLayoutTwo
+                                                                        <PovezaniTekstLayout
                                                                             data={
                                                                                 tekst
-                                                                            }
-                                                                            postSizeMd={
-                                                                                false
                                                                             }
                                                                             key={`pt-${tekst.tekstid}`}
                                                                         />

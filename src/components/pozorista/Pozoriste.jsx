@@ -1,6 +1,6 @@
 import { Tab, Nav } from "react-bootstrap";
 import Izvodjenje from "../predstave/Izvodjenje";
-import PostLayoutTwo from "../post/layout/PostLayoutTwo";
+import PovezaniTekstLayout from "../post/layout/PovezaniTekstLayout";
 import PredstaveLayout from "../post/layout/PredstaveLayout";
 import { useState } from "react";
 
@@ -90,9 +90,9 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="tekstovi">
                                     {visibleTexts?.map((tekst) => (
-                                        <PostLayoutTwo
+                                        <PovezaniTekstLayout
                                             data={tekst}
-                                            key={tekst?.tekstid}
+                                            key={`pozrltd-${tekst?.tekstid}`}
                                         />
                                     ))}
                                     {visibleCount <

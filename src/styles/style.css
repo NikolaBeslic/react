@@ -13220,3 +13220,54 @@ address .tel i {
 .post-details .single-text-wrapper a:visited {
     color: inherit;
 }
+
+.povezani-tekst-index-wrapper {
+    padding: 15px;
+    border-radius: 12px;
+}
+
+.povezani-tekst-index-wrapper:hover {
+    transform: translateY(-2px);
+}
+
+.povezani-tekst-image {
+    height: 150px;
+    width: 150px;
+    margin-right: 20px;
+    flex: none;
+}
+
+.povezani-tekst-image img {
+    border-radius: 12px;
+}
+
+.povezani-tekst-index-wrapper .axil-post-title {
+    font-size: 1.5rem;
+    padding-right: 30px;
+    text-align: left;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 767px) {
+    .povezani-tekst-index-wrapper img {
+        border-radius: 12px;
+    }
+
+    .povezani-tekst-image {
+        width: 100px;
+        height: auto;
+        margin-right: 15px;
+    }
+
+    .povezani-tekst-image>a>span:first-child {
+        width: 100px !important;
+        height: 100px !important;
+    }
+
+    .povezani-tekst-image>a>span img {
+        width: 100px !important;
+        height: 100px !important;
+        object-fit: cover;
+    }
+
+}

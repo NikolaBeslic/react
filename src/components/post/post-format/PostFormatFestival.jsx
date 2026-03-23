@@ -1,5 +1,5 @@
 import { Tab, Nav } from "react-bootstrap";
-import PostLayoutTwo from "../layout/PostLayoutTwo";
+import PovezaniTekstLayout from "../layout/PovezaniTekstLayout";
 
 const PostFormatFestival = ({ postData }) => {
     return (
@@ -44,9 +44,9 @@ const PostFormatFestival = ({ postData }) => {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="tekstovi">
                                     {postData.tekstovi?.map((tekst) => (
-                                        <PostLayoutTwo
+                                        <PovezaniTekstLayout
                                             data={tekst}
-                                            key={tekst.tekstid}
+                                            key={`tksfest-${tekst.slug}`}
                                         />
                                     ))}
                                 </Tab.Pane>

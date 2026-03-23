@@ -1,4 +1,4 @@
-import PostLayoutTwo from "./layout/PostLayoutTwo";
+import PovezaniTekstLayout from "./layout/PovezaniTekstLayout";
 
 const RelatedPosts = ({ relatedPosts }) => {
     return (
@@ -8,10 +8,9 @@ const RelatedPosts = ({ relatedPosts }) => {
             </div>
             <div className="axil-content">
                 {relatedPosts?.slice(0, 4).map((data) => (
-                    <PostLayoutTwo
+                    <PovezaniTekstLayout
                         data={data}
-                        postSizeMd={false}
-                        key={data.slug}
+                        key={`rltd-${data.tekstid}`}
                     />
                 ))}
             </div>

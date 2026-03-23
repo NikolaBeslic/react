@@ -1,6 +1,6 @@
 const SocialShareBottom = ({ url, title }) => {
     return (
-        <div className="post-shares m-t-xs-60">
+        <div className="post-shares m-t-xs-40 m-t-md-60">
             <div className="title">Podeli:</div>
             <ul className="social-share social-share__rectangular">
                 <li>

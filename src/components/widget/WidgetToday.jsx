@@ -32,6 +32,7 @@ const WidgetToday = ({ izvodjenja }) => {
                                 className={`media post-block post-block__small repertoar-naslovna-wrapper ${
                                     pClass ?? "post-block__on-dark-bg m-b-xs-30"
                                 }`}
+                                key={`dnsrep-${izv.seigraid}`}
                             >
                                 <div className="media-body repertoar-naslovna-info">
                                     <div className="post-cat-group repertoar-naslovna-vreme">
@@ -49,6 +50,7 @@ const WidgetToday = ({ izvodjenja }) => {
                                             aria-label={
                                                 izv.predstava.naziv_predstave
                                             }
+                                            key={`dnsreplink-${izv.seigraid}`}
                                         >
                                             {izv.predstava.naziv_predstave}
                                         </Link>

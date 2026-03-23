@@ -45,7 +45,10 @@ const Pozoriste = ({ data, sidePosts, premijere }) => {
                             id="pozoriste-post"
                             defaultActiveKey="repertoar"
                         >
-                            <Nav variant="pills" className="row no-gutters">
+                            <Nav
+                                variant="pills"
+                                className="row no-gutters pozoriste-single-tab-nav"
+                            >
                                 <Nav.Item className="col">
                                     <Nav.Link eventKey="repertoar">
                                         REPERTOAR

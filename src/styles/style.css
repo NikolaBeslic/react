@@ -13281,3 +13281,8 @@ address .tel i {
     }
 
 }
+
+.pozoriste-single-tab-nav {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}

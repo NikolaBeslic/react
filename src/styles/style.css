@@ -6851,7 +6851,6 @@ input[type="radio"]+label::after {
     .post-cat {
         font-size: 1rem;
         line-height: 1rem;
-        margin-bottom: 0;
         letter-spacing: 0.05em;
     }
 
@@ -8336,6 +8335,7 @@ article li {
 .povezano-pozoriste h4 {
     margin-bottom: 0;
     margin-left: 20px;
+    text-align: left;
 }
 
 .axil-post-title {
@@ -10912,11 +10912,11 @@ address .tel i {
 }
 
 .section-title .axil-title {
-    border-bottom: solid 3px red;
+    border-bottom: solid 3px var(--primary-color);
 }
 
 .section-subtitle h4 {
-    border-bottom: solid 2px red;
+    border-bottom: solid 2px var(--primary-color);
 }
 
 .predstava-single-section-wrapper {
@@ -10970,6 +10970,10 @@ address .tel i {
         text-align: left;
     }
 
+    .predstava-single-metas ul li {
+        text-align: left;
+    }
+
     .banner__default {
         padding: 3rem 0;
     }
@@ -11005,7 +11009,7 @@ address .tel i {
     }
 
     #komentari .row {
-        margin-left: 0;
+        /* margin-left: 0; */
         margin-right: 0;
     }
 
@@ -12971,7 +12975,23 @@ address .tel i {
 }
 
 .user-dropdown .dropdown-item {
-    font-size: 14px;
+    font-family: var(--primary-font);
+    display: block;
+    margin-right: 0;
+    padding: 0 3rem;
+    font-size: 1.5rem;
+    line-height: 3.4rem;
+    font-weight: var(--p-regular);
+    white-space: nowrap;
+    background-color: transparent;
+    border: 0;
+    border-radius: var(--bs-dropdown-item-border-radius, 0);
+    outline: none;
+    transition: all 0.5s;
+}
+
+.user-dropdown .dropdown-item:hover {
+    background-color: var(--grey-light-two);
 }
 
 .single-text-wrapper {
@@ -13273,6 +13293,10 @@ address .tel i {
         width: 100px;
         height: auto;
         margin-right: 15px;
+    }
+
+    .povezani-tekst-index-wrapper .axil-post-title {
+        font-size: 1.4rem;
     }
 
     .povezani-tekst-image>a>span:first-child {

@@ -116,8 +116,11 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     type="text"
                     placeholder="Korisnicko ime"
                     value={formData.korisnickoIme}
+                    disabled={loading}
                     onChange={handleChange}
-                    className={errors.korisnickoIme ? "border-danger" : "input"}
+                    className={
+                        errors?.korisnickoIme ? "border-danger" : "input"
+                    }
                 ></Form.Control>
                 {errors?.korisnickoIme && (
                     <span className="text-danger">{errors.korisnickoIme}</span>
@@ -129,8 +132,9 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     type="email"
                     placeholder="Email"
                     value={formData.email}
+                    disabled={loading}
                     onChange={handleChange}
-                    className={errors.email ? "border-danger" : "input"}
+                    className={errors?.email ? "border-danger" : "input"}
                 ></Form.Control>
                 {errors?.email && (
                     <span className="text-danger">{errors.email}</span>
@@ -143,8 +147,9 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                         type={showPassword ? "text" : "password"}
                         placeholder="Lozinka"
                         value={formData.password}
+                        disabled={loading}
                         onChange={handleChange}
-                        className={errors.password ? "border-danger" : "input"}
+                        className={errors?.password ? "border-danger" : "input"}
                     ></Form.Control>
                     <InputGroup.Text
                         role="button"
@@ -154,9 +159,10 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                             showPassword ? "Sakrij lozinku" : "Prikaži lozinku"
                         }
                         aria-pressed={showPassword}
+                        disabled={loading}
                         id="basic-addon2"
                         className={
-                            errors.password_confirmation
+                            errors?.password_confirmation
                                 ? "border-danger"
                                 : "input"
                         }
@@ -175,6 +181,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                         name="password_confirmation"
                         type={showPassword ? "text" : "password"}
                         placeholder="Potvrdite lozinku"
+                        disabled={loading}
                         onChange={handleChange}
                     ></Form.Control>
                 </InputGroup>
@@ -183,7 +190,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                 )}
             </Form.Group>
             <div className="authmodal-action-buttons-wrapper m-b-xs-10">
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="primary" disabled={loading}>
                     SAČUVAJ
                 </Button>
                 <Button
@@ -191,6 +198,7 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
                     type="button"
                     onClick={handleGoogleLogin}
                     align="right"
+                    disabled={loading}
                 >
                     <FontAwesomeIcon icon={faGoogle} />
                     Google prijava

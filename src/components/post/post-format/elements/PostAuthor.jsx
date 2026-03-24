@@ -27,7 +27,7 @@ const PostAuthor = ({ authorData }) => {
                             </Link>
                             <div className="media-body">
                                 <div className="media-body-title">
-                                    <h3>
+                                    <h3 className="axil-post-title hover-line hover-line">
                                         <Link
                                             href={`/autori/${data?.autor_slug}`}
                                         >

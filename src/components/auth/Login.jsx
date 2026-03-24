@@ -106,6 +106,7 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
                         className={
                             errors.login_field ? "border-danger" : "input"
                         }
+                        disabled={loading}
                     />
                     {errors?.login_field && (
                         <span className="text-danger">
@@ -126,6 +127,7 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
                             className={
                                 errors.password ? "border-danger" : "input"
                             }
+                            disabled={loading}
                         />
 
                         <InputGroup.Text
@@ -139,6 +141,7 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
                             }
                             aria-pressed={showPassword}
                             id="basic-addon2"
+                            disabled={loading}
                         >
                             {showPassword ? (
                                 <FontAwesomeIcon icon={faEyeSlash} />
@@ -164,6 +167,7 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
                         type="submit"
                         variant="primary"
                         onClick={handleSubmit}
+                        disabled={loading}
                     >
                         LOGIN
                     </Button>
@@ -171,6 +175,7 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
                         className="btn btn-nofill"
                         type="button"
                         onClick={handleGoogleLogin}
+                        disabled={loading}
                     >
                         <FontAwesomeIcon icon={faGoogle} /> Google prijava
                     </Button>

@@ -102,7 +102,7 @@ const PredstavaTitle = ({
                                     </div>
                                     <div className="col-sm-12 col-xs-12">
                                         <div className="post-metas banner-post-metas m-t-xs-20 predstava-single-metas">
-                                            <ul className="list-inline predstava-meta-info-list">
+                                            <ul className="predstava-meta-info-list">
                                                 <li>
                                                     <i className="fa-regular fa-building-columns"></i>
                                                     {metaData.pozorista?.map(
@@ -137,8 +137,6 @@ const PredstavaTitle = ({
                                                         metaData.premijera,
                                                     ).format("DD. MMM YYYY.")}
                                                 </li>
-                                            </ul>
-                                            <ul className="list-inline">
                                                 <li>
                                                     <i className="fa-solid fa-signs-post"></i>
                                                     Režija: {metaData.reditelj}

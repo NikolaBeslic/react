@@ -5,6 +5,7 @@ import {
     faEye,
     faCommentDots,
     faInbox,
+    faHeart,
 } from "@fortawesome/free-regular-svg-icons";
 import { faListCheck } from "@fortawesome/free-solid-svg-icons";
 
@@ -13,6 +14,7 @@ const iconMap = {
     eye: faEye,
     comment: faCommentDots,
     inbox: faInbox,
+    heart: faHeart,
 };
 
 const EmptyState = ({

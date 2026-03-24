@@ -8,7 +8,7 @@ const OmiljenoPozoriste = ({ data }) => {
             className="omiljeno-pozoriste-card"
         >
             <Link
-                href={`/predstave/${data.pozoriste_slug}`}
+                href={`/pozorista/${data.pozoriste_slug}`}
                 title={data.naziv_pozorista}
                 key={`lnk-${data.pozoristeid}`}
             >
@@ -30,7 +30,7 @@ const OmiljenoPozoriste = ({ data }) => {
                 >
                     <h5>
                         <Link
-                            href={`/predstave/${data.pozoriste_slug}`}
+                            href={`/pozorista/${data.pozoriste_slug}`}
                             title={data.naziv_pozorista}
                             key={`cl-${data.pozoristeid}`}
                         >
@@ -45,8 +45,9 @@ const OmiljenoPozoriste = ({ data }) => {
                     <i className="fa-solid fa-location-dot"></i>{" "}
                     {data.grad?.naziv_grada}
                 </Card.Text>
-                <Card.Link href="#">Pogledaj repertoar</Card.Link>
-                <Card.Link href="#">Ukloni</Card.Link>
+                <Card.Link href={`/pozorista/${data.pozoriste_slug}`}>
+                    Pogledaj repertoar
+                </Card.Link>
             </Card.Body>
         </Card>
     );

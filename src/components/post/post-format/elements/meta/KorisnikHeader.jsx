@@ -1,5 +1,4 @@
 import moment from "moment";
-import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSquareCheck, faComments } from "@fortawesome/free-regular-svg-icons";
@@ -65,7 +64,7 @@ const KorisnikHeader = ({ korisnik }) => {
                                             {korisnik.broj_liste_zelja}
                                         </strong>
                                     </li>
-                                    {/* <li>
+                                    <li className="korisnik-meta-item">
                                         <i className="fa-regular fa-heart"></i>{" "}
                                         Omiljena pozorista:{" "}
                                         <strong>
@@ -74,7 +73,7 @@ const KorisnikHeader = ({ korisnik }) => {
                                                     ?.length
                                             }
                                         </strong>
-                                    </li> */}
+                                    </li>
                                     <li className="korisnik-meta-item">
                                         <FontAwesomeIcon
                                             icon={faStarHalfStroke}

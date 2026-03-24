@@ -7,11 +7,13 @@ import axiosClient from "../../utils/axios";
 import { csrf, getCookieValue } from "../../utils";
 import EmptyState from "../predstave/EmptyState";
 import { toast } from "react-hot-toast";
+import OmiljenoPozoriste from "./OmiljenoPozoriste";
 
 const endpointMap = {
     zelja: "/korisnik/lista-zelja",
     odgledane: "/korisnik/lista-odgledanih",
     komentari: "/korisnik/komentari",
+    omiljenaPozorista: "/korisnik/omiljena-pozorista",
 };
 
 export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
@@ -34,6 +36,13 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             loaded: false,
         },
         komentari: {
+            items: [],
+            currentPage: 0,
+            hasMore: true,
+            loading: false,
+            loaded: false,
+        },
+        omiljenaPozorista: {
             items: [],
             currentPage: 0,
             hasMore: true,
@@ -276,6 +285,11 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
                                         KOMENTARI
                                     </Nav.Link>
                                 </Nav.Item>
+                                <Nav.Item className="col">
+                                    <Nav.Link eventKey="omiljenaPozorista">
+                                        OMILJENA POZORIŠTA
+                                    </Nav.Link>
+                                </Nav.Item>
                             </Nav>
 
                             <Tab.Content>
@@ -287,6 +301,12 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="komentari">
                                     {renderTabContent("komentari", currentTab)}
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="omiljenaPozorista">
+                                    {renderTabContent(
+                                        "omiljenaPozorista",
+                                        currentTab,
+                                    )}
                                 </Tab.Pane>
                             </Tab.Content>
                             {currentTab.loaded && currentTab.hasMore && (
@@ -345,15 +365,29 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
                 );
             }
 
-            return (
-                <EmptyState
-                    icon="comment"
-                    title="Još niste ostavili nijedan komentar"
-                    text="Vaši utisci o predstavama i tekstovima pojaviće se ovde."
-                    buttonText="Pročitaj naše utske"
-                    href="/recenzije"
-                />
-            );
+            if (tabKey === "komentari") {
+                return (
+                    <EmptyState
+                        icon="comment"
+                        title="Još niste ostavili nijedan komentar"
+                        text="Vaši utisci o predstavama i tekstovima pojaviće se ovde."
+                        buttonText="Pročitaj naše utiske"
+                        href="/recenzije"
+                    />
+                );
+            }
+
+            if (tabKey === "omiljenaPozorista") {
+                return (
+                    <EmptyState
+                        icon="heart"
+                        title="Niste označili nijedno pozorište kao omiljeno"
+                        text="Dodajte pozorišta kao omiljena i pratite njihove repertoare."
+                        buttonText="Istraži pozorišta"
+                        href="/pozorista"
+                    />
+                );
+            }
         }
 
         if (tabKey === "zelja") {
@@ -393,12 +427,37 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
             );
         }
 
-        return (
-            <div>
-                {tabData.items?.map((kom) => (
-                    <KorisnikKomentar key={`kk-${kom.komentarid}`} data={kom} />
-                ))}
-            </div>
-        );
+        if (tabKey === "komentari") {
+            return (
+                <div>
+                    {tabData.items?.map((kom) => (
+                        <KorisnikKomentar
+                            key={`kk-${kom.komentarid}`}
+                            data={kom}
+                        />
+                    ))}
+                </div>
+            );
+        }
+
+        if (tabKey === "omiljenaPozorista") {
+            return (
+                <div className="axil-team-grid-wrapper p-t-xs-10">
+                    <Row>
+                        {tabData.items?.map((op) => (
+                            <div
+                                className="col-lg-4 col-md-4 col-sm-6"
+                                key={`opdiv-${op.pozoristeid}`}
+                            >
+                                <OmiljenoPozoriste
+                                    key={`op-${op.pozoristeid}`}
+                                    data={op}
+                                />
+                            </div>
+                        ))}
+                    </Row>
+                </div>
+            );
+        }
     }
 }

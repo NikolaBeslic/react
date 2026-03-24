@@ -4,7 +4,12 @@ import HeadMeta from "../../../../elements/HeadMeta";
 const ContactHeader = () => {
     return (
         <>
-            <HeadMeta metaTitle="Kontakt" />
+            <HeadMeta
+                metaTitle="Kontakt"
+                metaDescription="Kontaktirajte redakciju portala Hoću u pozorište za pitanja, saradnju, predloge tema i informacije vezane za pozorišni sadržaj."
+                metaUrl="/kontakt"
+                metaImage="/slike/hup-vizitke.jpg"
+            />
             <Breadcrumb aPage="Kontakt" />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">

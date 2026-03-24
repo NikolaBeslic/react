@@ -4,7 +4,12 @@ import BreadcrumbBanner from "../../../../common/BreadcrumbBanner";
 const RedakcijaHeader = () => {
     return (
         <>
-            <HeadMeta metaTitle="Redakcija" />
+            <HeadMeta
+                metaTitle="Redakcija"
+                metaDescription="Upoznajte redakciju portala Hoću u pozorište – autore, urednike i saradnike koji prate savremenu pozorišnu scenu."
+                metaUrl="/redakcija"
+                metaImage="/slike/hup-vizitke.jpg"
+            />
             <BreadcrumbBanner pageTitle="Redakcija" />
         </>
     );

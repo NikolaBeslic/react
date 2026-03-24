@@ -1,11 +1,14 @@
-import Breadcrumb from "../../../../common/Breadcrumb";
 import HeadMeta from "../../../../elements/HeadMeta";
 
 const AboutHeader = () => {
     return (
         <>
-            <HeadMeta metaTitle="O nama" />
-            <Breadcrumb aPage="O nama" />
+            <HeadMeta
+                metaTitle="O nama"
+                metaDescription="Saznajte više o portalu Hoću u pozorište – mediju posvećenom predstavama, pozorištima, festivalima i savremenom teatarskom životu u Srbiji."
+                metaUrl="/o-nama"
+                metaImage="/slike/hup-vizitke.jpg"
+            />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

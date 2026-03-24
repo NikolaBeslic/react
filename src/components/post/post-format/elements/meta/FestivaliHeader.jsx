@@ -3,7 +3,12 @@ import HeadMeta from "../../../../elements/HeadMeta";
 const FestivaliHeader = () => {
     return (
         <>
-            <HeadMeta metaTitle="Festivali" />
+            <HeadMeta
+                metaTitle="Festivali"
+                metaDescription="Pregled pozorišnih festivala u Srbiji i regionu – programi, vesti, selekcije i najvažnije informacije."
+                metaUrl="/festivali"
+                metaImage="/slike/hup-vizitke.jpg"
+            />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

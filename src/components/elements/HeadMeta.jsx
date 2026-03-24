@@ -1,18 +1,30 @@
 import Head from "next/head";
 
-const HeadMeta = ({ metaTitle, metaDescription, metaUrl, metaImage }) => {
+const HeadMeta = ({
+    metaTitle,
+    metaDescription,
+    metaUrl,
+    metaImage,
+    nofollow = false,
+    noindex = false,
+}) => {
     const title = `${metaTitle ? metaTitle : " "} || Hoću u pozorište`;
     const url = process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN + (metaUrl ?? "");
     const image = process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN + (metaImage ?? "");
     const description =
         metaDescription ??
         "Hoću u pozorište je portal namenjen promociji pozorišta u Srbiji";
+    const nofollowString = nofollow ? "nofollow" : "follow";
+    const noIndexString = noindex ? "noindex" : "index";
 
     return (
         <Head>
             {/* Basic metas */}
             <meta charSet="utf-8" />
-            <meta name="robots" content="index, follow" />
+            <meta
+                name="robots"
+                content={`${noIndexString}, ${nofollowString}`}
+            />
             <meta httpEquiv="x-ua-compatible" content="ie=edge" />
             <meta name="description" content={description} />
             <meta

@@ -5,7 +5,13 @@ const PredstaveHeader = () => {
     const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
     return (
         <>
-            <HeadMeta metaTitle="Predstave" />
+            <HeadMeta
+                metaTitle="Predstave"
+                metaDescription="Pregled aktuelnih predstava u Srbiji – termini izvođenja, opisi, ocene publike i povezani tekstovi o predstavama."
+                metaUrl="/predstave"
+                metaImage="/slike/hup-vizitke.jpg"
+                noIndex={true}
+            />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

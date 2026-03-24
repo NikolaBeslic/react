@@ -3,7 +3,13 @@ import HeadMeta from "../../../../elements/HeadMeta";
 const PozoristaHeader = () => {
     return (
         <>
-            <HeadMeta metaTitle="Pozorišta" />
+            <HeadMeta
+                metaTitle="Pozorišta"
+                metaDescription="Informacije o pozorištima u Srbiji – repertoari, predstave, produkcije i tekstovi o institucijama i nezavisnim scenama."
+                metaUrl="/pozorista"
+                metaImage="/slike/hup-vizitke.jpg"
+                nofollow={true}
+            />
             <div className="banner banner__default bg-grey-light-three">
                 <div className="container">
                     <div className="row align-items-center">

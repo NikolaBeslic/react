@@ -13298,6 +13298,18 @@ address .tel i {
     .pozoriste-button-wrapper {
         margin-top: 30px;
     }
+
+    .about-author .media-body-content {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 5;
+        -webkit-box-orient: vertical;
+    }
+
+    .about-author .media img {
+        align-self: center;
+    }
 }
 
 .skeleton {

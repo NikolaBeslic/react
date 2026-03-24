@@ -3,35 +3,40 @@ import { Button, Spinner } from "react-bootstrap";
 import { useState } from "react";
 import axiosClient from "../../../../../utils/axios";
 import { useUser } from "../../../../../contexts/UserContext";
+import { csrf, getCookieValue } from "../../../../../utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart } from "@fortawesome/free-regular-svg-icons";
+import { faHeart as faSolidHeart } from "@fortawesome/free-solid-svg-icons";
 
 const PozoristeSingleHeader = ({ data }) => {
     const { user } = useUser();
     const [omiljenaLoading, setOmiljenaLoading] = useState(false);
-    let omiljenoKorisnika = data.omiljenoKorisnika;
-
-    const handleDodajUOmiljena = () => {
+    const [omiljenoKorisnika, setOmiljenoKorisnika] = useState(
+        data.omiljenoKorisnika,
+    );
+    const handleDodajUOmiljena = async () => {
         if (!user) {
-            alert("You must be logged in to rate a post.");
+            alert("Morate biti ulogovani");
             return;
         }
         setOmiljenaLoading(true);
+        await csrf();
+
         axiosClient
             .post(
                 "/pozorista/dodajUOmiljena",
                 { pozoristeId: data.pozoristeid },
                 {
                     headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${localStorage.getItem(
-                            "token",
-                        )}`,
+                        "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 },
             )
             .then((res) => {
                 console.log(res.data);
                 setOmiljenaLoading(false);
-                omiljenoKorisnika = true;
+                setOmiljenoKorisnika(true);
             })
             .catch((err) => console.error(err));
     };
@@ -71,33 +76,35 @@ const PozoristeSingleHeader = ({ data }) => {
                             </div>
                         </div>
                         <div className="col-lg-4">
-                            {omiljenoKorisnika ? (
-                                <Button
-                                    variant="primary"
-                                    className="btn btn-secondary btn-small"
-                                    disabled
-                                >
-                                    <i className="fa-solid fa-heart"></i>
-                                    Omiljeno pozoriste
-                                </Button>
-                            ) : (
-                                <Button
-                                    variant="primary"
-                                    className="btn btn-primary btn-small"
-                                    onClick={handleDodajUOmiljena}
-                                >
-                                    {omiljenaLoading ? (
-                                        <Spinner
-                                            as="span"
-                                            animation="border"
-                                            role="status"
-                                        />
-                                    ) : (
-                                        <i className="fa-regular fa-heart"></i>
-                                    )}{" "}
-                                    Dodaj u omiljena
-                                </Button>
-                            )}
+                            <div className="pozoriste-button-wrapper">
+                                {omiljenoKorisnika ? (
+                                    <Button
+                                        variant="primary"
+                                        className="btn btn-primary btn-small"
+                                        disabled
+                                    >
+                                        <FontAwesomeIcon icon={faSolidHeart} />
+                                        Omiljeno pozoriste
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        variant="primary"
+                                        className="btn btn-primary btn-small"
+                                        onClick={handleDodajUOmiljena}
+                                    >
+                                        {omiljenaLoading ? (
+                                            <Spinner
+                                                as="span"
+                                                animation="border"
+                                                role="status"
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon icon={faHeart} />
+                                        )}{" "}
+                                        Dodaj u omiljena
+                                    </Button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -24,6 +24,7 @@ export const getServerSideProps = withSSRHandler(async (context) => {
         {
             headers: {
                 cookie: cookies,
+                origin: process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN,
             },
             withCredentials: true,
         },

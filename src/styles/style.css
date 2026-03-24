@@ -12452,6 +12452,8 @@ address .tel i {
         line-height: 2.2rem;
         text-align: left;
     }
+
+
 }
 
 /** MOBILE **/
@@ -13291,6 +13293,10 @@ address .tel i {
     .pozoriste-single-tab-nav {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    .pozoriste-button-wrapper {
+        margin-top: 30px;
     }
 }
 

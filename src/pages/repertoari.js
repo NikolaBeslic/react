@@ -418,7 +418,7 @@ const RepertoariNewPage = () => {
                                         </Flatpickr>
                                     </div>
                                 </div>
-                                <p>
+                                {/* <p>
                                     {datumOd &&
                                         moment(datumOd).format(
                                             "DD. MMM YYYY.",
@@ -426,7 +426,7 @@ const RepertoariNewPage = () => {
                                     -{" "}
                                     {datumDo &&
                                         moment(datumDo).format("DD. MMM YYYY.")}
-                                </p>
+                                </p> */}
                             </div>
                         </div>
                     </div>

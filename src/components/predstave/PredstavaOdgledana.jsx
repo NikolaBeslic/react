@@ -57,7 +57,7 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
                         {!isTabletOrMobile && (
                             <>
                                 {data.zanrovi?.map((zanr) => (
-                                    <Link
+                                    <span
                                         href={`/category/${zanr.naziv_zanra}`}
                                         className="post-cat zanr-button"
                                         style={{
@@ -67,7 +67,7 @@ const PredstavaOdgledana = ({ data, handleRate, pClass, videoIcon }) => {
                                         key={zanr.zanrid}
                                     >
                                         {zanr.naziv_zanra}
-                                    </Link>
+                                    </span>
                                 ))}
                             </>
                         )}

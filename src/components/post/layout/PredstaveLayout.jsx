@@ -45,8 +45,7 @@ const PredstaveLayout = ({
                         <>
                             {isTabletOrMobile && data.zanrovi.length > 1 ? (
                                 <>
-                                    <Link
-                                        href={`/category/${data.zanrovi[0].naziv_zanra}`}
+                                    <span
                                         className="post-cat zanr-button"
                                         style={{
                                             color: data.zanrovi[0].zanr_boja,
@@ -56,7 +55,7 @@ const PredstaveLayout = ({
                                         key={data.zanrovi[0].zanrid}
                                     >
                                         {data.zanrovi[0].naziv_zanra}
-                                    </Link>
+                                    </span>
                                     <span className="more-zanrovi">
                                         + {data.zanrovi.length - 1}
                                     </span>
@@ -64,8 +63,7 @@ const PredstaveLayout = ({
                             ) : (
                                 <>
                                     {data.zanrovi?.map((zanr) => (
-                                        <Link
-                                            href={`/category/${zanr.naziv_zanra}`}
+                                        <span
                                             className="post-cat zanr-button"
                                             style={{
                                                 color: zanr.zanr_boja,
@@ -74,7 +72,7 @@ const PredstaveLayout = ({
                                             key={zanr.zanrid}
                                         >
                                             {zanr.naziv_zanra}
-                                        </Link>
+                                        </span>
                                     ))}
                                 </>
                             )}

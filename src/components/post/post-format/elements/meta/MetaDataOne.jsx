@@ -20,8 +20,7 @@ const MetaDataOne = ({ metaData }) => {
                     </div>
                     <div className="container">
                         <div className="post-cat-group m-b-xs-10">
-                            <Link
-                                href={`/${metaData.kategorija?.kategorija_slug}`}
+                            <span
                                 className={`post-cat cat-btn ${metaData.kategorija?.naziv_kategorije}-tag-bg-color`}
                                 style={{
                                     backgroundColor:
@@ -29,7 +28,7 @@ const MetaDataOne = ({ metaData }) => {
                                 }}
                             >
                                 {metaData.kategorija?.naziv_kategorije}
-                            </Link>
+                            </span>
                         </div>
                         <div className="post-title-wrapper">
                             <h1 className="m-t-xs-20 m-b-xs-20 axil-post-title hover-line">

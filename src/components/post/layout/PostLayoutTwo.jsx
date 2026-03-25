@@ -24,15 +24,15 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
             </Link>
             <div className="media-body">
                 <div className="post-cat-group m-b-xs-10">
-                    <Link
-                        href={`/${data.kategorija?.kategorija_slug}`}
+                    <span
+                        // href={`/${data.kategorija?.kategorija_slug}`}
                         className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
                         style={{
                             backgroundColor: data.kategorija.kategorija_boja,
                         }}
                     >
                         {data.kategorija?.naziv_kategorije}
-                    </Link>
+                    </span>
                 </div>
                 <h3 className="axil-post-title hover-line hover-line">
                     <Link

@@ -23,8 +23,7 @@ const PovezaniTekstLayout = ({ data }) => {
             <div className="povezani-tekst-title-metas">
                 <div className="media-body">
                     <div className="post-cat-group">
-                        <Link
-                            href={`/${data.kategorija?.kategorija_slug}`}
+                        <span
                             className={`post-cat cat-btn ${data.kategorija?.naziv_kategorije}-tag-bg-color`}
                             style={{
                                 backgroundColor:
@@ -32,7 +31,7 @@ const PovezaniTekstLayout = ({ data }) => {
                             }}
                         >
                             {data.kategorija.naziv_kategorije}
-                        </Link>
+                        </span>
                     </div>
                     <h3 className="axil-post-title hover-line hover-line">
                         <Link

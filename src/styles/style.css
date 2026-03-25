@@ -5075,6 +5075,7 @@ address,
     font-weight: var(--s-bold);
     z-index: 1;
     text-transform: uppercase;
+    cursor: default;
 }
 
 .cat-btn::before {
@@ -6613,7 +6614,7 @@ input[type="radio"]+label::after {
 }
 
 .post-block.post-block__small .post-cat:hover {
-    color: var(--primary-color);
+    /* color: var(--primary-color); */
 }
 
 /*------------*/

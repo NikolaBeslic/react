@@ -147,10 +147,9 @@ const Predstava = ({ data, updateData }) => {
                                                     showFullDescriptionHandler
                                                 }
                                             >
-                                                Read{" "}
                                                 {showFullDescription
-                                                    ? "Less"
-                                                    : "More"}
+                                                    ? "Sakrij"
+                                                    : "Pročitaj više"}
                                             </button>
                                         </div>
                                     )}

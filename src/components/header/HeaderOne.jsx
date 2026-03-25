@@ -378,7 +378,7 @@ const HeaderOne = () => {
                                         key="101"
                                         className="has-dropdown intervju-navbar-li"
                                     >
-                                        <Link href="/intervjui" legacyBehavior>
+                                        <Link href="#" legacyBehavior>
                                             Intervjui
                                         </Link>
                                         <ul className="submenu intervju-submenu">
@@ -390,6 +390,14 @@ const HeaderOne = () => {
                                             <li key={1012}>
                                                 <Link href="/na-kafi-sa">
                                                     Na kafi sa
+                                                </Link>
+                                            </li>
+                                            <li key={1014}>
+                                                <hr class="dropdown-divider" />
+                                            </li>
+                                            <li key={1013}>
+                                                <Link href="/intervjui">
+                                                    Svi intervjui
                                                 </Link>
                                             </li>
                                         </ul>

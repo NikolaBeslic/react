@@ -1,12 +1,17 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { Col, Row, Button } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+    faPlus,
+    faPenToSquare,
+    faBoxesPacking,
+} from "@fortawesome/free-solid-svg-icons";
 import axiosClient from "../../../utils/axios";
 import moment from "moment";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import Link from "next/link";
 import { AgGridReact } from "ag-grid-react";
+import { csrf, getCookieValue } from "../../../utils";
 
 export default function PredstavePage() {
     const [predstave, setPredstave] = useState([]);
@@ -58,6 +63,24 @@ export default function PredstavePage() {
                 </Button>
             ),
         },
+        {
+            field: "archive",
+            headerName: "",
+            width: 200,
+            flex: 1,
+            align: "center",
+            cellRenderer: (params) => (
+                <Button
+                    onClick={(e) => handleArhivirajClick(e, params.data.id)}
+                    size="sm"
+                    variant="outline-primary"
+                    title="Arhiviraj"
+                    disabled={params.data.u_arhivi}
+                >
+                    <FontAwesomeIcon icon={faBoxesPacking} />
+                </Button>
+            ),
+        },
     ];
     const rows = new Array();
 
@@ -71,6 +94,7 @@ export default function PredstavePage() {
             premijera: pred.premijera
                 ? moment(pred.premijera).format("DD.MM.YYYY")
                 : "",
+            u_arhivi: pred.u_arhivi,
         }),
     );
 
@@ -80,6 +104,38 @@ export default function PredstavePage() {
             document.getElementById("filter-text-box").value,
         );
     }, []);
+
+    const handleArhivirajClick = async (e, predstavaid) => {
+        e.preventDefault();
+        console.log(predstavaid);
+
+        try {
+            setLoading(true);
+            await csrf();
+
+            const res = await axiosClient.post(
+                "/admin/predstave/arhiviraj",
+                { predstavaid },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            );
+
+            setPredstave((prev) =>
+                prev.map((predstava) =>
+                    predstava.predstavaid === predstavaid
+                        ? { ...predstava, u_arhivi: 1 }
+                        : predstava,
+                ),
+            );
+        } catch (err) {
+            console.error(err);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
         <>

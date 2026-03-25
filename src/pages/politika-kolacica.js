@@ -52,7 +52,7 @@ const PolitikaKolacicaPage = () => {
                     </p>
                     <p>
                         Sajt koristi analitičke servise kompanije&nbsp;
-                        <span class="whitespace-normal">Google</span> radi
+                        <span className="whitespace-normal">Google</span> radi
                         statistike posećenosti.
                     </p>
                     <h3>3. Kolačići trećih strana</h3>

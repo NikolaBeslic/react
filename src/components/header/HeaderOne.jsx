@@ -393,7 +393,7 @@ const HeaderOne = () => {
                                                 </Link>
                                             </li>
                                             <li key={1014}>
-                                                <hr class="dropdown-divider" />
+                                                <hr className="dropdown-divider" />
                                             </li>
                                             <li key={1013}>
                                                 <Link href="/intervjui">

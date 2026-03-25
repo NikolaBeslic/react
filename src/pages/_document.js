@@ -3,7 +3,7 @@ import Script from "next/script";
 
 const Document = () => {
     return (
-        <Html>
+        <Html lang="sr">
             <Head>
                 {/* Static Css File  */}
                 {/* <link rel="stylesheet" href={`${process.env.NODE_ENV === 'production' ? process.env.NEXT_PUBLIC_BASEPATH ?? '' : ''}/css/fontawesome-all.min.css`} /> */}

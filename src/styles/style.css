@@ -11119,6 +11119,12 @@ address .tel i {
     text-transform: lowercase;
 }
 
+@media screen and (max-width: 767px) {
+    .zanr-button {
+        margin-right: 10px;
+    }
+}
+
 .average-rating-text {
     font-size: 1.4rem;
     margin-bottom: 0.5rem;

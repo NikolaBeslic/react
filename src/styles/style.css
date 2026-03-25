@@ -12076,6 +12076,14 @@ address .tel i {
     text-align: left;
 }
 
+@media screen and (max-width:767px) {
+    .predstava-recenzija-wrapper .post-metas ul li .post-author {
+        margin-bottom: 0;
+    }
+
+}
+
+
 .predstava-povezani-tekst-single-wrapper {
     margin-bottom: 2.0rem;
 }
@@ -12962,8 +12970,13 @@ address .tel i {
 /* Mobile: keep only essential (poster + title + rating) */
 @media (max-width: 768px) {
     .predstava-sticky {
-        top: 64px;
+        top: 0;
+        /* top: 64px; */
         /* mobile navbar height */
+    }
+
+    .predstava-sticky .container {
+        padding-top: 0;
     }
 
     .predstava-sticky-right {

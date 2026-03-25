@@ -457,6 +457,7 @@ const HeaderOne = () => {
                                         <button
                                             className="navbar-search-btn"
                                             type="button"
+                                            aria-label="Pretraga"
                                         >
                                             <i className="fal fa-search" />
                                         </button>
@@ -519,12 +520,14 @@ const HeaderOne = () => {
                                 <button
                                     className="nav-search-field-toggler"
                                     onClick={headerSearchShow}
+                                    aria-label="Otvori pretragu"
                                 >
                                     <i className="fal fa-magnifying-glass"></i>
                                 </button>
                                 <button
                                     className="side-nav-toggler m-r-xs-10"
                                     onClick={handleShow}
+                                    aria-label="Glavni meni"
                                 >
                                     <span />
                                     <span />
@@ -543,6 +546,7 @@ const HeaderOne = () => {
                                             <Dropdown
                                                 align="end"
                                                 className="user-dropdown"
+                                                aria-label="Korisnički meni"
                                             >
                                                 <Dropdown.Toggle
                                                     as={AvatarToggle}
@@ -577,6 +581,7 @@ const HeaderOne = () => {
                                     <button
                                         className="m-l-xs-10 nav-search-field-toggler"
                                         onClick={openModal}
+                                        aria-label="Forma za logovanje i registraciju"
                                     >
                                         <i className="fa-regular fa-user"></i>
                                     </button>

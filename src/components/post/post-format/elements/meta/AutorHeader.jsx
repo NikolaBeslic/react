@@ -63,10 +63,7 @@ const AutorHeader = ({ autor }) => {
                                             </ul>
                                         </div>
                                         <div className="author-social-share">
-                                            <ul className="social-share social-share__with-bg">
-                                                ovde su bile ikonice za
-                                                drustvene mreze
-                                            </ul>
+                                            <ul className="social-share social-share__with-bg"></ul>
                                         </div>
                                     </div>
                                 </div>

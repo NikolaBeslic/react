@@ -237,10 +237,14 @@ const FooterOne = () => {
                             <Link href="/">Impressum</Link>
                         </li>
                         <li>
-                            <Link href="/">Politika privatnosti</Link>
+                            <Link href="/politika-privatnosti">
+                                Politika privatnosti
+                            </Link>
                         </li>
                         <li>
-                            <Link href="/">Uslovi korišćenja</Link>
+                            <Link href="/uslovi-koriscenja">
+                                Uslovi korišćenja
+                            </Link>
                         </li>
                         <li>
                             <Link href="/">Sitemap</Link>

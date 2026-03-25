@@ -6,6 +6,7 @@ import FooterOne from "../components/footer/FooterOne";
 import HeaderOne from "../components/header/HeaderOne";
 import Sidebar from "../components/sidebar/Sidebar";
 import ScrollToTopButton from "../components/post/post-format/elements/ScrollToTop";
+import CookieBanner from "../components/common/CookieBanner";
 
 const HuPLayoutInner = ({
     header,
@@ -52,6 +53,7 @@ const HuPLayoutInner = ({
                             )}
                         </div>
                     )}
+                    <CookieBanner />
                 </main>
                 <Toaster
                     position="bottom-center"

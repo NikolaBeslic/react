@@ -13416,3 +13416,156 @@ address .tel i {
     height: 12px;
     margin-top: 10px;
 }
+
+/* Sticky navbar */
+.navbar.bg-white {
+    position: sticky;
+    top: 0;
+    z-index: 999;
+    background: #fff;
+    transition: all 0.3s ease;
+    border-bottom: 1px solid transparent;
+}
+
+/* Active sticky state after scroll */
+.navbar.bg-white.navbar-sticky {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    border-bottom: 1px solid #f1f1f1;
+    padding-top: 8px;
+    padding-bottom: 8px;
+}
+
+/* Smooth inner resize */
+.navbar .navbar-inner {
+    transition: all 0.3s ease;
+}
+
+.navbar.navbar-sticky .navbar-inner {
+    min-height: 70px;
+}
+
+/* Optional logo slightly smaller on sticky */
+.navbar .brand-logo-container img {
+    transition: all 0.3s ease;
+}
+
+.navbar.navbar-sticky .brand-logo-container img {
+    transform: scale(0.92);
+}
+
+/* Optional menu hover improvement */
+.navbar .mainmenu-nav li a {
+    position: relative;
+    transition: color 0.25s ease;
+}
+
+.navbar .mainmenu-nav li a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -6px;
+    width: 0;
+    height: 2px;
+    background: #6c0101;
+    transition: width 0.25s ease;
+}
+
+.navbar .mainmenu-nav li a:hover::after {
+    width: 100%;
+}
+
+.cookie-banner {
+    position: fixed;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
+    max-width: 900px;
+    margin: auto;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    box-shadow: 0 14px 38px rgba(0, 0, 0, 0.14);
+    z-index: 9999;
+}
+
+.cookie-banner-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    flex: 1;
+}
+
+.cookie-icon {
+    font-size: 18px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}
+
+.cookie-banner p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #222;
+}
+
+.cookie-banner a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.cookie-banner button {
+    width: auto;
+    min-width: 120px;
+
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cookie-banner__content {
+    width: 100%;
+    max-width: 980px;
+    background: #ffffff;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    pointer-events: auto;
+}
+
+.cookie-banner__text {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.cookie-banner__link {
+    color: inherit;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+
+.cookie-banner__button:hover {
+    opacity: 0.88;
+}
+
+@media (max-width: 768px) {
+    .cookie-banner__content {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cookie-banner__button {
+        width: 100%;
+        min-height: 44px;
+    }
+}

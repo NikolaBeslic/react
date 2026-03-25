@@ -74,7 +74,7 @@ export default function PredstavaPage(pageProps) {
     const [naListiZeljaLoading, setNaListiZeljaLoading] = useState(false);
     const handleDodajNaListuZelja = async () => {
         if (!user) {
-            alert("You must be logged in to rate a post.");
+            alert("Ulogujte se da dodate predstavu na listu želja");
             return;
         }
         setNaListiZeljaLoading(true);
@@ -110,7 +110,7 @@ export default function PredstavaPage(pageProps) {
     const [odgledaneLoading, setOdgledaneLoading] = useState(false);
     const handleDodajUOdgledane = async () => {
         if (!user) {
-            alert("You must be logged in to do this");
+            alert("Ulogujte se da dodate predstavu na listu odgledanih.");
             return;
         }
         setOdgledaneLoading(true);

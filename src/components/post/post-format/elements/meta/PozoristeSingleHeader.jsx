@@ -16,7 +16,7 @@ const PozoristeSingleHeader = ({ data }) => {
     );
     const handleDodajUOmiljena = async () => {
         if (!user) {
-            alert("Morate biti ulogovani");
+            alert("Ulogujte se da dodate omiljeno pozorište");
             return;
         }
         setOmiljenaLoading(true);

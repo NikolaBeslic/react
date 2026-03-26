@@ -20,7 +20,6 @@ const SearchPage = () => {
                 axiosClient
                     .get(`/pretraga?query=${query}&page=${currentPage}`)
                     .then((res) => {
-                        debugger;
                         setSearchResults((prevSearchResults) => [
                             ...prevSearchResults,
                             ...res.data.data,

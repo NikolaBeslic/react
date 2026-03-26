@@ -25,15 +25,11 @@ const ContactForm = () => {
                 "service_g3aufzu",
                 "template_sk4dqiz",
                 form.current,
-                "9L_sRsO66U253zcxC"
+                "9L_sRsO66U253zcxC",
             )
             .then(
-                (result) => {
-                    console.log(result.text);
-                },
-                (error) => {
-                    console.log(error.text);
-                }
+                (result) => {},
+                (error) => {},
             );
         form.current.reset();
         showresult(true);

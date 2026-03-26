@@ -107,7 +107,6 @@ export default function PredstavePage() {
 
     const handleArhivirajClick = async (e, predstavaid) => {
         e.preventDefault();
-        console.log(predstavaid);
 
         try {
             setLoading(true);

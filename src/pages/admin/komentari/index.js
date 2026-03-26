@@ -42,7 +42,6 @@ export default function KomentariPage() {
             .get("/admin/get-all-komentari")
             .then((res) => {
                 setKomentari(res.data);
-                console.log(res.data);
             })
             .catch((err) => console.error(err))
             .finally(() => setLoading(false));
@@ -51,7 +50,7 @@ export default function KomentariPage() {
     /* Dialog  */
     const handleDeleteClick = (ev, id) => {
         ev.preventDefault();
-        debugger;
+
         setSelectedRow(komentari.find((kom) => kom.komentarid === id));
         setOpenDialog(true);
     };
@@ -88,7 +87,6 @@ export default function KomentariPage() {
     };
 
     const onEditButtonClick = async (event, params) => {
-        debugger;
         event.preventDefault();
         setLoading(true);
         await csrf();

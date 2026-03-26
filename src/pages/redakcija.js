@@ -44,7 +44,6 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     );
 
     const autori = response.data;
-    console.log("Fetched autor data:", autori);
 
     return {
         props: {

@@ -71,7 +71,6 @@ export const getServerSideProps = withSSRHandler(async (context) => {
     );
 
     const festivali = response.data;
-    console.log("Fetched festivali data:", festivali);
 
     return {
         props: {

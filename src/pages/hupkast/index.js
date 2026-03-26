@@ -18,7 +18,7 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
     //     axiosClient
     //         .get("/get-hupkast")
     //         .then((res) => {
-    //             console.log(res.data);
+    //
     //             setHupkast(res.data);
     //             hideLoading();
     //         })
@@ -32,7 +32,6 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
         try {
             const nextPage = currentPage + 1;
             const res = await axiosClient.get(`/get-hupkast?page=${nextPage}`);
-            console.log("Loaded more hupkast data:", res.data);
             setHupkast((prev) => [...prev, ...res.data.tekstovi.data]);
             setCurrentPage(nextPage);
         } catch (err) {
@@ -80,12 +79,10 @@ export default function HuPkast({ initialHuPkast, initTotalPages }) {
 
 export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
-    console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-hupkast?page=${page}`,
     );
 
-    console.log("Response data:", response.data);
     return {
         props: {
             initialHuPkast: response.data || [],

@@ -28,7 +28,6 @@ const RegistrationForm = ({ handleGoogleLogin }) => {
         event.preventDefault();
         if (!validateForm()) return;
         setLoading(true);
-        console.log(formData);
         await csrf();
         axiosClient
             .post(`/register`, formData, {

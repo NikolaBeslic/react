@@ -17,7 +17,6 @@ const AuthModal = ({ closeModal, handleForgotPasswordClick }) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log(formData);
         Modal.closeModal();
         // to do: send it to API
     };
@@ -34,7 +33,6 @@ const AuthModal = ({ closeModal, handleForgotPasswordClick }) => {
     const googleAuthUrl = process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL;
     const handleGoogleLogin = (e) => {
         e.preventDefault();
-        console.log("google");
         const redirectUrl = window.location.href; // Capture the current page URL;
         window.location.href = `${process.env.NEXT_PUBLIC_GOOGLE_AUTH_URL}?redirect_url=${encodeURIComponent(redirectUrl)}`;
     };

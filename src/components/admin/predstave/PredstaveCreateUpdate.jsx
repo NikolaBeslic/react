@@ -73,8 +73,6 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                 setSviZanrovi(zanroviRes.data);
 
                 if (predstavaRes) {
-                    console.log(predstavaRes.data);
-
                     setFormData(predstavaRes.data);
                     setPredstavaImage(predstavaRes.data.plakat);
                     editorOpis.content = predstavaRes.data.opis;
@@ -144,8 +142,6 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
     };
 
     const handlePozoristaChange = (selectedPozorista) => {
-        console.log(selectedPozorista);
-
         setFormData({
             ...formData,
             pozorista: selectedPozorista.map((option) => option.value),
@@ -163,7 +159,6 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
 
         if (!validate()) return;
         setLoading(true);
@@ -181,14 +176,12 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                     },
                 );
 
-                console.log(res);
                 toast.success("Predstava uspesno izmenjena");
             } catch (error) {
                 const status = error?.response?.status;
                 const data = error?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
@@ -210,7 +203,6 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                     },
                 );
 
-                console.log(res);
                 setFormData({
                     naziv_predstave: "",
                     predstava_slug: "",
@@ -236,7 +228,6 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                 const data = error?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {

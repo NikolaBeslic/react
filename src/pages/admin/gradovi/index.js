@@ -31,7 +31,6 @@ export default function GradoviPage() {
                 },
             )
             .then((res) => {
-                console.log(res.data);
                 setGradovi(res.data);
                 setNazivGrada("");
                 setErrors({});

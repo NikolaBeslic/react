@@ -15,7 +15,6 @@ export default function StatisticsDetailsPage() {
             axiosClient
                 .get(`/admin/get-fetch-details/${fetchId}`)
                 .then((res) => {
-                    console.log(res.data);
                     setFetchDetials(res.data);
                 })
                 .catch((err) => console.error(err));
@@ -36,7 +35,7 @@ export default function StatisticsDetailsPage() {
             title: detail.title,
             url: detail.url,
             views: detail.views,
-        })
+        }),
     );
 
     return (

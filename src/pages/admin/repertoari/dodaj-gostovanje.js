@@ -39,7 +39,6 @@ export default function DodajGostovanjePage() {
         axiosClient
             .get("/admin/get-all-for-gostovanja")
             .then((res) => {
-                console.log(res.data);
                 setDbPredstave(
                     res.data.predstave.map((pred) => ({
                         value: pred.predstavaid,
@@ -83,14 +82,12 @@ export default function DodajGostovanjePage() {
     };
 
     const handleVremeChange = (event) => {
-        console.log(event);
         setVreme(event.target.value);
         setFormData({ ...formData, vreme: event.target.value });
         setErrors({ ...errors, vreme: null });
     };
 
     const handleDatumChange = (event) => {
-        console.log(event);
         setDatum(event.target.value);
         setFormData({
             ...formData,
@@ -101,13 +98,11 @@ export default function DodajGostovanjePage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
 
         if (!validateIgranjeStore()) return;
 
         setFormaLoading(true);
 
-        console.log(formData);
         try {
             await csrf();
             const res = await axiosClient.post(
@@ -119,8 +114,6 @@ export default function DodajGostovanjePage() {
                     },
                 },
             );
-
-            console.log(res.data);
 
             setFormData({
                 pozoristeid: null,
@@ -138,7 +131,6 @@ export default function DodajGostovanjePage() {
             const data = err?.response?.data;
 
             if (status === 422 && data?.errors) {
-                console.log(data.errors);
                 setErrors(data.errors);
                 toast.error("Proverite uneta polja.");
             } else {

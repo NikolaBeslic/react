@@ -12,7 +12,6 @@ export default function PredstavaPage(pageProps) {
     const { user, setModalOpen } = useUser();
 
     const handleDataUpdate = (updatedData) => {
-        debugger;
         setPredstava(updatedData);
     };
 
@@ -43,7 +42,6 @@ export default function PredstavaPage(pageProps) {
                 },
             )
             .then((res) => {
-                console.log(res.data);
                 setPredstava((prev) => ({
                     ...prev,
                     brojOcena: res.data.brojOcena,
@@ -95,7 +93,6 @@ export default function PredstavaPage(pageProps) {
                 },
             )
             .then((res) => {
-                console.log(res);
                 setPredstava((prev) => ({
                     ...prev,
                     naListiZeljaKorisnika: true,
@@ -131,7 +128,6 @@ export default function PredstavaPage(pageProps) {
                 },
             )
             .then((res) => {
-                console.log(res);
                 setPredstava((prev) => ({
                     ...prev,
                     naListiOdgledanihKorisnika: true,
@@ -181,7 +177,6 @@ export const getServerSideProps = withSSRHandler(async (context) => {
             withCredentials: true,
         },
     );
-    console.log(res.data);
     const predstavaData = res.data;
 
     return {

@@ -18,7 +18,6 @@ export default function ZanroviPage() {
         axiosClient
             .get("/admin/zanrovi")
             .then((res) => {
-                console.log(res.data);
                 setZanrovi(res.data);
             })
             .catch((error) => console.error(error))

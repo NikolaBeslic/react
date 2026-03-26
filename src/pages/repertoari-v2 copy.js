@@ -43,7 +43,6 @@ const RepertoariNewPage = () => {
         axiosClient
             .get(`/get-repertoari`)
             .then((res) => {
-                console.log(res.data);
                 setDbEvents(res.data);
                 setDisplayEvents(res.data);
                 setDate(new Date());
@@ -55,7 +54,6 @@ const RepertoariNewPage = () => {
         axiosClient
             .get("/get-gradovi")
             .then((res) => {
-                console.log(res.data);
                 setDbGradovi(
                     res.data.map((grad) => ({
                         value: grad.gradid,
@@ -67,7 +65,6 @@ const RepertoariNewPage = () => {
         // axiosClient
         //     .get("/get-predstave-with-texts")
         //     .then((res) => {
-        //         console.log(res.data);
         //         setPredstave(res.data);
         //     })
         //     .catch((error) => console.error(error));
@@ -78,10 +75,9 @@ const RepertoariNewPage = () => {
 
         const mDatumOd = new moment(datumOd);
         const mDatumDo = new moment(datumDo);
-        console.log("mDates in filter metod");
+
         let filteredEvents = dbEvents;
-        console.log(mDatumOd);
-        console.log(mDatumDo);
+
         if (datumDo) {
             filteredEvents = dbEvents.filter(
                 (dbe) =>
@@ -93,13 +89,8 @@ const RepertoariNewPage = () => {
                 new moment(dbe.datum).isSame(mDatumOd),
             );
         }
-        console.log("After filter");
-
-        console.log(filteredEvents);
 
         if (selectedGradovi.length > 0) {
-            console.log("Filter by grad");
-            console.log(selectedGradovi);
             // filteredEvents = displayEvents;
             filteredEvents = filteredEvents.filter(
                 (igranje) =>
@@ -113,7 +104,6 @@ const RepertoariNewPage = () => {
 
     const handleDateClick = (dates, str, instance) => {
         //setActive("custom");
-        console.log(dates);
         setDatumOd(dates[0]);
         if (dates.length > 1) setDatumDo(dates[1]);
         setDate(dates);

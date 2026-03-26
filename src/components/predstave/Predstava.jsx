@@ -19,7 +19,6 @@ const Predstava = ({ data, updateData }) => {
     const povezaniTekstovi = data.tekstovi?.filter(
         (tekst) => tekst.kategorija.kategorijaid != 4,
     );
-    console.log(povezaniTekstovi);
     const izvodjenja = data.igranja;
 
     const [showFullDescription, setFullDescription] = useState(false);
@@ -58,7 +57,6 @@ const Predstava = ({ data, updateData }) => {
     const handleCommentSubmit = async (e) => {
         e.preventDefault();
         setKomentarLoading(true);
-        console.log("Submitting comment:", komentarFormData);
 
         if (!user) {
             alert("Ulogujte se da biste mogli da komentarišete predstavu.");

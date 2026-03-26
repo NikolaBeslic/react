@@ -62,7 +62,6 @@ export default function RepertoarPozoristaScrapePage() {
     }
 
     const handleSaveSingleButtonClick = async (e, params) => {
-        console.log(params);
         const igranje = {
             pozoristeid: params.row.pozoristeid,
             predstavaid: params.row.predstavaid,
@@ -84,7 +83,6 @@ export default function RepertoarPozoristaScrapePage() {
                 console.error(err);
                 toast.error("Greska prilikom cuvanja izvodjenja");
             });
-        console.log(igranje);
     };
 
     function SaveAllButton(params) {
@@ -124,7 +122,6 @@ export default function RepertoarPozoristaScrapePage() {
                 },
             )
             .then((res) => {
-                console.log(res.data);
                 setScrapeSaveResponse(res.data);
             })
             .catch((err) => {

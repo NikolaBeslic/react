@@ -19,7 +19,7 @@ const AdminLogin = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
+
         setLoadingAdminLogin(true);
         await csrf();
 
@@ -37,7 +37,6 @@ const AdminLogin = () => {
                 router.push("/admin");
             })
             .catch((err) => {
-                console.log(err);
                 setErrors(err.errors);
                 setErrorMessage(err?.response?.data);
                 setLoadingAdminLogin(false);

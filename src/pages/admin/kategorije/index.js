@@ -15,14 +15,12 @@ export default function KategorijePage() {
         axiosClient
             .get("/admin/kategorije")
             .then((res) => {
-                console.log(res.data);
                 setKategorije(res.data);
             })
             .catch((error) => console.error(error));
     }, []);
 
     const handleEditClick = (kategorijaid) => {
-        console.log(kategorijaid);
         router.push(`/admin/kategorije/edit?kategorijaid=${kategorijaid}`);
     };
 

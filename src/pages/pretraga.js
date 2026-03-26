@@ -32,8 +32,6 @@ const PretragaPage = () => {
                     `/pretraga?query=${query}&page=${currentPage}`,
                 );
 
-                console.log(res.data);
-
                 if (currentPage === 1) {
                     setSearchResults(res.data.data || []);
                 } else {

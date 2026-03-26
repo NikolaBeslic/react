@@ -18,7 +18,6 @@ export default function HuPikonPage() {
         axiosClient
             .get("/admin/get-all-hupikon")
             .then((res) => {
-                console.log(res.data);
                 setLoading(false);
                 setAllHupikon(res.data);
             })

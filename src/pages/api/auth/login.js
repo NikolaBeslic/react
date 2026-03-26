@@ -2,7 +2,6 @@ import * as cookie from "cookie";
 import axiosClient from "../../../utils/axios";
 
 export default async function handler(req, res) {
-    console.log("Login API called");
     if (req.method !== "POST") return res.status(405).end();
     const csrf = () => axiosClient.get("/csrf-cookie");
 
@@ -21,7 +20,7 @@ export default async function handler(req, res) {
                 sameSite: "lax",
                 path: "/",
                 maxAge: 60 * 60 * 24 * 7,
-            })
+            }),
         );
 
         res.status(200).json(response.data.user);

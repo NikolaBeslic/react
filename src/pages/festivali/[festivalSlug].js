@@ -16,13 +16,10 @@ export default function FestivalPage({ festival }) {
 export const getServerSideProps = withSSRHandler(async (context) => {
     const { festivalSlug } = context.params;
     const page = 1;
-    console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/festival-single/${festivalSlug}`,
     );
-
     const festival = response.data;
-    console.log("Fetched festival data:", festival);
 
     return {
         props: {

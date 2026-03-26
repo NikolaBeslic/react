@@ -52,7 +52,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     useEffect(() => {
         setLoading(true);
         let isMounted = true;
-        console.log("tekstid" + tekstid);
         setFormData({ ...formData, kategorijaid: kategorijaid });
 
         if (addHuPikon) {
@@ -94,8 +93,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
 
                 if (hupkastRes) {
                     setHupkastPlatforme(hupkastRes.data);
-                    console.log("hupkast platforme");
-                    console.log(hupkastRes.data);
 
                     setFormData({
                         ...formData,
@@ -108,7 +105,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                 }
 
                 if (res) {
-                    console.log(res.data);
                     setFormData({
                         ...res.data,
                         predstave: res.data.predstave?.map(
@@ -266,7 +262,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     };
 
     const handleAutoriChange = (selectedAutori) => {
-        console.log(selectedAutori);
         setFormData({
             ...formData,
             autori: selectedAutori.map((sa) => sa.value),
@@ -275,7 +270,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
     };
 
     const handleFestivalChange = (selectedFestival) => {
-        console.log(selectedFestival);
         setFormData({
             ...formData,
             festivalid: selectedFestival.value,
@@ -313,7 +307,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         formDataTinyMce.append("kategorijaid", kategorijaid);
         formDataTinyMce.append("slika", blobInfo.blob(), blobInfo.filename());
         try {
-            console.log(formDataTinyMce);
             const res = await axiosClient.post(
                 "/admin/uploadImage",
                 formDataTinyMce,
@@ -323,7 +316,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                     },
                 },
             );
-            console.log(res);
 
             if (res.data && res.data.location) {
                 return res.data.location;
@@ -343,9 +335,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         setErrors({});
         linkovi.forEach((value, index) => {
             formData.hupkast_linkovi[index] = value;
-            console.log(value);
         });
-        console.log(formData);
 
         let storeUrl = "/admin/create-tekst";
         if (addHuPkast) storeUrl = "/admin/hupkast-store";
@@ -364,14 +354,12 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                         },
                     },
                 );
-                console.log(res);
                 toast.success("Uspesno izmenjen tekst");
             } catch (error) {
                 const status = error?.response?.status;
                 const data = error?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
@@ -390,7 +378,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                 });
 
                 setErrors({});
-                console.log(res);
                 setFormData({
                     naslov: "",
                     slug: "",
@@ -423,7 +410,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
                 const data = error?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
@@ -479,9 +465,7 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
             onFinish: (files) => {
                 // Selected image (isMultiple == false returns always a single file)
                 let file = files[0];
-                console.log(file);
                 file.url = file.url.replace("api/flmngr/", "slike/");
-                console.log("Original image: " + file.url);
             },
         });
     });
@@ -496,7 +480,6 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         );
         if (matchedElement) {
             matchedElement.hupkast_url = event.target.value;
-            console.log(newLinkovi);
         } else {
             newLinkovi.push({
                 platformaid: platformaid,

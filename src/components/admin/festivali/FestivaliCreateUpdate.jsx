@@ -51,7 +51,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 setGradovi(gradoviRes.data);
 
                 if (festivalRes) {
-                    console.log(festivalRes.data);
                     setFormData({
                         ...festivalRes.data,
                     });
@@ -62,7 +61,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     editorRepertoar.content = festivalRes.data.repertoar;
                 }
             } catch (error) {
-                console.error(error);
             } finally {
                 if (isMounted) {
                     setLoading(false);
@@ -110,7 +108,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
     };
 
     const handleGradSelectChange = (event) => {
-        console.log(event.target.value);
         setErrors({ ...errors, gradid: null });
         setFormData({ ...formData, gradid: event.target.value });
     };
@@ -143,11 +140,8 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
         if (!validate()) return;
         setLoading(true);
 
-        console.log(formData);
-
         await csrf();
         if (formData.festivalid) {
-            console.log("update");
             try {
                 const res = await axiosClient.post(
                     "/admin/festival-update",
@@ -160,7 +154,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     },
                 );
 
-                console.log(res);
                 setErrors({});
                 toast.success("Uspešno sačuvane izmene");
             } catch (err) {
@@ -168,7 +161,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 const data = err?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
@@ -190,7 +182,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     },
                 );
 
-                console.log(res);
                 setErrors({});
                 setFormData({
                     gradid: null,
@@ -214,7 +205,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                 const data = err?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
@@ -232,7 +222,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
         formDataTinyMce.append("gradid", gradid);
         formDataTinyMce.append("slika", blobInfo.blob(), blobInfo.filename());
         try {
-            console.log(formDataTinyMce);
             const res = await axiosClient.post(
                 "/admin/uploadImage",
                 formDataTinyMce,
@@ -242,7 +231,6 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
                     },
                 },
             );
-            console.log(res);
 
             if (res.data && res.data.location) {
                 return res.data.location;

@@ -31,7 +31,6 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
         if (!validateForm()) return;
 
         setLoading(true);
-        console.log(formData);
         await csrf();
         axiosClient
             .post("/login", formData, {
@@ -53,7 +52,7 @@ const Login = ({ handleGoogleLogin, handleForgotPasswordClick }) => {
 
     // const handleGoogleLogin = (e) => {
     //     e.preventDefault();
-    //     console.log("google");
+    //
     //     const redirectUrl = window.location.href; // Capture the current page URL
     //     window.location.href = `${googleAuthUrl}?redirect_url=${encodeURIComponent(
     //         redirectUrl

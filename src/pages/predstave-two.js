@@ -7,25 +7,24 @@ import HeaderOne from "../components/header/HeaderOne";
 import PredstaveSearch from "../components/predstave/PredstaveSearch";
 
 export default function PredstaveTwoPage() {
-
     const [predstave, setPredstave] = useState([]);
     const [zanrovi, setZanrovi] = useState([]);
     const data = {};
     useEffect(() => {
-        axiosClient.get('/get-predstave').then((res) => {
-            console.log(res.data);
-            setPredstave(res.data);
-            data.predstave = predstave;
-        }).catch(error => console.error(error));
-
+        axiosClient
+            .get("/get-predstave")
+            .then((res) => {
+                setPredstave(res.data);
+                data.predstave = predstave;
+            })
+            .catch((error) => console.error(error));
     }, []);
     useEffect(() => {
-        axiosClient.get('/get-zanrovi').then((res) => {
-            console.log(res.data);
+        axiosClient.get("/get-zanrovi").then((res) => {
             setZanrovi(res.data);
-            data.zanrovi = zanrovi
-        })
-    }, [])
+            data.zanrovi = zanrovi;
+        });
+    }, []);
 
     return (
         <>
@@ -36,7 +35,10 @@ export default function PredstaveTwoPage() {
                     <h1>Predstave</h1>
                     <div className="row">
                         <PredstaveTwoSlider slidePost={predstave} />
-                        <PredstaveSearch predstave={predstave} zanrovi={zanrovi} />
+                        <PredstaveSearch
+                            predstave={predstave}
+                            zanrovi={zanrovi}
+                        />
                     </div>
                 </div>
             </div>

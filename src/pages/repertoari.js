@@ -120,7 +120,6 @@ const RepertoariNewPage = () => {
     const lastFetchKeyRef = useRef("");
     useEffect(() => {
         if (!routerReadyFilters) return;
-        console.log(filters);
         const ctrl = new AbortController();
 
         const params = {
@@ -134,9 +133,6 @@ const RepertoariNewPage = () => {
             page: filters.page,
         };
 
-        console.log("[DEFAULT+FILTERS]", filters);
-        console.log("[API PARAMS]", params);
-
         const key = JSON.stringify(params);
         if (key === lastFetchKeyRef.current) return;
         lastFetchKeyRef.current = key;
@@ -147,8 +143,6 @@ const RepertoariNewPage = () => {
                     params,
                     signal: ctrl.signal,
                 });
-                console.log("FROM API: ");
-                console.log(res);
 
                 const incoming = res.data?.data || [];
                 setIzvodjenja((prev) =>
@@ -173,7 +167,6 @@ const RepertoariNewPage = () => {
 
     const handleDateClick = (dates, str, instance) => {
         //setActive("custom");
-        console.log(dates);
         setDatumOd(dates[0]);
         if (dates.length > 1) {
             setDatumDo(dates[1]);

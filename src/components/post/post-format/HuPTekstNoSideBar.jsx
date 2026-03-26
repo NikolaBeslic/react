@@ -11,9 +11,7 @@ import PostComment from "./elements/PostComment";
 import SocialShareBottom from "./elements/SocialShareBottom";
 import SocialShareSide from "./elements/SocialShareSide";
 
-
 const HuPTekstNoSideBar = ({ postData, sidePosts }) => {
-    console.log("RP" + sidePosts);
     return (
         <>
             <MetaDataOne metaData={postData} />
@@ -25,7 +23,11 @@ const HuPTekstNoSideBar = ({ postData, sidePosts }) => {
                                 <article className="post-details">
                                     <div className="single-blog-wrapper">
                                         {/* <SocialShareSide /> */}
-                                        <div dangerouslySetInnerHTML={{ __html: postData.sadrzaj }}></div>
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: postData.sadrzaj,
+                                            }}
+                                        ></div>
                                     </div>
                                 </article>
                                 {/* <SocialShareBottom /> */}
@@ -48,6 +50,6 @@ const HuPTekstNoSideBar = ({ postData, sidePosts }) => {
             </div>
         </>
     );
-}
+};
 
 export default HuPTekstNoSideBar;

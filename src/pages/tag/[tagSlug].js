@@ -21,7 +21,6 @@ export default function Page() {
             axiosClient
                 .get(`/get-texts-by-tag/${tag_slug}`)
                 .then((res) => {
-                    console.log(res.data);
                     setTag(res.data);
                     setLoading(false);
                 })

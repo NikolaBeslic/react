@@ -19,7 +19,7 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
     //     axiosClient
     //         .get(`/get-hupikon?page=${currentPage}`)
     //         .then((res) => {
-    //             console.log(res.data);
+    //
     //             setHupikon((prevHuPikon) => [...prevHuPikon, ...res.data.data]);
 
     //             setTotalPages(res.data.last_page);
@@ -96,12 +96,10 @@ export default function Hupikon({ initialHuPikon, initTotalPages }) {
 
 export const getServerSideProps = withSSRHandler(async (context) => {
     const page = 1;
-    console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-hupikon?page=${page}`,
     );
 
-    console.log("Response data:", response.data);
     return {
         props: {
             initialHuPikon: response.data || [],

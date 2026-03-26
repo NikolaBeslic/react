@@ -13,8 +13,6 @@ export default function HomeSix() {
         axiosClient
             .get("/get-posts")
             .then((res) => {
-                console.log("posts");
-                console.log(res.data);
                 setPosts(res.data);
 
                 setLoading(false);
@@ -23,7 +21,6 @@ export default function HomeSix() {
         axiosClient
             .get("/get-predstave-naslovna")
             .then((res) => {
-                console.log(res.data);
                 setPredstave(res.data);
             })
             .catch((error) => console.error(error));

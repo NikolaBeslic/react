@@ -45,13 +45,10 @@ const AutoriCreateUpdate = ({ autorid }) => {
                 setGradovi(gradoviRes.data);
 
                 if (autorRes) {
-                    console.log(autorRes.data);
-
                     setFormData({ ...autorRes.data });
                     setAutorImage(autorRes.data.url_slike);
                 }
             } catch (error) {
-                console.error(error);
             } finally {
                 if (isMounted) {
                     setLoading(false);
@@ -89,14 +86,12 @@ const AutoriCreateUpdate = ({ autorid }) => {
     };
 
     const handleGradSelectChange = (event) => {
-        console.log(event.target.value);
         setFormData({ ...formData, gradid: event.target.value });
         setErrors({ ...errors, gradid: null });
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
         if (!validate()) return;
         setLoading(true);
 
@@ -114,7 +109,6 @@ const AutoriCreateUpdate = ({ autorid }) => {
                     },
                 );
 
-                console.log(res);
                 setErrors({});
                 toast.success("Uspešno sačuvane izmene");
             } catch (error) {
@@ -122,7 +116,6 @@ const AutoriCreateUpdate = ({ autorid }) => {
                 const data = err?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
@@ -133,7 +126,6 @@ const AutoriCreateUpdate = ({ autorid }) => {
             }
         } else {
             try {
-                debugger;
                 const res = await axiosClient.post(
                     "/admin/create-autor",
                     formData,
@@ -145,7 +137,6 @@ const AutoriCreateUpdate = ({ autorid }) => {
                     },
                 );
 
-                console.log(res);
                 setErrors({});
                 setFormData({
                     ime_autora: "",
@@ -164,12 +155,9 @@ const AutoriCreateUpdate = ({ autorid }) => {
                 const data = err?.response?.data;
 
                 if (status === 422 && data?.errors) {
-                    console.log(data.errors);
                     setErrors(data.errors);
                     toast.error("Proverite uneta polja.");
                 } else {
-                    console.log(data);
-
                     toast.error(data?.message || "Došlo je do greške.");
                 }
             } finally {

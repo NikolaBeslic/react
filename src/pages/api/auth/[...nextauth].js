@@ -6,7 +6,6 @@
 
 // const authOptions = {
 
-    
 //     // Configure one or more authentication providers
 //     providers: [
 //         CredentialsProvider({
@@ -24,9 +23,7 @@
 
 //                 const user = await axiosClient.get('/csrf-cookie')
 //                     .then((response) => {
-//                         console.log(response);
-//                         console.log("-----")
-//                         console.log(user);
+
 //                         axiosClient.post('/login',
 //                             {
 //                                 user: {
@@ -40,7 +37,7 @@
 //                                     'Content-Type': 'application/json'
 //                                 }
 //                             }).then((res) => {
-//                                 console.log(res.data);
+//
 //                                 setCookie(null, 'token', 'your_token_value', {
 //                                     httpOnly: true, // Cookie cannot be accessed by client-side JavaScript
 //                                     maxAge: 3600, // Cookie expires in 1 hour (adjust as needed)
@@ -58,9 +55,7 @@
 //             }
 //         })
 //     ]
-    
+
 // }
 
-
 // export default NextAuth(authOptions);
-

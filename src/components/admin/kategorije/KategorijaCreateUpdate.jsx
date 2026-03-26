@@ -22,19 +22,14 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
             .then((res) => {
                 setSveKategorije(res.data);
             })
-            .catch((error) => {
-                console.error(error);
-            });
+            .catch((error) => {});
         if (kategorijaid) {
             axiosClient
                 .get(`/admin/get-single-kategorija/${kategorijaid}`)
                 .then((res) => {
-                    console.log(res.data);
                     setFormData({ ...res.data });
                 })
-                .catch((error) => {
-                    console.error(error);
-                });
+                .catch((error) => {});
         }
     }, [kategorijaid]);
 
@@ -53,7 +48,6 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
     };
 
     const handleParentKategorijaChange = (event) => {
-        console.log(event.target.value);
         setFormData({ ...formData, parent_kategorija: event.target.value });
     };
 
@@ -64,7 +58,6 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
         await csrf();
         if (formData.kategorijaid) {
             axiosClient
@@ -74,12 +67,10 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     toast.success("Uspešno sačuvane izmene");
                 })
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data.errors);
                 });
         } else {
             axiosClient
@@ -89,12 +80,10 @@ const KategorijaCreateUpdate = ({ kategorijaid }) => {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     setErrors({});
                 })
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data.errors);
                     setErrors(error.response.data.errors);
                 });
         }

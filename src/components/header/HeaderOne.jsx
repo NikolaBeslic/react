@@ -198,7 +198,6 @@ const HeaderOne = () => {
                 },
             });
 
-            console.log(res.data);
             toast.success("Uspešno ste se izlogovali");
             router.push("/");
             await refreshUser();
@@ -244,13 +243,11 @@ const HeaderOne = () => {
         //const searchInput = e.target.value + "*";
         // TO DO: Fix loading layout
         // setSearchLoading(true);
-        console.log(searchInput);
         if (searchInput.length >= 3) {
             setSearchLoading(true);
             axiosClient
                 .get("/search", { params: { inputSearch: searchInput } })
                 .then((res) => {
-                    console.log(res.data);
                     setSearchResultsActive(true);
                     setSearchResults(res.data);
                     setSearchLoading(false);

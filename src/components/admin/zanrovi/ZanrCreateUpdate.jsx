@@ -19,7 +19,6 @@ const ZanrCreateUpdate = ({ zanrid }) => {
     useEffect(() => {
         if (zanrid) {
             axiosClient.get(`/admin/get-single-zanr/${zanrid}`).then((res) => {
-                console.log(res.data);
                 setFormData({ ...res.data });
             });
         }
@@ -41,7 +40,6 @@ const ZanrCreateUpdate = ({ zanrid }) => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
         await csrf();
         if (formData.zanrid) {
             axiosClient
@@ -50,10 +48,9 @@ const ZanrCreateUpdate = ({ zanrid }) => {
                         "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 })
-                .then((res) => console.log(res))
+                .then((res) => {})
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data.errors);
                 });
         } else {
             axiosClient
@@ -63,13 +60,11 @@ const ZanrCreateUpdate = ({ zanrid }) => {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     setErrors({});
                     toast.success("Uspesno dodat zanr");
                 })
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data.errors);
                     setErrors(error.response.data.errors);
                 });
         }

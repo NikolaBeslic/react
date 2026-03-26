@@ -13,13 +13,11 @@ export default function SingleHupkast({ hupkast, relatedPosts }) {
 
 export const getServerSideProps = withSSRHandler(async (context) => {
     const { hupkastSlug } = context.params;
-    console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/hupkast-single/${hupkastSlug}`,
     );
 
     const hupkast = response.data;
-    console.log("Fetched post data:", hupkast);
 
     return {
         props: {

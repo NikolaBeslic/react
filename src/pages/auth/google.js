@@ -27,11 +27,8 @@ const Page = () => {
                 });
                 axiosClient.defaults.headers.common[
                     "Authorization"
-                ] = `Bearer ${token}`;
-                console.log("userFromUri"); */
+                ] = `Bearer ${token}`; */
 
-                console.log("userFromUri");
-                console.log(decodeURIComponent(userFromUri));
                 //const json = atob(decodeURIComponent(userFromUri));
                 const loggedUser = JSON.parse(decodeURIComponent(userFromUri));
                 //setCurrentUser(loggedUser);

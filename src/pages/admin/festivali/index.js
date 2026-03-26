@@ -19,7 +19,6 @@ export default function FestivaliPage() {
             .get("/admin/get-all-festivali")
             .then((res) => {
                 setFestivali(res.data);
-                console.log(res.data);
             })
             .catch((err) => console.error(err))
             .finally(() => setLoading(false));

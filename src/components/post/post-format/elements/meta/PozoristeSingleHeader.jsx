@@ -34,7 +34,6 @@ const PozoristeSingleHeader = ({ data }) => {
                 },
             )
             .then((res) => {
-                console.log(res.data);
                 setOmiljenaLoading(false);
                 setOmiljenoKorisnika(true);
             })

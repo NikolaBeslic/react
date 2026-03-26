@@ -54,7 +54,6 @@ export const getServerSideProps = withSSRHandler(async (context) => {
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-all-pozorista`,
     );
     const pozorista = response.data;
-    console.log("Fetched pozorista data:", pozorista);
 
     return {
         props: {

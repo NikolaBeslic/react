@@ -80,7 +80,6 @@ const ResetLozinkePage = () => {
                     },
                 },
             );
-            debugger;
             setMessage(res.data.message);
             setFormData({
                 password: "",

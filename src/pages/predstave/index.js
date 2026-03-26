@@ -129,9 +129,6 @@ export default function PredstavePage() {
             hasReviews: filters.hasReviews ? 1 : undefined,
         };
 
-        console.log("[DEFAULT+FILTERS]", filters);
-        console.log("[API PARAMS]", params);
-
         const key = JSON.stringify(params);
         if (key === lastFetchKeyRef.current) return;
         lastFetchKeyRef.current = key;
@@ -144,8 +141,6 @@ export default function PredstavePage() {
                     params,
                     signal: ctrl.signal,
                 });
-                console.log("FROM API: ");
-                console.log(res);
 
                 const incoming = res.data?.data || [];
                 setPredstave((prev) =>

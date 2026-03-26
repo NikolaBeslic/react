@@ -6,9 +6,7 @@ import axiosClient from "../utils/axios";
 export default function IndexIntervjuView() {
     const { posts, setPosts } = useState();
     const { slug } = useParams();
-    console.log(slug);
     useEffect(() => {
-
         axiosClient
             .get(`/get-trending-posts`)
             .then(({ data }) => {
@@ -19,5 +17,5 @@ export default function IndexIntervjuView() {
             });
     }, []);
 
-    return <PostSectionThree posts={posts} />
+    return <PostSectionThree posts={posts} />;
 }

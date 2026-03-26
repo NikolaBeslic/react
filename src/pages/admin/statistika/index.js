@@ -23,7 +23,6 @@ export default function StatistikaPage() {
         axiosClient
             .get("/admin/get-fetches")
             .then((res) => {
-                console.log(res.data);
                 setFetches(res.data);
                 setLoading(false);
             })
@@ -68,15 +67,12 @@ export default function StatistikaPage() {
 
     const handleSubmit = () => {
         setLoading(true);
-        console.log(monthAndYear);
         let month = monthAndYear.month() + 1;
         let year = monthAndYear.year();
         let url = `/admin/get-ga-monthly-data?month=${month}&year=${year}`;
-        console.log(url);
         axiosClient
             .get(url)
             .then((res) => {
-                console.log(res.data);
                 setFetches(res.data);
                 toast.success("Podaci uspesno sacuvani");
             })
@@ -85,7 +81,6 @@ export default function StatistikaPage() {
     };
 
     const handleDetailClick = (e, params) => {
-        console.log(params);
         router.push(`/admin/statistika/details?fetchId=${params.id}`);
     };
 

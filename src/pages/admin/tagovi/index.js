@@ -28,7 +28,6 @@ export default function TagoviPage() {
         axiosClient
             .get("/admin/get-svi-tagovi")
             .then((res) => {
-                console.log(res.data);
                 setTagovi(res.data);
             })
             .catch((err) => console.error(err))
@@ -92,7 +91,6 @@ export default function TagoviPage() {
 
     const handleChangeSortSelect = useCallback((selectedOption) => {
         setSortBy(selectedOption.value);
-        console.log(selectedOption.value);
     });
 
     const handleSortTags = (sortBy) => {

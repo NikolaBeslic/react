@@ -29,7 +29,5 @@ export const getServerSideProps = withSSRHandler(async (context) => {
         },
     );
 
-    console.log(res.data);
-
     return { props: { korisnik: res.data } };
 });

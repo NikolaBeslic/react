@@ -26,7 +26,6 @@ export default function HuPkastPage() {
         axiosClient
             .get("/admin/get-all-hupkast")
             .then((res) => {
-                console.log(res.data);
                 setAllHupkast(res.data);
             })
             .catch((err) => console.error(err))
@@ -38,7 +37,6 @@ export default function HuPkastPage() {
         axiosClient
             .get("/admin/check-hupkast-rss")
             .then((res) => {
-                console.log(res);
                 if (res.status == 200) {
                     toast.success(res.data);
                 }

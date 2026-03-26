@@ -179,8 +179,6 @@ export default function RepertoarPozoristaCreatePage() {
             axiosClient
                 .get(`/admin/pozoriste-with-predstave/${pozoristeSlug}`)
                 .then((res) => {
-                    console.log(res.data);
-
                     setPozoriste(res.data);
                     fetchIgranja(res.data.pozoristeid);
                     setFormData({
@@ -218,14 +216,12 @@ export default function RepertoarPozoristaCreatePage() {
     };
 
     const handleVremeChange = (event) => {
-        console.log(event);
         setVreme(event.target.value);
         setFormData({ ...formData, vreme: event.target.value });
         setErrors({ ...errors, vreme: null });
     };
 
     const handleDatumChange = (event) => {
-        console.log(event);
         setDatum(event.target.value);
         setFormData({
             ...formData,
@@ -236,7 +232,6 @@ export default function RepertoarPozoristaCreatePage() {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(formData);
 
         if (!validateIgranjeStore()) return;
 
@@ -278,7 +273,6 @@ export default function RepertoarPozoristaCreatePage() {
             const data = err?.response?.data;
 
             if (status === 422 && data?.errors) {
-                console.log(data.errors);
                 setErrors(data.errors);
                 toast.error("Proverite uneta polja.");
             } else {
@@ -287,8 +281,6 @@ export default function RepertoarPozoristaCreatePage() {
         } finally {
             setFormaLoading(false);
         }
-
-        console.log(formData);
     };
 
     const fetchIgranja = (pozoristeid) => {
@@ -459,7 +451,6 @@ export default function RepertoarPozoristaCreatePage() {
     );
 
     const processRowUpdate = async (newRow) => {
-        debugger;
         const newDatum = moment(newRow.datum).format("YYYY-MM-DD");
         await csrf();
         axiosClient

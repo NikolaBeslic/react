@@ -21,8 +21,6 @@ const HuPLayoutInner = ({
         return () => document.body.classList.remove("hup-layout-body");
     }, []);
 
-    console.log(loading);
-
     return (
         <>
             <div className="user-layout">

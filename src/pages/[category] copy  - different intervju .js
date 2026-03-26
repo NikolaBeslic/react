@@ -30,10 +30,7 @@ export default function Page() {
     useEffect(() => {
         fetchSidePosts();
         fetchPremijere();
-        console.log("KATE");
-        console.log(kategorija_slug);
-        console.log(category.kategorija_slug);
-        // debugger;
+
         if (kategorija_slug != category.kategorija_slug) {
             if (kategorija_slug == "intervjui") {
                 fetchIntervjuiPosts(kategorija_slug, 1);
@@ -66,12 +63,10 @@ export default function Page() {
         axiosClient
             .get(`/get-category-posts/${kategorija_slug}?page=${page}`)
             .then((res) => {
-                console.log(res.data);
                 setCategory(res.data.data);
                 setCurrentPage(res.data.data.tekstovi?.current_page);
                 setTotalPages(res.data.data.tekstovi?.last_page);
-                console.log(currentPage + " cp");
-                console.log(totalPages + " tp");
+
                 setLoading(false);
             })
             .catch((error) => console.error(error));
@@ -82,7 +77,6 @@ export default function Page() {
         axiosClient
             .get(`/get-category-posts/${kategorija_slug}?page=${page}`)
             .then((res) => {
-                console.log(res.data);
                 setCategory(res.data.data);
                 setIntervjuiPosts((prevIntervjuiPosts) => [
                     ...prevIntervjuiPosts,
@@ -90,8 +84,7 @@ export default function Page() {
                 ]);
                 setCurrentPage(res.data.data.tekstovi?.current_page);
                 setTotalPages(res.data.data.tekstovi?.last_page);
-                console.log(currentPage + " cp");
-                console.log(totalPages + " tp");
+
                 setLoading(false);
             })
             .catch((error) => console.error(error));
@@ -109,9 +102,6 @@ export default function Page() {
         axiosClient
             .get(`/get-trending-posts`)
             .then((res) => {
-                console.log("SIDE POSTS: ");
-
-                console.log(res.data);
                 setSidePosts(res.data);
             })
             .catch((error) => console.error(error));

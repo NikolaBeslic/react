@@ -32,7 +32,6 @@ export default function TekstoviPage() {
         axiosClient
             .get("/admin/tekstovi")
             .then((res) => {
-                console.log(res.data);
                 setPosts(res.data);
                 setLoading(false);
             })
@@ -105,7 +104,6 @@ export default function TekstoviPage() {
     });
 
     const onEditButtonClick = (e, params) => {
-        console.log(params);
         router.push(`/admin/tekstovi/edit?tekstid=${params.id}`);
     };
 
@@ -114,7 +112,6 @@ export default function TekstoviPage() {
     };
 
     const handleCopyButtonClick = (e, params) => {
-        debugger;
         const post = posts.find((post) => post.tekstid == params.id);
         if (post && post.kategorija && post.slug) {
             const url = `${window.location.origin}/${post.kategorija.kategorija_slug}/${post.slug}`;

@@ -53,7 +53,6 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
     };
 
     const handleGradSelectChange = (event) => {
-        console.log(event.target.value);
         setFormData({ ...formData, gradid: event.target.value });
     };
 
@@ -68,14 +67,12 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     res.status == 200
                         ? toast.success("Uspešno sačuvane izmene")
                         : "";
                 })
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data);
                 });
         } else {
             axiosClient
@@ -85,7 +82,6 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
                     },
                 })
                 .then((res) => {
-                    console.log(res);
                     setErrors({});
                     res.status == "ok"
                         ? toast.success("Uspesno dodato novo pozoriste")
@@ -93,7 +89,6 @@ const PozoristaCreateUpdate = ({ pozoristeid }) => {
                 })
                 .catch((error) => {
                     console.error(error);
-                    console.log(error.response.data.errors);
                     setErrors(error.response.data.errors);
                 });
         }

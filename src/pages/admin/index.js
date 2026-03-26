@@ -39,7 +39,6 @@ export default function AdminHomePage() {
         axiosClient
             .get("/admin/tekstovi-za-naslovnu")
             .then((res) => {
-                console.log(res.data);
                 setTekstovi(res.data);
             })
             .catch((err) => console.error(err));

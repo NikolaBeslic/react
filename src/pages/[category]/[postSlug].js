@@ -32,13 +32,11 @@ export default function Page({ post, relatedPosts }) {
 
 export const getServerSideProps = withSSRHandler(async (context) => {
     const { category, postSlug } = context.params;
-    console.log("getServerSideProps called with params:", context.params);
     const response = await axiosClient.get(
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-single-text/${category}/${postSlug}`,
     );
 
     const post = response.data;
-    console.log("Fetched post data:", post);
 
     const releatedResponse = await axiosClient.get(
         `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-related-posts/${post.tekstid}`,

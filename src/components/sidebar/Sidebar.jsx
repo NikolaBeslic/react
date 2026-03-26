@@ -60,9 +60,9 @@ const Sidebar = () => {
                     <WidgetToday izvodjenja={izvodjenja} />
                     {/* <RelatedPosts relatedPosts={sidePosts} /> */}
                     <WidgetPost posts={sidePosts} />
-                    <WidgetNewsletter />
+                    {/* <WidgetNewsletter />  */}
                     <WidgetPremijere premijere={premijere} />
-                    <WidgetInstagram />
+                    {/* <WidgetInstagram /> */}
                 </>
             )}
         </div>

@@ -4,7 +4,6 @@ export function withSSRHandler(ssrFn) {
             return await ssrFn(context);
         } catch (error) {
             console.error(error);
-            debugger;
             if (error.response) {
                 const status = error.response.status;
                 console.error(error.response);

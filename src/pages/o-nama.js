@@ -7,19 +7,31 @@ const AboutPage = () => {
             <div className="axil-our-team section-gap">
                 <div className="container">
                     <p>
-                        Da li vam se ikad desilo da želite da pogledate neku
-                        predstavu, a ne možete da se organizujete sa vremenom,
-                        novcem, društvom, kupovinom karata? Hoću (u) pozorište
-                        ima za cilj da vam omogući da se to više nikad ne desi.
-                        Registrujte se u samo nekoliko klikova, pronađiite
-                        željene predstave i dodajte ih na svoju listu želja. Na
-                        vašem profilu možete pratiti kada se te predstave
-                        igraju, a mi ćemo vas na početku svakog meseca
-                        obaveštavati da li se ta predstava nalazi na repertoaru
-                        za taj mesec. Kada pogledate neku predstavu prebacite je
-                        u odgledane, ocenite i/ili komentarišite kako bi
-                        zainteresovali ostale korisnike.
+                        Sajt Hoću u pozori&scaron;te nastao nastao je kao
+                        diplomski rad na Fakultetu organizacionih nauka, a sa
+                        radom je počeo 27. marta 2017. godine, tačno na Svetski
+                        dan pozori&scaron;ta.
                     </p>
+                    <p>
+                        Oko njega su se okupili mladi ljudi koje povezuje ista,
+                        pomalo opsesivna ljubav prema pozori&scaron;tu, ona zbog
+                        koje se repertoari znaju napamet i zbog koje se u jednom
+                        mesecu pogleda i po desetine predstava. Ta ljubav se kod
+                        nas ne zadržava u gledali&scaron;tu, već se pretače u
+                        tekstove, intervjue i recenzije. Nemamo stalno
+                        sedi&scaron;te. Na&scaron;a kuća je put između
+                        poziri&scaron;nih scena ifestivala. Ponekad nas taj put
+                        odvede i dalje, u region, gde rado zavirimo u njihive
+                        pozori&scaron;ne svetove i priče.
+                    </p>
+                    <p>
+                        Radimo volonterski, pa zato i pi&scaron;emo slobodno. Ne
+                        kao strogi kritičari, ali ni samo kao posmatrači.
+                        Pi&scaron;emo kao oni koji pozori&scaron;te ve&scaron;to
+                        posmatraju, proživljavaju i cene, pa se nekad zanesemo i
+                        nazovemo ga drugom kućom.
+                    </p>
+
                     <p>
                         <Image
                             src="/slike/vizitke-cover.jpg"
@@ -30,46 +42,20 @@ const AboutPage = () => {
                         />
                     </p>
                     <p>
-                        Sajt Hoću (u) pozori&scaron;te je započet tokom 2016.
-                        godine kao diplomski rad na Fakultetu organizacionih
-                        nauka, uobličen je početkom 2017. kako bi počeo sa radom
-                        na Svetski dan pozori&scaron;ta 27. marta iste godine.
-                        Sajt uređuju mladi ljudi i studenti zainteresovani za
-                        pozori&scaron;nu kulturu. Ukoliko ste zainteresovani za
-                        novinarstvo, marketing ili informacione tehnologije,
-                        volite pozori&scaron;te, i želite da pi&scaron;ete,
-                        uređujete, sprovodite nove ideje javite nam se na&nbsp;
-                        <a href="mailto:kontakt@hocupozoriste.rs">
-                            kontakt@hocupozoriste.rs
-                        </a>
+                        Na na&scaron;em sajtu možete pratiti repertoare i
+                        premijere, a registracijom dobijati obave&scaron;tenja o
+                        predstavama koje volite. Kada ih odgledate, ostavite
+                        ocenu i komentar, jer tako zajedno stvaramo prostor u
+                        kome publika razgovara, razmenjuje utiske i pomaže jedni
+                        drugima da izaberu sledeću predstavu.
                     </p>
                     <p>
-                        Ukoliko smo va&scaron;e pozori&scaron;te preskočili ili
-                        želite da va&scaron;e pozori&scaron;te predstavimo
-                        drugačije, raspoloženi ste za bilo kakav vid saradnje
-                        slobodno nam se javite na&nbsp;
-                        <a href="mailto:kontakt@hocupozoriste.rs">
-                            kontakt@hocupozoriste.rs
-                        </a>
-                    </p>
-                    <p>
-                        Pratite nas na&nbsp;
-                        <a
-                            href="https://www.facebook.com/hocupozoriste/"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            fejsbuku
-                        </a>
-                        &nbsp;i&nbsp;
-                        <a
-                            href="https://twitter.com/hocupozoriste"
-                            target="_blank"
-                            rel="noreferrer"
-                        >
-                            tviteru
-                        </a>
-                        .
+                        A ako nam se putevi ukrste, u Beogradu ili nekom drugom
+                        gradu, priđite. Razgovori o pozori&scaron;tu su nam
+                        prirodno stanje. A ako osetite potrebu da pi&scaron;ete
+                        i da pozori&scaron;te ne posmatrate samo kao publika,
+                        po&scaron;aljite nam mejl i pridružite nam se. Mi smo
+                        već na putu ka nekoj novoj predstavi.
                     </p>
                     <h2>Impressum</h2>
                     <p>

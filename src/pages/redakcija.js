@@ -8,21 +8,22 @@ export default function RedakcijaPage({ autori }) {
         <>
             <div className="axil-our-team section-gap">
                 <div className="container">
-                    <p className="m-b-xs-30 big">
-                        Redakciju portala Hoću (u) pozorište čine ljudi koji
-                        vole pozorište i spremni su da volontiraju ne bi li
-                        omogućili većem broju ljudi da čuje glas sa pozorišnih
-                        dasaka. Naš tim pretežno čine studenti, i to raznih
-                        oblasti (novinarstva, jezika, prava..), ali imamo i
-                        starije kolege odavno svršene, a i mlađe koji će tek
-                        krenuti akademskim putem. Geografski se nalazimo na
-                        raznim stranama Srbije, u nekim trenucima i sveta, tako
-                        da funkcionišemo pre svega online komunikacijom. Bez
-                        obzira na to verujemo da bez drugarstva nema ni dobrog
-                        rada, trudimo se da se sretnemo što češće, odemo u
-                        pozorište ili na pivo.
+                    <p>
+                        Redakciju portala „Hoću u pozorište“ čini mala družina
+                        velikih zaljubljenika u scenu, reč i onu posebnu magiju
+                        koja nastaje kada se svetla ugase, a priča krene.
                     </p>
-
+                    <p>
+                        Ne poznajemo granice osim onih geografskih, koje ionako
+                        lako premostimo pa se susretnemo na mestu gde se spaja
+                        radoznalost, ideja, mladost, energija i sve to uz šolju
+                        ili kriglu razgovora.
+                    </p>
+                    <p>
+                        Gledamo iskreno, pišemo otvoreno i preporučujemo od
+                        srca. Ako smo vas makar jednom podstakli da odete u
+                        pozorište — znamo da smo uspeli.
+                    </p>
                     <div className="axil-team-grid-wrapper p-t-xs-10">
                         <div className="row">
                             {autori?.map((data, index) => (

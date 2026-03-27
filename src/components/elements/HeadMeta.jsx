@@ -10,7 +10,9 @@ const HeadMeta = ({
 }) => {
     const title = `${metaTitle ? metaTitle : " "} || Hoću u pozorište`;
     const url = process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN + (metaUrl ?? "");
-    const image = process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN + (metaImage ?? "");
+    const image =
+        process.env.NEXT_PUBLIC_SSR_REQ_ORIGIN +
+        (metaImage ?? "/slike/hup-logo-sa-pozadinom.jpg");
     const description =
         metaDescription ??
         "Hoću u pozorište je portal namenjen promociji pozorišta u Srbiji";

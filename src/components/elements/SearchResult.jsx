@@ -27,7 +27,7 @@ const SearchResult = ({ data, onNavigate }) => {
                         </span>
 
                         <span className="search-result-date">
-                            {moment(data.datum)?.fromNow()}
+                            {moment(data.datum)?.format("DD.MM.YYYY")}
                         </span>
                     </div>
                 </div>

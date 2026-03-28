@@ -292,7 +292,9 @@ const Predstava = ({ data, updateData }) => {
                                                       <span className="text-muted">
                                                           {moment(
                                                               komentar.created_at,
-                                                          ).fromNow()}
+                                                          ).format(
+                                                              "DD.MM.YYYY",
+                                                          )}
                                                       </span>
                                                   </div>
                                                   <div
@@ -326,7 +328,9 @@ const Predstava = ({ data, updateData }) => {
                                                           <span className="text-muted">
                                                               {moment(
                                                                   komentar.created_at,
-                                                              ).fromNow()}
+                                                              ).format(
+                                                                  "DD.MM.YYYY",
+                                                              )}
                                                           </span>
                                                       </div>
                                                       <div

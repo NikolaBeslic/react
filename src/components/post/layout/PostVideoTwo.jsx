@@ -50,7 +50,7 @@ const PostVideoTwo = ({ data, pClass, videoIcon }) => {
                 </h3>
                 <div className="post-metas">
                     <ul className="list-inline">
-                        <li>{moment(data.created_at).fromNow()}</li>
+                        <li>{moment(data.created_at).format("DD.MM.YYYY")}</li>
                     </ul>
                 </div>
             </div>

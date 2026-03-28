@@ -69,7 +69,7 @@ const PredstavaRecenzija = ({ data }) => {
                         ))}
                         <li>
                             <FontAwesomeIcon icon={faClock} />
-                            {moment(data.created_at).fromNow()}
+                            {moment(data.created_at).format("DD.MM.YYYY")}
                         </li>
                     </ul>
                 </div>

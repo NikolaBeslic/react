@@ -62,7 +62,7 @@ const PostLayoutTwo = ({ data, postSizeMd, postBgDark }) => {
                                 <i className="fa-regular fa-clock"></i>
                             </span>
 
-                            {moment(data.published_at).fromNow()}
+                            {moment(data.published_at).format("DD.MM.YYYY")}
                         </li>
                     </ul>
                 </div>

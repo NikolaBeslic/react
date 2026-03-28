@@ -59,7 +59,7 @@ const RezultatiPretrage = ({ data, postSizeMd, postBgDark }) => {
                         <ul className="list-inline">
                             <li>
                                 <i className="fa-regular fa-clock"></i>
-                                {moment(data.datum).fromNow()}
+                                {moment(data.datum).format("DD.MM.YYYY")}
                             </li>
                         </ul>
                     </div>

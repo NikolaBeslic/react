@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import { UserProvider, useUser } from "../contexts/UserContext";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import FooterOne from "../components/footer/FooterOne";
 import HeaderOne from "../components/header/HeaderOne";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -85,7 +84,6 @@ export default function HuPLayout({
                     {children}
                 </HuPLayoutInner>
             </UserProvider>
-            <SpeedInsights />
         </>
     );
 }

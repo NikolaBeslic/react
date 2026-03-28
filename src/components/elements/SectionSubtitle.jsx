@@ -6,7 +6,12 @@ const SectionSubtitle = ({ title, btnText, btnUrl, pClass }) => {
             className={`section-title section-subtitle ${pClass ?? "m-b-xs-40"}`}
         >
             <h4>{title}</h4>
-            <Link href={btnUrl ?? "#"} className="btn-link" component={Link}>
+            <Link
+                href={btnUrl ?? "#"}
+                className="btn-link"
+                component={Link}
+                prefetch={false}
+            >
                 {btnText}
             </Link>
         </div>

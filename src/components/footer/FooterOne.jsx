@@ -15,22 +15,34 @@ const FooterOne = () => {
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link href="/predstave?sort=komentari">
+                                        <Link
+                                            href="/predstave?sort=komentari"
+                                            prefetch={false}
+                                        >
                                             Predstave sa najviše komentara
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/predstave?hasReviews=1">
+                                        <Link
+                                            href="/predstave?hasReviews=1"
+                                            prefetch={false}
+                                        >
                                             Predstave o kojima smo pisali
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/predstave?sort=rating_desc">
+                                        <Link
+                                            href="/predstave?sort=rating_desc"
+                                            prefetch={false}
+                                        >
                                             Najbolje ocenjene
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/predstave?gradovi=1&zanrovi=3">
+                                        <Link
+                                            href="/predstave?gradovi=1&zanrovi=3"
+                                            prefetch={false}
+                                        >
                                             Opere u Beogradu
                                         </Link>
                                     </li>
@@ -47,23 +59,35 @@ const FooterOne = () => {
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link href="/repertoari?zanrovi=2&datumi=today">
+                                        <Link
+                                            href="/repertoari?zanrovi=2&datumi=today"
+                                            prefetch={false}
+                                        >
                                             Komedije danas
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/repertoari?zanrovi=6&datumi=week">
+                                        <Link
+                                            href="/repertoari?zanrovi=6&datumi=week"
+                                            prefetch={false}
+                                        >
                                             Predstave za decu ove nedelje
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/repertoari?zanrovi=1&datumi=today">
+                                        <Link
+                                            href="/repertoari?zanrovi=1&datumi=today"
+                                            prefetch={false}
+                                        >
                                             Drame večeras
                                         </Link>
                                     </li>
 
                                     <li>
-                                        <Link href="/repertoari?zanrovi=5&datumi=month">
+                                        <Link
+                                            href="/repertoari?zanrovi=5&datumi=month"
+                                            prefetch={false}
+                                        >
                                             Mjuzikli ovog meseca
                                         </Link>
                                     </li>
@@ -80,23 +104,35 @@ const FooterOne = () => {
                                 </h2>
                                 <ul className="footer-nav">
                                     <li>
-                                        <Link href="/festivali/70-sterijino-pozorje">
+                                        <Link
+                                            href="/festivali/70-sterijino-pozorje"
+                                            prefetch={false}
+                                        >
                                             Sterijino pozorje
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/festivali/ne-bitef-2025">
+                                        <Link
+                                            href="/festivali/ne-bitef-2025"
+                                            prefetch={false}
+                                        >
                                             Bitef
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/festivali/33-pozorisni-maraton">
+                                        <Link
+                                            href="/festivali/33-pozorisni-maraton"
+                                            prefetch={false}
+                                        >
                                             Pozorišni maraton Sombor
                                         </Link>
                                     </li>
 
                                     <li>
-                                        <Link href="/festivali/21-urban-fest">
+                                        <Link
+                                            href="/festivali/21-urban-fest"
+                                            prefetch={false}
+                                        >
                                             Urban fest Niš
                                         </Link>
                                     </li>
@@ -117,18 +153,28 @@ const FooterOne = () => {
                                             href="https://www.patreon.com/hocupozoriste"
                                             target="_blank"
                                             rel="noreferrer"
+                                            prefetch={false}
                                         >
                                             Podržite nas na Patreonu
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link href="/o-nama">O nama</Link>
+                                        <Link href="/o-nama" prefetch={false}>
+                                            O nama
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="/redakcija">Redakcija</Link>
+                                        <Link
+                                            href="/redakcija"
+                                            prefetch={false}
+                                        >
+                                            Redakcija
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="/kontakt">Kontakt</Link>
+                                        <Link href="/kontakt" prefetch={false}>
+                                            Kontakt
+                                        </Link>
                                     </li>
                                 </ul>
                                 {/* End of .footer-nav */}
@@ -146,7 +192,7 @@ const FooterOne = () => {
                             <div className="footer-logo-container">
                                 <Link href="/" legacyBehavior>
                                     <Image
-                                        src="/images/logo-symbol.svg"
+                                        src="/images/hup-logo.png"
                                         alt="footer logo"
                                         className="footer-logo"
                                         width={86}
@@ -234,20 +280,19 @@ const FooterOne = () => {
                 <div className="footer-bottom">
                     <ul className="footer-bottom-links">
                         <li>
-                            <Link href="/">Impressum</Link>
+                            <Link href="/o-nama" prefetch={false}>
+                                Impressum
+                            </Link>
                         </li>
                         <li>
-                            <Link href="/politika-privatnosti">
+                            <Link href="/politika-privatnosti" prefetch={false}>
                                 Politika privatnosti
                             </Link>
                         </li>
                         <li>
-                            <Link href="/uslovi-koriscenja">
+                            <Link href="/uslovi-koriscenja" prefetch={false}>
                                 Uslovi korišćenja
                             </Link>
-                        </li>
-                        <li>
-                            <Link href="/">Sitemap</Link>
                         </li>
                     </ul>
                     {/* End of .footer-bottom-links */}

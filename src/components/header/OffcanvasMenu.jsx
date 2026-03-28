@@ -114,17 +114,26 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                     <div className="offcanvasmenu-hup-links">
                                         <ul className="list-inline justify-content-between align-items-center sidemenu-horizontal-list">
                                             <li className="sidemenu-list-item">
-                                                <Link href="/o-nama">
+                                                <Link
+                                                    href="/o-nama"
+                                                    prefetch={false}
+                                                >
                                                     O nama
                                                 </Link>
                                             </li>
                                             <li className="sidemenu-list-item">
-                                                <Link href="/kontakt">
+                                                <Link
+                                                    href="/kontakt"
+                                                    prefetch={false}
+                                                >
                                                     Kontakt
                                                 </Link>
                                             </li>
                                             <li className="sidemenu-list-item">
-                                                <Link href="/redakcija">
+                                                <Link
+                                                    href="/redakcija"
+                                                    prefetch={false}
+                                                >
                                                     Redakcija
                                                 </Link>
                                             </li>

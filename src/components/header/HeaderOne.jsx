@@ -283,13 +283,22 @@ const HeaderOne = () => {
                             <div className="col-md">
                                 <ul className="header-top-nav list-inline justify-content-center justify-content-md-start">
                                     <li>
-                                        <Link href="/o-nama">O nama</Link>
+                                        <Link href="/o-nama" prefetch={false}>
+                                            O nama
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="/kontakt">Kontakt</Link>
+                                        <Link href="/kontakt" prefetch={false}>
+                                            Kontakt
+                                        </Link>
                                     </li>
                                     <li>
-                                        <Link href="/redakcija">Redakcija</Link>
+                                        <Link
+                                            href="/redakcija"
+                                            prefetch={false}
+                                        >
+                                            Redakcija
+                                        </Link>
                                     </li>
                                 </ul>
                             </div>
@@ -352,7 +361,7 @@ const HeaderOne = () => {
                     <div className="container">
                         <div className="navbar-inner">
                             <div className="brand-logo-container">
-                                <Link href="/">
+                                <Link href="/" prefetch={false}>
                                     <Image
                                         src="/images/hup-logo.png"
                                         alt="brand-logo"
@@ -375,7 +384,11 @@ const HeaderOne = () => {
                                         key="101"
                                         className="has-dropdown intervju-navbar-li"
                                     >
-                                        <Link href="#" legacyBehavior>
+                                        <Link
+                                            href="#"
+                                            legacyBehavior
+                                            prefetch={false}
+                                        >
                                             Intervjui
                                         </Link>
                                         <ul className="submenu intervju-submenu">

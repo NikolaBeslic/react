@@ -7,6 +7,7 @@ const nextConfig = {
         config.resolve.fallback = { fs: false };
         return config;
     },
+
     images: {
         remotePatterns: [
             {
@@ -15,6 +16,15 @@ const nextConfig = {
                 pathname: "/**",
             },
         ],
+    },
+
+    async rewrites() {
+        return [
+            {
+                source: "/slike/:path*",
+                destination: "https://api.hocupozoriste.rs/slike/:path*",
+            },
+        ];
     },
 };
 

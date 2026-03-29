@@ -54,7 +54,7 @@ const OffcanvasMenu = ({ ofcshow, setOfcShow, ofcHandleClose }) => {
                                                     </Link>
                                                 </li>
                                                 <li key="off-1012">
-                                                    <Link href="/na-kafi">
+                                                    <Link href="/na-kafi-sa">
                                                         Na kafi sa
                                                     </Link>
                                                 </li>

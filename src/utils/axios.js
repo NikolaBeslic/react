@@ -5,7 +5,6 @@ const axiosClient = axios.create({
     timeout: 30000, // Set a timeout of 10 seconds
     withCredentials: true,
     headers: {
-        "X-Requested-With": "XMLHttpRequest",
         Accept: "application/json",
     },
 });

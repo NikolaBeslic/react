@@ -64,7 +64,9 @@ export default function PostAuthor({ autor }) {
 export const getServerSideProps = withSSRHandler(async (context) => {
     const { category, autorSlug } = context.params;
     const page = 1;
-
+    const response = await axiosClient.get(
+        `${process.env.NEXT_PUBLIC_SSR_API_URL}/get-single-autor/${autorSlug}?page=${page}`,
+    );
     const autor = response.data;
 
     return {

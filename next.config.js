@@ -12,10 +12,7 @@ const nextConfig = {
             {
                 protocol: "https",
                 hostname: "api.hocupozoriste.rs",
-            },
-            {
-                protocol: "https",
-                hostname: "www.hocupozoriste.rs",
+                pathname: "/**",
             },
         ],
     },

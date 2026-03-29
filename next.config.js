@@ -8,7 +8,16 @@ const nextConfig = {
         return config;
     },
     images: {
-        domains: ["127.0.0.1", "d3t3ozftmdmh3i.cloudfront.net"],
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "api.hocupozoriste.rs",
+            },
+            {
+                protocol: "https",
+                hostname: "www.hocupozoriste.rs",
+            },
+        ],
     },
 };
 

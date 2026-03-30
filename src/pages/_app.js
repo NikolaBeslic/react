@@ -9,6 +9,7 @@ import HuPLayout from "../layouts/HuPLayout";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { GoogleAnalytics } from "nextjs-google-analytics";
+import { Analytics } from "@vercel/analytics/next";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import {
@@ -131,6 +132,7 @@ function MyApp({ Component, pageProps, router }) {
 
             <PageLoader show={loading} />
             {getLayout(<Component {...pageProps} />)}
+            <Analytics />
         </ContextProvider>
     );
 }

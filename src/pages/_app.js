@@ -8,7 +8,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import HuPLayout from "../layouts/HuPLayout";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-import Script from "next/script";
+import { GoogleAnalytics } from "nextjs-google-analytics";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import {
@@ -16,6 +16,7 @@ import {
     AllCommunityModule, // or AllEnterpriseModule
 } from "ag-grid-community";
 import AdminAuthLayout from "../layouts/AdminAuthLayout";
+import { UserProvider } from "../contexts/UserContext";
 
 // Register AG Grid modules ONCE
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -128,18 +129,7 @@ function MyApp({ Component, pageProps, router }) {
         <ContextProvider>
             {!isAdminRoute && isProduction && (
                 <>
-                    <Script
-                        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-                        strategy="afterInteractive"
-                    />
-                    <Script id="google-analytics" strategy="afterInteractive">
-                        {`
-                            window.dataLayer = window.dataLayer || [];
-                            function gtag(){dataLayer.push(arguments);}
-                            gtag('js', new Date());
-                            gtag('config', '${GA_ID}');
-                        `}
-                    </Script>
+                    <GoogleAnalytics gaMeasurementId={GA_ID} />
                 </>
             )}
 

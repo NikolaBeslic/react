@@ -127,11 +127,7 @@ function MyApp({ Component, pageProps, router }) {
     const GA_ID = "G-ZLF5YC557";
     return (
         <ContextProvider>
-            {!isAdminRoute && isProduction && (
-                <>
-                    <GoogleAnalytics gaMeasurementId={GA_ID} />
-                </>
-            )}
+            <GoogleAnalytics gaMeasurementId={GA_ID} />
 
             <PageLoader show={loading} />
             {getLayout(<Component {...pageProps} />)}

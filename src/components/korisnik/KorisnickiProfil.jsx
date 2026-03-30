@@ -348,7 +348,7 @@ export default function KorisnickiProfil({ korisnik: initialKorisnik }) {
                         title="Još nemate predstava na listi želja"
                         text="Sačuvajte predstave koje želite da pogledate i pronađite ih kasnije na jednom mestu."
                         buttonText="Istraži repertoare"
-                        href="/repertoar"
+                        href="/repertoari"
                     />
                 );
             }

@@ -190,7 +190,7 @@ const FooterOne = () => {
                     <div className="row align-items-center">
                         <div className="col-md">
                             <div className="footer-logo-container">
-                                <Link href="/" legacyBehavior>
+                                {/* <Link href="/" legacyBehavior>
                                     <Image
                                         src="/images/hup-logo.png"
                                         alt="footer logo"
@@ -198,7 +198,7 @@ const FooterOne = () => {
                                         width={86}
                                         height={28}
                                     />
-                                </Link>
+                                </Link> */}
                             </div>
                             {/* End of .brand-logo-container */}
                         </div>

@@ -92,7 +92,7 @@ export default function KomentariPage() {
         await csrf();
         axiosClient
             .post(
-                "/admin/odobri-komentar/",
+                "/admin/odobri-komentar",
                 { komentarid: params.id },
                 {
                     headers: {

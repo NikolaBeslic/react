@@ -8,6 +8,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import HuPLayout from "../layouts/HuPLayout";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import Script from "next/script";
 //import "@fortawesome/fontawesome-free/css/all.min.css";
 
 import {
@@ -118,25 +119,32 @@ function MyApp({ Component, pageProps, router }) {
         };
     }, [router.events]);
 
+    const isProduction =
+        typeof window !== "undefined" &&
+        window.location.hostname === "www.hocupozoriste.rs";
     const GA_ID = "G-ZLF5YC557";
     return (
         <ContextProvider>
-            {!isAdminRoute && (
-                <>
-                    <Script
-                        src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-                        strategy="afterInteractive"
-                    />
-                    <Script id="google-analytics" strategy="afterInteractive">
-                        {`
+            {!isAdminRoute &&
+                isProduction(
+                    <>
+                        <Script
+                            src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+                            strategy="afterInteractive"
+                        />
+                        <Script
+                            id="google-analytics"
+                            strategy="afterInteractive"
+                        >
+                            {`
                             window.dataLayer = window.dataLayer || [];
                             function gtag(){dataLayer.push(arguments);}
                             gtag('js', new Date());
                             gtag('config', '${GA_ID}');
                         `}
-                    </Script>
-                </>
-            )}
+                        </Script>
+                    </>,
+                )}
 
             <PageLoader show={loading} />
             {getLayout(<Component {...pageProps} />)}

@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin/
+Disallow: /api/
+Disallow: /korisnicki-profil/
+Disallow: /login/
+Disallow: /register/
+
+Sitemap: https://www.hocupozoriste.rs/sitemap.xml

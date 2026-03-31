@@ -125,7 +125,7 @@ function MyApp({ Component, pageProps, router }) {
         typeof window !== "undefined" &&
         (window.location.hostname === "www.hocupozoriste.rs" ||
             "hocupozoriste.rs");
-    const GA_ID = "G-ZLF5YC557";
+    const GA_ID = "G-ZLF5YC557M";
     return (
         <ContextProvider>
             <GoogleAnalytics gaMeasurementId={GA_ID} />

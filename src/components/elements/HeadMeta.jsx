@@ -53,7 +53,7 @@ const HeadMeta = ({
             />
             <link rel="manifest" href="/site.webmanifest" />
             <link rel="canonical" href={url} />
-
+            <meta property="fb:app_id" content="487164441486552" />
             <meta property="og:type" content="article" />
             <meta property="og:title" content={title} />
             <meta property="og:description" content={description} />

@@ -307,12 +307,14 @@ const TekstCreateNew = ({ tekstid, kategorijaid, addHuPkast, addHuPikon }) => {
         formDataTinyMce.append("kategorijaid", kategorijaid);
         formDataTinyMce.append("slika", blobInfo.blob(), blobInfo.filename());
         try {
+            await csrf();
             const res = await axiosClient.post(
                 "/admin/uploadImage",
                 formDataTinyMce,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 },
             );

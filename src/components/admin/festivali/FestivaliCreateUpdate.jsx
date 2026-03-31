@@ -222,12 +222,14 @@ const FestivaliCreateUpdate = ({ festivalid }) => {
         formDataTinyMce.append("gradid", gradid);
         formDataTinyMce.append("slika", blobInfo.blob(), blobInfo.filename());
         try {
+            await csrf();
             const res = await axiosClient.post(
                 "/admin/uploadImage",
                 formDataTinyMce,
                 {
                     headers: {
                         "Content-Type": "multipart/form-data",
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
                     },
                 },
             );

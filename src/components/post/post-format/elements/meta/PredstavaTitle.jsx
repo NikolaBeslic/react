@@ -103,40 +103,51 @@ const PredstavaTitle = ({
                                     <div className="col-sm-12 col-xs-12">
                                         <div className="post-metas banner-post-metas m-t-xs-20 predstava-single-metas">
                                             <ul className="predstava-meta-info-list">
-                                                <li>
-                                                    <i className="fa-regular fa-building-columns"></i>
-                                                    {metaData.pozorista?.map(
-                                                        (pozoriste, index) => (
-                                                            <span
-                                                                className="author-name text-muted"
-                                                                key={
-                                                                    pozoriste.pozoristeid
-                                                                }
-                                                            >
-                                                                <Link
-                                                                    href={`/pozorista/${pozoriste.pozoriste_slug}`}
-                                                                >
-                                                                    {
-                                                                        pozoriste.naziv_pozorista
+                                                {metaData.pozorista.length >
+                                                    0 && (
+                                                    <li>
+                                                        <i className="fa-regular fa-building-columns"></i>
+                                                        {metaData.pozorista?.map(
+                                                            (
+                                                                pozoriste,
+                                                                index,
+                                                            ) => (
+                                                                <span
+                                                                    className="author-name text-muted"
+                                                                    key={
+                                                                        pozoriste.pozoristeid
                                                                     }
-                                                                </Link>
-                                                                {index <
-                                                                    metaData
-                                                                        .pozorista
-                                                                        .length -
-                                                                        1 &&
-                                                                    " · "}
-                                                            </span>
-                                                        ),
-                                                    )}
-                                                </li>
-                                                <li>
-                                                    <i className="fa-light fa-calendar-day"></i>
-                                                    Premijera:{" "}
-                                                    {moment(
-                                                        metaData.premijera,
-                                                    ).format("DD. MMM YYYY.")}
-                                                </li>
+                                                                >
+                                                                    <Link
+                                                                        href={`/pozorista/${pozoriste.pozoriste_slug}`}
+                                                                    >
+                                                                        {
+                                                                            pozoriste.naziv_pozorista
+                                                                        }
+                                                                    </Link>
+                                                                    {index <
+                                                                        metaData
+                                                                            .pozorista
+                                                                            .length -
+                                                                            1 &&
+                                                                        " · "}
+                                                                </span>
+                                                            ),
+                                                        )}
+                                                    </li>
+                                                )}
+
+                                                {metaData.premijera && (
+                                                    <li>
+                                                        <i className="fa-light fa-calendar-day"></i>
+                                                        Premijera:{" "}
+                                                        {moment(
+                                                            metaData.premijera,
+                                                        ).format(
+                                                            "DD. MMM YYYY.",
+                                                        )}
+                                                    </li>
+                                                )}
                                                 <li>
                                                     <i className="fa-solid fa-signs-post"></i>
                                                     Režija: {metaData.reditelj}
@@ -321,45 +332,50 @@ const PredstavaTitle = ({
                                                 </h1>
                                                 <div className="post-metas banner-post-metas m-t-xs-20">
                                                     <ul className="predstava-meta-info-list">
-                                                        <li>
-                                                            <i className="fa-regular fa-building-columns"></i>
-                                                            {metaData.pozorista?.map(
-                                                                (
-                                                                    pozoriste,
-                                                                    index,
-                                                                ) => (
-                                                                    <span
-                                                                        className="author-name text-muted"
-                                                                        key={
-                                                                            pozoriste.pozoristeid
-                                                                        }
-                                                                    >
-                                                                        <Link
-                                                                            href={`/pozorista/${pozoriste.pozoriste_slug}`}
-                                                                        >
-                                                                            {
-                                                                                pozoriste.naziv_pozorista
+                                                        {metaData.pozorista
+                                                            .length > 0 && (
+                                                            <li>
+                                                                <i className="fa-regular fa-building-columns"></i>
+                                                                {metaData.pozorista?.map(
+                                                                    (
+                                                                        pozoriste,
+                                                                        index,
+                                                                    ) => (
+                                                                        <span
+                                                                            className="author-name text-muted"
+                                                                            key={
+                                                                                pozoriste.pozoristeid
                                                                             }
-                                                                        </Link>
-                                                                        {index <
-                                                                            metaData
-                                                                                .pozorista
-                                                                                .length -
-                                                                                1 &&
-                                                                            " · "}
-                                                                    </span>
-                                                                ),
-                                                            )}
-                                                        </li>
-                                                        <li>
-                                                            <i className="feather icon-share-2" />
-                                                            Premijera:{" "}
-                                                            {moment(
-                                                                metaData.premijera,
-                                                            ).format(
-                                                                "DD. MMMM YYYY.",
-                                                            )}
-                                                        </li>
+                                                                        >
+                                                                            <Link
+                                                                                href={`/pozorista/${pozoriste.pozoriste_slug}`}
+                                                                            >
+                                                                                {
+                                                                                    pozoriste.naziv_pozorista
+                                                                                }
+                                                                            </Link>
+                                                                            {index <
+                                                                                metaData
+                                                                                    .pozorista
+                                                                                    .length -
+                                                                                    1 &&
+                                                                                " · "}
+                                                                        </span>
+                                                                    ),
+                                                                )}
+                                                            </li>
+                                                        )}
+                                                        {metaData.premijera && (
+                                                            <li>
+                                                                <i className="feather icon-share-2" />
+                                                                Premijera:{" "}
+                                                                {moment(
+                                                                    metaData.premijera,
+                                                                ).format(
+                                                                    "DD. MMMM YYYY.",
+                                                                )}
+                                                            </li>
+                                                        )}
 
                                                         <li>
                                                             <i className="fa-solid fa-pen-fancy"></i>

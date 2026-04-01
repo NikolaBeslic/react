@@ -65,27 +65,29 @@ function PredstaveTwoSlider({ predstaveData }) {
                                             key={`ctxt-${data.predstavaid}`}
                                             className="predstave-naslovna-card-text"
                                         >
-                                            <span className="predstave-naslovna-card-pozorista">
-                                                <i className="fa-regular fa-building-columns"></i>{" "}
-                                                {data.pozorista.map(
-                                                    (poz, index) => (
-                                                        <>
-                                                            <span>
-                                                                {
-                                                                    poz.naziv_pozorista
-                                                                }
-                                                                {index <
-                                                                    data
-                                                                        .pozorista
-                                                                        .length -
-                                                                        1 &&
-                                                                    ", "}
-                                                            </span>
-                                                        </>
-                                                    ),
-                                                )}{" "}
-                                            </span>
-
+                                            {" "}
+                                            {data.pozorista && (
+                                                <span className="predstave-naslovna-card-pozorista">
+                                                    <i className="fa-regular fa-building-columns"></i>{" "}
+                                                    {data.pozorista.map(
+                                                        (poz, index) => (
+                                                            <>
+                                                                <span>
+                                                                    {
+                                                                        poz.naziv_pozorista
+                                                                    }
+                                                                    {index <
+                                                                        data
+                                                                            .pozorista
+                                                                            .length -
+                                                                            1 &&
+                                                                        ", "}
+                                                                </span>
+                                                            </>
+                                                        ),
+                                                    )}{" "}
+                                                </span>
+                                            )}
                                             {data.prosecna_ocena ? (
                                                 <>
                                                     <i className="fa-solid fa-star"></i>{" "}
@@ -93,11 +95,17 @@ function PredstaveTwoSlider({ predstaveData }) {
                                                 </>
                                             ) : (
                                                 <>
-                                                    <i className="fa-solid fa-calendar-days"></i>{" "}
-                                                    Premijera:{" "}
-                                                    {moment(
-                                                        data.premijera,
-                                                    ).format("Do MMM YYYY.")}
+                                                    {data.premijera && (
+                                                        <>
+                                                            <i className="fa-solid fa-calendar-days"></i>{" "}
+                                                            Premijera:{" "}
+                                                            {moment(
+                                                                data.premijera,
+                                                            ).format(
+                                                                "Do MMM YYYY.",
+                                                            )}
+                                                        </>
+                                                    )}
                                                 </>
                                             )}
                                         </Card.Text>

@@ -54,9 +54,9 @@ const PremijereLayout = ({ data, pClass, videoIcon }) => {
                 </h4>
                 <div className="post-metas">
                     <div className="post-cat-group premijere-naziv-pozorista">
-                        <i className="fa-regular fa-building-columns"></i>{" "}
                         {data.pozorista.length > 0 && (
                             <>
+                                <i className="fa-regular fa-building-columns"></i>{" "}
                                 <span
                                     key={data.pozorista[0].pozoristeid}
                                     className="text-muted"

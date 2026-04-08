@@ -237,7 +237,7 @@ export default function AdminHomePage() {
                             <td>
                                 <Form.Check // prettier-ignore
                                     type="checkbox"
-                                    checked={Boolean(tekst.na_slajderu)}
+                                    checked={Number(tekst.na_slajderu) == 1}
                                     onChange={(e) =>
                                         handleIstakniCheck(
                                             tekst.tekstid,

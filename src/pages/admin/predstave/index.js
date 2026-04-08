@@ -75,7 +75,7 @@ export default function PredstavePage() {
                     size="sm"
                     variant="outline-primary"
                     title="Arhiviraj"
-                    disabled={params.data.u_arhivi}
+                    disabled={Number(params.data.u_arhivi) == 1}
                 >
                     <FontAwesomeIcon icon={faBoxesPacking} />
                 </Button>

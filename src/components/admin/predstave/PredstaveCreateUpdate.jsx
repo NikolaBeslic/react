@@ -44,6 +44,7 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
     const [loading, setLoading] = useState(false);
     const [predstavaImage, setPredstavaImage] = useState(null);
     const fileInputRef = useRef(null);
+
     useEffect(() => {
         let isMounted = true;
 
@@ -72,25 +73,40 @@ const PredstaveCreateUpdate = ({ predstavaid }) => {
                 setSvaPozorista(pozoristaRes.data);
                 setSviZanrovi(zanroviRes.data);
 
-                if (predstavaRes) {
-                    setFormData(predstavaRes.data);
+                if (predstavaRes?.data) {
                     setPredstavaImage(predstavaRes.data.plakat);
                     editorOpis.content = predstavaRes.data.opis;
                     editorUloge.content = predstavaRes.data.uloge;
-                    if (predstavaRes.data.pozorista)
+
+                    let pozoristaFormData = [];
+                    if (predstavaRes.data.pozorista) {
                         setDbPozorista(
                             predstavaRes.data.pozorista.map((poz) => ({
                                 value: poz.pozoristeid,
                                 label: poz.naziv_pozorista,
                             })),
                         );
-                    if (predstavaRes.data.zanrovi)
+                        pozoristaFormData = predstavaRes.data.pozorista.map(
+                            (poz) => poz.pozoristeid,
+                        );
+                    }
+                    let zanroviFormData = [];
+                    if (predstavaRes.data.zanrovi) {
                         setDbZanrovi(
                             predstavaRes.data.zanrovi.map((zanr) => ({
                                 value: zanr.zanrid,
                                 label: zanr.naziv_zanra,
                             })),
                         );
+                        zanroviFormData = predstavaRes.data.zanrovi.map(
+                            (z) => z.zanrid,
+                        );
+                    }
+                    setFormData({
+                        ...predstavaRes.data,
+                        pozorista: pozoristaFormData,
+                        zanrovi: zanroviFormData,
+                    });
                 }
             } catch (error) {
                 console.error(error);

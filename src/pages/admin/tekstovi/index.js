@@ -4,21 +4,65 @@ import { useRouter } from "next/router";
 import moment from "moment";
 import AdminHeader from "../../../components/admin/layout/AdminHeader";
 import { toast } from "react-hot-toast";
-import { Button, ButtonGroup, Col, Row } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Modal, Row, Spinner } from "react-bootstrap";
 import { AgGridReact } from "ag-grid-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faPlus,
+    faTrashCan,
     faPenToSquare,
     faClone,
 } from "@fortawesome/free-solid-svg-icons";
 import Link from "next/link";
+import { csrf, getCookieValue } from "../../../utils";
+
+const ActionCellRenderer = (props) => {
+    const { data, context } = props;
+
+    function CopyButton(params) {
+        return (
+            <Button
+                onClick={(e) => context.handleCopyButtonClick(params?.params)}
+                size="sm"
+                variant="outline-success"
+            >
+                <FontAwesomeIcon icon={faClone} /> Kopiraj link
+            </Button>
+        );
+    }
+
+    return (
+        <div style={{ display: "flex", gap: "18px", justifyContent: "end" }}>
+            <CopyButton params={data} />
+            <Button
+                as={Link}
+                href={`/admin/tekstovi/edit?tekstid=${data.tekstid}`}
+                size="sm"
+                variant="outline-primary"
+            >
+                <FontAwesomeIcon icon={faPenToSquare} /> Izmeni
+            </Button>
+            <Button
+                onClick={(e) => context.handleDeleteClick(data)}
+                size="sm"
+                variant="outline-danger"
+            >
+                <FontAwesomeIcon icon={faTrashCan} /> Obriši
+            </Button>
+        </div>
+    );
+};
 
 export default function TekstoviPage() {
     const [posts, setPosts] = useState([]);
     const [loading, setLoading] = useState(false);
     const router = useRouter();
     const gridRef = useRef(null);
+
+    const [rows, setRows] = useState([]);
+
+    const [openDialog, setOpenDialog] = useState(false);
+    const [selectedRow, setSelectedRow] = useState(null);
+    const [deleteLoading, setDeleteLoading] = useState(false);
 
     const dayInMonthComparator = (d1, d2) => {
         const a1 = d1 ? moment(d1, "DD.MM.YYYY") : null;
@@ -33,23 +77,12 @@ export default function TekstoviPage() {
             .get("/admin/tekstovi")
             .then((res) => {
                 setPosts(res.data);
+                setRows(res.data);
                 setLoading(false);
             })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     }, []);
-
-    function CopyButton(params) {
-        return (
-            <Button
-                onClick={(e) => handleCopyButtonClick(e, params.params.data)}
-                size="sm"
-                variant="light"
-            >
-                <FontAwesomeIcon icon={faClone} />
-            </Button>
-        );
-    }
 
     const columns = [
         {
@@ -59,49 +92,31 @@ export default function TekstoviPage() {
             wrapText: true,
             autoHeight: true,
         },
-        { field: "kategorija", headerName: "Kategorija", flex: 1 },
+        {
+            field: "kategorija",
+            headerName: "Kategorija",
+            flex: 1,
+            valueFormatter: (params) => {
+                return params.value?.naziv_kategorije;
+            },
+        },
         {
             field: "published_at",
             headerName: "Datum objave",
             flex: 1,
+            valueFormatter: (params) =>
+                params.value ? moment(params.value).format("DD. MMM YYYY") : "",
             comparator: dayInMonthComparator,
         },
         {
-            field: "copy",
+            field: "actions",
             headerName: "",
-            width: 50,
-            flex: 1,
-            align: "center",
-            cellRenderer: (params) => <CopyButton params={params} />,
-        },
-        {
-            field: "edit",
-            headerName: "",
-            width: 100,
-            flex: 1,
-            align: "center",
-            cellRenderer: (params) => (
-                <Button
-                    as={Link}
-                    href={`/admin/tekstovi/edit?tekstid=${params.data.id}`}
-                    size="sm"
-                    variant="outline-primary"
-                >
-                    <FontAwesomeIcon icon={faPenToSquare} /> Edit
-                </Button>
-            ),
+            flex: 2,
+            align: "right",
+            cellRenderer: ActionCellRenderer,
+            /* cellRenderer: (params) => <CopyButton params={params} />,*/
         },
     ];
-
-    const rows = new Array();
-    posts.map((post) => {
-        rows.push({
-            id: post.tekstid,
-            naslov: post.naslov,
-            kategorija: post.kategorija.naziv_kategorije,
-            published_at: moment(post.published_at).format("DD.MM.YYYY"),
-        });
-    });
 
     const onEditButtonClick = (e, params) => {
         router.push(`/admin/tekstovi/edit?tekstid=${params.id}`);
@@ -111,8 +126,8 @@ export default function TekstoviPage() {
         router.push(`/admin/tekstovi/create?kategorijaid=${kategorijaid}`);
     };
 
-    const handleCopyButtonClick = (e, params) => {
-        const post = posts.find((post) => post.tekstid == params.id);
+    const handleCopyButtonClick = (params) => {
+        const post = rows.find((row) => row.tekstid == params.tekstid);
         if (post && post.kategorija && post.slug) {
             const url = `${window.location.origin}/${post.kategorija.kategorija_slug}/${post.slug}`;
             navigator.clipboard
@@ -126,6 +141,53 @@ export default function TekstoviPage() {
                 });
         } else {
             toast.error("Greška pri kopiranju linka.");
+        }
+    };
+
+    const handleCancel = () => {
+        setOpenDialog(false);
+        setSelectedRow(null);
+    };
+
+    /*const handleDeleteClick = useCallback(
+        (data) => {
+            setSelectedRow(rows.find((row) => row.id === data.id));
+            setOpenDialog(true);
+        },
+        [rows],
+    ); */
+
+    const handleDeleteClick = (params) => {
+        setSelectedRow(rows.find((row) => row.tekstid === params?.tekstid));
+        setOpenDialog(true);
+    };
+
+    const handleConfirmDelete = async () => {
+        setDeleteLoading(true);
+        try {
+            await csrf();
+            const res = await axiosClient.put(
+                "/admin/delete-tekst",
+                { tekstid: selectedRow.tekstid },
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            );
+            if (res) {
+                setRows((prev) =>
+                    prev.filter((r) => r.tekstid !== selectedRow.tekstid),
+                );
+                toast.success("Uspesno obrisan tekst");
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error("Greska prilikom brisanja teksta");
+        } finally {
+            setDeleteLoading(false);
+            setOpenDialog(false);
+            setSelectedRow(null);
         }
     };
 
@@ -189,7 +251,7 @@ export default function TekstoviPage() {
                 <div
                     style={{
                         width: "100%",
-                        height: "600px",
+                        height: "700px",
                         marginTop: "25px",
                         marginBottom: "30px",
                     }}
@@ -208,11 +270,48 @@ export default function TekstoviPage() {
                         ref={gridRef}
                         rowData={rows}
                         columnDefs={columns}
+                        context={{
+                            handleCopyButtonClick,
+                            handleDeleteClick,
+                        }}
                         pagination={true}
                         paginationAutoPageSize={true}
                         loading={loading}
                     />
                 </div>
+                {/* Confirmation Dialog */}
+                <Modal show={openDialog} onHide={handleCancel}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Potvrdi brisanje</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {deleteLoading ? (
+                            <Spinner animation="border" role="status" />
+                        ) : (
+                            <p>
+                                Da li si siguran_a da želiš da obrišeš tekst:{" "}
+                                <br />
+                                {selectedRow?.naslov}
+                            </p>
+                        )}
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button
+                            variant="secondary"
+                            disabled={deleteLoading}
+                            onClick={handleCancel}
+                        >
+                            Odustani
+                        </Button>
+                        <Button
+                            variant="danger"
+                            disabled={deleteLoading}
+                            onClick={handleConfirmDelete}
+                        >
+                            DA
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </>
     );

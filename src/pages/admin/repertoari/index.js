@@ -39,7 +39,7 @@ export default function RepertoariPage() {
                     variant="outline-primary"
                     size="small"
                 >
-                    <FontAwesomeIcon icon={faPlus} /> Dodaj repertoar
+                    <FontAwesomeIcon icon={faPlus} /> Dodaj/pregledaj repertoar
                 </Button>
             ),
         },
@@ -64,9 +64,8 @@ export default function RepertoariPage() {
     return (
         <>
             <AdminHeader metaTitle="Repertoari" />
-
-            <h1>Repertoari</h1>
             <div className="container">
+                <h1>Repertoari</h1>
                 <Button
                     as={Link}
                     href="/admin/repertoari/dodaj-gostovanje"

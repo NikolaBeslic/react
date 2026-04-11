@@ -1,24 +1,16 @@
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import axiosClient from "../../../../utils/axios";
-import {
-    Box,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogActions,
-    CircularProgress,
-} from "@mui/material";
+import { Box } from "@mui/material";
 
 import moment from "moment";
 import { toast } from "react-hot-toast";
-import { Col, Form, Row, Button, Spinner } from "react-bootstrap";
+import { Col, Form, Row, Button, Spinner, Modal } from "react-bootstrap";
 import Select from "react-select";
 
 import AdminHeader from "../../../../components/admin/layout/AdminHeader";
 import { csrf, getCookieValue } from "../../../../utils";
 import { AgGridReact } from "ag-grid-react";
-import LoadingBackdrop from "../../../../components/admin/LoadingBackdrop";
 
 /**
  * Custom select editor for "scena"
@@ -84,13 +76,22 @@ const ActionCellRenderer = (props) => {
     return (
         <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
             {!isEditing ? (
-                <button
-                    type="button"
-                    onClick={() => context.handleEditRow(data.id)}
-                    className="btn btn-primary"
-                >
-                    Edit
-                </button>
+                <>
+                    <button
+                        type="button"
+                        onClick={() => context.handleEditRow(data.id)}
+                        className="btn btn-primary"
+                    >
+                        Edit
+                    </button>
+                    <button
+                        type="button"
+                        onClick={() => context.handleDeleteClick(data)}
+                        className="btn btn-danger"
+                    >
+                        Delete
+                    </button>
+                </>
             ) : (
                 <>
                     <button
@@ -144,29 +145,29 @@ export default function RepertoarPozoristaCreatePage() {
     const [selectedRow, setSelectedRow] = useState(null);
     const [deleteLoading, setDeleteLoading] = useState(false);
 
-    /* Dialog functions */
-    const handleDeleteClick = (id) => {
-        setSelectedRow(rows.find((row) => row.id === id));
-        setOpenDialog(true);
-    };
-
-    const handleConfirmDelete = () => {
+    const handleConfirmDelete = async () => {
         setDeleteLoading(true);
-        axiosClient
-            .delete(`/admin/igranje-delete/${selectedRow.id}`)
-            .then((res) => {
-                setRows((prev) => prev.filter((r) => r.id !== selectedRow.id));
-                toast.success("Uspesno obrisano izvodjenje");
-            })
-            .catch((err) => {
-                console.error(err);
-                toast.error("Greska prilikom brisanja izvodjenja");
-            })
-            .finally(() => {
-                setDeleteLoading(false);
-                setOpenDialog(false);
-                setSelectedRow(null);
-            });
+        try {
+            await csrf();
+            const res = await axiosClient.delete(
+                `/admin/igranje-delete/${selectedRow.id}`,
+                {
+                    headers: {
+                        "X-XSRF-TOKEN": getCookieValue("XSRF-TOKEN"),
+                    },
+                },
+            );
+
+            setRows((prev) => prev.filter((r) => r.id !== selectedRow.id));
+            toast.success("Uspesno obrisano izvodjenje");
+        } catch (err) {
+            console.error(err);
+            toast.error("Greska prilikom brisanja izvodjenja");
+        } finally {
+            setDeleteLoading(false);
+            setOpenDialog(false);
+            setSelectedRow(null);
+        }
     };
 
     const handleCancel = () => {
@@ -482,6 +483,15 @@ export default function RepertoarPozoristaCreatePage() {
         return updatedRow;
     };
 
+    /* Dialog functions */
+    const handleDeleteClick = useCallback(
+        (data) => {
+            setSelectedRow(rows.find((row) => row.id === data.id));
+            setOpenDialog(true);
+        },
+        [rows],
+    );
+
     const handleScrapeButtonClick = () => {
         router.push(`/admin/repertoari/${pozoristeSlug}/scrape`);
     };
@@ -553,8 +563,9 @@ export default function RepertoarPozoristaCreatePage() {
             <AdminHeader
                 metaTitle={`Dodaj repertoar - ${pozoriste.naziv_pozorista}`}
             />
-            <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
+
             <div className="container">
+                <h1>Dodaj repertoar za {pozoriste.naziv_pozorista}</h1>
                 <Box sx={{ flexGrow: 1, my: 3 }}>
                     <Row>
                         <Col md={6}>
@@ -703,6 +714,7 @@ export default function RepertoarPozoristaCreatePage() {
                                 handleEditRow,
                                 handleSaveRow,
                                 handleCancelRow,
+                                handleDeleteClick,
                             }}
                             getRowId={(params) => String(params.data.id)}
                             stopEditingWhenCellsLoseFocus={false}
@@ -713,31 +725,42 @@ export default function RepertoarPozoristaCreatePage() {
                     </div>
                 </Box>
                 {/* Confirmation Dialog */}
-                <Dialog open={openDialog} onClose={handleCancel}>
-                    <DialogTitle>Confirm Delete</DialogTitle>
-                    <DialogContent>
-                        Are you sure you want to delete{" "}
-                        <strong>{selectedRow?.name}</strong>?
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleCancel}>Cancel</Button>
+                <Modal show={openDialog} onHide={handleCancel}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Potvrdi brisanje</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        {deleteLoading ? (
+                            <Spinner animation="border" role="status" />
+                        ) : (
+                            <p>
+                                Da li si siguran_a da želiš da obrišeš
+                                izvođenje: <br />
+                                {selectedRow?.naziv_predstave} u{" "}
+                                {moment(selectedRow?.datum).format(
+                                    "DD. MMM YYYY.",
+                                )}{" "}
+                                {selectedRow?.vreme}
+                            </p>
+                        )}
+                    </Modal.Body>
+                    <Modal.Footer>
                         <Button
-                            onClick={handleConfirmDelete}
-                            color="error"
-                            variant="contained"
-                            startIcon={
-                                deleteLoading ? (
-                                    <CircularProgress
-                                        size={18}
-                                        color="inherit"
-                                    />
-                                ) : undefined
-                            }
+                            variant="secondary"
+                            disabled={deleteLoading}
+                            onClick={handleCancel}
                         >
-                            Delete
+                            Odustani
                         </Button>
-                    </DialogActions>
-                </Dialog>
+                        <Button
+                            variant="danger"
+                            disabled={deleteLoading}
+                            onClick={handleConfirmDelete}
+                        >
+                            DA
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
             </div>
         </>
     );

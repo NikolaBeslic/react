@@ -200,7 +200,7 @@ export default function AdminHomePage() {
                                     onClick={() => {
                                         navigator.clipboard.writeText(
                                             window.location.origin +
-                                                `/tekst/${tekst.slug}`,
+                                                `/${tekst.kategorija.kategorija_slug}/${tekst.slug}`,
                                         );
                                     }}
                                 >

@@ -4,6 +4,7 @@ const AdminHeader = ({ metaTitle }) => {
     return (
         <Head>
             <meta charSet="utf-8" />
+            <link rel="shortcut icon" href="/adminfavicon.ico" />
             <meta name="robots" content="noindex, follow" />
             <meta httpEquiv="x-ua-compatible" content="ie=edge" />
             <meta name="description" content="Hoću u pozorište admin panel" />

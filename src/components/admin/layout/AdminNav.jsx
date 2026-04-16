@@ -1,4 +1,4 @@
-import { Container, Navbar, Nav, Spinner } from "react-bootstrap";
+import { Container, Navbar, Nav, Spinner, Offcanvas } from "react-bootstrap";
 import Link from "next/link";
 import { useAdmin } from "../../../contexts/AdminContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,91 +16,79 @@ function AdminNav() {
                 className="w-100 d-flex justify-content-between"
             >
                 <Container>
-                    {/*{" "}
-                    <Navbar.Brand href="/admin" className="mr-2">
-                        Admin Panel
-                    </Navbar.Brand>{" "}
-                    */}
-                    <Nav className="w-100 d-flex justify-content-between">
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin"
-                            key={101}
-                        >
-                            Početna
-                        </Nav.Link>
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin/tekstovi"
-                            key={102}
-                        >
-                            Tekstovi
-                        </Nav.Link>
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin/repertoari"
-                            key={107}
-                        >
-                            Repertoari
-                        </Nav.Link>
+                    <Navbar.Toggle
+                        aria-controls="admin-offcanvas"
+                        className="ms-auto"
+                    />
 
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin/predstave"
-                            key={103}
+                    <Navbar.Offcanvas
+                        id="admin-offcanvas"
+                        aria-labelledby="admin-offcanvas-label"
+                        placement="end"
+                    >
+                        <Offcanvas.Header
+                            closeButton
+                            className="admin-offcanvas-header"
                         >
-                            Predstave
-                        </Nav.Link>
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin/autori"
-                            key={104}
-                        >
-                            Autori
-                        </Nav.Link>
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin/festivali"
-                            key={105}
-                        >
-                            Festivali
-                        </Nav.Link>
-                        <Nav.Link
-                            color="inherit"
-                            as={Link}
-                            href="/admin/pozorista"
-                            key={106}
-                        >
-                            Pozorišta
-                        </Nav.Link>
-                        {admin && (
-                            <Nav.Link
-                                title="Logout"
-                                onClick={adminLogout}
-                                disabled={adminLogoutLoading}
-                            >
-                                {admin?.username}{" "}
-                                {adminLogoutLoading ? (
-                                    <Spinner
-                                        animation="border"
-                                        role="status"
-                                        variant="secondary"
-                                        size="sm"
-                                    />
-                                ) : (
-                                    <FontAwesomeIcon
-                                        icon={faRightFromBracket}
-                                    />
+                            <Offcanvas.Title id="admin-offcanvas-label">
+                                Admin Panel
+                            </Offcanvas.Title>
+                        </Offcanvas.Header>
+
+                        <Offcanvas.Body className="p-0">
+                            <Nav className="admin-mobile-nav w-100">
+                                <Nav.Link as={Link} href="/admin">
+                                    Početna
+                                </Nav.Link>
+
+                                <Nav.Link as={Link} href="/admin/tekstovi">
+                                    Tekstovi
+                                </Nav.Link>
+
+                                <Nav.Link as={Link} href="/admin/repertoari">
+                                    Repertoari
+                                </Nav.Link>
+
+                                <Nav.Link as={Link} href="/admin/predstave">
+                                    Predstave
+                                </Nav.Link>
+
+                                <Nav.Link as={Link} href="/admin/autori">
+                                    Autori
+                                </Nav.Link>
+
+                                <Nav.Link as={Link} href="/admin/festivali">
+                                    Festivali
+                                </Nav.Link>
+
+                                <Nav.Link as={Link} href="/admin/pozorista">
+                                    Pozorišta
+                                </Nav.Link>
+
+                                {admin && (
+                                    <Nav.Link
+                                        title="Logout"
+                                        onClick={adminLogout}
+                                        disabled={adminLogoutLoading}
+                                    >
+                                        {admin?.username}{" "}
+                                        {adminLogoutLoading ? (
+                                            <Spinner
+                                                animation="border"
+                                                role="status"
+                                                variant="secondary"
+                                                size="sm"
+                                            />
+                                        ) : (
+                                            <FontAwesomeIcon
+                                                icon={faRightFromBracket}
+                                            />
+                                        )}
+                                    </Nav.Link>
                                 )}
-                            </Nav.Link>
-                        )}
-                    </Nav>
+                            </Nav>
+                        </Offcanvas.Body>
+                    </Navbar.Offcanvas>
                 </Container>
             </Navbar>
         </>
